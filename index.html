@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resistencia de Materiales II - Compendio</title>
+    <!-- Librería de iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- BARRA SUPERIOR -->
+    <header class="navbar">
+        <div class="nav-left">
+            <div class="logo-uni">
+                <i class="fa-solid fa-university"></i>
+                <div class="logo-text">
+                    <span>UNIVERSIDAD NACIONAL</span>
+                    <span>DE INGENIERÍA</span>
+                </div>
+            </div>
+            <div class="nav-title">
+                <h1>Resistencia de Materiales II</h1>
+                <p>MC325 - Facultad de Ingeniería Mecánica</p>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="search-bar">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" placeholder="Buscar en el curso...">
+            </div>
+            <div class="user-profile">
+                <i class="fa-solid fa-user-circle"></i>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="main-container">
+        
+        <!-- BARRA LATERAL -->
+        <aside class="sidebar">
+            <nav class="side-menu">
+                <a href="index.html" class="active-dark"><i class="fa-solid fa-home"></i> Inicio</a>
+                <a href="materiales.html"><i class="fa-solid fa-book-open"></i> Material del Curso</a>
+                <a href="apuntes.html"><i class="fa-regular fa-file-lines"></i> Apuntes y Cuadernos</a>
+                <a href="ejercicios.html"><i class="fa-solid fa-table-list"></i> Ejercicios Resueltos</a>
+                <a href="examenes.html"><i class="fa-regular fa-file-pdf"></i> Exámenes Pasados</a>
+                <a href="recursos.html"><i class="fa-regular fa-folder-open"></i> Recursos Adicionales</a>
+                <a href="foro.html"><i class="fa-regular fa-comments"></i> Foro de Consultas</a>
+                <a href="calendario.html"><i class="fa-regular fa-calendar"></i> Calendario</a>
+                <a href="contacto.html"><i class="fa-regular fa-envelope"></i> Contacto</a>
+            </nav>
+
+            <div class="course-info">
+                <h4>Información del Curso</h4>
+                <div class="info-item">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <div>
+                        <strong>Docente:</strong>
+                        <p>Ing. Capcha Molina, Eden</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <div>
+                        <strong>Ciclo Académico:</strong>
+                        <p>2026</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ÁREA DE CONTENIDO -->
+        <main class="content-area">
+            
+            <!-- BANNER PRINCIPAL -->
+            <section class="hero-banner">
+                <div class="hero-content">
+                    <h2>Resistencia de Materiales II</h2>
+                    <p>Analiza, diseña y comprende el comportamiento<br>de las estructuras.</p>
+                </div>
+            </section>
+
+            <!-- ACCESOS RÁPIDOS -->
+            <section class="quick-links">
+                <!-- Enlace a Material del Curso (Negro) -->
+                <a href="materiales.html" class="link-card">
+                    <i class="fa-solid fa-book icon-red"></i>
+                    <div>
+                        <h4>Material del Curso</h4>
+                        <p>Apuntes, PDFs y más</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right ml-auto"></i>
+                </a>
+
+                <!-- Enlace a Ejercicios Resueltos (Rojo) -->
+                <a href="ejercicios.html" class="link-card">
+                    <i class="fa-solid fa-list-check icon-red"></i>
+                    <div>
+                        <h4>Ejercicios Resueltos</h4>
+                        <p>Problemas y soluciones</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right ml-auto"></i>
+                </a>
+
+                <!-- Enlace a Exámenes Pasados (Verde) -->
+                <a href="examenes.html" class="link-card">
+                    <i class="fa-solid fa-file-contract icon-red"></i>
+                    <div>
+                        <h4>Exámenes Pasados</h4>
+                        <p>Pruebas y soluciones</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right ml-auto"></i>
+                </a>
+
+                <!-- Enlace a Foro de Consultas (Azul) -->
+                <a href="foro.html" class="link-card">
+                    <i class="fa-solid fa-circle-question icon-red"></i>
+                    <div>
+                        <h4>Foro de Consultas</h4>
+                        <p>Resuelve tus dudas</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right ml-auto"></i>
+                </a>
+            </section>
+
+            <!-- CUADRÍCULA INFERIOR (2 Columnas) -->
+            <div class="content-grid">
+                
+                <!-- COLUMNA IZQUIERDA (Recursos y Temas) -->
+                <div class="main-column">
+                    
+                    <div class="section-header">
+                        <h3><i class="fa-solid fa-star"></i> Recursos Destacados</h3>
+                        <a href="#">Ver todos &rarr;</a>
+                    </div>
+                    
+                    <div class="resources-grid">
+                        <div class="resource-card">
+                            <div class="pdf-icon">PDF</div>
+                            <div class="res-info">
+                                <h4>Apuntes del Profesor</h4>
+                                <p>Resumen completo del curso.</p>
+                                <span><i class="fa-regular fa-file"></i> 2.5 MB • 15/08/2026</span>
+                            </div>
+                            <button class="btn-download"><i class="fa-solid fa-download"></i> Descargar</button>
+                        </div>
+                        <div class="resource-card">
+                            <div class="pdf-icon">PDF</div>
+                            <div class="res-info">
+                                <h4>Ejercicios Resueltos</h4>
+                                <p>Problemas tipo del curso.</p>
+                                <span><i class="fa-regular fa-file"></i> 1.8 MB • 10/08/2026</span>
+                            </div>
+                            <button class="btn-download"><i class="fa-solid fa-download"></i> Descargar</button>
+                        </div>
+                        <div class="resource-card">
+                            <div class="pdf-icon">PDF</div>
+                            <div class="res-info">
+                                <h4>Examen Parcial 1</h4>
+                                <p>Enunciado y solución.</p>
+                                <span><i class="fa-regular fa-file"></i> 850 KB • 05/08/2026</span>
+                            </div>
+                            <button class="btn-download"><i class="fa-solid fa-download"></i> Descargar</button>
+                        </div>
+                        <div class="resource-card">
+                            <div class="pdf-icon">PDF</div>
+                            <div class="res-info">
+                                <h4>Examen Final (Años Anteriores)</h4>
+                                <p>Exámenes de ciclos pasados.</p>
+                                <span><i class="fa-regular fa-file"></i> 1.2 MB • 01/08/2026</span>
+                            </div>
+                            <button class="btn-download"><i class="fa-solid fa-download"></i> Descargar</button>
+                        </div>
+                    </div>
+
+                    <div class="section-header mt-20">
+                        <h3><i class="fa-solid fa-list"></i> Temas del Curso</h3>
+                    </div>
+                    <div class="topics-box">
+                        <ul class="topics-list accordion">
+                            
+                            <!-- Unidad 1 -->
+                            <li class="accordion-item">
+                                <div class="accordion-header" onclick="toggleAccordion(this)">
+                                    <span class="circle-num">1</span> Criterios de Fallas
+                                    <i class="fa-solid fa-chevron-down ml-auto icon-arrow"></i>
+                                </div>
+                                <div class="accordion-content">
+                                    <ul>
+                                        <li>Criterios para materiales frágiles: Máximo esfuerzo normal y Coulomb-Mohr.</li>
+                                        <li>Criterios para materiales dúctiles: Máximo esfuerzo cortante y energía de distorsión.</li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <!-- Unidad 2 -->
+                            <li class="accordion-item">
+                                <div class="accordion-header" onclick="toggleAccordion(this)">
+                                    <span class="circle-num">2</span> Esfuerzos de Fatiga
+                                    <i class="fa-solid fa-chevron-down ml-auto icon-arrow"></i>
+                                </div>
+                                <div class="accordion-content">
+                                    <ul>
+                                        <li>Límite de fatiga, Diagrama de Wöhler y factores modificatorios.</li>
+                                        <li>Concentración de esfuerzos y criterios de Goodman, Soderberg y Gerber.</li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <!-- Unidad 3 -->
+                            <li class="accordion-item">
+                                <div class="accordion-header" onclick="toggleAccordion(this)">
+                                    <span class="circle-num">3</span> Elementos Curvos
+                                    <i class="fa-solid fa-chevron-down ml-auto icon-arrow"></i>
+                                </div>
+                                <div class="accordion-content">
+                                    <ul>
+                                        <li>Ecuación general y fórmula de Winkler-Bach.</li>
+                                        <li>Cálculo de deformaciones mediante el Teorema de Castigliano.</li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <!-- Unidad 4 -->
+                            <li class="accordion-item">
+                                <div class="accordion-header" onclick="toggleAccordion(this)">
+                                    <span class="circle-num">4</span> Placas Planas
+                                    <i class="fa-solid fa-chevron-down ml-auto icon-arrow"></i>
+                                </div>
+                                <div class="accordion-content">
+                                    <ul>
+                                        <li>Generalización de la flexión pura y ecuaciones de flexión.</li>
+                                        <li>Solución para placas circulares cargadas simétricamente.</li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <!-- Unidad 5 -->
+                            <li class="accordion-item">
+                                <div class="accordion-header" onclick="toggleAccordion(this)">
+                                    <span class="circle-num">5</span> Cilindros y tubos
+                                    <i class="fa-solid fa-chevron-down ml-auto icon-arrow"></i>
+                                </div>
+                                <div class="accordion-content">
+                                    <ul>
+                                        <li>Ecuaciones de Lamé, cilindros de pared gruesa y zunchados.</li>
+                                        <li>Esfuerzos por acción térmica y en discos rotatorios.</li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <!-- Unidad 6 -->
+                            <li class="accordion-item">
+                                <div class="accordion-header" onclick="toggleAccordion(this)">
+                                    <span class="circle-num">6</span> Vigas de Sección Variable
+                                    <i class="fa-solid fa-chevron-down ml-auto icon-arrow"></i>
+                                </div>
+                                <div class="accordion-content">
+                                    <ul>
+                                        <li>Ecuaciones de la deformada en diferentes perfiles.</li>
+                                        <li>Uso del método del Área de Momentos para determinar deflexiones.</li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </div>
+
+                <!-- COLUMNA DERECHA (Actividades y Adicionales) -->
+                <div class="side-column">
+                    
+                    <div class="section-header">
+                        <h3><i class="fa-regular fa-calendar-days"></i> Próximas Actividades</h3>
+                    </div>
+                    <div class="activities-box">
+                        <div class="activity-item">
+                            <div class="date-box"><span>NOV</span><strong>06</strong></div>
+                            <div class="act-info">
+                                <h4>Entrega de Tarea 3</h4>
+                                <p>Hasta las 23:59</p>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="date-box"><span>NOV</span><strong>07</strong></div>
+                            <div class="act-info">
+                                <h4>Clase: Placas Planas</h4>
+                                <p>Horario: 16:00 - 20:00</p>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="date-box"><span>NOV</span><strong>14</strong></div>
+                            <div class="act-info">
+                                <h4>Práctica Calificada 3</h4>
+                                <p>Horario: 16:00 - 18:00</p>
+                            </div>
+                        </div>
+                        <a href="calendario.html" class="view-all-link">Ver calendario completo &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        function toggleAccordion(element) {
+            const item = element.parentElement;
+            // Cierra las demás pestañas automáticamente al abrir una nueva
+            document.querySelectorAll('.accordion-item').forEach(el => {
+                if(el !== item) el.classList.remove('active');
+            });
+            // Abre o cierra la pestaña seleccionada
+            item.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

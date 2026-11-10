@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apuntes y Cuadernos - Resistencia de Materiales II</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- BARRA SUPERIOR -->
+    <header class="navbar">
+        <div class="nav-left">
+            <div class="logo-uni">
+                <i class="fa-solid fa-university"></i>
+                <div class="logo-text">
+                    <span>UNIVERSIDAD NACIONAL</span>
+                    <span>DE INGENIERÍA</span>
+                </div>
+            </div>
+            <div class="nav-title">
+                <h1>Resistencia de Materiales II</h1>
+                <p>MC325 - Facultad de Ingeniería Mecánica</p>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="search-bar">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" placeholder="Buscar en el curso...">
+            </div>
+            <div class="user-profile">
+                <i class="fa-solid fa-user-circle"></i>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="main-container">
+        
+        <!-- BARRA LATERAL -->
+        <aside class="sidebar">
+            <nav class="side-menu">
+                <a href="index.html"><i class="fa-solid fa-home"></i> Inicio</a>
+                <a href="materiales.html"><i class="fa-solid fa-book-open"></i> Material del Curso</a>
+                <a href="apuntes.html" class="active-dark"><i class="fa-regular fa-file-lines"></i> Apuntes y Cuadernos</a>
+                <a href="ejercicios.html"><i class="fa-solid fa-table-list"></i> Ejercicios Resueltos</a>
+                <a href="examenes.html"><i class="fa-regular fa-file-pdf"></i> Exámenes Pasados</a>
+                <a href="recursos.html"><i class="fa-regular fa-folder-open"></i> Recursos Adicionales</a>
+                <a href="foro.html"><i class="fa-regular fa-comments"></i> Foro de Consultas</a>
+                <a href="calendario.html"><i class="fa-regular fa-calendar"></i> Calendario</a>
+                <a href="contacto.html"><i class="fa-regular fa-envelope"></i> Contacto</a>
+            </nav>
+
+            <div class="course-info">
+                <h4>Información del Curso</h4>
+                <div class="info-item">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <div>
+                        <strong>Docente:</strong>
+                        <p>Ing. Capcha Molina, Eden</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <div>
+                        <strong>Ciclo Académico:</strong>
+                        <p>2026</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ÁREA DE CONTENIDO: APUNTES Y CUADERNOS -->
+        <main class="content-area">
+            
+            <div class="breadcrumb">
+                Inicio / <strong>Apuntes y Cuadernos</strong>
+            </div>
+
+            <div class="page-header">
+                <h2>Apuntes y Cuadernos</h2>
+                <p>Cuadernos escaneados y apuntes de clase de los estudiantes del curso.</p>
+            </div>
+
+            <div class="filter-bar">
+                <div class="filter-buttons">
+                    <button class="active">Todos</button>
+                    <button>Unidad 1</button>
+                    <button>Unidad 2</button>
+                    <button>Unidad 3</button>
+                    <button>Unidad 4</button>
+                </div>
+                
+            </div>
+
+            <div class="material-layout">
+                
+                <!-- COLUMNA IZQUIERDA: CONTENIDO PRINCIPAL -->
+                <div class="files-column">
+                    
+                    <!-- SECCIÓN 1: CUADERNOS COMPLETOS -->
+                    <div class="file-group">
+                        <div class="group-header">
+                            <h3><span class="circle-num-white">1</span> Cuadernos completos</h3>
+                            <span class="file-count">6 cuadernos</span>
+                        </div>
+                        <div class="cuadernos-grid">
+                            
+                            <!-- Tarjeta 1 -->
+                            <div class="cuaderno-card">
+                                <div class="cuaderno-img">Cuaderno 1</div>
+                                <div class="cuaderno-info">
+                                    <h4 class="cuaderno-title">Cuaderno completo – [Nombre]</h4>
+                                    <p class="cuaderno-meta">[Autor] - [00] págs. - [dd/mm/aaaa]</p>
+                                    <span class="tag-unidad">Unidades 1-2</span>
+                                </div>
+                                <div class="cuaderno-actions">
+                                    <button class="btn-ver">Ver</button>
+                                    <button class="btn-descargar">Descargar</button>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta 2 -->
+                            <div class="cuaderno-card">
+                                <div class="cuaderno-img">Cuaderno 2</div>
+                                <div class="cuaderno-info">
+                                    <h4 class="cuaderno-title">Cuaderno completo – [Nombre]</h4>
+                                    <p class="cuaderno-meta">[Autor] - [00] págs. - [dd/mm/aaaa]</p>
+                                    <span class="tag-unidad">Unidades 1-4</span>
+                                </div>
+                                <div class="cuaderno-actions">
+                                    <button class="btn-ver">Ver</button>
+                                    <button class="btn-descargar">Descargar</button>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta 3 -->
+                            <div class="cuaderno-card">
+                                <div class="cuaderno-img">Cuaderno 3</div>
+                                <div class="cuaderno-info">
+                                    <h4 class="cuaderno-title">Cuaderno de problemas</h4>
+                                    <p class="cuaderno-meta">[Autor] - [00] págs. - [dd/mm/aaaa]</p>
+                                    <span class="tag-unidad">Unidad 3</span>
+                                </div>
+                                <div class="cuaderno-actions">
+                                    <button class="btn-ver">Ver</button>
+                                    <button class="btn-descargar">Descargar</button>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta 4 -->
+                            <div class="cuaderno-card">
+                                <div class="cuaderno-img">Cuaderno 4</div>
+                                <div class="cuaderno-info">
+                                    <h4 class="cuaderno-title">Resumen y fórmulas</h4>
+                                    <p class="cuaderno-meta">[Autor] - [00] págs. - [dd/mm/aaaa]</p>
+                                    <span class="tag-unidad">Unidad 2</span>
+                                </div>
+                                <div class="cuaderno-actions">
+                                    <button class="btn-ver">Ver</button>
+                                    <button class="btn-descargar">Descargar</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Tarjeta 5 -->
+                            <div class="cuaderno-card">
+                                <div class="cuaderno-img">Cuaderno 5</div>
+                                <div class="cuaderno-info">
+                                    <h4 class="cuaderno-title">Clases de laboratorio</h4>
+                                    <p class="cuaderno-meta">[Autor] - [00] págs. - [dd/mm/aaaa]</p>
+                                    <span class="tag-unidad">Unidad 4</span>
+                                </div>
+                                <div class="cuaderno-actions">
+                                    <button class="btn-ver">Ver</button>
+                                    <button class="btn-descargar">Descargar</button>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta 6 -->
+                            <div class="cuaderno-card">
+                                <div class="cuaderno-img">Cuaderno 6</div>
+                                <div class="cuaderno-info">
+                                    <h4 class="cuaderno-title">Cuaderno completo – [Nombre]</h4>
+                                    <p class="cuaderno-meta">[Autor] - [00] págs. - [dd/mm/aaaa]</p>
+                                    <span class="tag-unidad">Unidades 1-4</span>
+                                </div>
+                                <div class="cuaderno-actions">
+                                    <button class="btn-ver">Ver</button>
+                                    <button class="btn-descargar">Descargar</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- SECCIÓN 2: APUNTES POR CLASE -->
+                    <div class="file-group">
+                        <div class="group-header">
+                            <h3><span class="circle-num-white">2</span> Apuntes por clase</h3>
+                            <a href="#" style="color: white; font-size: 0.85rem; text-decoration: none;">Ver todos &rarr;</a>
+                        </div>
+                        <div class="group-content">
+                            <!-- Fila 1 -->
+                            <div class="file-row">
+                                <div class="file-icon-box border-red">PDF</div>
+                                <div class="file-details">
+                                    <h4>Apuntes de clase – Semana [00]</h4>
+                                    <p>Escaneo de [Autor]</p>
+                                </div>
+                                <span class="tag-unidad tag-small">Unidad 1</span>
+                                <div class="file-meta">[0.0 MB]</div>
+                                <button class="btn-download-dark">Descargar</button>
+                            </div>
+                            
+                            <!-- Fila 2 -->
+                            <div class="file-row">
+                                <div class="file-icon-box border-red">PDF</div>
+                                <div class="file-details">
+                                    <h4>Apuntes de clase – Semana [00]</h4>
+                                    <p>Escaneo de [Autor]</p>
+                                </div>
+                                <span class="tag-unidad tag-small">Unidad 2</span>
+                                <div class="file-meta">[0.0 MB]</div>
+                                <button class="btn-download-dark">Descargar</button>
+                            </div>
+
+                            <!-- Fila 3 -->
+                            <div class="file-row">
+                                <div class="file-icon-box border-red">PDF</div>
+                                <div class="file-details">
+                                    <h4>Apuntes de clase – Semana [00]</h4>
+                                    <p>Escaneo de [Autor]</p>
+                                </div>
+                                <span class="tag-unidad tag-small">Unidad 3</span>
+                                <div class="file-meta">[0.0 MB]</div>
+                                <button class="btn-download-dark">Descargar</button>
+                            </div>
+                            
+                            <!-- Fila 4 -->
+                            <div class="file-row">
+                                <div class="file-icon-box border-red">PDF</div>
+                                <div class="file-details">
+                                    <h4>Apuntes de clase – Semana [00]</h4>
+                                    <p>Escaneo de [Autor]</p>
+                                </div>
+                                <span class="tag-unidad tag-small">Unidad 4</span>
+                                <div class="file-meta">[0.0 MB]</div>
+                                <button class="btn-download-dark">Descargar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- COLUMNA DERECHA: WIDGETS -->
+                <div class="widgets-column">
+                    
+                    <!-- WIDGET: Aporta tu cuaderno -->
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h3>Aporta tu cuaderno</h3>
+                        </div>
+                        <div class="upload-area">
+                            Arrastra tu PDF aquí<br>
+                            o selecciónalo desde tu equipo
+                        </div>
+                        <button class="btn-full-width">Subir apunte</button>
+                    </div>
+
+                    <!-- WIDGET: Colaboradores -->
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h3>Colaboradores</h3>
+                        </div>
+                        <ul class="widget-list">
+                            <li class="collab-item">
+                                <div class="collab-user">
+                                    <div class="avatar">A</div>
+                                    <span>[Autor 1]</span>
+                                </div>
+                                <span class="collab-count">[0] aportes</span>
+                            </li>
+                            <li class="collab-item">
+                                <div class="collab-user">
+                                    <div class="avatar">B</div>
+                                    <span>[Autor 2]</span>
+                                </div>
+                                <span class="collab-count">[0] aportes</span>
+                            </li>
+                            <li class="collab-item">
+                                <div class="collab-user">
+                                    <div class="avatar">C</div>
+                                    <span>[Autor 3]</span>
+                                </div>
+                                <span class="collab-count">[0] aportes</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- WIDGET: Material relacionado -->
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h3>Material relacionado</h3>
+                        </div>
+                        <ul class="widget-list links-only">
+                            <li><a href="materiales.html">Material del Curso</a></li>
+                            <li><a href="ejercicios.html">Ejercicios Resueltos</a></li>
+                            <li><a href="examenes.html">Exámenes Pasados</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+</body>
+</html>

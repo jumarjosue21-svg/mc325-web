@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foro de Consultas - Resistencia de Materiales II</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- BARRA SUPERIOR -->
+    <header class="navbar">
+        <div class="nav-left">
+            <div class="logo-uni">
+                <i class="fa-solid fa-university"></i>
+                <div class="logo-text">
+                    <span>UNIVERSIDAD NACIONAL</span>
+                    <span>DE INGENIERÍA</span>
+                </div>
+            </div>
+            <div class="nav-title">
+                <h1>Resistencia de Materiales II</h1>
+                <p>MC325 - Facultad de Ingeniería Mecánica</p>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="search-bar">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" placeholder="Buscar en el curso...">
+            </div>
+            <div class="user-profile">
+                <i class="fa-solid fa-user-circle"></i>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="main-container">
+        
+        <!-- BARRA LATERAL -->
+        <aside class="sidebar">
+            <nav class="side-menu">
+                <a href="index.html"><i class="fa-solid fa-home"></i> Inicio</a>
+                <a href="materiales.html"><i class="fa-solid fa-book-open"></i> Material del Curso</a>
+                <a href="apuntes.html"><i class="fa-regular fa-file-lines"></i> Apuntes y Cuadernos</a>
+                <a href="ejercicios.html"><i class="fa-solid fa-table-list"></i> Ejercicios Resueltos</a>
+                <a href="examenes.html"><i class="fa-regular fa-file-pdf"></i> Exámenes Pasados</a>
+                <a href="recursos.html"><i class="fa-regular fa-folder-open"></i> Recursos Adicionales</a>
+                <a href="foro.html" class="active-dark"><i class="fa-regular fa-comments"></i> Foro de Consultas</a>
+                <a href="calendario.html"><i class="fa-regular fa-calendar"></i> Calendario</a>
+                <a href="contacto.html"><i class="fa-regular fa-envelope"></i> Contacto</a>
+            </nav>
+
+            <div class="course-info">
+                <h4>Información del Curso</h4>
+                <div class="info-item">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <div>
+                        <strong>Docente:</strong>
+                        <p>Ing. Capcha Molina, Eden</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <div>
+                        <strong>Ciclo Académico:</strong>
+                        <p>2026</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ÁREA DE CONTENIDO: FORO DE CONSULTAS -->
+        <main class="content-area">
+            
+            <div class="breadcrumb">
+                Inicio / <strong>Foro de Consultas</strong>
+            </div>
+
+            <!-- Cabecera con botón de nueva consulta -->
+            <div class="page-header header-flex">
+                <div>
+                    <h2>Foro de Consultas</h2>
+                    <p>Resuelve tus dudas con el docente y tus compañeros.</p>
+                </div>
+                <button class="btn-solid"><i class="fa-solid fa-plus"></i> Nueva consulta</button>
+            </div>
+
+            <div class="filter-bar">
+                <div class="filter-buttons">
+                    <button class="active">Todas</button>
+                    <button>Sin responder</button>
+                    <button>Resueltas</button>
+                    <button>Mis consultas</button>
+                </div>
+                <div class="forum-filters-right">
+                    <input type="text" placeholder="Buscar en el foro..." class="forum-search">
+                    <select class="sort-select">
+                        <option>Unidad: todas</option>
+                        <option>Unidad 1</option>
+                        <option>Unidad 2</option>
+                        <option>Unidad 3</option>
+                        <option>Unidad 4</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="material-layout">
+                
+                <!-- COLUMNA IZQUIERDA: LISTA DE CONSULTAS -->
+                <div class="files-column">
+                    
+                    <div class="file-group">
+                        <div class="group-header">
+                            <h3>Consultas recientes</h3>
+                            <span class="file-count">[05] consultas</span>
+                        </div>
+                        <div class="group-content">
+                            
+                            <!-- Consulta 1 (Fijado) -->
+                            <div class="forum-row">
+                                <div class="forum-avatar avatar-docente">D</div>
+                                <div class="forum-details">
+                                    <div class="forum-tags">
+                                        <span class="tag tag-fijado">Fijado</span>
+                                        <span class="tag tag-general">General</span>
+                                    </div>
+                                    <h4>Reglas del foro y cómo preguntar</h4>
+                                    <p>Antes de publicar, revisa estas recomendaciones.</p>
+                                    <span class="forum-meta">Docente • [fecha]</span>
+                                </div>
+                                <div class="forum-stats">
+                                    <div class="stat-box">
+                                        <strong>-</strong>
+                                        <span>respuestas</span>
+                                    </div>
+                                    <div class="stat-box">
+                                        <strong>-</strong>
+                                        <span>vistas</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Consulta 2 (Sin responder) -->
+                            <div class="forum-row">
+                                <div class="forum-avatar">A</div>
+                                <div class="forum-details">
+                                    <div class="forum-tags">
+                                        <span class="tag tag-sin-responder">Sin responder</span>
+                                        <span class="tag tag-unidad">Unidad 2</span>
+                                    </div>
+                                    <h4>[Título de la consulta sobre Unidad 2]</h4>
+                                    <p>Resumen de la duda, por ejemplo sobre el diagrama de momentos de una viga...</p>
+                                    <span class="forum-meta">[Autor] • hace [0] h</span>
+                                </div>
+                                <div class="forum-stats">
+                                    <div class="stat-box">
+                                        <strong>0</strong>
+                                        <span>respuestas</span>
+                                    </div>
+                                    <div class="stat-box">
+                                        <strong>12</strong>
+                                        <span>vistas</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Consulta 3 (Resuelta) -->
+                            <div class="forum-row">
+                                <div class="forum-avatar">B</div>
+                                <div class="forum-details">
+                                    <div class="forum-tags">
+                                        <span class="tag tag-resuelta">Resuelta</span>
+                                        <span class="tag tag-unidad">Unidad 3</span>
+                                    </div>
+                                    <h4>[Título de la consulta sobre Unidad 3]</h4>
+                                    <p>Resumen de la duda, por ejemplo sobre condiciones de borde en placas...</p>
+                                    <span class="forum-meta">[Autor] • hace [0] días</span>
+                                </div>
+                                <div class="forum-stats">
+                                    <div class="stat-box stat-highlight">
+                                        <strong>3</strong>
+                                        <span>respuestas</span>
+                                    </div>
+                                    <div class="stat-box">
+                                        <strong>45</strong>
+                                        <span>vistas</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Consulta 4 (Resuelta, Exámenes) -->
+                            <div class="forum-row">
+                                <div class="forum-avatar">C</div>
+                                <div class="forum-details">
+                                    <div class="forum-tags">
+                                        <span class="tag tag-resuelta">Resuelta</span>
+                                        <span class="tag tag-unidad">Exámenes</span>
+                                    </div>
+                                    <h4>[Título de la consulta sobre Examen Parcial II]</h4>
+                                    <p>Resumen de la duda sobre un problema de examen pasado...</p>
+                                    <span class="forum-meta">[Autor] • hace [0] días</span>
+                                </div>
+                                <div class="forum-stats">
+                                    <div class="stat-box stat-highlight">
+                                        <strong>1</strong>
+                                        <span>respuestas</span>
+                                    </div>
+                                    <div class="stat-box">
+                                        <strong>80</strong>
+                                        <span>vistas</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Consulta 5 (Sin responder) -->
+                            <div class="forum-row">
+                                <div class="forum-avatar">D</div>
+                                <div class="forum-details">
+                                    <div class="forum-tags">
+                                        <span class="tag tag-sin-responder">Sin responder</span>
+                                        <span class="tag tag-unidad">Unidad 4</span>
+                                    </div>
+                                    <h4>[Título de la consulta sobre MATLAB]</h4>
+                                    <p>Resumen de la duda sobre el código del método numérico...</p>
+                                    <span class="forum-meta">[Autor] • hace [0] días</span>
+                                </div>
+                                <div class="forum-stats">
+                                    <div class="stat-box">
+                                        <strong>0</strong>
+                                        <span>respuestas</span>
+                                    </div>
+                                    <div class="stat-box">
+                                        <strong>15</strong>
+                                        <span>vistas</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- COLUMNA DERECHA: WIDGETS -->
+                <div class="widgets-column">
+                    
+                    <!-- WIDGET: Haz una consulta -->
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h3>Haz una consulta</h3>
+                        </div>
+                        <div class="widget-form">
+                            <input type="text" placeholder="Título de tu duda">
+                            <select>
+                                <option>Unidad...</option>
+                                <option>Unidad 1</option>
+                                <option>Unidad 2</option>
+                                <option>Unidad 3</option>
+                                <option>Unidad 4</option>
+                                <option>Exámenes</option>
+                                <option>General</option>
+                            </select>
+                            <textarea placeholder="Describe tu duda. Puedes adjuntar una foto de tu desarrollo." rows="4"></textarea>
+                            <button class="btn-solid" style="width: 100%;">Publicar consulta</button>
+                        </div>
+                    </div>
+
+                    <!-- WIDGET: Antes de preguntar -->
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h3>Antes de preguntar</h3>
+                        </div>
+                        <ul class="widget-list rules-list">
+                            <li><i class="fa-solid fa-square"></i> Busca si ya fue respondida</li>
+                            <li><i class="fa-solid fa-square"></i> Indica el ejercicio y la unidad</li>
+                            <li><i class="fa-solid fa-square"></i> Muestra lo que ya intentaste</li>
+                        </ul>
+                    </div>
+
+                    <!-- WIDGET: Material relacionado -->
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h3>Material relacionado</h3>
+                        </div>
+                        <ul class="widget-list links-only">
+                            <li><a href="ejercicios.html">Ejercicios Resueltos</a></li>
+                            <li><a href="materiales.html">Material del Curso</a></li>
+                            <li><a href="contacto.html">Contacto</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario - Resistencia de Materiales II</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- BARRA SUPERIOR -->
+    <header class="navbar">
+        <div class="nav-left">
+            <div class="logo-uni">
+                <i class="fa-solid fa-university"></i>
+                <div class="logo-text">
+                    <span>UNIVERSIDAD NACIONAL</span>
+                    <span>DE INGENIERÍA</span>
+                </div>
+            </div>
+            <div class="nav-title">
+                <h1>Resistencia de Materiales II</h1>
+                <p>MC325 - Facultad de Ingeniería Mecánica</p>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="search-bar">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" placeholder="Buscar en el curso...">
+            </div>
+            <div class="user-profile">
+                <i class="fa-solid fa-user-circle"></i>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="main-container">
+        
+        <!-- BARRA LATERAL -->
+        <aside class="sidebar">
+            <nav class="side-menu">
+                <a href="index.html"><i class="fa-solid fa-home"></i> Inicio</a>
+                <a href="materiales.html"><i class="fa-solid fa-book-open"></i> Material del Curso</a>
+                <a href="apuntes.html"><i class="fa-regular fa-file-lines"></i> Apuntes y Cuadernos</a>
+                <a href="ejercicios.html"><i class="fa-solid fa-table-list"></i> Ejercicios Resueltos</a>
+                <a href="examenes.html"><i class="fa-regular fa-file-pdf"></i> Exámenes Pasados</a>
+                <a href="recursos.html"><i class="fa-regular fa-folder-open"></i> Recursos Adicionales</a>
+                <a href="foro.html"><i class="fa-regular fa-comments"></i> Foro de Consultas</a>
+                <a href="calendario.html" class="active-dark"><i class="fa-regular fa-calendar"></i> Calendario</a>
+                <a href="contacto.html"><i class="fa-regular fa-envelope"></i> Contacto</a>
+            </nav>
+
+            <div class="course-info">
+                <h4>Información del Curso</h4>
+                <div class="info-item">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <div>
+                        <strong>Docente:</strong>
+                        <p>Ing. Capcha Molina, Eden</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <div>
+                        <strong>Ciclo Académico:</strong>
+                        <p>2026</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ÁREA DE CONTENIDO: CALENDARIO -->
+        <main class="content-area">
+            
+            <div class="breadcrumb">
+                Inicio / <strong>Calendario</strong>
+            </div>
+
+            <div class="page-header">
+                <h2>Calendario</h2>
+                <p>Exámenes, entregas de trabajos y feriados del ciclo 2026-2.</p>
+            </div>
+
+            <!-- Controles del Calendario -->
+            <div class="calendar-toolbar">
+                <div class="cal-nav">
+                    <button class="btn-icon">&lt;</button>
+                    <h3>Noviembre 2026</h3>
+                    <button class="btn-icon">&gt;</button>
+                    <button class="btn-outline">Hoy</button>
+                </div>
+                <div class="cal-views">
+                    <button class="active">Mes</button>
+                    <button>Semana</button>
+                    <button>Lista</button>
+                </div>
+            </div>
+
+            <div class="material-layout">
+                
+                <!-- COLUMNA IZQUIERDA: CUADRÍCULA DEL CALENDARIO -->
+                <div class="files-column">
+                    <div class="calendar-grid">
+                        <!-- Cabeceras de días -->
+                        <div class="cal-header">LUN</div>
+                        <div class="cal-header">MAR</div>
+                        <div class="cal-header">MIÉ</div>
+                        <div class="cal-header">JUE</div>
+                        <div class="cal-header">VIE</div>
+                        <div class="cal-header">SÁB</div>
+                        <div class="cal-header">DOM</div>
+
+                        <!-- Fila 1 -->
+                        <div class="cal-day faded"><span>26</span></div>
+                        <div class="cal-day faded"><span>27</span></div>
+                        <div class="cal-day faded"><span>28</span></div>
+                        <div class="cal-day faded"><span>29</span></div>
+                        <div class="cal-day faded"><span>30</span></div>
+                        <div class="cal-day faded"><span>31</span></div>
+                        <div class="cal-day today">
+                            <span class="day-num">1</span>
+                            <div class="cal-event event-holiday">Todos los Santos</div>
+                        </div>
+
+                        <!-- Fila 2 -->
+                        <div class="cal-day"><span>2</span></div>
+                        <div class="cal-day"><span>3</span></div>
+                        <div class="cal-day"><span>4</span></div>
+                        <div class="cal-day"><span>5</span></div>
+                        <div class="cal-day"><span>6</span></div>
+                        <div class="cal-day">
+                            <span>7</span>
+                            <div class="cal-event event-assignment">Entrega de Tarea 3<br>23:59</div>
+                        </div>
+                        <div class="cal-day"><span>8</span></div>
+
+                        <!-- Fila 3 -->
+                        <div class="cal-day"><span>9</span></div>
+                        <div class="cal-day">
+                            <span>10</span>
+                            <div class="cal-event event-exam">Examen Parcial II<br>09:00</div>
+                        </div>
+                        <div class="cal-day"><span>11</span></div>
+                        <div class="cal-day"><span>12</span></div>
+                        <div class="cal-day"><span>13</span></div>
+                        <div class="cal-day">
+                            <span>14</span>
+                            <div class="cal-event event-class">Clase práctica: Placas continuas</div>
+                        </div>
+                        <div class="cal-day"><span>15</span></div>
+
+                        <!-- Fila 4 -->
+                        <div class="cal-day"><span>16</span></div>
+                        <div class="cal-day"><span>17</span></div>
+                        <div class="cal-day"><span>18</span></div>
+                        <div class="cal-day"><span>19</span></div>
+                        <div class="cal-day"><span>20</span></div>
+                        <div class="cal-day"><span>21</span></div>
+                        <div class="cal-day"><span>22</span></div>
+
+                        <!-- Fila 5 -->
+                        <div class="cal-day"><span>23</span></div>
+                        <div class="cal-day"><span>24</span></div>
+                        <div class="cal-day"><span>25</span></div>
+                        <div class="cal-day"><span>26</span></div>
+                        <div class="cal-day"><span>27</span></div>
+                        <div class="cal-day">
+                            <span>28</span>
+                            <div class="cal-event event-assignment">[Entrega de Tarea 4]</div>
+                        </div>
+                        <div class="cal-day"><span>29</span></div>
+
+                        <!-- Fila 6 -->
+                        <div class="cal-day"><span>30</span></div>
+                        <div class="cal-day faded"><span>1</span></div>
+                        <div class="cal-day faded"><span>2</span></div>
+                        <div class="cal-day faded"><span>3</span></div>
+                        <div class="cal-day faded"><span>4</span></div>
+                        <div class="cal-day faded"><span>5</span></div>
+                        <div class="cal-day faded"><span>6</span></div>
+                    </div>
+                </div>
+
+                <!-- COLUMNA DERECHA: WIDGETS Y ADMINISTRACIÓN -->
+                <div class="widgets-column">
+                    
+                    <!-- WIDGET: Próximas actividades -->
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h3>Próximas actividades</h3>
+                        </div>
+                        <div style="padding: 15px;">
+                            <div class="activity-item">
+                                <div class="date-box"><span>NOV</span><strong>07</strong></div>
+                                <div class="act-info" style="flex: 1;">
+                                    <h4 style="color: var(--text-main); margin-bottom: 2px;">Entrega de Tarea 3</h4>
+                                    <p style="font-size: 0.8rem; color: var(--text-light);">Hasta las 23:59</p>
+                                </div>
+                                <div class="dot dot-assignment"></div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="date-box"><span>NOV</span><strong>10</strong></div>
+                                <div class="act-info" style="flex: 1;">
+                                    <h4 style="color: var(--text-main); margin-bottom: 2px;">Examen Parcial II</h4>
+                                    <p style="font-size: 0.8rem; color: var(--text-light);">09:00 - 11:00</p>
+                                </div>
+                                <div class="dot dot-exam"></div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="date-box"><span>NOV</span><strong>14</strong></div>
+                                <div class="act-info" style="flex: 1;">
+                                    <h4 style="color: var(--text-main); margin-bottom: 2px;">Clase práctica: Placas continuas</h4>
+                                    <p style="font-size: 0.8rem; color: var(--text-light);">Laboratorio de Mecánica</p>
+                                </div>
+                                <div class="dot dot-class"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- WIDGET: Tipos de fecha (Leyenda) -->
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h3>Tipos de fecha</h3>
+                        </div>
+                        <ul class="widget-list">
+                            <li><div class="legend-box bg-exam"></div> Exámenes</li>
+                            <li><div class="legend-box bg-assignment"></div> Entregas de trabajos</li>
+                            <li><div class="legend-box bg-holiday"></div> Feriados</li>
+                            <li><div class="legend-box bg-class"></div> Clases y prácticas</li>
+                        </ul>
+                    </div>
+
+                    <!-- WIDGET: Administración del calendario -->
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h3>Administración del calendario</h3>
+                        </div>
+                        
+                        <!-- Panel modo lectura (Estudiante) -->
+                        <div class="widget-form" id="panel-lectura">
+                            <div class="admin-warning">
+                                <strong>Solo lectura.</strong> Las fechas las agrega y modifica únicamente el administrador del curso.
+                            </div>
+                            <button class="btn-outline" style="width: 100%;" onclick="activarModoAdmin()">Iniciar sesión como administrador</button>
+                        </div>
+
+                        <!-- Panel modo edición (Oculto por defecto) -->
+                        <div class="widget-form" id="panel-admin" style="display: none; border-top: 1px solid #eee; padding-top: 15px;">
+                            <span style="font-size: 0.75rem; font-weight: bold; color: var(--text-light); text-transform: uppercase;">Vista del administrador</span>
+                            <select>
+                                <option>Tipo de fecha</option>
+                                <option>Examen</option>
+                                <option>Entrega</option>
+                                <option>Feriado</option>
+                            </select>
+                            <input type="text" placeholder="Título • Fecha • Hora">
+                            <button class="btn-solid" style="width: 100%; background-color: #a87b7b; border-color: #a87b7b;">+ Agregar fecha</button>
+                        </div>
+                    </div>
+
+                    <button class="btn-outline" style="width: 100%;">Suscribirse al calendario (.ics)</button>
+
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- SCRIPT PARA SIMULAR INICIO DE SESIÓN -->
+    <script>
+        function activarModoAdmin() {
+            document.getElementById('panel-lectura').style.display = 'none';
+            document.getElementById('panel-admin').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>

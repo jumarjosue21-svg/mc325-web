@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material del Curso - Resistencia de Materiales II</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- BARRA SUPERIOR -->
+    <header class="navbar">
+        <div class="nav-left">
+            <div class="logo-uni">
+                <i class="fa-solid fa-university"></i>
+                <div class="logo-text">
+                    <span>UNIVERSIDAD NACIONAL</span>
+                    <span>DE INGENIERÍA</span>
+                </div>
+            </div>
+            <div class="nav-title">
+                <h1>Resistencia de Materiales II</h1>
+                <p>MC325 - Facultad de Ingeniería Mecánica</p>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="search-bar">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" placeholder="Buscar en el curso...">
+            </div>
+            <div class="user-profile">
+                <i class="fa-solid fa-user-circle"></i>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="main-container">
+        
+        <!-- BARRA LATERAL -->
+        <aside class="sidebar">
+            <nav class="side-menu">
+                <a href="index.html"><i class="fa-solid fa-home"></i> Inicio</a>
+                <a href="materiales.html" class="active-dark"><i class="fa-solid fa-book-open"></i> Material del Curso</a>
+                <a href="apuntes.html"><i class="fa-regular fa-file-lines"></i> Apuntes y Cuadernos</a>
+                <a href="ejercicios.html"><i class="fa-solid fa-table-list"></i> Ejercicios Resueltos</a>
+                <a href="examenes.html"><i class="fa-regular fa-file-pdf"></i> Exámenes Pasados</a>
+                <a href="recursos.html"><i class="fa-regular fa-folder-open"></i> Recursos Adicionales</a>
+                <a href="foro.html"><i class="fa-regular fa-comments"></i> Foro de Consultas</a>
+                <a href="calendario.html"><i class="fa-regular fa-calendar"></i> Calendario</a>
+                <a href="contacto.html"><i class="fa-regular fa-envelope"></i> Contacto</a>
+            </nav>
+
+            <div class="course-info">
+                <h4>Información del Curso</h4>
+                <div class="info-item">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <div>
+                        <strong>Docente:</strong>
+                        <p>Ing. Capcha Molina, Eden</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <div>
+                        <strong>Ciclo Académico:</strong>
+                        <p>2026</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ÁREA DE CONTENIDO: MATERIAL DEL CURSO -->
+        <main class="content-area">
+            
+            <div class="breadcrumb">
+                Inicio / <strong>Material del Curso</strong>
+            </div>
+
+            <div class="page-header">
+                <h2>Material del Curso</h2>
+                <p>Apuntes, presentaciones y guías del profesor, organizados por unidad.</p>
+            </div>
+
+            <div class="filter-bar">
+                <div class="filter-buttons">
+                    <button class="active" onclick="filtrarUnidades('todas', this)">Todas las unidades</button>
+                    <button onclick="filtrarUnidades('unidad1', this)">Unidad 1</button>
+                    <button onclick="filtrarUnidades('unidad2', this)">Unidad 2</button>
+                    <button onclick="filtrarUnidades('unidad3', this)">Unidad 3</button>
+                    <button onclick="filtrarUnidades('unidad4', this)">Unidad 4</button>
+                </div>
+                
+            </div>
+
+            <div class="material-layout">
+                
+                <!-- COLUMNA IZQUIERDA: LISTA DE ARCHIVOS -->
+                <div class="files-column">
+                    
+                    <!-- Grupo: Sílabo -->
+                    <div class="file-group" id="grupo-silabo">
+                        <div class="group-header">
+                            <h3><i class="fa-solid fa-star"></i> Sílabo y presentación del curso</h3>
+                        </div>
+                        <div class="group-content">
+                            <div class="file-row">
+                                <div class="file-icon-box border-red">PDF</div>
+                                <div class="file-details">
+                                    <!-- Al hacer clic ejecuta la función para abrir el visor -->
+                                    <h4 class="clickable-title" onclick="abrirVisorPDF('SYLLABUS-MC325-RESISTENCIA DE MATERIALES II-20262-1793919728.pdf', 'Sílabo MC325 2026-2')">Sílabo MC325 2026-2</h4>
+                                    <p>Contenido, evaluación y bibliografía</p>
+                                </div>
+                                <!-- Peso aproximado y fecha de subida real -->
+                                <div class="file-meta" id="meta-silabo">Cargando info...</div>
+                                <!-- El atributo download fuerza la descarga en lugar de abrirlo -->
+                                <a href="SYLLABUS-MC325-RESISTENCIA DE MATERIALES II-20262-1793919728.pdf" download="Silabo_MC325_2026-2.pdf" class="btn-download-dark" style="text-decoration: none; text-align: center; display: inline-block;">Descargar</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Grupo: Unidad 1 -->
+                    <div class="file-group" id="grupo-unidad1">
+                        <div class="group-header">
+                            <h3><span class="circle-num-white">1</span> Unidad 1: Fundamentos y Conceptos Básicos</h3>
+                            <span class="file-count">2 archivos</span>
+                        </div>
+                        <div class="group-content">
+                            <div class="file-row">
+                                <div class="file-icon-box border-red">PDF</div>
+                                <div class="file-details">
+                                    <h4>Teoría – Unidad 1</h4>
+                                    <p>Apuntes del profesor</p>
+                                </div>
+                                <div class="file-meta">[0.0 MB] - [dd/mm/aaaa]</div>
+                                <button class="btn-download-dark">Descargar</button>
+                            </div>
+                            <div class="file-row">
+                                <div class="file-icon-box border-red">PDF</div>
+                                <div class="file-details">
+                                    <h4>Diapositivas – Unidad 1</h4>
+                                    <p>Presentación de clase</p>
+                                </div>
+                                <div class="file-meta">[0.0 MB] - [dd/mm/aaaa]</div>
+                                <button class="btn-download-dark">Descargar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Grupo: Unidad 2 -->
+                    <div class="file-group" id="grupo-unidad2">
+                        <div class="group-header">
+                            <h3><span class="circle-num-white">2</span> Unidad 2: Vigas Curvas</h3>
+                            <span class="file-count">3 archivos</span>
+                        </div>
+                        <div class="group-content">
+                            <div class="file-row">
+                                <div class="file-icon-box border-red">PDF</div>
+                                <div class="file-details">
+                                    <h4>Teoría – Unidad 2</h4>
+                                    <p>Apuntes del profesor</p>
+                                </div>
+                                <div class="file-meta">[0.0 MB] - [dd/mm/aaaa]</div>
+                                <button class="btn-download-dark">Descargar</button>
+                            </div>
+                        </div>
+                    </div>
+                
+                <!-- Grupo: Unidad 3 -->
+                    <div class="file-group" id="grupo-unidad3">
+                        <div class="group-header">
+                            <h3><span class="circle-num-white">3</span> Unidad 3: Teorema de Castigliano</h3>
+                            <span class="file-count">2 archivos</span>
+                        </div>
+                        <div class="group-content">
+                            <div class="file-row">
+                                <div class="file-icon-box border-red">PDF</div>
+                                <div class="file-details">
+                                    <h4>Teoría – Unidad 3</h4>
+                                    <p>Apuntes del profesor</p>
+                                </div>
+                                <div class="file-meta">[0.0 MB] - [dd/mm/aaaa]</div>
+                                <button class="btn-download-dark">Descargar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                <!-- Grupo: Unidad 4 -->
+                    <div class="file-group" id="grupo-unidad4">
+                        <div class="group-header">
+                            <h3><span class="circle-num-white">4</span> Unidad 4: Placas Planas</h3>
+                            <span class="file-count">3 archivos</span>
+                        </div>
+                        <div class="group-content">
+                            <div class="file-row">
+                                <div class="file-icon-box border-red">PDF</div>
+                                <div class="file-details">
+                                    <h4>Teoría – Unidad 4</h4>
+                                    <p>Apuntes del profesor</p>
+                                </div>
+                                <div class="file-meta">[0.0 MB] - [dd/mm/aaaa]</div>
+                                <button class="btn-download-dark">Descargar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- COLUMNA DERECHA: WIDGETS -->
+                <div class="widgets-column">
+                                        
+                    <!-- WIDGET: Ir a la unidad -->
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h3>Ir a la unidad</h3>
+                        </div>
+                        <ul class="widget-list">
+                            <li onclick="ubicarUnidad('unidad1')" style="cursor: pointer;">
+                                <span class="circle-num-dark">1</span> Fundamentos y Conceptos Básicos
+                            </li>
+                            <li onclick="ubicarUnidad('unidad2')" style="cursor: pointer;">
+                                <span class="circle-num-dark">2</span> Vigas Curvas
+                            </li>
+                            <li onclick="ubicarUnidad('unidad3')" style="cursor: pointer;">
+                                <span class="circle-num-dark">3</span> Teorema de Castigliano
+                            </li>
+                            <li onclick="ubicarUnidad('unidad4')" style="cursor: pointer;">
+                                <span class="circle-num-dark">4</span> Placas Planas
+                            </li>
+                            
+                        </ul>
+                    </div>
+
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h3>Material relacionado</h3>
+                        </div>
+                        <ul class="widget-list links-only">
+                            <li><a href="apuntes.html">Apuntes y Cuadernos</a></li>
+                            <li><a href="ejercicios.html">Ejercicios Resueltos</a></li>
+                            <li><a href="examenes.html">Exámenes Pasados</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+<!-- VISOR PDF TIPO SCRIBD-->
+    <div id="pdf-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Visor de Documento</h3>
+                <button class="btn-close" onclick="cerrarVisorPDF()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <!-- Aquí se cargará el PDF dinámicamente -->
+                <iframe id="pdf-frame" src="" width="100%" height="100%" style="border: none;"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT PARA CONTROLAR EL VISOR -->
+    <script>
+        function abrirVisorPDF(rutaArchivo, titulo) {
+            document.getElementById('modal-title').innerText = titulo;
+            document.getElementById('pdf-frame').src = rutaArchivo;
+            document.getElementById('pdf-modal').style.display = 'flex';
+        }
+        function cerrarVisorPDF() {
+            document.getElementById('pdf-modal').style.display = 'none';
+            document.getElementById('pdf-frame').src = ''; // Limpia el visor al cerrar
+        }
+        // Función para extraer el peso y la fecha del archivo automáticamente
+        async function obtenerMetadatos(urlArchivo, idElemento) {
+            try {
+                // Hacemos una petición HEAD (solo pide información de cabecera, no descarga el PDF)
+                const respuesta = await fetch(urlArchivo, { method: 'HEAD' });
+
+                if (respuesta.ok) {
+                    // 1. Extraer y calcular el peso en MB
+                    const bytes = respuesta.headers.get('content-length');
+                    const megabytes = (bytes / (1024 * 1024)).toFixed(2);
+
+                    // 2. Extraer y dar formato a la fecha de última modificación
+                    const fechaModificada = respuesta.headers.get('last-modified');
+                    const fechaObj = new Date(fechaModificada);
+                    
+                    const dia = String(fechaObj.getDate()).padStart(2, '0');
+                    const mes = String(fechaObj.getMonth() + 1).padStart(2, '0');
+                    const anio = fechaObj.getFullYear();
+
+                    // 3. Inyectar los datos reales en el HTML
+                    document.getElementById(idElemento).innerHTML = `${megabytes} MB - ${dia}/${mes}/${anio}`;
+                } else {
+                    document.getElementById(idElemento).innerHTML = "Datos no disponibles";
+                }
+            } catch (error) {
+                console.error("Error al leer el archivo:", error);
+                document.getElementById(idElemento).innerHTML = "No se pudo leer";
+            }
+        }
+
+        // Le decimos a la página que ejecute la función apenas termine de cargar
+        window.addEventListener('DOMContentLoaded', () => {
+            // Pasamos el nombre de tu archivo y el ID del HTML donde se mostrará
+            obtenerMetadatos('SYLLABUS-MC325-RESISTENCIA DE MATERIALES II-20262-1793919728.pdf', 'meta-silabo');
+        });
+        // Función para filtrar los bloques de unidades
+        function filtrarUnidades(filtro, botonClick) {
+            // 1. Quitar la clase 'active' (color granate) de todos los botones
+            const botones = document.querySelectorAll('.filter-buttons button');
+            botones.forEach(btn => btn.classList.remove('active'));
+            
+            // 2. Asignar la clase 'active' solo al botón que se presionó
+            botonClick.classList.add('active');
+
+            // 3. Capturar todos los grupos de archivos
+            const grupos = document.querySelectorAll('.file-group');
+
+            // 4. Mostrar u ocultar según el filtro seleccionado
+            grupos.forEach(grupo => {
+                if (filtro === 'todas') {
+                    grupo.style.display = 'block'; // Muestra todos los bloques
+                } else {
+                    // Si el ID del grupo coincide con el filtro elegido, se muestra; si no, se oculta
+                    if (grupo.id === 'grupo-' + filtro) {
+                        grupo.style.display = 'block';
+                    } else {
+                        grupo.style.display = 'none';
+                    }
+                }
+            });
+        }
+        // Función para ir directamente a una unidad desde el menú derecho
+        function ubicarUnidad(idUnidad) {
+            // 1. Mostrar todas las unidades primero (por si el usuario tenía un filtro activo)
+            const botonTodas = document.querySelector('.filter-buttons button:first-child');
+            if (botonTodas) {
+                filtrarUnidades('todas', botonTodas);
+            }
+
+            // 2. Hacer scroll suave hacia el bloque correspondiente tras un breve instante
+            setTimeout(() => {
+                const elemento = document.getElementById('grupo-' + idUnidad);
+                if (elemento) {
+                    // Desplaza la vista suavemente hasta que el elemento quede en la parte superior
+                    elemento.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 50); 
+        }
+    </script>
+</body>
+</html>

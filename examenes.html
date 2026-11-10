@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exámenes Pasados - Resistencia de Materiales II</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- BARRA SUPERIOR -->
+    <header class="navbar">
+        <div class="nav-left">
+            <div class="logo-uni">
+                <i class="fa-solid fa-university"></i>
+                <div class="logo-text">
+                    <span>UNIVERSIDAD NACIONAL</span>
+                    <span>DE INGENIERÍA</span>
+                </div>
+            </div>
+            <div class="nav-title">
+                <h1>Resistencia de Materiales II</h1>
+                <p>MC325 - Facultad de Ingeniería Mecánica</p>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="search-bar">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" placeholder="Buscar en el curso...">
+            </div>
+            <div class="user-profile">
+                <i class="fa-solid fa-user-circle"></i>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="main-container">
+        
+        <!-- BARRA LATERAL -->
+        <aside class="sidebar">
+            <nav class="side-menu">
+                <a href="index.html"><i class="fa-solid fa-home"></i> Inicio</a>
+                <a href="materiales.html"><i class="fa-solid fa-book-open"></i> Material del Curso</a>
+                <a href="apuntes.html"><i class="fa-regular fa-file-lines"></i> Apuntes y Cuadernos</a>
+                <a href="ejercicios.html"><i class="fa-solid fa-table-list"></i> Ejercicios Resueltos</a>
+                <a href="examenes.html" class="active-dark"><i class="fa-regular fa-file-pdf"></i> Exámenes Pasados</a>
+                <a href="recursos.html"><i class="fa-regular fa-folder-open"></i> Recursos Adicionales</a>
+                <a href="foro.html"><i class="fa-regular fa-comments"></i> Foro de Consultas</a>
+                <a href="calendario.html"><i class="fa-regular fa-calendar"></i> Calendario</a>
+                <a href="contacto.html"><i class="fa-regular fa-envelope"></i> Contacto</a>
+            </nav>
+
+            <div class="course-info">
+                <h4>Información del Curso</h4>
+                <div class="info-item">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <div>
+                        <strong>Docente:</strong>
+                        <p>Ing. Capcha Molina, Eden</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <div>
+                        <strong>Ciclo Académico:</strong>
+                        <p>2026</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ÁREA DE CONTENIDO: EXÁMENES PASADOS -->
+        <main class="content-area">
+            
+            <div class="breadcrumb">
+                Inicio / <strong>Exámenes Pasados</strong>
+            </div>
+
+            <div class="page-header">
+                <h2>Exámenes Pasados</h2>
+                <p>Pruebas de ciclos anteriores con sus soluciones, para practicar antes de rendir.</p>
+            </div>
+
+            <div class="filter-bar">
+                <div class="filter-buttons">
+                    <button class="active">Todos los ciclos</button>
+                    <button>2026-2</button>
+                    <button>2026-1</button>
+                    <button>2025-2</button>
+                    <button>2025-1</button>
+                </div>
+                <select class="sort-select">
+                    <option>Tipo: todos</option>
+                    <option>Parciales</option>
+                    <option>Finales</option>
+                    <option>Sustitutorios</option>
+                </select>
+            </div>
+
+            <div class="material-layout">
+                
+                <!-- COLUMNA IZQUIERDA: LISTA DE EXÁMENES -->
+                <div class="files-column">
+                    
+                    <!-- SECCIÓN 1: EXÁMENES PARCIALES -->
+                    <div class="file-group">
+                        <div class="group-header">
+                            <h3><span class="circle-num-white">1</span> Exámenes parciales</h3>
+                            <span class="file-count">[03] exámenes</span>
+                        </div>
+                        <div class="group-content">
+                            <!-- Cabecera de la tabla -->
+                            <div class="exam-table-header">
+                                <div class="col-examen">EXAMEN</div>
+                                <div class="col-ciclo">CICLO</div>
+                                <div class="col-tipo">TIPO</div>
+                                <div class="col-archivos">ARCHIVOS</div>
+                            </div>
+                            
+                            <!-- Fila 1 -->
+                            <div class="exam-row">
+                                <div class="col-examen">
+                                    <div class="file-icon-text">
+                                        <div class="file-icon-box border-red">PDF</div>
+                                        <div class="file-details">
+                                            <h4>Examen Parcial 1 (2026-2)</h4>
+                                            <p>Enunciado y solución</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-ciclo">2026-2</div>
+                                <div class="col-tipo"><span class="tag tag-exam">Parcial</span></div>
+                                <div class="col-archivos">
+                                    <div class="exercise-actions">
+                                        <button class="btn-outline">Enunciado</button>
+                                        <button class="btn-solid">Solución</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Fila 2 -->
+                            <div class="exam-row">
+                                <div class="col-examen">
+                                    <div class="file-icon-text">
+                                        <div class="file-icon-box border-red">PDF</div>
+                                        <div class="file-details">
+                                            <h4>Examen Parcial 1 ([Ciclo])</h4>
+                                            <p>Enunciado y solución</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-ciclo">[Ciclo]</div>
+                                <div class="col-tipo"><span class="tag tag-exam">Parcial</span></div>
+                                <div class="col-archivos">
+                                    <div class="exercise-actions">
+                                        <button class="btn-outline">Enunciado</button>
+                                        <button class="btn-solid">Solución</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Fila 3 -->
+                            <div class="exam-row">
+                                <div class="col-examen">
+                                    <div class="file-icon-text">
+                                        <div class="file-icon-box border-red">PDF</div>
+                                        <div class="file-details">
+                                            <h4>Examen Parcial 2 ([Ciclo])</h4>
+                                            <p>Enunciado y solución</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-ciclo">[Ciclo]</div>
+                                <div class="col-tipo"><span class="tag tag-exam">Parcial</span></div>
+                                <div class="col-archivos">
+                                    <div class="exercise-actions">
+                                        <button class="btn-outline">Enunciado</button>
+                                        <button class="btn-solid">Solución</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECCIÓN 2: EXÁMENES FINALES -->
+                    <div class="file-group">
+                        <div class="group-header">
+                            <h3><span class="circle-num-white">2</span> Exámenes finales</h3>
+                            <span class="file-count">[02] exámenes</span>
+                        </div>
+                        <div class="group-content">
+                            <div class="exam-table-header">
+                                <div class="col-examen">EXAMEN</div>
+                                <div class="col-ciclo">CICLO</div>
+                                <div class="col-tipo">TIPO</div>
+                                <div class="col-archivos">ARCHIVOS</div>
+                            </div>
+                            
+                            <div class="exam-row">
+                                <div class="col-examen">
+                                    <div class="file-icon-text">
+                                        <div class="file-icon-box border-red">PDF</div>
+                                        <div class="file-details">
+                                            <h4>Examen Final ([Ciclo])</h4>
+                                            <p>Exámenes de ciclos pasados</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-ciclo">[Ciclo]</div>
+                                <div class="col-tipo"><span class="tag tag-exam">Final</span></div>
+                                <div class="col-archivos">
+                                    <div class="exercise-actions">
+                                        <button class="btn-outline">Enunciado</button>
+                                        <button class="btn-solid">Solución</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="exam-row">
+                                <div class="col-examen">
+                                    <div class="file-icon-text">
+                                        <div class="file-icon-box border-red">PDF</div>
+                                        <div class="file-details">
+                                            <h4>Examen Final ([Ciclo])</h4>
+                                            <p>Exámenes de ciclos pasados</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-ciclo">[Ciclo]</div>
+                                <div class="col-tipo"><span class="tag tag-exam">Final</span></div>
+                                <div class="col-archivos">
+                                    <div class="exercise-actions">
+                                        <button class="btn-outline">Enunciado</button>
+                                        <button class="btn-solid">Solución</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECCIÓN 3: EXÁMENES SUSTITUTORIOS -->
+                    <div class="file-group">
+                        <div class="group-header">
+                            <h3><span class="circle-num-white">3</span> Exámenes sustitutorios</h3>
+                            <span class="file-count">[01] exámenes</span>
+                        </div>
+                        <div class="group-content">
+                            <div class="exam-table-header">
+                                <div class="col-examen">EXAMEN</div>
+                                <div class="col-ciclo">CICLO</div>
+                                <div class="col-tipo">TIPO</div>
+                                <div class="col-archivos">ARCHIVOS</div>
+                            </div>
+                            
+                            <div class="exam-row">
+                                <div class="col-examen">
+                                    <div class="file-icon-text">
+                                        <div class="file-icon-box border-red">PDF</div>
+                                        <div class="file-details">
+                                            <h4>Examen Sustitutorio ([Ciclo])</h4>
+                                            <p>Enunciado y solución</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-ciclo">[Ciclo]</div>
+                                <div class="col-tipo"><span class="tag tag-exam">Sustitutorio</span></div>
+                                <div class="col-archivos">
+                                    <div class="exercise-actions">
+                                        <button class="btn-outline">Enunciado</button>
+                                        <button class="btn-solid">Solución</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- COLUMNA DERECHA: WIDGETS -->
+                <div class="widgets-column">
+                    
+                    <!-- WIDGET: Próximo examen -->
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h3>Próximo examen</h3>
+                        </div>
+                        <div style="padding: 15px;">
+                            <div class="activity-item">
+                                <div class="date-box"><span>NOV</span><strong>10</strong></div>
+                                <div class="act-info">
+                                    <h4 style="color: var(--text-main); margin-bottom: 2px;">Examen Parcial II</h4>
+                                    <p style="font-size: 0.8rem; color: var(--text-light);">Horario: 09:00 - 11:00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- WIDGET: Tipo de examen -->
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h3>Tipo de examen</h3>
+                        </div>
+                        <div class="widget-filter-list">
+                            <label class="custom-checkbox">
+                                <input type="checkbox" checked>
+                                <span class="checkmark"></span>
+                                Parcial
+                            </label>
+                            <label class="custom-checkbox">
+                                <input type="checkbox" checked>
+                                <span class="checkmark"></span>
+                                Final
+                            </label>
+                            <label class="custom-checkbox">
+                                <input type="checkbox" checked>
+                                <span class="checkmark"></span>
+                                Sustitutorio
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- WIDGET: Cómo prepararte -->
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h3>Cómo prepararte</h3>
+                        </div>
+                        <ul class="widget-list links-only">
+                            <li><a href="ejercicios.html">Ejercicios Resueltos</a></li>
+                            <li><a href="foro.html">Foro de consultas</a></li>
+                            <li><a href="materiales.html">Material del Curso</a></li>
+                            <li><a href="apuntes.html">Apuntes y Cuadernos</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+</body>
+</html>

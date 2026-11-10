@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursos Adicionales - Resistencia de Materiales II</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- BARRA SUPERIOR -->
+    <header class="navbar">
+        <div class="nav-left">
+            <div class="logo-uni">
+                <i class="fa-solid fa-university"></i>
+                <div class="logo-text">
+                    <span>UNIVERSIDAD NACIONAL</span>
+                    <span>DE INGENIERÍA</span>
+                </div>
+            </div>
+            <div class="nav-title">
+                <h1>Resistencia de Materiales II</h1>
+                <p>MC325 - Facultad de Ingeniería Mecánica</p>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="search-bar">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" placeholder="Buscar en el curso...">
+            </div>
+            <div class="user-profile">
+                <i class="fa-solid fa-user-circle"></i>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="main-container">
+        
+        <!-- BARRA LATERAL -->
+        <aside class="sidebar">
+            <nav class="side-menu">
+                <a href="index.html"><i class="fa-solid fa-home"></i> Inicio</a>
+                <a href="materiales.html"><i class="fa-solid fa-book-open"></i> Material del Curso</a>
+                <a href="apuntes.html"><i class="fa-regular fa-file-lines"></i> Apuntes y Cuadernos</a>
+                <a href="ejercicios.html"><i class="fa-solid fa-table-list"></i> Ejercicios Resueltos</a>
+                <a href="examenes.html"><i class="fa-regular fa-file-pdf"></i> Exámenes Pasados</a>
+                <a href="recursos.html" class="active-dark"><i class="fa-regular fa-folder-open"></i> Recursos Adicionales</a>
+                <a href="foro.html"><i class="fa-regular fa-comments"></i> Foro de Consultas</a>
+                <a href="calendario.html"><i class="fa-regular fa-calendar"></i> Calendario</a>
+                <a href="contacto.html"><i class="fa-regular fa-envelope"></i> Contacto</a>
+            </nav>
+
+            <div class="course-info">
+                <h4>Información del Curso</h4>
+                <div class="info-item">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <div>
+                        <strong>Docente:</strong>
+                        <p>Ing. Capcha Molina, Eden</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <div>
+                        <strong>Ciclo Académico:</strong>
+                        <p>2026</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ÁREA DE CONTENIDO: RECURSOS ADICIONALES -->
+        <main class="content-area">
+            
+            <div class="breadcrumb">
+                Inicio / <strong>Recursos Adicionales</strong>
+            </div>
+
+            <div class="page-header">
+                <h2>Recursos Adicionales</h2>
+                <p>Bibliografía, enlaces, software y guías de laboratorio para complementar el curso.</p>
+            </div>
+
+            <div class="material-layout">
+                
+                <!-- COLUMNA IZQUIERDA: LISTAS DE RECURSOS -->
+                <div class="files-column">
+                    
+                    <!-- SECCIÓN 1: BIBLIOGRAFÍA -->
+                    <div class="file-group" id="bibliografia">
+                        <div class="group-header">
+                            <h3><i class="fa-solid fa-book-open"></i> Bibliografía Recomendada</h3>
+                            <span class="file-count">[03] libros</span>
+                        </div>
+                        <div class="group-content">
+                            <!-- Libro 1 -->
+                            <div class="exam-row">
+                                <div class="col-examen" style="grid-column: span 2;">
+                                    <div class="file-icon-text">
+                                        <div class="icon-box-resource border-red"><i class="fa-solid fa-book"></i></div>
+                                        <div class="file-details">
+                                            <h4>Mecánica de Materiales - R.C. Hibbeler</h4>
+                                            <p>[Autor] - [Edición] • Unidades [1-4]</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-tipo"><span class="tag tag-resource">Libro</span></div>
+                                <div class="col-archivos" style="justify-content: flex-end;">
+                                    <button class="btn-solid">Ver</button>
+                                </div>
+                            </div>
+
+                            <!-- Libro 2 -->
+                            <div class="exam-row">
+                                <div class="col-examen" style="grid-column: span 2;">
+                                    <div class="file-icon-text">
+                                        <div class="icon-box-resource border-red"><i class="fa-solid fa-book"></i></div>
+                                        <div class="file-details">
+                                            <h4>Resistencia de Materiales - Singer y Pytel</h4>
+                                            <p>[Autor] - [Edición] • Unidades [1-4]</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-tipo"><span class="tag tag-resource">Libro</span></div>
+                                <div class="col-archivos" style="justify-content: flex-end;">
+                                    <button class="btn-solid">Ver</button>
+                                </div>
+                            </div>
+
+                            <!-- Referencia 3 -->
+                            <div class="exam-row">
+                                <div class="col-examen" style="grid-column: span 2;">
+                                    <div class="file-icon-text">
+                                        <div class="icon-box-resource border-red"><i class="fa-solid fa-book-bookmark"></i></div>
+                                        <div class="file-details">
+                                            <h4>Artículo técnico sobre fatiga de materiales</h4>
+                                            <p>[Autor] - [Año]</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-tipo"><span class="tag tag-resource">Referencia</span></div>
+                                <div class="col-archivos" style="justify-content: flex-end;">
+                                    <button class="btn-solid">Ver</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECCIÓN 2: ENLACES DE INTERÉS -->
+                    <div class="file-group" id="enlaces">
+                        <div class="group-header">
+                            <h3><i class="fa-solid fa-link"></i> Enlaces de Interés</h3>
+                            <span class="file-count">[03] enlaces</span>
+                        </div>
+                        <div class="group-content">
+                            <div class="exam-row">
+                                <div class="col-examen" style="grid-column: span 2;">
+                                    <div class="file-icon-text">
+                                        <div class="icon-box-resource border-red"><i class="fa-solid fa-link"></i></div>
+                                        <div class="file-details">
+                                            <h4>Efunda - Engineering Fundamentals</h4>
+                                            <p>Tablas de propiedades mecánicas y fórmulas</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-tipo"><span class="tag tag-resource">Web</span></div>
+                                <div class="col-archivos" style="justify-content: flex-end;">
+                                    <button class="btn-solid">Abrir</button>
+                                </div>
+                            </div>
+
+                            <div class="exam-row">
+                                <div class="col-examen" style="grid-column: span 2;">
+                                    <div class="file-icon-text">
+                                        <div class="icon-box-resource border-red"><i class="fa-solid fa-play"></i></div>
+                                        <div class="file-details">
+                                            <h4>Canal de Ingeniería Mecánica UNI</h4>
+                                            <p>Demostraciones de laboratorio en video</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-tipo"><span class="tag tag-resource">Video</span></div>
+                                <div class="col-archivos" style="justify-content: flex-end;">
+                                    <button class="btn-solid">Abrir</button>
+                                </div>
+                            </div>
+
+                            <div class="exam-row">
+                                <div class="col-examen" style="grid-column: span 2;">
+                                    <div class="file-icon-text">
+                                        <div class="icon-box-resource border-red"><i class="fa-solid fa-calculator"></i></div>
+                                        <div class="file-details">
+                                            <h4>Calculadora de vigas en línea (SkyCiv)</h4>
+                                            <p>Herramienta rápida para diagramas de fuerza cortante</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-tipo"><span class="tag tag-resource">Herramienta</span></div>
+                                <div class="col-archivos" style="justify-content: flex-end;">
+                                    <button class="btn-solid">Abrir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECCIÓN 3: SOFTWARE ÚTIL -->
+                    <div class="file-group" id="software">
+                        <div class="group-header">
+                            <h3><i class="fa-solid fa-gear"></i> Software Útil (MATLAB, etc.)</h3>
+                            <span class="file-count">[03] programas</span>
+                        </div>
+                        <div class="group-content">
+                            <div class="exam-row">
+                                <div class="col-examen" style="grid-column: span 2;">
+                                    <div class="file-icon-text">
+                                        <div class="icon-box-resource border-red"><i class="fa-solid fa-code"></i></div>
+                                        <div class="file-details">
+                                            <h4>MATLAB</h4>
+                                            <p>Cálculo numérico de vigas y placas - Unidad 4</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-tipo"><span class="tag tag-resource">Software</span></div>
+                                <div class="col-archivos" style="justify-content: flex-end;">
+                                    <button class="btn-solid" style="width: 140px;">Guía de instalación</button>
+                                </div>
+                            </div>
+
+                            <div class="exam-row">
+                                <div class="col-examen" style="grid-column: span 2;">
+                                    <div class="file-icon-text">
+                                        <div class="icon-box-resource border-red"><i class="fa-solid fa-cubes"></i></div>
+                                        <div class="file-details">
+                                            <h4>ANSYS Workbench</h4>
+                                            <p>Simulación y análisis de esfuerzos (Von Mises)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-tipo"><span class="tag tag-resource">Software</span></div>
+                                <div class="col-archivos" style="justify-content: flex-end;">
+                                    <button class="btn-solid" style="width: 140px;">Sitio oficial</button>
+                                </div>
+                            </div>
+
+                            <div class="exam-row">
+                                <div class="col-examen" style="grid-column: span 2;">
+                                    <div class="file-icon-text">
+                                        <div class="icon-box-resource border-red"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                                        <div class="file-details">
+                                            <h4>Emulador HP Prime G2</h4>
+                                            <p>Programación UserRPL para cálculo de diagramas</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-tipo"><span class="tag tag-resource">Software</span></div>
+                                <div class="col-archivos" style="justify-content: flex-end;">
+                                    <button class="btn-solid" style="width: 140px;">Sitio oficial</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECCIÓN 4: GUÍAS DE LABORATORIO -->
+                    <div class="file-group" id="laboratorio">
+                        <div class="group-header">
+                            <h3><i class="fa-solid fa-flask"></i> Guías de Laboratorio</h3>
+                            <span class="file-count">[03] guías</span>
+                        </div>
+                        <div class="group-content">
+                            <div class="exam-row" style="grid-template-columns: 3fr 1fr 1fr;">
+                                <div class="col-examen">
+                                    <div class="file-icon-text">
+                                        <div class="file-icon-box border-red">PDF</div>
+                                        <div class="file-details">
+                                            <h4>Guía de Laboratorio 1 - Ensayos de Tracción</h4>
+                                            <p>Laboratorio de Mecánica</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-tipo" style="color: var(--text-light); font-size: 0.8rem;">[0.0 MB]</div>
+                                <div class="col-archivos" style="justify-content: flex-end;">
+                                    <button class="btn-solid">Descargar</button>
+                                </div>
+                            </div>
+
+                            <div class="exam-row" style="grid-template-columns: 3fr 1fr 1fr;">
+                                <div class="col-examen">
+                                    <div class="file-icon-text">
+                                        <div class="file-icon-box border-red">PDF</div>
+                                        <div class="file-details">
+                                            <h4>Guía de Laboratorio 2 - Ensayo Charpy (Impacto)</h4>
+                                            <p>Laboratorio de Mecánica</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-tipo" style="color: var(--text-light); font-size: 0.8rem;">[0.0 MB]</div>
+                                <div class="col-archivos" style="justify-content: flex-end;">
+                                    <button class="btn-solid">Descargar</button>
+                                </div>
+                            </div>
+
+                            <div class="exam-row" style="grid-template-columns: 3fr 1fr 1fr;">
+                                <div class="col-examen">
+                                    <div class="file-icon-text">
+                                        <div class="file-icon-box border-red">PDF</div>
+                                        <div class="file-details">
+                                            <h4>Guía de Laboratorio 3 - Flexión en vigas de madera</h4>
+                                            <p>Laboratorio de Mecánica</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-tipo" style="color: var(--text-light); font-size: 0.8rem;">[0.0 MB]</div>
+                                <div class="col-archivos" style="justify-content: flex-end;">
+                                    <button class="btn-solid">Descargar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- COLUMNA DERECHA: WIDGETS -->
+                <div class="widgets-column">
+                    
+                    <!-- WIDGET: Material relacionado -->
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h3>Material relacionado</h3>
+                        </div>
+                        <ul class="widget-list links-only">
+                            <li><a href="materiales.html">Material del Curso</a></li>
+                            <li><a href="ejercicios.html">Ejercicios Resueltos</a></li>
+                            <li><a href="examenes.html">Exámenes Pasados</a></li>
+                            <li><a href="contacto.html">Contacto</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+</body>
+</html>
