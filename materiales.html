@@ -320,76 +320,102 @@
     <!-- ESQUEMA TIKZ GENERADO POR CÓDIGO (No requiere imagen) -->
     <div style="text-align: center; overflow-x: auto; padding: 20px 0; margin: 20px 0; background-color: #fcfcfc; border: 1px solid #eee; border-radius: 8px;">
         <script type="text/tikz">
-            \begin{tikzpicture}[scale=0.9, every node/.style={scale=0.9}]
-              % Definición de colores
-              \definecolor{bodycolor}{RGB}{222,203,178}
-              \definecolor{cutcolor}{RGB}{245,235,220}
-              \definecolor{vectorcolor}{RGB}{220,50,70}
+            \begin{tikzpicture}[scale=0.85, >=stealth]
+              % Definición de colores mejorados
+              \definecolor{bodycolor}{RGB}{235,210,175}
+              \definecolor{cutcolor}{RGB}{255,245,230}
+              \definecolor{vectorcolor}{RGB}{220,30,50}
 
-              % === FIGURA 1: CUERPO COMPLETO ===
+              % ==========================================
+              % FIGURA 1: CUERPO COMPLETO
+              % ==========================================
               \begin{scope}[shift={(0,0)}]
-                % Ejes de coordenadas
-                \draw[->, gray] (0,0) -- (0,2.5) node[right] {$y$};
-                \draw[->, gray] (0,0) -- (2.5,-0.5) node[right] {$x$};
-                \draw[->, gray] (0,0) -- (-1.5,-1.5) node[left] {$z$};
+                % Ejes (Dibujados detrás para dar profundidad)
+                \draw[->, gray, thick] (0,0) -- (0, 4.5) node[right, text=gray] {$y$};
+                \draw[->, gray, thick] (0,0) -- (4.5, -0.8) node[right, text=gray] {$x$};
+                \draw[->, gray, thick] (0,0) -- (-2.5, -2) node[left, text=gray] {$z$};
                 
-                % Cuerpo tridimensional (Papa)
-                \draw[fill=bodycolor, draw=black, thick] (1,3.5) .. controls (2.5,4) and (3,1) .. (2,0) .. controls (1,-1) and (-1,0) .. (-0.5,1.5) .. controls (0,3) and (0,2) .. (1,3.5);
+                % Cuerpo tridimensional con gradiente de sombra
+                \draw[left color=bodycolor!40!white, right color=bodycolor!85!black, draw=black, thick] 
+                    (0.5,3.5) .. controls (2.5,4) and (3.5,1) .. (2,-0.5)
+                              .. controls (1,-1.5) and (-2,-1) .. (-1.5,1)
+                              .. controls (-1,3) and (-0.5,3) .. (0.5,3.5);
                 
                 % Fuerzas externas
-                \draw[->, thick, vectorcolor] (-0.5,1.5) -- (-2,0.8) node[below] {$P_1$};
-                \draw[->, thick, vectorcolor] (1.2,3.7) -- (1.4,5) node[right] {$P_2$};
-                \draw[->, thick, vectorcolor] (2.4,2.2) -- (4,3) node[right] {$P_3$};
-                \draw[->, thick, vectorcolor] (1.8,0.2) -- (3,-1) node[right] {$P_4$};
+                \draw[->, ultra thick, vectorcolor] (-1.5, 1) -- (-3, 0.1) node[below] {$P_1$};
+                \draw[->, ultra thick, vectorcolor] (1.2, 3.6) -- (1.5, 5) node[right] {$P_2$};
+                \draw[->, ultra thick, vectorcolor] (3.1, 1.5) -- (4.5, 2.3) node[right] {$P_3$};
+                \draw[->, ultra thick, vectorcolor] (2.2, -0.3) -- (3.5, -1.3) node[right] {$P_4$};
               \end{scope}
 
-              % === FIGURA 2: CORTE Y VECTOR RESULTANTE ===
-              \begin{scope}[shift={(5.5,0)}]
-                % Ejes de coordenadas
-                \draw[->, gray] (0,0) -- (0,2.5) node[right] {$y$};
-                \draw[->, gray] (0,0) -- (2.5,-0.5) node[right] {$x$};
-                \draw[->, gray] (0,0) -- (-1.5,-1.5) node[left] {$z$};
+              % ==========================================
+              % FIGURA 2: CORTE Y VECTOR RESULTANTE
+              % ==========================================
+              \begin{scope}[shift={(7.5,0)}]
+                % Ejes
+                \draw[->, gray, thick] (0,0) -- (0, 4.5) node[right, text=gray] {$y$};
+                \draw[->, gray, thick] (0,0) -- (4.5, -0.8) node[right, text=gray] {$x$};
+                \draw[->, gray, thick] (0,0) -- (-2.5, -2) node[left, text=gray] {$z$};
                 
-                % Mitad del cuerpo
-                \draw[fill=bodycolor, draw=black, thick] (1,3.5) .. controls (2.5,4) and (2.5,2.5) .. (1.6,1.8) .. controls (1.4,1) and (1.5,0.5) .. (2,0) .. controls (1,-1) and (-1,0) .. (-0.5,1.5) .. controls (0,3) and (0,2) .. (1,3.5);
+                % Mitad izquierda del cuerpo
+                \draw[left color=bodycolor!40!white, right color=bodycolor!85!black, draw=black, thick]
+                    (0.8, 3.5) .. controls (-0.5, 3.5) and (-2, 2.5) .. (-1.5, 1)
+                               .. controls (-1, -1) and (0.5, -1.5) .. (1.5, -0.5)
+                               .. controls (0.8, 0) and (0.5, 1.5) .. (0.8, 3.5);
                 
-                % Superficie del plano de corte
-                \draw[fill=cutcolor, draw=black, thick] (1.6,1.8) .. controls (2.2,2.3) and (2.4,1) .. (1.4,0.5) .. controls (1.0,0.8) and (1.2,1.4) .. (1.6,1.8);
+                % Superficie del plano de corte interno
+                \draw[fill=cutcolor, draw=black, thick]
+                    (0.8, 3.5) .. controls (1.5, 2.5) and (2, 0.5) .. (1.5, -0.5)
+                               .. controls (0.8, 0) and (0.5, 1.5) .. (0.8, 3.5);
                 
                 % Punto Q y área
-                \node at (2.1,1.9) {$\Delta A$};
-                \fill (1.5,1.2) circle (2pt) node[below right, font=\small] {$Q$};
-                
-                % Fuerzas externas e internas
-                \draw[->, thick, vectorcolor] (-0.5,1.5) -- (-2,0.8) node[below] {$P_1$};
-                \draw[->, thick, vectorcolor] (1.2,3.7) -- (1.4,5) node[right] {$P_2$};
-                \draw[->, thick, vectorcolor] (1.5,1.2) -- (3.5,0.9) node[right] {$\Delta F^x$};
-              \end{scope}
-
-              % === FIGURA 3: COMPONENTES DE LA FUERZA INTERNA ===
-              \begin{scope}[shift={(11,0)}]
-                % Ejes de coordenadas
-                \draw[->, gray] (0,0) -- (0,2.5) node[right] {$y$};
-                \draw[->, gray] (0,0) -- (2.5,-0.5) node[right] {$x$};
-                \draw[->, gray] (0,0) -- (-1.5,-1.5) node[left] {$z$};
-                
-                % Mitad del cuerpo
-                \draw[fill=bodycolor, draw=black, thick] (1,3.5) .. controls (2.5,4) and (2.5,2.5) .. (1.6,1.8) .. controls (1.4,1) and (1.5,0.5) .. (2,0) .. controls (1,-1) and (-1,0) .. (-0.5,1.5) .. controls (0,3) and (0,2) .. (1,3.5);
-                
-                % Superficie del plano de corte
-                \draw[fill=cutcolor, draw=black, thick] (1.6,1.8) .. controls (2.2,2.3) and (2.4,1) .. (1.4,0.5) .. controls (1.0,0.8) and (1.2,1.4) .. (1.6,1.8);
-                
-                % Punto Q
-                \fill (1.5,1.2) circle (2pt) node[below right, font=\small] {$Q$};
+                \node at (1.4, 2.5) {$\Delta A$};
+                \fill (1.1, 1.2) circle (2pt) node[below right, font=\small, inner sep=3pt] {$Q$};
                 
                 % Fuerzas externas
-                \draw[->, thick, vectorcolor] (-0.5,1.5) -- (-2,0.8) node[below] {$P_1$};
-                \draw[->, thick, vectorcolor] (1.2,3.7) -- (1.4,5) node[right] {$P_2$};
+                \draw[->, ultra thick, vectorcolor] (-1.5, 1) -- (-3, 0.1) node[below] {$P_1$};
+                \draw[->, ultra thick, vectorcolor] (0.5, 3.4) -- (0.8, 4.8) node[right] {$P_2$};
                 
-                % Componentes (Normal y Cortantes)
-                \draw[->, thick, vectorcolor] (1.5,1.2) -- (3.5,0.9) node[right] {$\Delta F^x$};
-                \draw[->, thick, vectorcolor] (1.5,1.2) -- (1.7,2.5) node[right] {$\Delta V^x_y$};
-                \draw[->, thick, vectorcolor] (1.5,1.2) -- (0.3,1.5) node[left] {$\Delta V^x_z$};
+                % Fuerza Interna Resultante
+                \draw[->, ultra thick, vectorcolor] (1.1, 1.2) -- (4.0, 0.68) node[right] {$\Delta F^x$};
+              \end{scope}
+
+              % ==========================================
+              % FIGURA 3: COMPONENTES ORTOGONALES
+              % ==========================================
+              \begin{scope}[shift={(15,0)}]
+                % Ejes
+                \draw[->, gray, thick] (0,0) -- (0, 4.5) node[right, text=gray] {$y$};
+                \draw[->, gray, thick] (0,0) -- (4.5, -0.8) node[right, text=gray] {$x$};
+                \draw[->, gray, thick] (0,0) -- (-2.5, -2) node[left, text=gray] {$z$};
+                
+                % Mitad izquierda del cuerpo
+                \draw[left color=bodycolor!40!white, right color=bodycolor!85!black, draw=black, thick]
+                    (0.8, 3.5) .. controls (-0.5, 3.5) and (-2, 2.5) .. (-1.5, 1)
+                               .. controls (-1, -1) and (0.5, -1.5) .. (1.5, -0.5)
+                               .. controls (0.8, 0) and (0.5, 1.5) .. (0.8, 3.5);
+                
+                % Superficie del plano de corte interno
+                \draw[fill=cutcolor, draw=black, thick]
+                    (0.8, 3.5) .. controls (1.5, 2.5) and (2, 0.5) .. (1.5, -0.5)
+                               .. controls (0.8, 0) and (0.5, 1.5) .. (0.8, 3.5);
+                
+                % Punto Q
+                \fill (1.1, 1.2) circle (2pt) node[below right, font=\small, inner sep=3pt] {$Q$};
+                
+                % Fuerzas externas
+                \draw[->, ultra thick, vectorcolor] (-1.5, 1) -- (-3, 0.1) node[below] {$P_1$};
+                \draw[->, ultra thick, vectorcolor] (0.5, 3.4) -- (0.8, 4.8) node[right] {$P_2$};
+                
+                % Componentes (Paralelas a los ejes coordenados)
+                % Eje X (Pendiente de dx=4.5, dy=-0.8)
+                \draw[->, ultra thick, vectorcolor] (1.1, 1.2) -- (4.0, 0.68) node[right] {$\Delta F^x$};
+                
+                % Eje Y (Vertical)
+                \draw[->, ultra thick, vectorcolor] (1.1, 1.2) -- (1.1, 3.3) node[right] {$\Delta V^x_y$};
+                
+                % Eje Z (Pendiente de dx=-2.5, dy=-2)
+                \draw[->, ultra thick, vectorcolor] (1.1, 1.2) -- (-0.4, 0.0) node[left] {$\Delta V^x_z$};
               \end{scope}
             \end{tikzpicture}
         </script>
