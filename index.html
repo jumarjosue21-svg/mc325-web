@@ -85,7 +85,7 @@
 
             <!-- ACCESOS RÁPIDOS -->
             <section class="quick-links">
-                <!-- Enlace a Material del Curso (Negro) -->
+                <!-- Enlace a Material del Curso -->
                 <a href="materiales.html" class="link-card">
                     <i class="fa-solid fa-book icon-red"></i>
                     <div>
@@ -95,7 +95,7 @@
                     <i class="fa-solid fa-chevron-right ml-auto"></i>
                 </a>
 
-                <!-- Enlace a Ejercicios Resueltos (Rojo) -->
+                <!-- Enlace a Ejercicios Resueltos -->
                 <a href="ejercicios.html" class="link-card">
                     <i class="fa-solid fa-list-check icon-red"></i>
                     <div>
@@ -105,7 +105,7 @@
                     <i class="fa-solid fa-chevron-right ml-auto"></i>
                 </a>
 
-                <!-- Enlace a Exámenes Pasados (Verde) -->
+                <!-- Enlace a Exámenes Pasados -->
                 <a href="examenes.html" class="link-card">
                     <i class="fa-solid fa-file-contract icon-red"></i>
                     <div>
@@ -115,7 +115,7 @@
                     <i class="fa-solid fa-chevron-right ml-auto"></i>
                 </a>
 
-                <!-- Enlace a Foro de Consultas (Azul) -->
+                <!-- Enlace a Foro de Consultas -->
                 <a href="foro.html" class="link-card">
                     <i class="fa-solid fa-circle-question icon-red"></i>
                     <div>
@@ -126,10 +126,10 @@
                 </a>
             </section>
 
-            <!-- CUADRÍCULA INFERIOR (2 Columnas) -->
+            <!-- CUADRÍCULA INFERIOR-->
             <div class="content-grid">
                 
-                <!-- COLUMNA IZQUIERDA (Recursos y Temas) -->
+                <!-- COLUMNA IZQUIERDA -->
                 <div class="main-column">
                     
                     <div class="section-header">
@@ -271,7 +271,7 @@
 
                 </div>
 
-                <!-- COLUMNA DERECHA (Actividades y Adicionales) -->
+                <!-- COLUMNA DERECHA -->
                 <div class="side-column">
                     
                     <div class="section-header">
@@ -308,11 +308,9 @@
     <script>
         function toggleAccordion(element) {
             const item = element.parentElement;
-            // Cierra las demás pestañas automáticamente al abrir una nueva
             document.querySelectorAll('.accordion-item').forEach(el => {
                 if(el !== item) el.classList.remove('active');
             });
-            // Abre o cierra la pestaña seleccionada
             item.classList.toggle('active');
         }
     </script>

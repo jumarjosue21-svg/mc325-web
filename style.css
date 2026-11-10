@@ -1,6 +1,5 @@
-/* Variables de color */
 :root {
-    --color-uni: #7b241c; /* Granate institucional */
+    --color-uni: #7b241c; 
     --color-texto: #333333;
     --color-fondo: #f4f6f8;
     --color-blanco: #ffffff;
@@ -31,7 +30,7 @@ body.portada {
     text-align: center;
     max-width: 800px;
     width: 90%;
-    border-top: 6px solid var(--color-uni); /* Acento UNI */
+    border-top: 6px solid var(--color-uni); 
 }
 
 .institucion h1 {
@@ -219,12 +218,11 @@ body {
     align-items: center;
     gap: 15px;
     cursor: pointer;
-    text-decoration: none; /* Quita el subrayado del enlace */
-    color: inherit; /* Mantiene el color del texto original */
+    text-decoration: none; 
+    color: inherit;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Efecto hover opcional para que la tarjeta se levante un poco al pasar el mouse */
 .link-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
@@ -254,7 +252,6 @@ body {
 .section-header a { color: white; text-decoration: none; font-size: 0.85rem; }
 .mt-20 { margin-top: 1.5rem; }
 
-/* TARJETAS DE PDF */
 .resources-grid {
     background: white;
     border: 1px solid var(--border-color);
@@ -295,7 +292,6 @@ body {
     font-size: 0.8rem;
 }
 
-/* TEMAS DEL CURSO */
 .topics-box, .activities-box, .additional-box {
     background: white;
     border: 1px solid var(--border-color);
@@ -325,7 +321,6 @@ body {
     font-size: 0.8rem;
 }
 
-/* ACTIVIDADES */
 .activity-item {
     display: flex;
     gap: 15px;
@@ -348,16 +343,12 @@ body {
     text-decoration: none; font-size: 0.85rem; font-weight: bold; margin-top: 10px;
 }
 
-/* RECURSOS ADICIONALES */
 .additional-box a {
     display: flex; align-items: center; gap: 10px;
     text-decoration: none; color: var(--text-main);
     padding: 10px 0; border-bottom: 1px solid #eee; font-size: 0.9rem;
 }
 .additional-box a i { color: var(--text-light); width: 20px; }
-/* =========================================
-   ESTILOS: PÁGINA MATERIAL DEL CURSO
-   ========================================= */
 
 .side-menu a.active-dark {
     background-color: var(--uni-red-dark);
@@ -532,9 +523,6 @@ body {
     color: var(--text-main);
 }
 .links-only a:hover { color: var(--uni-red); }
-/* =========================================
-   ESTILOS: PÁGINA APUNTES Y CUADERNOS
-   ========================================= */
 
 .cuadernos-grid {
     background: white;
@@ -635,7 +623,6 @@ body {
     background: var(--uni-red);
 }
 
-/* WIDGETS EXTRAS DE APUNTES */
 .upload-area {
     border: 1.5px dashed #ccc;
     background: #fafafa;
@@ -691,9 +678,6 @@ body {
     font-size: 0.8rem;
     color: var(--text-light);
 }
-/* =========================================
-   ESTILOS: PÁGINA EJERCICIOS RESUELTOS
-   ========================================= */
 
 .exercise-search input {
     padding: 0.6rem 1rem;
@@ -708,10 +692,9 @@ body {
 
 .exercise-row {
     gap: 20px;
-    align-items: flex-start; /* Alinea arriba por si el texto crece */
+    align-items: flex-start;
 }
 
-/* Caja de imagen/diagrama del ejercicio */
 .exercise-img-box {
     width: 80px;
     height: 50px;
@@ -725,7 +708,6 @@ body {
     font-size: 1.5rem;
 }
 
-/* Etiquetas (Tags) debajo de la descripción */
 .exercise-tags {
     margin-top: 8px;
     display: flex;
@@ -765,7 +747,6 @@ body {
     color: #5f6368;
 }
 
-/* Botones de acción del ejercicio */
 .exercise-actions {
     display: flex;
     gap: 10px;
@@ -804,7 +785,6 @@ body {
     background: var(--uni-red);
 }
 
-/* Checkboxes personalizados en los Widgets */
 .widget-filter-list {
     padding: 15px;
     display: flex;
@@ -870,11 +850,7 @@ body {
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
 }
-/* =========================================
-   ESTILOS: PÁGINA EXÁMENES PASADOS
-   ========================================= */
 
-/* Cabecera de la tabla de exámenes */
 .exam-table-header {
     display: grid;
     grid-template-columns: 2fr 0.8fr 1fr 1.5fr;
@@ -888,7 +864,6 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* Fila de cada examen */
 .exam-row {
     display: grid;
     grid-template-columns: 2fr 0.8fr 1fr 1.5fr;
@@ -902,7 +877,6 @@ body {
     border-bottom: none;
 }
 
-/* Contenedor del PDF y texto juntos */
 .file-icon-text {
     display: flex;
     align-items: center;
@@ -914,7 +888,6 @@ body {
 .col-tipo { display: flex; align-items: center; }
 .col-archivos { display: flex; justify-content: flex-start; }
 
-/* Etiqueta de tipo de examen */
 .tag-exam {
     background-color: #fdf5f5;
     color: var(--uni-red);
@@ -922,11 +895,7 @@ body {
     padding: 4px 10px;
     font-weight: 600;
 }
-/* =========================================
-   ESTILOS: PÁGINA RECURSOS ADICIONALES
-   ========================================= */
 
-/* Cajas de iconos para libros, enlaces y software (Mismo tamaño que PDF) */
 .icon-box-resource {
     border: 1px solid var(--border-color);
     width: 44px;
@@ -938,7 +907,6 @@ body {
     font-size: 1.1rem;
 }
 
-/* Etiqueta roja suave para tipo de recurso (Libro, Web, Software, etc.) */
 .tag-resource {
     background-color: #fdf5f5;
     color: var(--uni-red);
@@ -951,24 +919,18 @@ body {
     text-align: center;
 }
 
-/* Ajuste del widget de enlaces internos */
 .widget-list.links-only a {
     display: flex;
     align-items: center;
     gap: 8px;
 }
-/* =========================================
-   ESTILOS: PÁGINA FORO DE CONSULTAS
-   ========================================= */
 
-/* Alinear el título y el botón de nueva consulta */
 .header-flex {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-/* Buscador y filtro del lado derecho en el foro */
 .forum-filters-right {
     display: flex;
     gap: 10px;
@@ -985,7 +947,6 @@ body {
     width: 200px;
 }
 
-/* Fila individual del foro */
 .forum-row {
     display: flex;
     gap: 15px;
@@ -997,7 +958,6 @@ body {
     border-bottom: none;
 }
 
-/* Avatar circular del usuario */
 .forum-avatar {
     width: 42px;
     height: 42px;
@@ -1019,7 +979,6 @@ body {
     border-color: var(--uni-red-dark);
 }
 
-/* Contenido del post */
 .forum-details {
     flex: 1;
 }
@@ -1041,7 +1000,6 @@ body {
     color: #888;
 }
 
-/* Etiquetas del foro */
 .forum-tags {
     display: flex;
     gap: 8px;
@@ -1054,7 +1012,6 @@ body {
 .tag-resuelta { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
 .tag-unidad { background: #f3e5f5; color: #6a1b9a; border: 1px solid #e1bee7; }
 
-/* Estadísticas (respuestas y vistas) */
 .forum-stats {
     display: flex;
     gap: 15px;
@@ -1081,10 +1038,9 @@ body {
 }
 
 .stat-highlight strong {
-    color: #2e7d32; /* Verde para hilos con actividad/resueltos */
+    color: #2e7d32; 
 }
 
-/* Formulario lateral de "Haz una consulta" */
 .widget-form {
     padding: 15px;
     display: flex;
@@ -1111,7 +1067,6 @@ body {
     color: #999;
 }
 
-/* Lista de reglas (cuadrados rojos) */
 .rules-list li {
     color: var(--text-light);
     font-size: 0.85rem;
@@ -1121,11 +1076,7 @@ body {
     margin-right: 8px;
     font-size: 0.7rem;
 }
-/* =========================================
-   ESTILOS: PÁGINA CALENDARIO
-   ========================================= */
 
-/* Barra de herramientas superior */
 .calendar-toolbar {
     display: flex;
     justify-content: space-between;
@@ -1180,7 +1131,6 @@ body {
 .cal-views button:last-child { border-right: none; }
 .cal-views button.active { background: var(--uni-red-dark); color: white; }
 
-/* Cuadrícula del Calendario */
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -1215,7 +1165,6 @@ body {
 .cal-day:nth-child(7n) { border-right: none; }
 .cal-day.faded span { color: #ccc; }
 
-/* Día actual (Hoy) */
 .cal-day.today .day-num {
     background: var(--uni-red-dark);
     color: white;
@@ -1229,7 +1178,6 @@ body {
     align-self: flex-end;
 }
 
-/* Eventos del calendario */
 .cal-event {
     padding: 4px 6px;
     border-radius: 4px;
@@ -1243,7 +1191,6 @@ body {
 .event-exam { background: #fce8e6; color: #c62828; border-left: 3px solid #d32f2f; }
 .event-class { background: #e8f5e9; color: #2e7d32; border-left: 3px solid #388e3c; }
 
-/* Leyenda y Puntos de colores en Widget */
 .legend-box {
     width: 16px;
     height: 16px;
@@ -1265,7 +1212,6 @@ body {
 .dot-assignment { background: #fbc02d; }
 .dot-class { background: #388e3c; }
 
-/* Cuadro de aviso para estudiantes */
 .admin-warning {
     background: #fafafa;
     border: 1px dashed #ccc;
@@ -1276,11 +1222,7 @@ body {
     line-height: 1.4;
     margin-bottom: 10px;
 }
-/* =========================================
-   ESTILOS: PÁGINA DE CONTACTO
-   ========================================= */
 
-/* Layout específico de contacto: 3 columnas (1fr, 1fr, 300px) */
 .contact-layout {
     display: grid;
     grid-template-columns: 1fr 1fr 300px;
@@ -1309,7 +1251,6 @@ body {
     padding: 25px;
 }
 
-/* Cabecera del perfil (Avatar + Info) */
 .profile-header {
     display: flex;
     align-items: center;
@@ -1344,7 +1285,6 @@ body {
     line-height: 1.4;
 }
 
-/* Separadores y secciones de datos */
 .contact-divider {
     border: none;
     border-top: 1px solid #eee;
@@ -1378,7 +1318,6 @@ body {
     gap: 15px;
 }
 
-/* Lista de detalles del curso (Widget) */
 .course-details-list {
     list-style: none;
     padding: 15px;
@@ -1408,9 +1347,6 @@ body {
     color: var(--text-main);
     font-weight: 500;
 }
-/* =========================================
-   ESTILOS: ACORDEÓN DE TEMAS DEL CURSO (MEJORADO)
-   ========================================= */
 
 .topics-list {
     padding: 0;
@@ -1419,7 +1355,7 @@ body {
 }
 
 .accordion-item {
-    display: block !important; /* Fuerza a que la cabecera y el contenido se apilen verticalmente */
+    display: block !important;
     border: 1px solid transparent;
     border-bottom: 1px solid #eee;
     border-radius: 6px;
@@ -1428,14 +1364,12 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Estado activo: sin contorno rojo, solo mantiene la línea divisoria inferior */
 .accordion-item.active {
     border: 1px solid transparent;
     border-bottom: 1px solid #eee;
     box-shadow: none;
 }
 
-/* Cabecera del tema (Ahora es un bloque interactivo a todo lo largo) */
 .accordion-header {
     padding: 12px 15px;
     display: flex;
@@ -1447,7 +1381,7 @@ body {
     color: var(--text-main);
     background-color: white;
     transition: background-color 0.2s ease, color 0.2s ease;
-    width: 100%; /* Asegura que ocupe todo el ancho */
+    width: 100%; 
     box-sizing: border-box;
 }
 
@@ -1455,18 +1389,16 @@ body {
     background-color: #f9f9f9;
 }
 
-/* Cabecera cuando está ABIERTA: cambia a un fondo rojizo claro */
 .accordion-item.active .accordion-header {
     background-color: #fdf5f5; 
     color: var(--uni-red-dark);
     border-bottom: 1px solid #fadbd8;
 }
 
-/* Zona de contenido (Se abre hacia abajo con un nuevo color de fondo) */
 .accordion-content {
     max-height: 0;
     overflow: hidden;
-    background-color: #fafbfc; /* Fondo gris-azulado muy tenue para diferenciarlo */
+    background-color: #fafbfc; 
     transition: max-height 0.3s ease-out;
 }
 
@@ -1474,7 +1406,6 @@ body {
     max-height: 300px;
 }
 
-/* Textos dentro de la zona desplegada */
 .accordion-content ul {
     padding: 15px 20px 15px 55px;
     margin: 0;
@@ -1493,18 +1424,16 @@ body {
     margin-bottom: 0;
 }
 
-/* Viñetas personalizadas con el color granate de la UNI */
 .accordion-content ul li::before {
     content: "•";
     color: var(--uni-red);
     font-size: 1.2rem;
     position: absolute;
     left: -15px;
-    top: 8px; /* Cambiado de -3px a 0 para alinear con el texto */
-    line-height: 1.2; /* Ayuda a normalizar la altura del carácter */
+    top: 8px; 
+    line-height: 1.2; 
 }
 
-/* Animación de la flechita */
 .icon-arrow {
     transition: transform 0.3s ease;
     color: var(--text-light);
@@ -1514,11 +1443,7 @@ body {
     transform: rotate(180deg);
     color: var(--uni-red-dark);
 }
-/* =========================================
-   ESTILOS: VISOR DE PDF (MODAL TIPO SCRIBD)
-   ========================================= */
 
-/* Efecto para indicar que el título del documento se puede clickear */
 .clickable-title {
     cursor: pointer;
     color: var(--text-main);
@@ -1530,7 +1455,6 @@ body {
     text-decoration: underline;
 }
 
-/* Fondo oscuro transparente de la ventana emergente */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -1542,10 +1466,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(3px); /* Difumina ligeramente la página de fondo */
+    backdrop-filter: blur(3px); 
 }
 
-/* Contenedor blanco del PDF */
 .modal-content {
     background: white;
     width: 80%;
@@ -1588,15 +1511,12 @@ body {
 
 .modal-body {
     flex: 1;
-    background: #525659; /* Fondo gris oscuro clásico de los visores de PDF */
+    background: #525659;
 }
-/* =========================================
-   ESTILOS: WIDGET "IR A LA UNIDAD" (UBICADOR)
-   ========================================= */
 
 .widget-list li[onclick] {
     transition: background-color 0.7s, color 0.7s;
-    padding-left: 15px; /* Da un poco de respiro al lado izquierdo */
+    padding-left: 15px; 
     padding-right: 15px;
 }
 
