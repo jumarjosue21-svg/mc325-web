@@ -1524,3 +1524,212 @@ body {
     background-color: #fdf5f5;
     color: var(--uni-red-dark);
 }
+/* =========================================
+   ESTILOS: CALENDARIO DINÁMICO
+   ========================================= */
+
+.event-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    transition: transform 0.2s;
+}
+
+.event-card:hover {
+    transform: translateX(5px);
+    border-left: 4px solid var(--uni-red);
+}
+
+.event-date-box {
+    background: #fdf5f5;
+    color: var(--uni-red-dark);
+    padding: 10px 15px;
+    border-radius: 6px;
+    text-align: center;
+    min-width: 70px;
+}
+
+.event-date-box .month {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.event-date-box .day {
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1;
+    margin-top: 3px;
+}
+
+.event-details h4 {
+    margin: 0 0 5px 0;
+    color: var(--text-main);
+    font-size: 1.1rem;
+}
+
+.event-details p {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+/* Acciones de gestión: editar queda a la izquierda de eliminar. */
+.event-card-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.btn-edit-event, .btn-delete-event {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: #777;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: color 0.2s, background-color 0.2s;
+}
+.btn-edit-event:hover, .btn-edit-event:focus-visible {
+    color: var(--uni-red-dark);
+    background: #fdf5f5;
+}
+.btn-delete-event:hover, .btn-delete-event:focus-visible {
+    color: #cc2b2b;
+    background: #fff2f2;
+}
+.event-card-editing {
+    border-left: 4px solid var(--uni-red);
+    background: #fffafa;
+}
+.event-form-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+    flex-wrap: wrap;
+}
+.btn-cancelar-edicion {
+    padding: 9px 16px;
+    background: white;
+    border: 1px solid #bdc3c7;
+    color: var(--text-main);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+.btn-cancelar-edicion:hover {
+    background: #f1f3f5;
+}
+.btn-cancelar-edicion[hidden] {
+    display: none;
+}
+/* =========================================
+   ESTILOS: FULLCALENDAR PERSONALIZADO
+   ========================================= */
+.fc .fc-button-primary {
+    background-color: var(--uni-red-dark);
+    border-color: var(--uni-red-dark);
+}
+.fc .fc-button-primary:hover {
+    background-color: var(--uni-red);
+    border-color: var(--uni-red);
+}
+.fc .fc-button-primary:not(:disabled).fc-button-active, 
+.fc .fc-button-primary:not(:disabled):active {
+    background-color: #5a0c0e;
+    border-color: #5a0c0e;
+}
+.fc-theme-standard td, .fc-theme-standard th {
+    border-color: #e5e7eb; /* Bordes de la cuadrícula más suaves */
+}
+/* =========================================
+   ESTILOS: FULLCALENDAR ESTÉTICA MAQUETA
+   ========================================= */
+
+/* Estilo del título del mes */
+.fc-toolbar-title {
+    font-size: 1.8rem !important;
+    font-weight: bold;
+    color: var(--text-main);
+    text-transform: capitalize; /* nov 2026 a Noviembre 2026 */
+}
+
+/* Estilo de los botones de navegación (Prev, Next, Hoy) */
+.fc .fc-button-primary {
+    background-color: white !important;
+    color: var(--text-main) !important;
+    border: 1px solid #ddd !important;
+    border-radius: 4px;
+    padding: 5px 15px;
+    box-shadow: none !important;
+    text-transform: capitalize;
+}
+
+.fc .fc-button-primary:hover {
+    background-color: #f8f9fa !important;
+    border-color: #ccc !important;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active, 
+.fc .fc-button-primary:not(:disabled):active {
+    background-color: #f0f0f0 !important;
+    border-color: #bbb !important;
+}
+
+/* Estilos de los botones de vista (Mes, Semana) */
+.fc .fc-button-group .fc-button {
+    background-color: white !important;
+    color: var(--text-main) !important;
+    border: 1px solid #ddd !important;
+}
+
+.fc .fc-button-group .fc-button.fc-button-active {
+    background-color: var(--uni-red-dark) !important;
+    color: white !important;
+    border-color: var(--uni-red-dark) !important;
+}
+
+/* Estilo de la cabecera de los días (Lun, Mar, Mié) */
+.fc-theme-standard th {
+    padding: 10px 0;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    border-bottom: 2px solid #eee;
+}
+
+/* Estilo de los eventos dentro de la cuadrícula (Maqueta limpia) */
+.fc-event {
+    border: none !important; 
+    border-radius: 4px;
+    padding: 0 !important; /* Quitamos padding externo para usar el interno del HTML inyectado */
+    margin: 2px 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05); 
+}
+
+/* Permitir que la celda actual tenga un fondo sutil */
+.fc-day-today {
+    background-color: #fafbfc !important;
+}
+
+/* Hitos de entrega: marcadores compactos, no períodos de trabajo. */
+.fc .fc-event.evento-vencimiento {
+    border-left: 4px solid #d3a100 !important;
+}
+.fc .fc-timegrid-event.evento-vencimiento {
+    min-height: 20px;
+}

@@ -7,6 +7,7 @@
     <!-- Librería de iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <script src="js/datos-mc325.js"></script>
 </head>
 <body>
     <!-- BARRA SUPERIOR -->
@@ -278,26 +279,9 @@
                         <h3><i class="fa-regular fa-calendar-days"></i> Próximas Actividades</h3>
                     </div>
                     <div class="activities-box">
-                        <div class="activity-item">
-                            <div class="date-box"><span>NOV</span><strong>06</strong></div>
-                            <div class="act-info">
-                                <h4>Entrega de Tarea 3</h4>
-                                <p>Hasta las 23:59</p>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="date-box"><span>NOV</span><strong>07</strong></div>
-                            <div class="act-info">
-                                <h4>Clase: Placas Planas</h4>
-                                <p>Horario: 16:00 - 20:00</p>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="date-box"><span>NOV</span><strong>14</strong></div>
-                            <div class="act-info">
-                                <h4>Práctica Calificada 3</h4>
-                                <p>Horario: 16:00 - 18:00</p>
-                            </div>
+                        <!-- Este contenido se actualiza automáticamente con los eventos del calendario. -->
+                        <div id="proximas-actividades-inicio" aria-live="polite">
+                            <p style="font-size: 0.85rem; color: var(--text-light);">Cargando actividades...</p>
                         </div>
                         <a href="calendario.html" class="view-all-link">Ver calendario completo &rarr;</a>
                     </div>
@@ -313,6 +297,142 @@
             });
             item.classList.toggle('active');
         }
+
+        // PRÓXIMAS ACTIVIDADES: se leen los mismos datos que usa calendario.html.
+        // No necesita cambiar ni el CSS ni el archivo del calendario.
+        (function () {
+            'use strict';
+            const MESES = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN',
+                           'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'];
+            const COLORES = {
+                examen: '#ff4d4d',
+                tarea: '#ffcc00',
+                clase: '#4ca64c',
+                feriado: '#3399ff'
+            };
+
+            // Fecha local: evita que YYYY-MM-DD retroceda un día en Perú (UTC-5).
+            function fechaLocal(valor) {
+                if (typeof valor !== 'string') return new Date(NaN);
+                const partes = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2})(?::(\d{2}))?)?$/.exec(valor);
+                if (!partes) return new Date(valor);
+                const resultado = new Date(
+                    Number(partes[1]), Number(partes[2]) - 1, Number(partes[3]),
+                    Number(partes[4] || 0), Number(partes[5] || 0), Number(partes[6] || 0)
+                );
+                // Rechazar fechas imposibles (por ejemplo, 2026-02-31).
+                if (resultado.getFullYear() !== Number(partes[1]) ||
+                    resultado.getMonth() !== Number(partes[2]) - 1 ||
+                    resultado.getDate() !== Number(partes[3])) return new Date(NaN);
+                return resultado;
+            }
+
+            function horaHHMM(valor) {
+                const fecha = fechaLocal(valor);
+                return Number.isNaN(fecha.getTime()) ? '' :
+                    `${String(fecha.getHours()).padStart(2, '0')}:${String(fecha.getMinutes()).padStart(2, '0')}`;
+            }
+
+            // Mismo formato de fechas límite y horarios del calendario.
+            function textoHorario(evento) {
+                const tieneHora = typeof evento.start === 'string' && evento.start.includes('T');
+                if (evento.tipo === 'tarea') {
+                    const limite = evento.horaLimite || (tieneHora ? horaHHMM(evento.start) : '');
+                    return limite ? `Límite: ${limite}` : (evento.desc || 'Fecha límite (sin hora)');
+                }
+                if (evento.allDay !== false || !tieneHora) {
+                    return evento.desc || 'Todo el día';
+                }
+                if (evento.end) return `${horaHHMM(evento.start)} - ${horaHHMM(evento.end)}`;
+                return evento.desc || `Desde las ${horaHHMM(evento.start)}`;
+            }
+
+            function fechaCierre(evento) {
+                const fecha = fechaLocal(evento.start);
+                // Un evento de día completo se considera vigente hasta las 23:59:59.
+                if (evento.allDay !== false || !String(evento.start).includes('T')) {
+                    fecha.setHours(23, 59, 59, 999);
+                }
+                return fecha;
+            }
+
+            async function cargarEventos() {
+                return (await MC325Datos.leer('eventos')).items;
+            }
+
+            async function renderizarProximasActividadesInicio() {
+                const contenedor = document.getElementById('proximas-actividades-inicio');
+                if (!contenedor) return;
+
+                const ahora = new Date();
+                let eventos;
+                try { eventos = await cargarEventos(); }
+                catch (error) {
+                    contenedor.textContent = 'No se pudieron cargar las actividades: ' + error.message;
+                    console.error(error);
+                    return;
+                }
+                const proximos = eventos
+                    .filter(evento => evento && typeof evento === 'object' &&
+                        !Number.isNaN(fechaLocal(evento.start).getTime()) &&
+                        fechaCierre(evento).getTime() >= ahora.getTime())
+                    .sort((a, b) => fechaLocal(a.start) - fechaLocal(b.start))
+                    .slice(0, 3);
+
+                contenedor.replaceChildren();
+                if (proximos.length === 0) {
+                    const mensaje = document.createElement('p');
+                    mensaje.textContent = 'No hay actividades próximas programadas.';
+                    mensaje.style.cssText = 'font-size:0.85rem;color:var(--text-light);text-align:center;margin:0 0 12px';
+                    contenedor.appendChild(mensaje);
+                    return;
+                }
+
+                for (const evento of proximos) {
+                    const fecha = fechaLocal(evento.start);
+                    const item = document.createElement('div');
+                    item.className = 'activity-item';
+                    item.style.alignItems = 'center';
+
+                    const fechaCaja = document.createElement('div');
+                    fechaCaja.className = 'date-box';
+                    const mes = document.createElement('span');
+                    mes.textContent = MESES[fecha.getMonth()];
+                    const dia = document.createElement('strong');
+                    dia.textContent = String(fecha.getDate()).padStart(2, '0');
+                    fechaCaja.append(mes, dia);
+
+                    const info = document.createElement('div');
+                    info.className = 'act-info';
+                    info.style.cssText = 'flex:1;min-width:0;overflow-wrap:anywhere';
+                    const titulo = document.createElement('h4');
+                    titulo.textContent = evento.title || 'Actividad sin título';
+                    const horario = document.createElement('p');
+                    horario.textContent = textoHorario(evento);
+                    info.append(titulo, horario);
+
+                    const indicador = document.createElement('span');
+                    indicador.style.cssText = 'width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-left:auto';
+                    indicador.style.backgroundColor = COLORES[evento.tipo] || COLORES.examen;
+                    indicador.setAttribute('aria-hidden', 'true');
+                    item.append(fechaCaja, info, indicador);
+                    contenedor.appendChild(item);
+                }
+            }
+
+            // Al regresar desde calendario.html (también mediante Atrás) se refresca.
+            document.addEventListener('DOMContentLoaded', renderizarProximasActividadesInicio);
+            window.addEventListener('pageshow', renderizarProximasActividadesInicio);
+            window.addEventListener('focus', renderizarProximasActividadesInicio);
+            window.addEventListener('storage', function (event) {
+                if (event.key === MC325Datos.KEYS.eventos || event.key === null) {
+                    renderizarProximasActividadesInicio();
+                }
+            });
+            document.addEventListener('visibilitychange', function () {
+                if (!document.hidden) renderizarProximasActividadesInicio();
+            });
+        })();
     </script>
 </body>
 </html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Preparar publicación — MC325</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {min-height:100vh;padding:30px 16px;background:#eef2f5;color:#263342;}
+    .publicacion {max-width:900px;margin:0 auto;background:#fff;border-radius:12px;padding:clamp(24px,4vw,50px);border-top:6px solid #7b241c;box-shadow:0 10px 35px #23324417;}
+    .publicacion h1 {font-size:1.7rem;color:#5a1a14;margin:0 0 8px}
+    .publicacion h2 {font-size:1.08rem;color:#5a1a14;margin:26px 0 12px}
+    .publicacion p {line-height:1.65;margin:12px 0}
+    .publicacion ol {margin:10px 0 25px;padding-left:26px;line-height:1.75}
+    .publicacion li{margin:7px 0}
+    .publicacion .intro {color:#5e6772}
+    .publicacion .datos {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:24px 0;}
+    .publicacion .dato {padding:16px;border-radius:8px;border:1px solid #e0e4e8;text-align:center;background:#f9fafc}
+    .publicacion .dato strong {display:block;font-size:1.8rem;color:#5a1a14}
+    .publicacion .dato span {font-size:.83rem;color:#54616d}
+    .publicacion .fila {display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:20px}
+    .publicacion .btn-publicar {border:0;background:#5a1a14;color:white;padding:11px 18px;border-radius:6px;font-size:.9rem;cursor:pointer}
+    .publicacion .btn-publicar:hover {background:#7b241c}
+    .publicacion .btn-publicar:disabled {opacity:.55;cursor:wait}
+    .publicacion a {color:#7b241c}
+    .publicacion .estado {padding:13px 16px;border-left:3px solid #7b241c;background:#faf6f5;color:#654843;border-radius:5px;line-height:1.55;margin-top:15px;overflow-wrap:anywhere}
+    .publicacion .estado.error {background:#fff0ee;border-left-color:#b83030;color:#8f2222}
+    .publicacion code {background:#f0f2f4;padding:2px 5px;border-radius:4px}
+    @media(max-width:550px){.publicacion .datos {grid-template-columns:1fr 1fr}}
+  </style>
+  <script src="js/datos-mc325.js"></script>
+  <script src="lib/jszip.min.js"></script>
+</head>
+<body>
+  <main class="publicacion">
+    <h1>Preparar cambios para GitHub</h1>
+    <p class="intro">Esta herramienta convierte los borradores locales del Calendario y Materiales en archivos de publicación. No hace <em>Push</em>, no modifica el repositorio y no borra tus borradores.</p>
+    <div class="datos" aria-label="Contenido del proyecto">
+      <div class="dato"><strong id="cuenta-eventos">—</strong><span>Eventos</span></div>
+      <div class="dato"><strong id="cuenta-articulos">—</strong><span>Artículos web</span></div>
+      <div class="dato"><strong id="cuenta-documentos">—</strong><span>PDFs</span></div>
+    </div>
+    <p id="estado" class="estado" role="status" aria-live="polite">Cargando datos desde el proyecto…</p>
+    <div class="fila">
+      <button class="btn-publicar" id="btn-exportar" disabled>Descargar paquete de cambios ZIP</button>
+      <a href="calendario.html">Calendario</a>
+      <a href="materiales.html">Materiales</a>
+    </div>
+    <h2>Cómo publicar</h2>
+    <ol>
+      <li>Antes de editar, utiliza <strong>Fetch/Pull origin</strong> en GitHub Desktop, para partir de la versión más reciente del equipo.</li>
+      <li>Descarga el ZIP y <strong>extrae su contenido en la raíz de tu copia local del repositorio</strong>, combinando las carpetas <code>data</code>, <code>articulos</code> y <code>pdfs</code>. Reemplaza los JSON del proyecto cuando se solicite; conserva los archivos existentes que no aparezcan en este ZIP.</li>
+      <li>Revisa <code>ARCHIVOS-A-RETIRAR.txt</code>, si aparece. Si eliminaste un artículo o PDF, borra también del repositorio los archivos allí indicados; quitar una entrada del índice no elimina el archivo físico.</li>
+      <li>Comprueba el calendario y los artículos con Live Server; revisa las figuras de los artículos si sus imágenes están disponibles.</li>
+      <li>En GitHub Desktop, revisa los cambios, haz <strong>Commit</strong> y después <strong>Push origin</strong>. Comparte con los compañeros la versión publicada.</li>
+    </ol>
+    <p><strong>Importante:</strong> los cambios hechos en este navegador no son públicos hasta que los archivos generados estén efectivamente en el repositorio y GitHub Pages haya desplegado la versión actualizada. No incluyas respaldos privados ni PDFs sin autorización.</p>
+  </main>
+  <script>
+    let datosExportar = null;
+    const estado = document.getElementById('estado');
+    function mensaje(texto, error=false) {
+      estado.textContent = texto;
+      estado.classList.toggle('error',error);
+    }
+    function slug(texto) {
+      return String(texto || 'documento').normalize('NFD')
+        .replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9-]+/g,'-')
+        .replace(/-+/g,'-').replace(/^-|-$/g,'').slice(0,70) || 'documento';
+    }
+    function nombreID(valor) { return String(valor).replace(/[^a-zA-Z0-9_-]/g,'').slice(0,80) || 'sin-id'; }
+    async function leerPDFLocal(id) {
+      return new Promise((resolve,reject) => {
+        const req = indexedDB.open('mc325_documentos_pdf_v1',1);
+        req.onerror = () => reject(req.error || new Error('No se pudo abrir la base de PDFs.'));
+        req.onupgradeneeded = () => {
+          if (!req.result.objectStoreNames.contains('documentos'))
+            req.result.createObjectStore('documentos',{keyPath:'id'});
+        };
+        req.onsuccess = () => {
+          const db = req.result;
+          const tx = db.transaction('documentos','readonly');
+          const get = tx.objectStore('documentos').get(id);
+          get.onsuccess = () => { resolve(get.result || null); db.close(); };
+          get.onerror = () => {reject(get.error);db.close();};
+        };
+      });
+    }
+    async function cargar() {
+      try {
+        const [eventos,articulos,documentos] = await Promise.all([
+          MC325Datos.leer('eventos'),MC325Datos.leer('articulos'),MC325Datos.leer('documentos')
+        ]);
+        datosExportar={eventos,articulos,documentos};
+        for (const tipo of ['eventos','articulos','documentos']) {
+          document.getElementById('cuenta-'+tipo).textContent = datosExportar[tipo].items.length;
+        }
+        const cambios = ['eventos','articulos','documentos'].filter(tipo => datosExportar[tipo].esBorrador);
+        mensaje(cambios.length ?
+          'Borradores detectados: '+cambios.join(', ')+'. El ZIP contendrá sus índices completos y los nuevos archivos necesarios.' :
+          'Los datos coinciden con la versión publicada. No hay borradores pendientes; puedes generar el paquete si necesitas una copia de los índices.');
+        document.getElementById('btn-exportar').disabled=false;
+      } catch(error) {
+        console.error(error);
+        mensaje('No es seguro generar una publicación: '+error.message+' Asegúrate de abrir la página mediante Live Server desde el mismo origen de tus borradores.',true);
+      }
+    }
+    document.getElementById('btn-exportar').addEventListener('click', async function () {
+      if (!datosExportar || typeof JSZip === 'undefined') {
+        mensaje('No se pudo cargar el generador ZIP (JSZip).',true); return;
+      }
+      this.disabled=true;
+      try {
+        // Releer al generar: evita exportar una instantánea antigua si otra
+        // pestaña ha modificado los borradores mientras este panel estaba abierto.
+        const [datosEventosActuales,datosArticulosActuales,datosDocumentosActuales] = await Promise.all([
+          MC325Datos.leer('eventos'),MC325Datos.leer('articulos'),MC325Datos.leer('documentos')
+        ]);
+        datosExportar = {eventos:datosEventosActuales,articulos:datosArticulosActuales,documentos:datosDocumentosActuales};
+        mensaje('Preparando archivos y verificando los PDFs locales…');
+        const zip=new JSZip();
+        const publicados = {};
+        const retirados = [];
+        const eventos=datosExportar.eventos.items;
+        zip.file('data/eventos.json',JSON.stringify(eventos,null,2)+'\n');
+        // Los artículos publicados ya están en el repositorio: el paquete
+        // solo incorpora los Markdown NUEVOS y los índices modificados.
+        const listaArticulos=[];
+        for (const art of datosExportar.articulos.items) {
+          const metadato={...art};
+          if (!metadato.ruta) {
+            if (typeof metadato.contenido !== 'string') throw new Error('Falta el contenido del artículo: '+metadato.titulo);
+            metadato.ruta='articulos/'+metadato.unidad+'/'+nombreID(metadato.id)+'-'+slug(metadato.titulo)+'.md';
+            zip.file(metadato.ruta,metadato.contenido);
+          }
+          delete metadato.contenido;
+          listaArticulos.push(metadato);
+        }
+        zip.file('data/articulos.json',JSON.stringify(listaArticulos,null,2)+'\n');
+        for (const viejo of datosExportar.articulos.publicado) {
+          if (!listaArticulos.some(a => String(a.id)===String(viejo.id)) && viejo.ruta) retirados.push(viejo.ruta);
+        }
+        const listaPDF=[];
+        for (const pdf of datosExportar.documentos.items) {
+          const metadato={...pdf};
+          if (!metadato.ruta) {
+            const local=await leerPDFLocal(pdf.id);
+            if (!local?.archivo) throw new Error('El PDF «'+pdf.titulo+'» no está en IndexedDB de este navegador; se canceló la exportación.');
+            const tipo=await local.archivo.slice(0,5).text();
+            if (tipo!=='%PDF-') throw new Error('El archivo «'+pdf.titulo+'» no es un PDF válido.');
+            metadato.ruta='pdfs/'+metadato.ubicacion+'/'+nombreID(metadato.id)+'-'+slug(metadato.nombreArchivo||metadato.titulo)+'.pdf';
+            zip.file(metadato.ruta,await local.archivo.arrayBuffer(),{compression:'STORE'});
+          }
+          listaPDF.push(metadato);
+        }
+        zip.file('data/documentos.json',JSON.stringify(listaPDF,null,2)+'\n');
+        for (const viejo of datosExportar.documentos.publicado) {
+          if (!listaPDF.some(p => String(p.id)===String(viejo.id)) && viejo.ruta) retirados.push(viejo.ruta);
+        }
+        if (retirados.length) zip.file('ARCHIVOS-A-RETIRAR.txt',retirados.join('\n')+'\n');
+        zip.file('INSTRUCCIONES-DE-PUBLICACION.txt',
+          'Paquete MC325 — Actualización del repositorio GitHub\n\n'+
+          '1. Extraer este ZIP en la RAÍZ del repositorio local. Fusionar carpetas; reemplazar los JSON.\n'+
+          '2. NO borrar las carpetas existentes: el ZIP incluye solo los artículos/PDFs añadidos.\n'+
+          '3. Si existe ARCHIVOS-A-RETIRAR.txt, borrar físicamente esas rutas del repositorio.\n'+
+          '4. Confirmar las imágenes a las que apunta cada artículo.\n'+
+          '5. Probar con Live Server y hacer Commit + Push en GitHub Desktop.\n'+
+          '6. Mantener el respaldo original en un lugar privado.\n');
+        const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});
+        const enlace=document.createElement('a');
+        const url=URL.createObjectURL(blob);
+        enlace.href=url;
+        enlace.download='mc325-publicacion-'+new Date().toISOString().slice(0,10)+'.zip';
+        document.body.append(enlace); enlace.click(); enlace.remove();
+        setTimeout(() => URL.revokeObjectURL(url),15000);
+        mensaje('Paquete generado. Incorpóralo en la raíz de tu repositorio y publica los cambios desde GitHub Desktop. Los borradores permanecen intactos aquí.');
+      } catch(error) {
+        console.error(error); mensaje('No se generó el ZIP: '+error.message,true);
+      } finally { this.disabled=false; }
+    });
+    window.addEventListener('DOMContentLoaded',cargar);
+  </script>
+</body>
+</html>

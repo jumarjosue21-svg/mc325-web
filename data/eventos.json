@@ -1,0 +1,48 @@
+[
+  {
+    "id": "0d73925d-b67a-458b-93da-4aa310d3a47c",
+    "start": "2026-11-13T20:00:00",
+    "end": null,
+    "allDay": false,
+    "title": "1ra Revisión PC4",
+    "tipo": "tarea",
+    "horaLimite": "20:00",
+    "backgroundColor": "#fff4cc",
+    "borderColor": "#ffcc00",
+    "textColor": "#806000"
+  },
+  {
+    "id": "7e260226-3e9d-46c0-af91-f7fbb379d77f",
+    "start": "2026-11-14T16:00:00",
+    "end": "2026-11-14T18:00:00",
+    "allDay": false,
+    "title": "Práctica Calificada N°3",
+    "tipo": "examen",
+    "backgroundColor": "#ffe5e5",
+    "borderColor": "#ff4d4d",
+    "textColor": "#cc0000"
+  },
+  {
+    "id": "69925cdd-7a47-4411-9ba5-58eca4dbf600",
+    "start": "2026-11-21T18:00:00",
+    "end": null,
+    "allDay": false,
+    "title": "Presentación Pagina Web",
+    "tipo": "tarea",
+    "horaLimite": "18:00",
+    "backgroundColor": "#fff4cc",
+    "borderColor": "#ffcc00",
+    "textColor": "#806000"
+  },
+  {
+    "id": "d56154e7-30ae-4525-b0bc-a9b235a9e8f3",
+    "start": "2026-11-28T16:00:00",
+    "end": "2026-11-28T18:00:00",
+    "allDay": false,
+    "title": "Práctica Calificada N°4",
+    "tipo": "examen",
+    "backgroundColor": "#ffe5e5",
+    "borderColor": "#ff4d4d",
+    "textColor": "#cc0000"
+  }
+]

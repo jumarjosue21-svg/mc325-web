@@ -6,13 +6,345 @@
     <title>Material del Curso - Resistencia de Materiales II</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <!-- 1. Motor MathJax: Convierte el código LaTeX en fórmulas matemáticas -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
-    <!-- 2. Motor TikZJax: Dibuja los gráficos vectoriales de TikZ en tiempo real -->
-    <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
-    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
+    <!-- CONFIGURACIÓN DE MATHJAX -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            chtml: { displayAlign: 'center', displayIndent: '0' },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    
+    <!-- LIBRERÍAS EXTERNAS -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>   
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="js/datos-mc325.js"></script>
+
+    <!-- ESTILOS DE LECTURA: afectan únicamente a los artículos, no al resto del sitio -->
+    <style>
+        /* Lector de doble columna: artículo + índice contextual (solo esta página). */
+        #vista-lectura-articulo .reading-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 252px;
+            align-items: start;
+            gap: 25px;
+            max-width: 1480px;
+            margin: 0 auto;
+        }
+        #vista-lectura-articulo .reading-layout .reading-paper {
+            min-width: 0;
+            max-width: none;
+            margin: 0;
+        }
+        #vista-lectura-articulo .reading-toc {
+            position: sticky;
+            top: 20px;
+            align-self: start;
+            max-height: calc(100vh - 126px);
+            overflow-y: auto;
+            background: #fff;
+            border: 1px solid #e2e5e9;
+            border-radius: 9px;
+            padding: 19px 12px 18px;
+            scrollbar-width: thin;
+        }
+        #vista-lectura-articulo .toc-heading {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--uni-red-dark);
+            padding: 0 8px 14px;
+            margin: 0 0 9px;
+            border-bottom: 1px solid #e8e9ed;
+            font-size: 0.94rem;
+            font-weight: 750;
+        }
+        #vista-lectura-articulo .toc-sections,
+        #vista-lectura-articulo .toc-children { list-style: none; margin: 0; padding: 0; }
+        #vista-lectura-articulo .toc-section { margin: 2px 0; }
+        #vista-lectura-articulo .toc-section-row { display: flex; align-items: start; }
+        #vista-lectura-articulo .toc-link {
+            flex: 1;
+            min-width: 0;
+            display: block;
+            padding: 8px 9px;
+            border-left: 3px solid transparent;
+            border-radius: 4px;
+            color: #4b5663;
+            font-size: 0.79rem;
+            line-height: 1.42;
+            text-decoration: none;
+            overflow-wrap: anywhere;
+        }
+        #vista-lectura-articulo .toc-link:hover,
+        #vista-lectura-articulo .toc-link:focus-visible { background: #f7f4f3; color: var(--uni-red-dark); }
+        #vista-lectura-articulo .toc-link.is-active {
+            border-left-color: var(--uni-red);
+            background: #f9f1f0;
+            color: var(--uni-red-dark);
+            font-weight: 670;
+        }
+        #vista-lectura-articulo .toc-expand {
+            flex: 0 0 25px;
+            width: 25px;
+            min-height: 31px;
+            background: transparent;
+            border: none;
+            border-radius: 4px;
+            color: #777;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+        #vista-lectura-articulo .toc-expand:hover { background: #f3f3f4; }
+        #vista-lectura-articulo .toc-expand i { transition: transform 160ms ease; }
+        #vista-lectura-articulo .toc-section.toc-expanded .toc-expand i { transform: rotate(90deg); }
+        #vista-lectura-articulo .toc-children {
+            display: none;
+            padding-left: 13px;
+            margin: 0 0 7px;
+        }
+        #vista-lectura-articulo .toc-section.toc-expanded .toc-children { display: block; }
+        #vista-lectura-articulo .toc-children .toc-link {
+            font-size: 0.755rem;
+            padding-top: 6px;
+            padding-bottom: 6px;
+        }
+        #vista-lectura-articulo .toc-top {
+            width: 100%;
+            border: 1px solid #dedfe3;
+            background: white;
+            border-radius: 5px;
+            color: #4a5460;
+            font-size: 0.79rem;
+            padding: 9px 7px;
+            margin-top: 13px;
+            cursor: pointer;
+        }
+        #vista-lectura-articulo .toc-top:hover { color: var(--uni-red-dark); border-color: #cba29c; }
+        @media (max-width: 1350px) {
+            #vista-lectura-articulo .reading-layout { grid-template-columns: minmax(0, 1fr); }
+            #vista-lectura-articulo .reading-toc {
+                order: -1;
+                position: static;
+                max-height: 310px;
+                padding: 14px 15px;
+            }
+            #vista-lectura-articulo .reading-layout .reading-paper { max-width: 1100px; margin: 0 auto; width: 100%; }
+        }
+        /* Columna de lectura cómoda y elegante, estilo manual universitario */
+        #vista-lectura-articulo .reading-paper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: clamp(24px, 4.3vw, 64px);
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: 0 5px 22px rgba(18, 26, 34, 0.045);
+        }
+        #vista-lectura-articulo #lectura-titulo {
+            max-width: 880px;
+            margin: 0 auto 38px;
+            padding-bottom: 19px;
+            border-bottom: 2px solid #ead3d0;
+            color: var(--uni-red-dark);
+            font-size: clamp(1.7rem, 2.8vw, 2.15rem);
+            line-height: 1.3;
+            letter-spacing: -0.025em;
+        }
+        #vista-lectura-articulo .latex-content {
+            max-width: 880px;
+            margin: 0 auto;
+            color: var(--text-main);
+            font-size: clamp(1rem, 1.2vw, 1.085rem);
+            line-height: 1.95;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        .latex-content p {
+            margin: 0 0 1.35em;
+            line-height: inherit;
+        }
+        .latex-content h1, .latex-content h2, .latex-content h3,
+        .latex-content h4, .latex-content h5, .latex-content h6 {
+            font-weight: 720;
+            line-height: 1.38;
+            letter-spacing: -0.012em;
+            color: #263342;
+            scroll-margin-top: 22px;
+        }
+        .latex-content h1 {
+            margin: 2.35em 0 0.85em;
+            font-size: 1.7em;
+        }
+        .latex-content h2 {
+            margin: 2.65em 0 1.1em;
+            padding: 0 0 0.42em;
+            font-size: 1.43em;
+            border-bottom: 1px solid #dfe5eb;
+            color: var(--uni-red-dark);
+        }
+        .latex-content h3 {
+            margin: 2.1em 0 0.9em;
+            font-size: 1.2em;
+            color: #293440;
+        }
+        .latex-content h4 {
+            margin: 1.85em 0 0.78em;
+            font-size: 1.08em;
+            color: var(--uni-red-dark);
+        }
+        .latex-content h5, .latex-content h6 {
+            margin: 1.6em 0 0.7em;
+            font-size: 1em;
+        }
+        .latex-content > :first-child { margin-top: 0; }
+        .latex-content ul, .latex-content ol {
+            padding-left: 1.65em;
+            margin: 0 0 1.6em;
+        }
+        .latex-content li {
+            margin-bottom: 0.62em;
+            padding-left: 0.15em;
+        }
+        .latex-content li > ul, .latex-content li > ol { margin: 0.65em 0; }
+        .latex-content strong { color: #283342; font-weight: 680; }
+        .latex-content blockquote {
+            margin: 1.9em 0;
+            padding: 1.05em 1.45em;
+            color: #4a5967;
+            background: #f8fafc;
+            border-left: 3px solid var(--uni-red);
+            border-radius: 0 6px 6px 0;
+        }
+        .latex-content blockquote p:last-child { margin-bottom: 0; }
+        .latex-content hr {
+            border: 0;
+            border-top: 1px solid #e0e5eb;
+            margin: 2.7em 0;
+        }
+        /* Cada expresión $$ ... $$ es un bloque propio, centrado y con espacio */
+        .latex-content .math-equation {
+            display: block;
+            width: 100%;
+            margin: 1.9em auto 2.1em;
+            padding: 0.35em 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+            text-align: center !important;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            scrollbar-width: thin;
+        }
+        .latex-content .math-equation mjx-container,
+        .latex-content mjx-container[display="true"],
+        .latex-content mjx-container[jax="CHTML"][display="true"],
+        .latex-content mjx-container[jax="SVG"][display="true"] {
+            display: block !important;
+            width: max-content;
+            max-width: 100%;
+            margin: 0 auto !important;
+            text-align: center !important;
+        }
+        .latex-content .math-equation mjx-container svg { max-width: none; }
+        /* MathJax también puede representar las expresiones con el elemento .MathJax */
+        .latex-content .math-equation .MathJax { margin-left: auto !important; margin-right: auto !important; }
+        .latex-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.7em 0 2.2em;
+            font-size: 0.94em;
+            line-height: 1.6;
+        }
+        .latex-content th, .latex-content td {
+            padding: 12px 16px;
+            border: 1px solid #dfe5eb;
+            text-align: left;
+            vertical-align: top;
+        }
+        .latex-content th { background: #f5f7fa; font-weight: 700; }
+        .latex-content tbody tr:nth-child(even) { background: #fcfdfe; }
+        .latex-content img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 1.9em auto 1em;
+            border-radius: 6px;
+        }
+        .latex-content .article-figure { margin: 1.6em 0 0.4em; }
+        .latex-content .article-figure img { margin: 0 auto; }
+        .latex-content .article-caption {
+            max-width: 92%;
+            margin: 0.6em auto 2.1em;
+            text-align: center;
+            font-size: 0.88em;
+            line-height: 1.7;
+            color: #65717e;
+        }
+        .latex-content pre, .latex-content code {
+            font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace;
+            font-size: 0.88em;
+        }
+        .latex-content :not(pre) > code {
+            white-space: break-spaces;
+            padding: 2px 5px;
+            background: #f1f3f6;
+            border-radius: 3px;
+        }
+        .latex-content pre {
+            margin: 1.5em 0 2em;
+            padding: 18px 20px;
+            border-radius: 6px;
+            background: #f4f6f8;
+            line-height: 1.6;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .latex-content pre code { white-space: inherit; background: transparent; padding: 0; }
+        @media (max-width: 760px) {
+            #vista-lectura-articulo .reading-paper { padding: 23px 17px; }
+            #vista-lectura-articulo #lectura-titulo { margin-bottom: 26px; }
+            #vista-lectura-articulo .latex-content { line-height: 1.82; }
+            .latex-content h2 { margin-top: 2.1em; }
+            .latex-content .math-equation { padding: 1em 0.35em; }
+        }
+
+        /* Botón de regreso: mismo rojo institucional que el resto de acciones. */
+        #vista-lectura-articulo .btn-volver-materiales { background: var(--uni-red-dark); transition: background-color .18s ease, transform .18s ease; }
+        #vista-lectura-articulo .btn-volver-materiales:hover,
+        #vista-lectura-articulo .btn-volver-materiales:focus-visible,
+        #vista-lectura-articulo .btn-volver-materiales:active { background: var(--uni-red); }
+        #vista-lectura-articulo .btn-volver-materiales:active { transform: translateY(1px); }
+        /* Subida de PDFs: controles coherentes con las tarjetas de materiales. */
+        #form-pdf .pdf-form-field { display:flex; flex-direction: column; gap: 6px; flex:1; min-width: 185px; }
+        #form-pdf .pdf-form-field label { font-size: .85rem; font-weight: 650; }
+        #form-pdf input, #form-pdf select { width:100%; border:1px solid #cbd1d6; border-radius:5px; background:#fff; padding: 9px 10px; font:inherit; font-size:.9rem; }
+        #form-pdf input[type=file] { cursor:pointer; }
+        #form-pdf .pdf-form-row { display:flex; gap:14px; flex-wrap:wrap; }
+        .pdf-upload-message { margin-top: 11px; color:#465363; font-size:.87rem; line-height:1.5; }
+        .pdf-upload-message.is-error { color:#ac2525; }
+        .pdf-upload-message.is-success { color:#266a3b; }
+        .uploaded-pdf-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:center; gap:8px; }
+        .uploaded-pdf-actions .btn-download-dark { font-size:.8rem; padding:8px 10px; white-space:nowrap; }
+        .uploaded-pdf-actions .btn-pdf-delete {
+            background: transparent; border:1px solid #e2c5c3; color:#9e342e;
+            border-radius:5px; cursor:pointer; font-size:.95rem; padding:8px 10px;
+        }
+        .uploaded-pdf-actions .btn-pdf-delete:hover,
+        .uploaded-pdf-actions .btn-pdf-delete:focus-visible { background:#fcf1f0; color:#7b241c; }
+        .pdf-file-meta { color:#697481; font-size:.78rem; white-space:nowrap; }
+        @media (max-width: 760px) { .uploaded-pdf-actions { justify-content:flex-start; } .uploaded-pdf-row { flex-wrap:wrap; } }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
     <!-- BARRA SUPERIOR -->
@@ -85,200 +417,238 @@
                 Inicio / <strong>Material del Curso</strong>
             </div>
 
-            <div class="page-header">
-                <h2>Material del Curso</h2>
-                <p>Apuntes, presentaciones y guías del profesor, organizados por unidad.</p>
-            </div>
-
-            <div class="filter-bar">
-                <div class="filter-buttons">
-                    <button class="active" onclick="filtrarUnidades('todas', this)">Todas las unidades</button>
-                    <button onclick="filtrarUnidades('unidad1', this)">Unidad 1</button>
-                    <button onclick="filtrarUnidades('unidad2', this)">Unidad 2</button>
-                    <button onclick="filtrarUnidades('unidad3', this)">Unidad 3</button>
-                    <button onclick="filtrarUnidades('unidad4', this)">Unidad 4</button>
+            <!-- VISTA 1: LISTA DE MATERIALES -->
+            <div id="vista-lista-materiales">
+                <!-- CABECERA CON BOTÓN DOCENTE -->
+                <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div>
+                        <h2>Material del Curso</h2>
+                        <p>Apuntes, artículos teóricos y guías del profesor, organizados por unidad.</p>
+                    </div>
+                    <button class="btn-download-dark" onclick="toggleAdminMateriales()">
+                        <i class="fa-solid fa-lock"></i> Modo Docente
+                    </button>
                 </div>
-                
-            </div>
 
-            <div class="material-layout">
-                
-                <!-- COLUMNA IZQUIERDA: LISTA DE ARCHIVOS -->
-                <div class="files-column">
+                <!-- PANEL DE REDACCIÓN DE ARTÍCULOS (Oculto por defecto) -->
+                <div id="admin-panel-materiales" style="display: none; background: #fdf5f5; padding: 20px; border-radius: 8px; border: 1px solid #fadbd8; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                    <h4 style="color: var(--uni-red-dark); margin-bottom: 15px;"><i class="fa-solid fa-pen-nib"></i> Redactar Nuevo Artículo (Soporta Markdown y LaTeX)</h4>
+                    <form id="form-articulo" style="display: flex; flex-direction: column; gap: 15px;">
+                        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                            <div style="flex: 1; min-width: 200px;">
+                                <label style="font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; display:block;">Unidad de destino:</label>
+                                <select id="art-unidad" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                    <option value="unidad1">Unidad 1: Fundamentos y Conceptos Básicos</option>
+                                    <option value="unidad2">Unidad 2: Vigas Curvas</option>
+                                    <option value="unidad3">Unidad 3: Teorema de Castigliano</option>
+                                    <option value="unidad4">Unidad 4: Placas Planas</option>
+                                </select>
+                            </div>
+                            <div style="flex: 2; min-width: 300px;">
+                                <label style="font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; display:block;">Título del Tema:</label>
+                                <input type="text" id="art-titulo" placeholder="Ej. Conceptos fundamentales de estática" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                            </div>
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; display:block;">Contenido del artículo (Markdown para texto, $$ para fórmulas):</label>
+                            <textarea id="art-contenido" rows="8" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; line-height: 1.5; resize: vertical;" placeholder="Ejemplo:&#10;### Esfuerzo Normal&#10;El esfuerzo normal promedio está dado por:&#10;$$ \sigma = \frac{P}{A} $$"></textarea>
+                        </div>
+                        <button type="submit" class="btn-download-dark" style="align-self: flex-end; padding: 10px 25px;">Guardar artículo (borrador)</button>
+                    </form>
+                    <!-- Los PDFs nuevos se guardan como borrador hasta preparar una publicación en GitHub. -->
+                    <div style="border-top: 1px solid #e8c9c5; margin: 26px 0 22px;"></div>
+                    <h4 style="color: var(--uni-red-dark); margin-bottom: 9px;"><i class="fa-solid fa-file-pdf"></i> Subir documento PDF</h4>
+                    <p style="font-size:.86rem; line-height:1.65; color:#555; margin-bottom:15px;">Añade material complementario al sílabo o a cualquiera de las unidades. Los documentos subidos podrán visualizarse y descargarse directamente desde su unidad.</p>
+                    <form id="form-pdf">
+                        <div class="pdf-form-row">
+                            <div class="pdf-form-field">
+                                <label for="pdf-ubicacion">Ubicación</label>
+                                <select id="pdf-ubicacion" required>
+                                    <option value="silabo">Sílabo y presentación del curso</option>
+                                    <option value="unidad1">Unidad 1: Fundamentos y Conceptos Básicos</option>
+                                    <option value="unidad2">Unidad 2: Vigas Curvas</option>
+                                    <option value="unidad3">Unidad 3: Teorema de Castigliano</option>
+                                    <option value="unidad4">Unidad 4: Placas Planas</option>
+                                </select>
+                            </div>
+                            <div class="pdf-form-field" style="flex:2;">
+                                <label for="pdf-titulo">Título del documento</label>
+                                <input id="pdf-titulo" maxlength="160" placeholder="Ej. Guía de problemas – Unidad 1" required>
+                            </div>
+                        </div>
+                        <div class="pdf-form-row" style="margin-top:14px;">
+                            <div class="pdf-form-field" style="flex:2;">
+                                <label for="pdf-descripcion">Descripción (opcional)</label>
+                                <input id="pdf-descripcion" maxlength="220" placeholder="Ej. Problemas complementarios y soluciones">
+                            </div>
+                            <div class="pdf-form-field" style="flex:1.4;">
+                                <label for="pdf-archivo">Archivo PDF (máx. 25 MB)</label>
+                                <input id="pdf-archivo" type="file" accept="application/pdf,.pdf" required>
+                            </div>
+                        </div>
+                        <div style="display:flex; justify-content:flex-end; gap:12px; flex-wrap:wrap; align-items:center; margin-top:15px;">
+                            <button class="btn-download-dark" id="pdf-btn-subir" type="submit"><i class="fa-solid fa-upload"></i> Guardar PDF (borrador)</button>
+                        </div>
+                        <p id="pdf-mensaje" class="pdf-upload-message" role="status" aria-live="polite"></p>
+                    </form>
+                    <p style="font-size:.79rem; line-height:1.55; color:#7b4c45; margin-top:13px;">Los documentos publicados se leen desde GitHub. Los nuevos PDFs y artículos quedan como borradores locales hasta preparar y subir el paquete de cambios. El Modo Docente sigue siendo de prueba, sin autenticación.</p>
+                </div>
+
+                <div id="publicacion-materiales" style="display:none;margin:-5px 0 20px;padding:13px 16px;border:1px solid #e3ccc9;background:#fff;border-radius:7px;gap:14px;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+                    <p style="font-size:.85rem;color:#654c49;margin:0;">Los cambios del Modo Docente se guardan como borradores hasta publicarlos en GitHub Desktop.</p>
+                    <a href="publicar-cambios.html" class="btn-download-dark" style="text-decoration:none;padding:9px 14px;"><i class="fa-solid fa-file-export"></i> Preparar publicación</a>
+                </div>
+                <div class="filter-bar">
+                    <div class="filter-buttons">
+                        <button class="active" onclick="filtrarUnidades('todas', this)">Todas las unidades</button>
+                        <button onclick="filtrarUnidades('unidad1', this)">Unidad 1</button>
+                        <button onclick="filtrarUnidades('unidad2', this)">Unidad 2</button>
+                        <button onclick="filtrarUnidades('unidad3', this)">Unidad 3</button>
+                        <button onclick="filtrarUnidades('unidad4', this)">Unidad 4</button>
+                    </div>
+                </div>
+
+                <div class="material-layout">
                     
-                    <!-- Grupo: Sílabo -->
-                    <div class="file-group" id="grupo-silabo">
-                        <div class="group-header">
-                            <h3><i class="fa-solid fa-star"></i> Sílabo y presentación del curso</h3>
-                        </div>
-                        <div class="group-content">
-                            <div class="file-row">
-                                <div class="file-icon-box border-red">PDF</div>
-                                <div class="file-details">
-                                    <h4 class="clickable-title" onclick="abrirVisorPDF('SYLLABUS-MC325-RESISTENCIA DE MATERIALES II-20262-1793919728.pdf', 'Sílabo MC325 2026-2')">Sílabo MC325 2026-2</h4>
-                                    <p>Contenido, evaluación y bibliografía</p>
+                    <!-- COLUMNA IZQUIERDA: LISTA DE ARCHIVOS -->
+                    <div class="files-column">
+                        
+                        <!-- Grupo: Sílabo -->
+                        <div class="file-group" id="grupo-silabo">
+                            <div class="group-header">
+                                <h3><i class="fa-solid fa-star"></i> Sílabo y presentación del curso</h3>
+                            </div>
+                            <div class="group-content">
+                                <div id="pdfs-silabo" class="pdfs-subidos"></div>
+                                <div class="file-row">
+                                    <div class="file-icon-box border-red">PDF</div>
+                                    <div class="file-details">
+                                        <h4 class="clickable-title" onclick="abrirVisorPDF('SYLLABUS-MC325-RESISTENCIA DE MATERIALES II-20262-1793919728.pdf', 'Sílabo MC325 2026-2')">Sílabo MC325 2026-2</h4>
+                                        <p>Contenido, evaluación y bibliografía</p>
+                                    </div>
+                                    <div class="file-meta" id="meta-silabo">Cargando info...</div>
+                                    <a href="SYLLABUS-MC325-RESISTENCIA DE MATERIALES II-20262-1793919728.pdf" download="Silabo_MC325_2026-2.pdf" class="btn-download-dark" style="text-decoration: none; text-align: center; display: inline-block;">Descargar</a>
                                 </div>
-                                <div class="file-meta" id="meta-silabo">Cargando info...</div>
-                                <a href="SYLLABUS-MC325-RESISTENCIA DE MATERIALES II-20262-1793919728.pdf" download="Silabo_MC325_2026-2.pdf" class="btn-download-dark" style="text-decoration: none; text-align: center; display: inline-block;">Descargar</a>
                             </div>
                         </div>
+
+                        <!-- Grupo: Unidad 1 -->
+                        <div class="file-group" id="grupo-unidad1">
+                            <div class="group-header">
+                                <h3><span class="circle-num-white">1</span> Unidad 1: Fundamentos y Conceptos Básicos</h3>
+                            </div>
+                            <div class="group-content">
+                                <!-- Contenedor dinámico integrado dentro del grupo para guardar el mismo estilo -->
+                                <div id="articulos-unidad1"></div>
+                                <div id="pdfs-unidad1" class="pdfs-subidos"></div>
+                            </div>
+                        </div>
+
+                        <!-- Grupo: Unidad 2 -->
+                        <div class="file-group" id="grupo-unidad2">
+                            <div class="group-header">
+                                <h3><span class="circle-num-white">2</span> Unidad 2: Vigas Curvas</h3>
+                            </div>
+                            <div class="group-content">
+                                <div id="articulos-unidad2"></div>
+                                <div id="pdfs-unidad2" class="pdfs-subidos"></div>
+                            </div>
+                        </div>
+                    
+                        <!-- Grupo: Unidad 3 -->
+                        <div class="file-group" id="grupo-unidad3">
+                            <div class="group-header">
+                                <h3><span class="circle-num-white">3</span> Unidad 3: Teorema de Castigliano</h3>
+                            </div>
+                            <div class="group-content">
+                                <div id="articulos-unidad3"></div>
+                                <div id="pdfs-unidad3" class="pdfs-subidos"></div>
+                            </div>
+                        </div>
+
+                        <!-- Grupo: Unidad 4 -->
+                        <div class="file-group" id="grupo-unidad4">
+                            <div class="group-header">
+                                <h3><span class="circle-num-white">4</span> Unidad 4: Placas Planas</h3>
+                            </div>
+                            <div class="group-content">
+                                <div id="articulos-unidad4"></div>
+                                <div id="pdfs-unidad4" class="pdfs-subidos"></div>
+                            </div>
+                        </div>
+
                     </div>
 
-                    <!-- Grupo: Unidad 1 -->
-                    <div class="file-group" id="grupo-unidad1">
-                        <div class="group-header">
-                            <h3><span class="circle-num-white">1</span> Unidad 1: Fundamentos y Conceptos Básicos</h3>
-                            <span class="file-count">2 archivos</span>
+                    <!-- COLUMNA DERECHA: WIDGETS -->
+                    <div class="widgets-column">
+                                            
+                        <!-- WIDGET: Ir a la unidad -->
+                        <div class="widget-box">
+                            <div class="widget-header">
+                                <h3>Ir a la unidad</h3>
+                            </div>
+                            <ul class="widget-list">
+                                <li onclick="ubicarUnidad('unidad1')" style="cursor: pointer;">
+                                    <span class="circle-num-dark">1</span> Fundamentos y Conceptos Básicos
+                                </li>
+                                <li onclick="ubicarUnidad('unidad2')" style="cursor: pointer;">
+                                    <span class="circle-num-dark">2</span> Vigas Curvas
+                                </li>
+                                <li onclick="ubicarUnidad('unidad3')" style="cursor: pointer;">
+                                    <span class="circle-num-dark">3</span> Teorema de Castigliano
+                                </li>
+                                <li onclick="ubicarUnidad('unidad4')" style="cursor: pointer;">
+                                    <span class="circle-num-dark">4</span> Placas Planas
+                                </li>
+                            </ul>
                         </div>
-                        <div class="group-content">
-                            <div class="file-row">
-                                <div class="file-icon-box border-red">PDF</div>
-                                <div class="file-details">
-                                    <h4>Teoría – Unidad 1</h4>
-                                    <p>Apuntes del profesor</p>
-                                </div>
-                                <div class="file-meta">[0.0 MB] - [dd/mm/aaaa]</div>
-                                <button class="btn-download-dark">Descargar</button>
-                            </div>
-                            <div class="file-row">
-                                <div class="file-icon-box border-red">PDF</div>
-                                <div class="file-details">
-                                    <h4>Diapositivas – Unidad 1</h4>
-                                    <p>Presentación de clase</p>
-                                </div>
-                                <div class="file-meta">[0.0 MB] - [dd/mm/aaaa]</div>
-                                <button class="btn-download-dark">Descargar</button>
-                            </div>
-                            <!-- === INICIO DE LAS 2 OPCIONES ADICIONALES === -->
-                            
-                            <!-- Opción Adicional 1: Teoría en Web -->
-                            <div class="file-row">
-                                <div class="file-icon-box" style="border-color: #0056b3; color: #0056b3;">WEB</div>
-                                <div class="file-details">
-                                    <h4 class="clickable-title" onclick="abrirVisorHTML('teoria-web-1', 'Teoría Web - Unidad 1')" style="color: #0056b3;">Teoría Interactiva – Unidad 1</h4>
-                                    <p>Apuntes digitalizados con LaTeX</p>
-                                </div>
-                                <div class="file-meta">Propuesta</div>
-                                <button class="btn-download-dark" style="background-color: #0056b3; border: none;" onclick="abrirVisorHTML('teoria-web-1', 'Teoría Web - Unidad 1')">Ver Web</button>
-                            </div>
 
-                            <!-- Opción Adicional 2: Ejercicios en Web -->
-                            <div class="file-row">
-                                <div class="file-icon-box" style="border-color: #0056b3; color: #0056b3;">WEB</div>
-                                <div class="file-details">
-                                    <h4 class="clickable-title" onclick="abrirVisorHTML('ejercicios-web-1', 'Ejercicios - Unidad 1')" style="color: #0056b3;">Ejercicios Resueltos – Unidad 1</h4>
-                                    <p>Desarrollo paso a paso</p>
-                                </div>
-                                <div class="file-meta">Propuesta</div>
-                                <button class="btn-download-dark" style="background-color: #0056b3; border: none;" onclick="abrirVisorHTML('ejercicios-web-1', 'Ejercicios - Unidad 1')">Ver Web</button>
+                        <div class="widget-box">
+                            <div class="widget-header">
+                                <h3>Material relacionado</h3>
                             </div>
-                            
-                            <!-- === FIN DE LAS 2 OPCIONES ADICIONALES === -->
+                            <ul class="widget-list links-only">
+                                <li><a href="apuntes.html">Apuntes y Cuadernos</a></li>
+                                <li><a href="ejercicios.html">Ejercicios Resueltos</a></li>
+                                <li><a href="examenes.html">Exámenes Pasados</a></li>
+                            </ul>
                         </div>
-                    </div>
 
-                    <!-- Grupo: Unidad 2 -->
-                    <div class="file-group" id="grupo-unidad2">
-                        <div class="group-header">
-                            <h3><span class="circle-num-white">2</span> Unidad 2: Vigas Curvas</h3>
-                            <span class="file-count">3 archivos</span>
-                        </div>
-                        <div class="group-content">
-                            <div class="file-row">
-                                <div class="file-icon-box border-red">PDF</div>
-                                <div class="file-details">
-                                    <h4>Teoría – Unidad 2</h4>
-                                    <p>Apuntes del profesor</p>
-                                </div>
-                                <div class="file-meta">[0.0 MB] - [dd/mm/aaaa]</div>
-                                <button class="btn-download-dark">Descargar</button>
-                            </div>
-                        </div>
                     </div>
+                </div>
+            </div> <!-- FIN VISTA DE LISTA DE MATERIALES -->
+
+            <!-- VISTA 2: LECTURA DEL ARTÍCULO TIPO WIKI (Oculta por defecto) -->
+            <div id="vista-lectura-articulo" style="display: none; animation: fadeIn 0.3s ease-in-out;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                    <button onclick="cerrarVistaLectura()" class="btn-download-dark btn-volver-materiales" style="padding: 8px 15px; border: none; cursor: pointer; color: white; border-radius: 4px;">
+                        <i class="fa-solid fa-arrow-left"></i> Volver a Materiales
+                    </button>
+                    <div id="lectura-meta" style="color: var(--text-light); font-size: 0.95rem; font-weight: bold;"></div>
+                </div>
                 
-                <!-- Grupo: Unidad 3 -->
-                    <div class="file-group" id="grupo-unidad3">
-                        <div class="group-header">
-                            <h3><span class="circle-num-white">3</span> Unidad 3: Teorema de Castigliano</h3>
-                            <span class="file-count">2 archivos</span>
-                        </div>
-                        <div class="group-content">
-                            <div class="file-row">
-                                <div class="file-icon-box border-red">PDF</div>
-                                <div class="file-details">
-                                    <h4>Teoría – Unidad 3</h4>
-                                    <p>Apuntes del profesor</p>
-                                </div>
-                                <div class="file-meta">[0.0 MB] - [dd/mm/aaaa]</div>
-                                <button class="btn-download-dark">Descargar</button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="reading-layout">
+                    <div class="reading-paper">
+                        <h1 id="lectura-titulo"></h1>
 
-                <!-- Grupo: Unidad 4 -->
-                    <div class="file-group" id="grupo-unidad4">
-                        <div class="group-header">
-                            <h3><span class="circle-num-white">4</span> Unidad 4: Placas Planas</h3>
-                            <span class="file-count">3 archivos</span>
-                        </div>
-                        <div class="group-content">
-                            <div class="file-row">
-                                <div class="file-icon-box border-red">PDF</div>
-                                <div class="file-details">
-                                    <h4>Teoría – Unidad 4</h4>
-                                    <p>Apuntes del profesor</p>
-                                </div>
-                                <div class="file-meta">[0.0 MB] - [dd/mm/aaaa]</div>
-                                <button class="btn-download-dark">Descargar</button>
-                            </div>
-                        </div>
+                        <!-- Contenido transformado de Markdown y LaTeX -->
+                        <article id="lectura-contenido" class="latex-content" aria-label="Contenido del artículo"></article>
                     </div>
-
+                    <!-- Índice automático: no requiere editarlo al publicar nuevos artículos. -->
+                    <aside id="lectura-indice" class="reading-toc" aria-label="Índice del artículo">
+                        <h2 class="toc-heading"><i class="fa-solid fa-list-ul" aria-hidden="true"></i> En este artículo</h2>
+                        <nav id="lectura-indice-enlaces" aria-label="Secciones y subapartados"></nav>
+                        <button type="button" id="lectura-ir-inicio" class="toc-top">
+                            <i class="fa-solid fa-arrow-up" aria-hidden="true"></i> Volver al inicio
+                        </button>
+                    </aside>
                 </div>
-
-                <!-- COLUMNA DERECHA: WIDGETS -->
-                <div class="widgets-column">
-                                        
-                    <!-- WIDGET: Ir a la unidad -->
-                    <div class="widget-box">
-                        <div class="widget-header">
-                            <h3>Ir a la unidad</h3>
-                        </div>
-                        <ul class="widget-list">
-                            <li onclick="ubicarUnidad('unidad1')" style="cursor: pointer;">
-                                <span class="circle-num-dark">1</span> Fundamentos y Conceptos Básicos
-                            </li>
-                            <li onclick="ubicarUnidad('unidad2')" style="cursor: pointer;">
-                                <span class="circle-num-dark">2</span> Vigas Curvas
-                            </li>
-                            <li onclick="ubicarUnidad('unidad3')" style="cursor: pointer;">
-                                <span class="circle-num-dark">3</span> Teorema de Castigliano
-                            </li>
-                            <li onclick="ubicarUnidad('unidad4')" style="cursor: pointer;">
-                                <span class="circle-num-dark">4</span> Placas Planas
-                            </li>
-                            
-                        </ul>
-                    </div>
-
-                    <div class="widget-box">
-                        <div class="widget-header">
-                            <h3>Material relacionado</h3>
-                        </div>
-                        <ul class="widget-list links-only">
-                            <li><a href="apuntes.html">Apuntes y Cuadernos</a></li>
-                            <li><a href="ejercicios.html">Ejercicios Resueltos</a></li>
-                            <li><a href="examenes.html">Exámenes Pasados</a></li>
-                        </ul>
-                    </div>
-
-                </div>
-
-            </div>
+            </div> <!-- FIN VISTA DE LECTURA -->
 
         </main>
     </div>
-<!-- VISOR PDF TIPO SCRIBD-->
+
+    <!-- VISOR PDF TIPO SCRIBD -->
     <div id="pdf-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <div class="modal-header">
@@ -286,195 +656,44 @@
                 <button class="btn-close" onclick="cerrarVisorPDF()"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body">
-                <!-- Aquí se cargará el PDF dinámicamente -->
                 <iframe id="pdf-frame" src="" width="100%" height="100%" style="border: none;"></iframe>
             </div>
         </div>
     </div>
-<!-- === NUEVO VISOR PARA CONTENIDO WEB Y LATEX === -->
-    <div id="html-modal" class="modal-overlay" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="html-modal-title">Visor Web</h3>
-                <button class="btn-close" onclick="cerrarVisorHTML()"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="modal-body" style="padding: 30px; overflow-y: auto; background-color: #fff;">
-                <div id="html-modal-body" style="max-width: 800px; margin: 0 auto; line-height: 1.6;">
-                    <!-- El contenido se inyecta aquí -->
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- CONTENEDORES OCULTOS CON LA INFORMACIÓN -->
-    <div id="teoria-web-1" style="display: none;">
-    
-    <h2 style="color: #0056b3; text-align: center; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin-top: 0; text-transform: uppercase;">Esfuerzos</h2>
-    
-    <h3 style="color: #333; margin-top: 20px; text-decoration: underline;">Definición de esfuerzos</h3>
-    
-    <p>Los esfuerzos son una medida de la distribución de las fuerzas internas en un área determinada. En la siguiente figura se muestra un conjunto de cargas externas actuantes sobre el cuerpo B, estas inducen fuerzas internas dentro del cuerpo analizado.</p>
-    
-    <p>Por las condiciones de equilibrio es relativamente sencillo determinar las fuerzas internas en cualquier sección; sin embargo, ya no es una simple cuestión la determinación de la forma como estas fuerzas internas se distribuyen dentro de la misma, así un área elemento \( dA \) estará experimentando un conjunto de fuerzas, tanto normales como cortantes, a esta distribución de fuerzas en áreas específicas se le denomina esfuerzo.</p>
-
-    <!-- ESQUEMA TIKZ GENERADO POR CÓDIGO (No requiere imagen) -->
-    <div style="text-align: center; overflow-x: auto; padding: 20px 0; margin: 20px 0; background-color: #fcfcfc; border: 1px solid #eee; border-radius: 8px;">
-        <script type="text/tikz">
-            \begin{tikzpicture}[scale=0.85, >=stealth]
-                % Paleta de colores extraída de la imagen original
-                \definecolor{forcecolor}{RGB}{235, 60, 90}   % Rojo/Rosado de las flechas
-                \definecolor{bodycolor}{RGB}{225, 195, 160}  % Color canela del cuerpo
-                \definecolor{cutcolor}{RGB}{245, 230, 210}   % Color claro de la cara cortada
-                \definecolor{axiscolor}{RGB}{100, 100, 100}  % Gris oscuro para los ejes
-
-                % ==========================================
-                % FIGURA 1: CUERPO COMPLETO
-                % ==========================================
-                \begin{scope}[shift={(0,0)}]
-                    % Ejes Coordenados (flotando debajo del cuerpo)
-                    \draw[->, axiscolor, thin] (0,-3) -- (0, -0.5) node[right, text=black] {$y$};
-                    \draw[->, axiscolor, thin] (0,-3) -- (2.5, -3.5) node[right, text=black] {$x$};
-                    \draw[->, axiscolor, thin] (0,-3) -- (-1.5, -4.5) node[left, text=black] {$z$};
-
-                    % Cuerpo tridimensional (Efecto esfera/frijol con iluminación radial)
-                    \shade[ball color=bodycolor]
-                        (1.5, 2.5) .. controls (3.5, 3) and (4.0, 0) .. (2.5, -1)
-                                   .. controls (1.5, -2) and (-0.5, -1) .. (-0.5, 0)
-                                   .. controls (-1.0, 1.5) and (0.0, 2) .. (1.5, 2.5);
-                    % Borde negro del cuerpo
-                    \draw[thick]
-                        (1.5, 2.5) .. controls (3.5, 3) and (4.0, 0) .. (2.5, -1)
-                                   .. controls (1.5, -2) and (-0.5, -1) .. (-0.5, 0)
-                                   .. controls (-1.0, 1.5) and (0.0, 2) .. (1.5, 2.5);
-
-                    % Fuerzas Externas (P1, P2, P3, P4)
-                    \draw[->, thick, forcecolor] (-0.3, 0.3) -- (-2.2, -0.8) node[below] {$P_1$};
-                    \draw[->, thick, forcecolor] (1.3, 2.4) -- (1.0, 4.3) node[right] {$P_2$};
-                    \draw[->, thick, forcecolor] (2.9, 0.9) -- (4.5, 1.8) node[right] {$P_3$};
-                    \draw[->, thick, forcecolor] (2.3, -1.0) -- (3.5, -2.5) node[right] {$P_4$};
-                \end{scope}
-
-                % ==========================================
-                % FIGURA 2: CORTE Y VECTOR CORTANTE CURVO
-                % ==========================================
-                \begin{scope}[shift={(6.5,0)}]
-                    % Ejes Coordenados
-                    \draw[->, axiscolor, thin] (0,-3) -- (0, -0.5) node[right, text=black] {$y$};
-                    \draw[->, axiscolor, thin] (0,-3) -- (2.5, -3.5) node[right, text=black] {$x$};
-                    \draw[->, axiscolor, thin] (0,-3) -- (-1.5, -4.5) node[left, text=black] {$z$};
-
-                    % Mitad izquierda del cuerpo (Sombra y borde)
-                    \shade[ball color=bodycolor]
-                        (1.5, 2.5) .. controls (0.5, 2.5) and (-0.5, 1.5) .. (-0.5, 0)
-                                   .. controls (-0.5, -1) and (1.5, -2) .. (2.0, -1)
-                                   .. controls (2.5, 0.5) and (2.2, 1.8) .. (1.5, 2.5);
-                    \draw[thick]
-                        (1.5, 2.5) .. controls (0.5, 2.5) and (-0.5, 1.5) .. (-0.5, 0)
-                                   .. controls (-0.5, -1) and (1.5, -2) .. (2.0, -1);
-
-                    % Cara plana del corte (Se dibuja encima)
-                    \filldraw[fill=cutcolor, draw=black, thick]
-                        (1.5, 2.5) .. controls (2.3, 1.8) and (2.6, 0.5) .. (2.0, -1)
-                                   .. controls (1.2, -0.5) and (0.8, 1.2) .. (1.5, 2.5);
-
-                    % Punto Q y área (Ubicados en el centro de la cara clara)
-                    \fill (1.7, 0.5) circle (1.5pt) node[below right, font=\small, inner sep=2pt] {$Q$};
-                    \node at (2.2, 1.6) {$\Delta A$};
-
-                    % Fuerzas Externas
-                    \draw[->, thick, forcecolor] (-0.3, 0.3) -- (-2.2, -0.8) node[below] {$P_1$};
-                    \draw[->, thick, forcecolor] (1.3, 2.4) -- (1.0, 4.3) node[right] {$P_2$};
-
-                    % Fuerza Normal
-                    \draw[->, thick, forcecolor] (1.7, 0.5) -- (3.8, 0.1) node[right] {$\Delta F^x$};
-
-                    % Fuerza Cortante Curva (Delta V^x)
-                    \draw[->, thick, forcecolor] (1.1, 0.2) .. controls (0.7, 1.0) .. (1.6, 1.8) node[left, xshift=-2pt, yshift=-4pt] {$\Delta V^x$};
-                \end{scope}
-
-                % ==========================================
-                % FIGURA 3: COMPONENTES ORTOGONALES
-                % ==========================================
-                \begin{scope}[shift={(13,0)}]
-                    % Ejes Coordenados
-                    \draw[->, axiscolor, thin] (0,-3) -- (0, -0.5) node[right, text=black] {$y$};
-                    \draw[->, axiscolor, thin] (0,-3) -- (2.5, -3.5) node[right, text=black] {$x$};
-                    \draw[->, axiscolor, thin] (0,-3) -- (-1.5, -4.5) node[left, text=black] {$z$};
-
-                    % Mitad izquierda del cuerpo (Sombra y borde)
-                    \shade[ball color=bodycolor]
-                        (1.5, 2.5) .. controls (0.5, 2.5) and (-0.5, 1.5) .. (-0.5, 0)
-                                   .. controls (-0.5, -1) and (1.5, -2) .. (2.0, -1)
-                                   .. controls (2.5, 0.5) and (2.2, 1.8) .. (1.5, 2.5);
-                    \draw[thick]
-                        (1.5, 2.5) .. controls (0.5, 2.5) and (-0.5, 1.5) .. (-0.5, 0)
-                                   .. controls (-0.5, -1) and (1.5, -2) .. (2.0, -1);
-
-                    % Cara plana del corte
-                    \filldraw[fill=cutcolor, draw=black, thick]
-                        (1.5, 2.5) .. controls (2.3, 1.8) and (2.6, 0.5) .. (2.0, -1)
-                                   .. controls (1.2, -0.5) and (0.8, 1.2) .. (1.5, 2.5);
-
-                    % Punto Q
-                    \fill (1.7, 0.5) circle (1.5pt) node[below right, font=\small, inner sep=2pt] {$Q$};
-
-                    % Fuerzas Externas
-                    \draw[->, thick, forcecolor] (-0.3, 0.3) -- (-2.2, -0.8) node[below] {$P_1$};
-                    \draw[->, thick, forcecolor] (1.3, 2.4) -- (1.0, 4.3) node[right] {$P_2$};
-
-                    % Componentes de las fuerzas en el punto Q
-                    \draw[->, thick, forcecolor] (1.7, 0.5) -- (3.8, 0.1) node[right] {$\Delta F^x$};
-                    \draw[->, thick, forcecolor] (1.7, 0.5) -- (1.7, 2.4) node[right] {$\Delta V^x_y$};
-                    \draw[->, thick, forcecolor] (1.7, 0.5) -- (0.5, 1.1) node[left] {$\Delta V^x_z$};
-                \end{scope}
-            \end{tikzpicture}
-        </script>
-        <p style="font-size: 13px; color: #666; margin-top: 15px;"><em>Distribución de fuerzas internas en un cuerpo tridimensional y componentes del esfuerzo en un punto \( Q \).</em></p>
-    </div>
-
-    <p>Cada plano de corte puede caracterizarse por su vector normal, recibiendo el nombre de esta dirección. Resulta así que es posible encontrar infinitos planos de corte sobre los que está actuando una distribución de esfuerzos diferente.</p>
-</div>  
-
-    <div id="ejercicios-web-1" style="display: none;">
-        <h2>Problema de Aplicación 1</h2>
-        <p>Determine el esfuerzo en una barra circular de radio \( r = 2 \text{ cm} \) sometida a una fuerza de tensión de \( P = 10 \text{ kN} \).</p>
-        <p><strong>Solución:</strong></p>
-        $$ A = \pi r^2 = \pi (0.02 \text{ m})^2 = 0.001256 \text{ m}^2 $$
-        <p>Aplicando la ecuación:</p>
-        $$ \sigma = \frac{10000 \text{ N}}{0.001256 \text{ m}^2} = 7.96 \text{ MPa} $$
-    </div>
-    <!-- === FIN DEL NUEVO VISOR === -->
-    <!-- SCRIPT PARA CONTROLAR EL VISOR -->
+    <!-- SCRIPT PRINCIPAL -->
     <script>
-        function abrirVisorPDF(rutaArchivo, titulo) {
-            document.getElementById('modal-title').innerText = titulo;
+        // Visor reutilizado por el sílabo y los nuevos PDFs guardados en el navegador.
+        let urlTemporalPDF = null;
+        let pdfAbiertoId = null;
+        function abrirVisorPDF(rutaArchivo, titulo, urlTemporal = false, idDocumento = null) {
+            cerrarVisorPDF();
+            document.getElementById('modal-title').textContent = titulo;
             document.getElementById('pdf-frame').src = rutaArchivo;
             document.getElementById('pdf-modal').style.display = 'flex';
+            urlTemporalPDF = urlTemporal ? rutaArchivo : null;
+            pdfAbiertoId = idDocumento;
         }
         function cerrarVisorPDF() {
             document.getElementById('pdf-modal').style.display = 'none';
-            document.getElementById('pdf-frame').src = ''; // Limpia el visor al cerrar
+            document.getElementById('pdf-frame').removeAttribute('src');
+            if (urlTemporalPDF) URL.revokeObjectURL(urlTemporalPDF);
+            urlTemporalPDF = null;
+            pdfAbiertoId = null;
         }
-        // Función para extraer el peso y la fecha del archivo automáticamente
+
+        // Obtener Metadatos
         async function obtenerMetadatos(urlArchivo, idElemento) {
             try {
-                // Hacemos una petición HEAD (solo pide información de cabecera, no descarga el PDF)
                 const respuesta = await fetch(urlArchivo, { method: 'HEAD' });
-
                 if (respuesta.ok) {
-                    // 1. Extraer y calcular el peso en MB
                     const bytes = respuesta.headers.get('content-length');
                     const megabytes = (bytes / (1024 * 1024)).toFixed(2);
-
-                    // 2. Extraer y dar formato a la fecha de última modificación
                     const fechaModificada = respuesta.headers.get('last-modified');
                     const fechaObj = new Date(fechaModificada);
-                    
                     const dia = String(fechaObj.getDate()).padStart(2, '0');
                     const mes = String(fechaObj.getMonth() + 1).padStart(2, '0');
                     const anio = fechaObj.getFullYear();
-
-                    // 3. Inyectar los datos reales en el HTML
                     document.getElementById(idElemento).innerHTML = `${megabytes} MB - ${dia}/${mes}/${anio}`;
                 } else {
                     document.getElementById(idElemento).innerHTML = "Datos no disponibles";
@@ -485,29 +704,35 @@
             }
         }
 
-        // Le decimos a la página que ejecute la función apenas termine de cargar
-        window.addEventListener('DOMContentLoaded', () => {
-            // Pasamos el nombre de tu archivo y el ID del HTML donde se mostrará
+        window.addEventListener('DOMContentLoaded', async () => {
             obtenerMetadatos('SYLLABUS-MC325-RESISTENCIA DE MATERIALES II-20262-1793919728.pdf', 'meta-silabo');
+            try {
+                const [articulos, documentos] = await Promise.all([
+                    MC325Datos.leer('articulos'), MC325Datos.leer('documentos')
+                ]);
+                articulosGuardados = articulos.items;
+                documentosGuardados = documentos.items;
+                materialesListos = true;
+                renderizarArticulos();
+                await renderizarPDFs();
+            } catch (error) {
+                console.error('No se pudieron cargar los materiales publicados:',error);
+                document.getElementById('pdf-mensaje').textContent = error.message;
+                alert('No se pudieron cargar los materiales: ' + error.message);
+            }
         });
-        // Función para filtrar los bloques de unidades
+
+        // Filtrado de Unidades
         function filtrarUnidades(filtro, botonClick) {
-            // 1. Quitar la clase 'active' (color granate) de todos los botones
             const botones = document.querySelectorAll('.filter-buttons button');
             botones.forEach(btn => btn.classList.remove('active'));
-            
-            // 2. Asignar la clase 'active' solo al botón que se presionó
             botonClick.classList.add('active');
 
-            // 3. Capturar todos los grupos de archivos
             const grupos = document.querySelectorAll('.file-group');
-
-            // 4. Mostrar u ocultar según el filtro seleccionado
             grupos.forEach(grupo => {
                 if (filtro === 'todas') {
-                    grupo.style.display = 'block'; // Muestra todos los bloques
+                    grupo.style.display = 'block';
                 } else {
-                    // Si el ID del grupo coincide con el filtro elegido, se muestra; si no, se oculta
                     if (grupo.id === 'grupo-' + filtro) {
                         grupo.style.display = 'block';
                     } else {
@@ -516,39 +741,558 @@
                 }
             });
         }
-        // Función para ir directamente a una unidad desde el menú derecho
+
         function ubicarUnidad(idUnidad) {
-            // 1. Mostrar todas las unidades primero (por si el usuario tenía un filtro activo)
             const botonTodas = document.querySelector('.filter-buttons button:first-child');
             if (botonTodas) {
                 filtrarUnidades('todas', botonTodas);
             }
-
-            // 2. Hacer scroll suave hacia el bloque correspondiente tras un breve instante
             setTimeout(() => {
                 const elemento = document.getElementById('grupo-' + idUnidad);
                 if (elemento) {
-                    // Desplaza la vista suavemente hasta que el elemento quede en la parte superior
                     elemento.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             }, 50); 
         }
-        // Funciones para el Visor Web (LaTeX)
-        function abrirVisorHTML(idContenido, titulo) {
-            document.getElementById('html-modal-title').innerText = titulo;
-            // Copia el HTML del div oculto al visor
-            document.getElementById('html-modal-body').innerHTML = document.getElementById(idContenido).innerHTML;
-            document.getElementById('html-modal').style.display = 'flex';
+
+        // LÓGICA DE ARTÍCULOS (MODO DOCENTE Y SPA)
+        function toggleAdminMateriales() {
+            const panel = document.getElementById('admin-panel-materiales');
+            const isOculto = panel.style.display === 'none';
+            panel.style.display = isOculto ? 'block' : 'none';
             
-            // Renderiza las fórmulas matemáticas de MathJax
-            if (window.MathJax) {
-                MathJax.typesetPromise([document.getElementById('html-modal-body')]);
+            const deleteBtns = document.querySelectorAll('.btn-delete-article');
+            deleteBtns.forEach(btn => {
+                btn.style.display = isOculto ? 'inline-block' : 'none';
+            });
+            document.getElementById('publicacion-materiales').style.display = isOculto ? 'flex' : 'none';
+            renderizarPDFs();
+        }
+        function esModoDocenteActivo() {
+            return document.getElementById('admin-panel-materiales').style.display === 'block';
+        }
+
+        let articulosGuardados = [];
+        let documentosGuardados = [];
+        let materialesListos = false;
+        function escaparHTMLMaterial(valor) {
+            return String(valor ?? '').replace(/[&<>"']/g, caracter => ({
+                '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+            })[caracter]);
+        }
+
+        function renderizarArticulos() {
+            const panelAdmin = document.getElementById('admin-panel-materiales');
+            const isAdminActivo = panelAdmin && panelAdmin.style.display === 'block';
+
+            ['unidad1', 'unidad2', 'unidad3', 'unidad4'].forEach(u => {
+                const contenedor = document.getElementById('articulos-' + u);
+                if (contenedor) contenedor.innerHTML = '';
+            });
+
+            articulosGuardados.forEach(art => {
+                const contenedor = document.getElementById('articulos-' + art.unidad);
+                if (contenedor) {
+                    const displayBtn = isAdminActivo ? 'inline-block' : 'none';
+                    
+                    // Fila idéntica al PDF pero con icono WEB y dentro del contenedor de la unidad
+                    const html = `
+                        <div class="file-row">
+                            <div class="file-icon-box border-red" style="font-size:0.75rem; font-weight:bold;">WEB</div>
+                            <div class="file-details">
+                                <h4 class="clickable-title" onclick="abrirVistaLectura('${escaparHTMLMaterial(art.id)}')" style="cursor: pointer; color: var(--uni-red-dark);">${escaparHTMLMaterial(art.titulo)}</h4>
+                                <p>Artículo interactivo (Teoría)</p>
+                            </div>
+                            <div class="file-meta" style="display: flex; align-items: center; gap: 10px;">
+                                <button class="btn-delete-article" onclick="borrarArticulo('${escaparHTMLMaterial(art.id)}')" title="Eliminar artículo" style="display: ${displayBtn}; background: none; border: none; color: #ccc; cursor: pointer; font-size: 1.1rem; transition: color 0.2s;" onmouseover="this.style.color='var(--uni-red-dark)'" onmouseout="this.style.color='#ccc'"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                            <button class="btn-download-dark" onclick="abrirVistaLectura('${escaparHTMLMaterial(art.id)}')" style="min-width: 90px; text-align: center;">Leer</button>
+                        </div>
+                    `;
+                    contenedor.innerHTML += html;
+                }
+            });
+        }
+
+        document.getElementById('form-articulo').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!esModoDocenteActivo() || !materialesListos) return;
+            const nuevoArticulo = {
+                id: Date.now().toString(),
+                unidad: document.getElementById('art-unidad').value,
+                titulo: document.getElementById('art-titulo').value,
+                contenido: document.getElementById('art-contenido').value
+            };
+            articulosGuardados.push(nuevoArticulo);
+            MC325Datos.guardar('articulos', articulosGuardados);
+            renderizarArticulos();
+            this.reset();
+        });
+
+        function borrarArticulo(id) {
+            if (!esModoDocenteActivo()) return;
+            if (confirm("¿Estás seguro de que deseas eliminar este artículo?")) {
+                articulosGuardados = articulosGuardados.filter(a => a.id !== id);
+                MC325Datos.guardar('articulos', articulosGuardados);
+                renderizarArticulos();
             }
         }
 
-        function cerrarVisorHTML() {
-            document.getElementById('html-modal').style.display = 'none';
-            document.getElementById('html-modal-body').innerHTML = '';
+
+        // =============================================================
+        // GESTIÓN DE PDF (prototipo local sin backend)
+        // IndexedDB almacena los PDF como Blob: localStorage no es apropiado
+        // para archivos binarios grandes. No publica en otros dispositivos.
+        // =============================================================
+        const NOMBRE_BD_PDF = 'mc325_documentos_pdf_v1';
+        const ALMACEN_PDF = 'documentos';
+        const LIMITE_PDF = 25 * 1024 * 1024;
+        let promesaBDPDF = null;
+
+        function abrirBasePDF() {
+            if (promesaBDPDF) return promesaBDPDF;
+            promesaBDPDF = new Promise((resolve, reject) => {
+                if (!window.indexedDB) {
+                    reject(new Error('Este navegador no permite almacenar PDFs de esta forma.'));
+                    return;
+                }
+                const solicitud = indexedDB.open(NOMBRE_BD_PDF, 1);
+                solicitud.onupgradeneeded = () => {
+                    const base = solicitud.result;
+                    if (!base.objectStoreNames.contains(ALMACEN_PDF)) {
+                        base.createObjectStore(ALMACEN_PDF, { keyPath: 'id' });
+                    }
+                };
+                solicitud.onsuccess = () => resolve(solicitud.result);
+                solicitud.onerror = () => reject(solicitud.error || new Error('No se pudo abrir el almacenamiento de PDFs.'));
+                solicitud.onblocked = () => reject(new Error('Cierra otras pestañas del proyecto y vuelve a intentar.'));
+            }).catch(err => { promesaBDPDF = null; throw err; });
+            return promesaBDPDF;
+        }
+
+        async function todosLosPDFs() {
+            const base = await abrirBasePDF();
+            return new Promise((resolve, reject) => {
+                const solicitud = base.transaction(ALMACEN_PDF, 'readonly').objectStore(ALMACEN_PDF).getAll();
+                solicitud.onsuccess = () => resolve(solicitud.result || []);
+                solicitud.onerror = () => reject(solicitud.error);
+            });
+        }
+        async function obtenerPDF(id) {
+            const base = await abrirBasePDF();
+            return new Promise((resolve, reject) => {
+                const solicitud = base.transaction(ALMACEN_PDF, 'readonly').objectStore(ALMACEN_PDF).get(id);
+                solicitud.onsuccess = () => resolve(solicitud.result);
+                solicitud.onerror = () => reject(solicitud.error);
+            });
+        }
+        async function guardarPDF(registro) {
+            const base = await abrirBasePDF();
+            return new Promise((resolve, reject) => {
+                const transaccion = base.transaction(ALMACEN_PDF, 'readwrite');
+                transaccion.objectStore(ALMACEN_PDF).put(registro);
+                transaccion.oncomplete = () => resolve();
+                transaccion.onerror = () => reject(transaccion.error || new Error('Error al guardar el archivo.'));
+                transaccion.onabort = () => reject(transaccion.error || new Error('No se pudo completar el guardado.'));
+            });
+        }
+        async function eliminarPDF(id) {
+            const base = await abrirBasePDF();
+            return new Promise((resolve, reject) => {
+                const transaccion = base.transaction(ALMACEN_PDF, 'readwrite');
+                transaccion.objectStore(ALMACEN_PDF).delete(id);
+                transaccion.oncomplete = () => resolve();
+                transaccion.onerror = () => reject(transaccion.error || new Error('Error al eliminar el archivo.'));
+                transaccion.onabort = () => reject(transaccion.error || new Error('No se pudo completar la eliminación.'));
+            });
+        }
+
+        function informarPDF(mensaje, tipo = '') {
+            const elemento = document.getElementById('pdf-mensaje');
+            elemento.textContent = mensaje;
+            elemento.className = 'pdf-upload-message' + (tipo ? ' is-' + tipo : '');
+        }
+        function nuevoBotonPDF(texto, icono, funcion, clase = 'btn-download-dark') {
+            const boton = document.createElement('button');
+            boton.type = 'button';
+            boton.className = clase;
+            const i = document.createElement('i');
+            i.className = icono;
+            i.setAttribute('aria-hidden','true');
+            boton.append(i, document.createTextNode(' ' + texto));
+            boton.addEventListener('click', funcion);
+            return boton;
+        }
+
+        async function renderizarPDFs() {
+            for (const ubicacion of ['silabo', 'unidad1', 'unidad2', 'unidad3', 'unidad4']) {
+                document.getElementById('pdfs-' + ubicacion).replaceChildren();
+            }
+            try {
+                const registros = [...documentosGuardados];
+                registros.sort((a, b) => (b.fechaRegistro || 0) - (a.fechaRegistro || 0));
+                const admin = esModoDocenteActivo();
+                for (const pdf of registros) {
+                    const destino = document.getElementById('pdfs-' + pdf.ubicacion);
+                    if (!destino) continue;
+                    const fila = document.createElement('div');
+                    fila.className = 'file-row uploaded-pdf-row';
+                    const icono = document.createElement('div');
+                    icono.className = 'file-icon-box border-red';
+                    icono.textContent = 'PDF';
+                    const detalle = document.createElement('div');
+                    detalle.className = 'file-details';
+                    const titulo = document.createElement('h4');
+                    titulo.textContent = pdf.titulo;
+                    titulo.className = 'clickable-title';
+                    titulo.style.cssText = 'cursor:pointer; color:var(--uni-red-dark);';
+                    titulo.addEventListener('click', () => abrirPDFSubido(pdf.id));
+                    const descripcion = document.createElement('p');
+                    descripcion.textContent = pdf.descripcion || 'Documento complementario';
+                    detalle.append(titulo, descripcion);
+                    const info = document.createElement('span');
+                    info.className = 'pdf-file-meta';
+                    info.textContent = (pdf.tamano / (1024 * 1024)).toFixed(2) + ' MB';
+                    const acciones = document.createElement('div');
+                    acciones.className = 'uploaded-pdf-actions';
+                    acciones.appendChild(nuevoBotonPDF('Ver', 'fa-solid fa-eye', () => abrirPDFSubido(pdf.id)));
+                    // Todos los PDFs complementarios pueden descargarse, incluidos los guardados anteriormente.
+                    acciones.appendChild(nuevoBotonPDF('Descargar', 'fa-solid fa-download', () => descargarPDFSubido(pdf.id)));
+                    if (admin) {
+                        const botonBorrar = nuevoBotonPDF('Eliminar', 'fa-solid fa-trash', () => borrarPDFSubido(pdf.id), 'btn-pdf-delete');
+                        botonBorrar.title = 'Eliminar PDF';
+                        acciones.appendChild(botonBorrar);
+                    }
+                    fila.append(icono, detalle, info, acciones);
+                    destino.appendChild(fila);
+                }
+            } catch (error) {
+                console.error('No se pudieron cargar los PDFs:', error);
+                informarPDF('No fue posible acceder a los PDFs guardados: ' + error.message, 'error');
+            }
+        }
+
+        async function abrirPDFSubido(id) {
+            try {
+                const pdf = documentosGuardados.find(p => String(p.id) === String(id));
+                if (!pdf) { alert('El PDF ya no está disponible.'); return; }
+                if (pdf.ruta) {
+                    abrirVisorPDF(new URL(pdf.ruta, document.baseURI).href, pdf.titulo, false, pdf.id);
+                    return;
+                }
+                const local = await obtenerPDF(id);
+                if (!local?.archivo) throw new Error('No se encontró el PDF del borrador en este navegador.');
+                abrirVisorPDF(URL.createObjectURL(local.archivo), pdf.titulo, true, pdf.id);
+            } catch (error) { alert('No se pudo abrir el PDF: ' + error.message); }
+        }
+        async function descargarPDFSubido(id) {
+            try {
+                const pdf = documentosGuardados.find(p => String(p.id) === String(id));
+                if (!pdf) { alert('El PDF ya no está disponible.'); return; }
+                const url = pdf.ruta ? new URL(pdf.ruta, document.baseURI).href :
+                    URL.createObjectURL((await obtenerPDF(id)).archivo);
+                const enlace = document.createElement('a');
+                enlace.href = url;
+                enlace.download = pdf.nombreArchivo || (pdf.titulo + '.pdf');
+                document.body.appendChild(enlace);
+                enlace.click(); enlace.remove();
+                if (!pdf.ruta) setTimeout(() => URL.revokeObjectURL(url), 5000);
+            } catch (error) { alert('No se pudo descargar el PDF: ' + error.message); }
+        }
+        async function borrarPDFSubido(id) {
+            if (!esModoDocenteActivo() || !materialesListos) return;
+            const pdf = documentosGuardados.find(p => String(p.id) === String(id));
+            if (!pdf || !confirm('¿Retirar el PDF «' + pdf.titulo + '» del listado? Para publicar la eliminación debes exportar los cambios a GitHub.')) return;
+            try {
+                if (String(pdfAbiertoId) === String(id)) cerrarVisorPDF();
+                if (!pdf.ruta) await eliminarPDF(id);
+                documentosGuardados = documentosGuardados.filter(p => String(p.id) !== String(id));
+                MC325Datos.guardar('documentos', documentosGuardados);
+                await renderizarPDFs();
+                informarPDF('PDF retirado del borrador. Prepara una publicación para actualizar GitHub.', 'success');
+            } catch (error) { informarPDF('No se pudo retirar el PDF: ' + error.message, 'error'); }
+        }
+
+        document.getElementById('form-pdf').addEventListener('submit', async function(evento) {
+            evento.preventDefault();
+            if (!esModoDocenteActivo() || !materialesListos) return;
+            const archivo = document.getElementById('pdf-archivo').files[0];
+            const titulo = document.getElementById('pdf-titulo').value.trim();
+            if (!archivo || !titulo) { informarPDF('Indica el título y selecciona un PDF.', 'error'); return; }
+            if (archivo.size > LIMITE_PDF) { informarPDF('El archivo excede el límite de 25 MB.', 'error'); return; }
+            if (archivo.size === 0 || !/\.pdf$/i.test(archivo.name)) {
+                informarPDF('Selecciona un archivo PDF válido (.pdf).', 'error'); return;
+            }
+            const boton = document.getElementById('pdf-btn-subir');
+            boton.disabled = true;
+            informarPDF('Guardando el archivo en este navegador…');
+            try {
+                const firma = new Uint8Array(await archivo.slice(0, 5).arrayBuffer());
+                if (String.fromCharCode(...firma) !== '%PDF-') throw new Error('El archivo seleccionado no tiene la cabecera de un PDF válido.');
+                const id = window.crypto && crypto.randomUUID ? crypto.randomUUID() : ('pdf-' + Date.now() + '-' + Math.random().toString(36).slice(2));
+                const meta = {
+                    id,
+                    ubicacion: document.getElementById('pdf-ubicacion').value,
+                    titulo,
+                    descripcion: document.getElementById('pdf-descripcion').value.trim(),
+                    nombreArchivo: archivo.name,
+                    tamano: archivo.size,
+                    fechaRegistro: Date.now()
+                };
+                await guardarPDF({ ...meta, archivo: new Blob([archivo], { type: 'application/pdf' }) });
+                documentosGuardados.push(meta);
+                MC325Datos.guardar('documentos', documentosGuardados);
+                this.reset();
+                await renderizarPDFs();
+                informarPDF('PDF guardado como borrador. Para hacerlo público utiliza «Preparar publicación».', 'success');
+            } catch (error) {
+                console.error('Error al subir el PDF:', error);
+                informarPDF('No se pudo guardar el PDF: ' + error.message + '. Comprueba el espacio disponible.', 'error');
+            } finally {
+                boton.disabled = false;
+            }
+        });
+
+        // ÍNDICE DINÁMICO: utiliza los h2/h3 reales generados a partir del Markdown.
+        // Así cada artículo tiene su propio menú, sin mantener enlaces manuales.
+        let titulosDeLectura = [];
+        const enlacesDelIndice = new Map();
+        let frameIndicePendiente = false;
+
+        function activarEnlaceIndice(id) {
+            enlacesDelIndice.forEach((enlace, clave) => {
+                const activo = clave === id;
+                enlace.classList.toggle('is-active', activo);
+                if (activo) enlace.setAttribute('aria-current', 'location');
+                else enlace.removeAttribute('aria-current');
+            });
+        }
+
+        function actualizarIndicePorScroll() {
+            frameIndicePendiente = false;
+            if (!titulosDeLectura.length ||
+                document.getElementById('vista-lectura-articulo').style.display === 'none') return;
+
+            const zona = document.querySelector('.content-area');
+            const umbral = zona.getBoundingClientRect().top + 115;
+            let actual = titulosDeLectura[0].id;
+            for (const titulo of titulosDeLectura) {
+                if (titulo.getBoundingClientRect().top <= umbral) actual = titulo.id;
+                else break;
+            }
+            activarEnlaceIndice(actual);
+        }
+
+        document.querySelector('.content-area').addEventListener('scroll', () => {
+            if (!frameIndicePendiente) {
+                frameIndicePendiente = true;
+                requestAnimationFrame(actualizarIndicePorScroll);
+            }
+        }, { passive: true });
+
+        function navegarAlTitulo(elemento) {
+            if (!elemento) return;
+            elemento.scrollIntoView({
+                behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+                block: 'start'
+            });
+        }
+
+        document.getElementById('lectura-ir-inicio').addEventListener('click', () => {
+            navegarAlTitulo(document.getElementById('lectura-titulo'));
+        });
+
+        function construirIndiceArticulo(lector) {
+            const destino = document.getElementById('lectura-indice-enlaces');
+            destino.replaceChildren();
+            enlacesDelIndice.clear();
+            titulosDeLectura = Array.from(lector.querySelectorAll('h2, h3'));
+            const contieneH2 = titulosDeLectura.some(t => t.tagName === 'H2');
+            const lista = document.createElement('ul');
+            lista.className = 'toc-sections';
+            let grupoActual = null;
+            let contador = 0;
+
+            titulosDeLectura.forEach(titulo => {
+                // Identificadores únicos por vista, incluso para títulos repetidos.
+                titulo.id = 'lectura-apartado-' + contador++;
+                const esPrincipal = titulo.tagName === 'H2' || !contieneH2 || !grupoActual;
+                const enlace = document.createElement('a');
+                enlace.className = 'toc-link';
+                enlace.href = '#' + titulo.id;
+                enlace.textContent = titulo.textContent.trim();
+                enlace.addEventListener('click', event => {
+                    event.preventDefault();
+                    activarEnlaceIndice(titulo.id);
+                    navegarAlTitulo(titulo);
+                });
+                enlacesDelIndice.set(titulo.id, enlace);
+
+                if (esPrincipal) {
+                    grupoActual = document.createElement('li');
+                    grupoActual.className = 'toc-section';
+                    const fila = document.createElement('div');
+                    fila.className = 'toc-section-row';
+                    fila.appendChild(enlace);
+                    grupoActual.appendChild(fila);
+                    lista.appendChild(grupoActual);
+                } else {
+                    let sublista = grupoActual.querySelector('.toc-children');
+                    if (!sublista) {
+                        sublista = document.createElement('ul');
+                        sublista.className = 'toc-children';
+                        const boton = document.createElement('button');
+                        boton.type = 'button';
+                        boton.className = 'toc-expand';
+                        boton.setAttribute('aria-label', 'Mostrar u ocultar subapartados');
+                        boton.setAttribute('aria-expanded', 'false');
+                        const icono = document.createElement('i');
+                        icono.className = 'fa-solid fa-chevron-right';
+                        icono.setAttribute('aria-hidden', 'true');
+                        boton.appendChild(icono);
+                        boton.addEventListener('click', () => {
+                            const abierto = grupoActualLocal.classList.toggle('toc-expanded');
+                            boton.setAttribute('aria-expanded', String(abierto));
+                        });
+                        // Capturar el grupo correcto: cada botón controla solo su apartado.
+                        const grupoActualLocal = grupoActual;
+                        grupoActual.querySelector('.toc-section-row').appendChild(boton);
+                        grupoActual.appendChild(sublista);
+                    }
+                    const elemento = document.createElement('li');
+                    enlace.classList.add('toc-sub-link');
+                    elemento.appendChild(enlace);
+                    sublista.appendChild(elemento);
+                }
+            });
+
+            if (titulosDeLectura.length) {
+                destino.appendChild(lista);
+                activarEnlaceIndice(titulosDeLectura[0].id);
+            } else {
+                const aviso = document.createElement('p');
+                aviso.style.cssText = 'font-size: 0.8rem; line-height: 1.5; color: #667; padding: 8px;';
+                aviso.textContent = 'Este artículo no tiene apartados definidos.';
+                destino.appendChild(aviso);
+            }
+        }
+
+        // LECTOR DE ARTÍCULOS: preserva Markdown y separa las fórmulas de bloque.
+        async function abrirVistaLectura(idArticulo) {
+            const articulo = articulosGuardados.find(a => a.id === idArticulo);
+            if (!articulo) return;
+
+            document.getElementById('lectura-titulo').innerText = articulo.titulo;
+            const lecturaMeta = document.getElementById('lectura-meta');
+            lecturaMeta.innerHTML = '<i class="fa-solid fa-folder-open"></i> ';
+            lecturaMeta.appendChild(document.createTextNode(articulo.unidad.replace('unidad', 'Unidad ')));
+
+            let contenidoCrudo = articulo.contenido;
+            if (contenidoCrudo === undefined && articulo.ruta) {
+                try {
+                    const respuesta = await fetch(articulo.ruta, {cache:'no-store'});
+                    if (!respuesta.ok) throw new Error('HTTP '+respuesta.status);
+                    contenidoCrudo = await respuesta.text();
+                } catch (error) {
+                    alert('No se pudo cargar el artículo Markdown: ' + error.message);
+                    return;
+                }
+            }
+            if (typeof contenidoCrudo !== 'string') {
+                alert('Este artículo no tiene contenido disponible.'); return;
+            }
+            const bloquesMatematicos = [];
+            const formulasEnLinea = [];
+
+            // Extraer $$ ... $$ ANTES de convertir Markdown. Un div independiente
+            // evita que Marked los coloque dentro de un <p>, donde perderían jerarquía.
+            contenidoCrudo = contenidoCrudo.replace(/\$\$([\s\S]+?)\$\$/g, function (formula) {
+                const indice = bloquesMatematicos.push(formula) - 1;
+                return '\n\n<div class="math-equation" data-math-block="' + indice + '"></div>\n\n';
+            });
+
+            // Proteger también $ ... $ de las reglas de escape de Markdown.
+            contenidoCrudo = contenidoCrudo.replace(/\$((?:\\.|[^\$\n])+?)\$/g, function (formula) {
+                const indice = formulasEnLinea.push(formula) - 1;
+                return 'MATHINLINEPROTECTED' + indice + 'END';
+            });
+
+            const lector = document.getElementById('lectura-contenido');
+            lector.innerHTML = marked.parse(contenidoCrudo);
+
+            // Insertar fórmulas como TEXTO, no como HTML; MathJax las interpretará.
+            lector.querySelectorAll('[data-math-block]').forEach(function (bloque) {
+                const indice = Number(bloque.dataset.mathBlock);
+                bloque.textContent = bloquesMatematicos[indice] || '';
+                bloque.removeAttribute('data-math-block');
+            });
+
+            // Recuperar las fórmulas en línea, incluso dentro de títulos y listas.
+            const nodosTexto = [];
+            const recorrido = document.createTreeWalker(lector, NodeFilter.SHOW_TEXT);
+            while (recorrido.nextNode()) nodosTexto.push(recorrido.currentNode);
+            nodosTexto.forEach(function (nodo) {
+                if (nodo.parentElement && nodo.parentElement.closest('.math-equation')) return;
+                nodo.textContent = nodo.textContent.replace(
+                    /MATHINLINEPROTECTED(\d+)END/g,
+                    function (_, indice) { return formulasEnLinea[Number(indice)] || ''; }
+                );
+            });
+
+            // Clases semánticas para figuras y sus pies, sin cambiar el Markdown fuente.
+            lector.querySelectorAll('p').forEach(function (parrafo) {
+                if (!parrafo.querySelector('img')) return;
+                parrafo.classList.add('article-figure');
+                const siguiente = parrafo.nextElementSibling;
+                if (siguiente && siguiente.tagName === 'P' && /^Figura\s+\d/i.test(siguiente.textContent.trim())) {
+                    siguiente.classList.add('article-caption');
+                }
+            });
+            lector.querySelectorAll('img').forEach(function (img) {
+                // Las imágenes referenciadas por el .md se buscan junto a ese archivo.
+                const src = img.getAttribute('src') || '';
+                if (articulo.ruta && src && !/^(?:[a-z]+:|\/|#)/i.test(src)) {
+                    // Compatibilidad: algunas imágenes de versiones anteriores
+                    // pueden estar en la raíz del sitio y no junto al Markdown.
+                    const alternativaRaiz = new URL(src, document.baseURI).href;
+                    img.onerror = function () {
+                        img.onerror = null;
+                        if (img.src !== alternativaRaiz) img.src = alternativaRaiz;
+                    };
+                    img.src = new URL(src, new URL(articulo.ruta, document.baseURI)).href;
+                }
+                img.loading = 'lazy';
+            });
+
+            // Construir los enlaces de capítulos y subapartados para este artículo.
+            construirIndiceArticulo(lector);
+
+            document.getElementById('vista-lista-materiales').style.display = 'none';
+            document.getElementById('vista-lectura-articulo').style.display = 'block';
+            document.querySelector('.content-area').scrollTop = 0;
+
+            // Los recursos externos pueden continuar cargando: typesetPromise reintenta
+            // de forma ordenada cuando MathJax termine de inicializar.
+            if (window.MathJax && typeof MathJax.typesetPromise === 'function') {
+                MathJax.typesetPromise([lector]).catch(error => console.error('Error al mostrar las fórmulas:', error));
+            } else if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
+                MathJax.startup.promise.then(function () {
+                    if (typeof MathJax.typesetPromise === 'function') return MathJax.typesetPromise([lector]);
+                }).catch(error => console.error('Error al mostrar las fórmulas:', error));
+            }
+        }
+
+        function cerrarVistaLectura() {
+            document.getElementById('vista-lectura-articulo').style.display = 'none';
+            document.getElementById('vista-lista-materiales').style.display = 'block';
+            if (window.MathJax && typeof MathJax.typesetClear === 'function') {
+                MathJax.typesetClear([document.getElementById('lectura-contenido')]);
+            }
+            document.getElementById('lectura-contenido').innerHTML = '';
+            document.getElementById('lectura-indice-enlaces').replaceChildren();
+            titulosDeLectura = [];
+            enlacesDelIndice.clear();
+            document.querySelector('.content-area').scrollTop = 0;
         }
     </script>
 </body>

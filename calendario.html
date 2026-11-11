@@ -6,6 +6,9 @@
     <title>Calendario - Resistencia de Materiales II</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core/locales/es.global.min.js"></script>
+    <script src="js/datos-mc325.js"></script>
 </head>
 <body>
     <!-- BARRA SUPERIOR -->
@@ -73,207 +76,512 @@
 
         <!-- ÁREA DE CONTENIDO: CALENDARIO -->
         <main class="content-area">
-            
-            <div class="breadcrumb">
-                Inicio / <strong>Calendario</strong>
-            </div>
-
-            <div class="page-header">
-                <h2>Calendario</h2>
-                <p>Exámenes, entregas de trabajos y feriados del ciclo 2026-2.</p>
-            </div>
-
-            <!-- Controles del Calendario -->
-            <div class="calendar-toolbar">
-                <div class="cal-nav">
-                    <button class="btn-icon">&lt;</button>
-                    <h3>Noviembre 2026</h3>
-                    <button class="btn-icon">&gt;</button>
-                    <button class="btn-outline">Hoy</button>
+            <!-- CABECERA DEL CALENDARIO Y BOTÓN ADMIN -->
+            <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <div>
+                    <h2>Calendario de Actividades</h2>
+                    <p>Cronograma mensual de evaluaciones y entregas del curso.</p>
                 </div>
-                <div class="cal-views">
-                    <button class="active">Mes</button>
-                    <button>Semana</button>
-                    <button>Lista</button>
-                </div>
+                <!-- Botón simulado para el profesor -->
+                <button class="btn-download-dark" onclick="toggleAdminPanel()">
+                    <i class="fa-solid fa-lock"></i> Modo Docente
+                </button>
             </div>
 
-            <div class="material-layout">
+            <!-- VISTA NORMAL: CALENDARIO MENSUAL Y PANELES (2 COLUMNAS) -->
+            <div id="vista-calendario" style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
                 
-                <!-- COLUMNA IZQUIERDA: CUADRÍCULA DEL CALENDARIO -->
-                <div class="files-column">
-                    <div class="calendar-grid">
-                        <!-- Cabeceras de días -->
-                        <div class="cal-header">LUN</div>
-                        <div class="cal-header">MAR</div>
-                        <div class="cal-header">MIÉ</div>
-                        <div class="cal-header">JUE</div>
-                        <div class="cal-header">VIE</div>
-                        <div class="cal-header">SÁB</div>
-                        <div class="cal-header">DOM</div>
-
-                        <!-- Fila 1 -->
-                        <div class="cal-day faded"><span>26</span></div>
-                        <div class="cal-day faded"><span>27</span></div>
-                        <div class="cal-day faded"><span>28</span></div>
-                        <div class="cal-day faded"><span>29</span></div>
-                        <div class="cal-day faded"><span>30</span></div>
-                        <div class="cal-day faded"><span>31</span></div>
-                        <div class="cal-day today">
-                            <span class="day-num">1</span>
-                            <div class="cal-event event-holiday">Todos los Santos</div>
-                        </div>
-
-                        <!-- Fila 2 -->
-                        <div class="cal-day"><span>2</span></div>
-                        <div class="cal-day"><span>3</span></div>
-                        <div class="cal-day"><span>4</span></div>
-                        <div class="cal-day"><span>5</span></div>
-                        <div class="cal-day"><span>6</span></div>
-                        <div class="cal-day">
-                            <span>7</span>
-                            <div class="cal-event event-assignment">Entrega de Tarea 3<br>23:59</div>
-                        </div>
-                        <div class="cal-day"><span>8</span></div>
-
-                        <!-- Fila 3 -->
-                        <div class="cal-day"><span>9</span></div>
-                        <div class="cal-day">
-                            <span>10</span>
-                            <div class="cal-event event-exam">Examen Parcial II<br>09:00</div>
-                        </div>
-                        <div class="cal-day"><span>11</span></div>
-                        <div class="cal-day"><span>12</span></div>
-                        <div class="cal-day"><span>13</span></div>
-                        <div class="cal-day">
-                            <span>14</span>
-                            <div class="cal-event event-class">Clase práctica: Placas continuas</div>
-                        </div>
-                        <div class="cal-day"><span>15</span></div>
-
-                        <!-- Fila 4 -->
-                        <div class="cal-day"><span>16</span></div>
-                        <div class="cal-day"><span>17</span></div>
-                        <div class="cal-day"><span>18</span></div>
-                        <div class="cal-day"><span>19</span></div>
-                        <div class="cal-day"><span>20</span></div>
-                        <div class="cal-day"><span>21</span></div>
-                        <div class="cal-day"><span>22</span></div>
-
-                        <!-- Fila 5 -->
-                        <div class="cal-day"><span>23</span></div>
-                        <div class="cal-day"><span>24</span></div>
-                        <div class="cal-day"><span>25</span></div>
-                        <div class="cal-day"><span>26</span></div>
-                        <div class="cal-day"><span>27</span></div>
-                        <div class="cal-day">
-                            <span>28</span>
-                            <div class="cal-event event-assignment">[Entrega de Tarea 4]</div>
-                        </div>
-                        <div class="cal-day"><span>29</span></div>
-
-                        <!-- Fila 6 -->
-                        <div class="cal-day"><span>30</span></div>
-                        <div class="cal-day faded"><span>1</span></div>
-                        <div class="cal-day faded"><span>2</span></div>
-                        <div class="cal-day faded"><span>3</span></div>
-                        <div class="cal-day faded"><span>4</span></div>
-                        <div class="cal-day faded"><span>5</span></div>
-                        <div class="cal-day faded"><span>6</span></div>
-                    </div>
-                </div>
-
-                <!-- COLUMNA DERECHA: WIDGETS Y ADMINISTRACIÓN -->
-                <div class="widgets-column">
+                <!-- Columna Izquierda: Calendario -->
+                <div id="calendario-web" style="flex: 3; min-width: 600px; background: white; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 2px 5px rgba(0,0,0,0.02);"></div>
+                
+                <!-- Columna Derecha: Paneles Informativos -->
+                <div style="flex: 1; min-width: 250px; display: flex; flex-direction: column; gap: 20px;">
                     
-                    <!-- WIDGET: Próximas actividades -->
-                    <div class="widget-box">
-                        <div class="widget-header">
-                            <h3>Próximas actividades</h3>
+                    <!-- Panel Próximas Actividades -->
+                    <div style="background: white; border-radius: 8px; border: 1px solid var(--border-color); overflow: hidden;">
+                        <div style="background: var(--uni-red-dark); color: white; padding: 15px;">
+                            <h3 style="margin: 0; font-size: 1.1rem;">Próximas actividades</h3>
                         </div>
-                        <div style="padding: 15px;">
-                            <div class="activity-item">
-                                <div class="date-box"><span>NOV</span><strong>07</strong></div>
-                                <div class="act-info" style="flex: 1;">
-                                    <h4 style="color: var(--text-main); margin-bottom: 2px;">Entrega de Tarea 3</h4>
-                                    <p style="font-size: 0.8rem; color: var(--text-light);">Hasta las 23:59</p>
+                        <div id="proximas-actividades-list" style="padding: 15px;">
+                            <!-- Actividad de ejemplo -->
+                            <div style="display: flex; gap: 10px; margin-bottom: 10px; align-items: center;">
+                                <div style="background: #fdf5f5; color: var(--uni-red-dark); padding: 5px 10px; border-radius: 4px; text-align: center; min-width: 50px;">
+                                    <span style="font-size: 0.7rem; font-weight: bold; display: block;">NOV</span>
+                                    <strong style="font-size: 1.1rem;">10</strong>
                                 </div>
-                                <div class="dot dot-assignment"></div>
-                            </div>
-                            <div class="activity-item">
-                                <div class="date-box"><span>NOV</span><strong>10</strong></div>
-                                <div class="act-info" style="flex: 1;">
-                                    <h4 style="color: var(--text-main); margin-bottom: 2px;">Examen Parcial II</h4>
-                                    <p style="font-size: 0.8rem; color: var(--text-light);">09:00 - 11:00</p>
+                                <div>
+                                    <h4 style="font-size: 0.9rem; margin: 0; color: var(--text-main);">Examen Parcial II</h4>
+                                    <p style="font-size: 0.75rem; color: var(--text-light); margin: 0;">09:00 - 11:00</p>
                                 </div>
-                                <div class="dot dot-exam"></div>
-                            </div>
-                            <div class="activity-item">
-                                <div class="date-box"><span>NOV</span><strong>14</strong></div>
-                                <div class="act-info" style="flex: 1;">
-                                    <h4 style="color: var(--text-main); margin-bottom: 2px;">Clase práctica: Placas continuas</h4>
-                                    <p style="font-size: 0.8rem; color: var(--text-light);">Laboratorio de Mecánica</p>
-                                </div>
-                                <div class="dot dot-class"></div>
+                                <div style="width: 8px; height: 8px; border-radius: 50%; background: #ff4d4d; margin-left: auto;"></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- WIDGET: Tipos de fecha (Leyenda) -->
-                    <div class="widget-box">
-                        <div class="widget-header">
-                            <h3>Tipos de fecha</h3>
+                    <!-- Panel Tipos de fecha (Leyenda) -->
+                    <div style="background: white; border-radius: 8px; border: 1px solid var(--border-color); overflow: hidden;">
+                        <div style="background: var(--uni-red-dark); color: white; padding: 15px;">
+                            <h3 style="margin: 0; font-size: 1.1rem;">Tipos de fecha</h3>
                         </div>
-                        <ul class="widget-list">
-                            <li><div class="legend-box bg-exam"></div> Exámenes</li>
-                            <li><div class="legend-box bg-assignment"></div> Entregas de trabajos</li>
-                            <li><div class="legend-box bg-holiday"></div> Feriados</li>
-                            <li><div class="legend-box bg-class"></div> Clases y prácticas</li>
+                        <ul style="list-style: none; padding: 15px; margin: 0; display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem; color: var(--text-main);">
+                            <li style="display: flex; align-items: center; gap: 10px;"><span style="width: 12px; height: 12px; background: #ff4d4d; border-radius: 2px;"></span> Exámenes</li>
+                            <li style="display: flex; align-items: center; gap: 10px;"><span style="width: 12px; height: 12px; background: #ffcc00; border-radius: 2px;"></span> Entregas de trabajos</li>
+                            <li style="display: flex; align-items: center; gap: 10px;"><span style="width: 12px; height: 12px; background: #3399ff; border-radius: 2px;"></span> Feriados</li>
+                            <li style="display: flex; align-items: center; gap: 10px;"><span style="width: 12px; height: 12px; background: #4ca64c; border-radius: 2px;"></span> Clases / Laboratorios</li>
                         </ul>
                     </div>
-
-                    <!-- WIDGET: Administración del calendario -->
-                    <div class="widget-box">
-                        <div class="widget-header">
-                            <h3>Administración del calendario</h3>
-                        </div>
-                        
-                        <!-- Panel modo lectura (Estudiante) -->
-                        <div class="widget-form" id="panel-lectura">
-                            <div class="admin-warning">
-                                <strong>Solo lectura.</strong> Las fechas las agrega y modifica únicamente el administrador del curso.
-                            </div>
-                            <button class="btn-outline" style="width: 100%;" onclick="activarModoAdmin()">Iniciar sesión como administrador</button>
-                        </div>
-
-                        <!-- Panel modo edición (Oculto por defecto) -->
-                        <div class="widget-form" id="panel-admin" style="display: none; border-top: 1px solid #eee; padding-top: 15px;">
-                            <span style="font-size: 0.75rem; font-weight: bold; color: var(--text-light); text-transform: uppercase;">Vista del administrador</span>
-                            <select>
-                                <option>Tipo de fecha</option>
-                                <option>Examen</option>
-                                <option>Entrega</option>
-                                <option>Feriado</option>
-                            </select>
-                            <input type="text" placeholder="Título • Fecha • Hora">
-                            <button class="btn-solid" style="width: 100%; background-color: #a87b7b; border-color: #a87b7b;">+ Agregar fecha</button>
-                        </div>
-                    </div>
-
-                    <button class="btn-outline" style="width: 100%;">Suscribirse al calendario (.ics)</button>
-
                 </div>
-
             </div>
 
+            <!-- PANEL DE ADMINISTRADOR (Oculto por defecto) -->
+            <div id="admin-panel" style="display: none;">
+                <!-- Formulario de ingreso -->
+                <div style="background: #fdf5f5; padding: 20px; border-radius: 8px; border: 1px solid #fadbd8; margin-bottom: 20px;">
+                    <h4 id="form-evento-titulo" style="color: var(--uni-red-dark); margin-bottom: 15px;">Añadir Nuevo Evento</h4>
+                    <form id="form-evento" style="display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap;">
+                        <!-- Primera fila -->
+                        <div style="display: flex; flex-direction: column; flex: 1; min-width: 150px;">
+                            <label style="font-size: 0.85rem; font-weight: bold; margin-bottom: 5px;">Fecha:</label>
+                            <input type="date" id="event-date" required style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; flex: 1; min-width: 150px;">
+                            <label style="font-size: 0.85rem; font-weight: bold; margin-bottom: 5px;">Tipo:</label>
+                            <select id="event-type" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                <option value="tarea">Entrega / Tarea (Amarillo)</option>
+                                <option value="examen">Examen (Rojo)</option>
+                                <option value="clase">Clase Práctica / Lab (Verde)</option>
+                                <option value="feriado">Feriado (Azul)</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; flex-direction: column; flex: 2; min-width: 250px;">
+                            <label style="font-size: 0.85rem; font-weight: bold; margin-bottom: 5px;">Título del Evento:</label>
+                            <input type="text" id="event-title" placeholder="Ej. Examen Parcial II" required style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                        </div>
+                        
+                        <div style="width: 100%; height: 0;"></div> <!-- Salto de línea visual -->
+                        
+                        <!-- Segunda fila (Tiempos) -->
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; min-width: 150px;">
+                            <input type="checkbox" id="event-allday" style="width: 16px; height: 16px; cursor: pointer;">
+                            <label for="event-allday" style="font-size: 0.85rem; font-weight: bold; cursor: pointer;">Todo el día</label>
+                        </div>
+                        
+                        <div id="time-inputs" style="display: flex; gap: 15px; flex: 1; min-width: 250px;">
+                            <div style="display: flex; flex-direction: column; flex: 1;">
+                                <label for="event-start-time" id="label-start" style="font-size: 0.85rem; font-weight: bold; margin-bottom: 5px;">Hora límite:</label>
+                                <input type="time" id="event-start-time" required style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                            </div>
+                            <div id="container-end-time" style="display: none; flex-direction: column; flex: 1;">
+                                <label for="event-end-time" id="label-end" style="font-size: 0.85rem; font-weight: bold; margin-bottom: 5px;">Hora fin:</label>
+                                <input type="time" id="event-end-time" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                            </div>
+                        </div>
+
+                        <div class="event-form-actions">
+                            <button type="button" id="btn-cancelar-edicion" class="btn-cancelar-edicion" hidden>Cancelar edición</button>
+                            <button type="submit" id="btn-guardar-evento" class="btn-download-dark" style="padding: 9px 20px;">Guardar Evento</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;margin:5px 0 22px;padding:12px 14px;background:#fff;border:1px solid #ead3d0;border-radius:6px;">
+                    <p style="font-size:.83rem;color:#6e4d49;margin:0;">Las modificaciones son borradores locales hasta publicar los archivos en GitHub.</p>
+                    <a href="publicar-cambios.html" class="btn-download-dark" style="text-decoration:none;padding:9px 14px;"><i class="fa-solid fa-file-export"></i> Preparar publicación</a>
+                </div>
+                <!-- Lista de tarjetas para gestionar -->
+                <h3 style="margin-bottom: 15px; color: var(--text-main);">Gestión de Eventos</h3>
+                <div id="calendar-list" style="display: flex; flex-direction: column; gap: 15px;">
+                    <!-- Los eventos en formato tarjeta se inyectarán aquí -->
+                </div>
+            </div>
+            
         </main>
     </div>
-
-    <!-- SCRIPT PARA SIMULAR INICIO DE SESIÓN -->
     <script>
-        function activarModoAdmin() {
-            document.getElementById('panel-lectura').style.display = 'none';
-            document.getElementById('panel-admin').style.display = 'flex';
+        // Los vencimientos tienen una hora exacta. FullCalendar los representa
+        // con un bloque de 30 minutos SIN guardar un fin ficticio.
+        let calendario;
+        let idEventoEnEdicion = null;
+
+        const coloresEvento = {
+            examen:  { bg: '#ffe5e5', border: '#ff4d4d', text: '#cc0000' },
+            tarea:   { bg: '#fff4cc', border: '#ffcc00', text: '#806000' },
+            clase:   { bg: '#e6f2e6', border: '#4ca64c', text: '#2d662d' },
+            feriado: { bg: '#e5f0fa', border: '#3399ff', text: '#0055cc' }
+        };
+
+        function escaparHTML(valor) {
+            return String(valor ?? '').replace(/[&<>"']/g, caracter => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[caracter]);
+        }
+
+        // new Date('YYYY-MM-DD') interpreta UTC en algunos navegadores.
+        // Construir la fecha en hora local evita que 14/11 aparezca como 13/11 en Perú.
+        function fechaLocal(valor) {
+            if (valor instanceof Date) return valor;
+            if (typeof valor !== 'string') return new Date(NaN);
+            const partes = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2})(?::(\d{2}))?)?$/.exec(valor);
+            if (partes) {
+                return new Date(
+                    Number(partes[1]), Number(partes[2]) - 1, Number(partes[3]),
+                    Number(partes[4] || 0), Number(partes[5] || 0), Number(partes[6] || 0)
+                );
+            }
+            return new Date(valor); // Compatibilidad con posibles eventos antiguos con zona horaria
+        }
+
+        function horaHHMM(valor) {
+            const fecha = fechaLocal(valor);
+            return Number.isNaN(fecha.getTime()) ? '' :
+                `${String(fecha.getHours()).padStart(2, '0')}:${String(fecha.getMinutes()).padStart(2, '0')}`;
+        }
+
+        function textoHorario(evento) {
+            const tieneHora = typeof evento.start === 'string' && evento.start.includes('T');
+            if (evento.tipo === 'tarea') {
+                const limite = evento.horaLimite || (tieneHora ? horaHHMM(evento.start) : '');
+                return limite ? `Límite: ${limite}` : (evento.desc || 'Fecha límite (sin hora)');
+            }
+            if (evento.allDay !== false || !tieneHora) {
+                return evento.desc || 'Todo el día';
+            }
+            if (evento.end) return `${horaHHMM(evento.start)} - ${horaHHMM(evento.end)}`;
+            return evento.desc || `Desde las ${horaHHMM(evento.start)}`;
+        }
+
+        function inicioParaOrdenar(evento) {
+            return fechaLocal(evento.start).getTime();
+        }
+
+        // Un evento sin hora sigue vigente durante toda su fecha (hora local).
+        function fechaCierre(evento) {
+            const fecha = fechaLocal(evento.start);
+            if (evento.allDay !== false || !String(evento.start).includes('T')) {
+                fecha.setHours(23, 59, 59, 999);
+            }
+            return fecha;
+        }
+
+        // Fuente pública: data/eventos.json. Las ediciones quedan en un borrador
+        // separado hasta generar y subir el paquete de publicación a GitHub.
+        let eventosGuardados = [];
+        function guardarEventos() {
+            MC325Datos.guardar('eventos', eventosGuardados);
+        }
+
+        // Para una tarea se pide solo hora límite. Los feriados SIEMPRE
+        // son eventos de todo el día, sin horarios de inicio y fin.
+        let tipoAnteriorFormulario = 'tarea';
+        function actualizarCamposHorario() {
+            const tipo = document.getElementById('event-type').value;
+            const esTarea = tipo === 'tarea';
+            const esFeriado = tipo === 'feriado';
+            const todoElDia = document.getElementById('event-allday');
+            const inicio = document.getElementById('event-start-time');
+            const fin = document.getElementById('event-end-time');
+            const contenedorFin = document.getElementById('container-end-time');
+
+            if (esTarea) todoElDia.checked = false;
+            if (esFeriado) todoElDia.checked = true;
+            // Evitar que una selección automática de «Feriado» obligue
+            // a la siguiente clase o examen a ser también de día completo.
+            todoElDia.disabled = esTarea || esFeriado;
+            const esTodoDia = todoElDia.checked;
+
+            document.getElementById('label-start').textContent = esTarea ? 'Hora límite:' : 'Hora inicio:';
+            contenedorFin.style.display = esTarea ? 'none' : 'flex';
+            document.getElementById('time-inputs').style.opacity = esTodoDia ? '0.5' : '1';
+            inicio.disabled = esTodoDia;
+            inicio.required = !esTodoDia;
+            fin.disabled = esTodoDia || esTarea;
+            fin.required = !esTodoDia && !esTarea;
+            tipoAnteriorFormulario = tipo;
+        }
+
+        // La edición utiliza el MISMO formulario que la creación, sin duplicar eventos.
+        function editarEvento(idEvento) {
+            const evento = eventosGuardados.find(item => String(item.id) === String(idEvento));
+            if (!evento) {
+                alert('No se encontró el evento que deseas editar.');
+                return;
+            }
+            idEventoEnEdicion = String(evento.id);
+            const fecha = fechaLocal(evento.start);
+            if (Number.isNaN(fecha.getTime())) {
+                alert('El evento no tiene una fecha válida.');
+                idEventoEnEdicion = null;
+                return;
+            }
+
+            document.getElementById('event-date').value = [
+                fecha.getFullYear(),
+                String(fecha.getMonth() + 1).padStart(2, '0'),
+                String(fecha.getDate()).padStart(2, '0')
+            ].join('-');
+            document.getElementById('event-type').value = coloresEvento[evento.tipo] ? evento.tipo : 'examen';
+            document.getElementById('event-title').value = evento.title || '';
+
+            const tieneHora = typeof evento.start === 'string' && evento.start.includes('T');
+            const esTarea = evento.tipo === 'tarea';
+            document.getElementById('event-allday').checked = !esTarea && (evento.allDay !== false || !tieneHora);
+            actualizarCamposHorario(); // Restablecer required/disabled/labels para el tipo elegido.
+
+            // Compatibilidad con las tareas antiguas que guardaban «Hasta 23:59» en desc.
+            const horaAnterior = (String(evento.desc || '').match(/(?:[01]\d|2[0-3]):[0-5]\d/) || [])[0] || '';
+            document.getElementById('event-start-time').value = esTarea
+                ? (evento.horaLimite || (tieneHora ? horaHHMM(evento.start) : horaAnterior))
+                : (tieneHora ? horaHHMM(evento.start) : '');
+            document.getElementById('event-end-time').value = !esTarea && evento.end ? horaHHMM(evento.end) : '';
+
+            document.getElementById('form-evento-titulo').textContent = 'Editar Evento';
+            document.getElementById('btn-guardar-evento').textContent = 'Guardar Cambios';
+            document.getElementById('btn-cancelar-edicion').hidden = false;
+            renderizarListaAdmin();
+            document.getElementById('form-evento').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            document.getElementById('event-title').focus({ preventScroll: true });
+        }
+
+        function cancelarEdicion() {
+            idEventoEnEdicion = null;
+            document.getElementById('form-evento').reset();
+            actualizarCamposHorario();
+            document.getElementById('form-evento-titulo').textContent = 'Añadir Nuevo Evento';
+            document.getElementById('btn-guardar-evento').textContent = 'Guardar Evento';
+            document.getElementById('btn-cancelar-edicion').hidden = true;
+            renderizarListaAdmin();
+        }
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('admin-panel');
+            const vista = document.getElementById('vista-calendario');
+            if (panel.style.display === 'none') {
+                panel.style.display = 'block';
+                vista.style.display = 'none';
+            } else {
+                panel.style.display = 'none';
+                vista.style.display = 'flex';
+                if (calendario) calendario.render();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const estado = await MC325Datos.leer('eventos');
+                eventosGuardados = estado.items.map(evento => ({
+                    ...evento,
+                    ...(evento.tipo === 'tarea' && evento.allDay === false && String(evento.start).includes('T')
+                        ? { horaLimite: evento.horaLimite || horaHHMM(evento.start), end: null } : {}),
+                    backgroundColor: (coloresEvento[evento.tipo] || coloresEvento.examen).bg,
+                    borderColor: (coloresEvento[evento.tipo] || coloresEvento.examen).border,
+                    textColor: (coloresEvento[evento.tipo] || coloresEvento.examen).text
+                }));
+            } catch (error) {
+                console.error('Error al cargar los eventos publicados:',error);
+                document.getElementById('proximas-actividades-list').textContent = error.message;
+                document.getElementById('calendar-list').textContent = error.message;
+                return;
+            }
+            document.getElementById('event-type').addEventListener('change', function() {
+                // Al salir de «Feriado», permitir horarios de clase/examen por defecto.
+                if (tipoAnteriorFormulario === 'feriado' && this.value !== 'feriado') {
+                    document.getElementById('event-allday').checked = false;
+                }
+                actualizarCamposHorario();
+            });
+            document.getElementById('event-allday').addEventListener('change', actualizarCamposHorario);
+            actualizarCamposHorario(); // IMPORTANTE: «tarea» ya está seleccionada inicialmente.
+            document.getElementById('btn-cancelar-edicion').addEventListener('click', cancelarEdicion);
+
+            calendario = new FullCalendar.Calendar(document.getElementById('calendario-web'), {
+                locale: 'es',
+                initialView: 'dayGridMonth',
+                eventDisplay: 'block',
+                defaultTimedEventDuration: '00:30:00', // Solo presentación cuando no hay 'end'.
+                eventMinHeight: 20,
+                slotLabelFormat: { hour: 'numeric', minute: '2-digit', hour12: false },
+                eventTimeFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek'
+                },
+                buttonText: { today: 'Hoy', month: 'Mes', week: 'Semana' },
+                events: eventosGuardados,
+                eventClassNames: function(arg) {
+                    return arg.event.extendedProps.tipo === 'tarea' ? ['evento-vencimiento'] : [];
+                },
+                eventContent: function(arg) {
+                    const evento = arg.event;
+                    const propiedades = evento.extendedProps;
+                    const texto = textoHorario({
+                        tipo: propiedades.tipo,
+                        start: evento.startStr,
+                        end: evento.endStr || null,
+                        allDay: evento.allDay,
+                        horaLimite: propiedades.horaLimite,
+                        desc: propiedades.desc
+                    });
+                    const color = evento.textColor || '#333';
+                    return {
+                        html: `<div style="color:${escaparHTML(color)};padding:2px 4px;text-align:left;overflow:hidden;">
+                            <div style="font-weight:600;font-size:0.75rem;line-height:1.2;white-space:normal;">${escaparHTML(evento.title)}</div>
+                            <div style="font-size:0.65rem;font-weight:500;opacity:0.9;margin-top:2px;line-height:1.1;white-space:normal;">${escaparHTML(texto)}</div>
+                        </div>`
+                    };
+                },
+                eventClick: function(info) {
+                    const props = info.event.extendedProps;
+                    const descripcion = textoHorario({
+                        tipo: props.tipo, start: info.event.startStr,
+                        end: info.event.endStr || null, allDay: info.event.allDay,
+                        horaLimite: props.horaLimite, desc: props.desc
+                    });
+                    alert(`${info.event.title}\n${descripcion}\nPara gestionar, ingresa al Modo Docente.`);
+                }
+            });
+            calendario.render();
+            renderizarListaAdmin();
+            renderizarProximasActividades();
+
+            document.getElementById('form-evento').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const fecha = document.getElementById('event-date').value;
+                const tipo = document.getElementById('event-type').value;
+                const titulo = document.getElementById('event-title').value.trim();
+                const esTarea = tipo === 'tarea';
+                // Refuerzo de integridad: un feriado nunca se guarda con horas.
+                const todoElDia = tipo === 'feriado' || (!esTarea && document.getElementById('event-allday').checked);
+                const inicio = document.getElementById('event-start-time').value;
+                const fin = document.getElementById('event-end-time').value;
+
+                if (!fecha || !titulo || (!todoElDia && !inicio)) {
+                    alert('Completa la fecha, el título y la hora correspondiente.');
+                    return;
+                }
+                if (!esTarea && !todoElDia && (!fin || fin <= inicio)) {
+                    alert('La hora de fin debe ser posterior a la de inicio.');
+                    return;
+                }
+
+                const indiceEdicion = idEventoEnEdicion === null ? -1
+                    : eventosGuardados.findIndex(item => String(item.id) === idEventoEnEdicion);
+                if (idEventoEnEdicion !== null && indiceEdicion === -1) {
+                    alert('El evento original ya no existe.');
+                    cancelarEdicion();
+                    return;
+                }
+                const anterior = indiceEdicion >= 0 ? eventosGuardados[indiceEdicion] : null;
+                const nuevoEvento = {
+                    // Mantener el mismo ID al editar: nunca se crea un duplicado.
+                    id: anterior ? anterior.id : ((window.crypto && crypto.randomUUID)
+                        ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`),
+                    start: todoElDia ? fecha : `${fecha}T${inicio}:00`,
+                    end: (!esTarea && !todoElDia) ? `${fecha}T${fin}:00` : null,
+                    allDay: todoElDia,
+                    title: titulo,
+                    tipo,
+                    ...(esTarea ? { horaLimite: inicio } : {}),
+                    // Conservar la descripción de eventos antiguos de día completo cuando procede.
+                    ...(anterior && anterior.tipo === tipo && todoElDia && anterior.desc
+                        ? { desc: anterior.desc } : {}),
+                    backgroundColor: coloresEvento[tipo].bg,
+                    borderColor: coloresEvento[tipo].border,
+                    textColor: coloresEvento[tipo].text
+                };
+
+                if (indiceEdicion >= 0) {
+                    eventosGuardados[indiceEdicion] = nuevoEvento;
+                    // Sincronizar el calendario actual (mes y semana) sin recargar la página.
+                    const anteriorVisual = calendario.getEventById(String(nuevoEvento.id));
+                    if (anteriorVisual) anteriorVisual.remove();
+                } else {
+                    eventosGuardados.push(nuevoEvento);
+                }
+                guardarEventos();
+                calendario.addEvent(nuevoEvento);
+                renderizarProximasActividades();
+                cancelarEdicion();
+            });
+        });
+
+        function renderizarProximasActividades() {
+            const contenedor = document.getElementById('proximas-actividades-list');
+            const ahora = new Date();
+            const proximos = eventosGuardados
+                .filter(evento => fechaCierre(evento).getTime() >= ahora.getTime())
+                .sort((a, b) => inicioParaOrdenar(a) - inicioParaOrdenar(b))
+                .slice(0, 3);
+            if (!proximos.length) {
+                contenedor.innerHTML = '<p style="font-size:0.85rem;color:var(--text-light);text-align:center;">No hay actividades próximas programadas.</p>';
+                return;
+            }
+            const meses = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+            contenedor.innerHTML = proximos.map(evento => {
+                const fecha = fechaLocal(evento.start);
+                const color = (coloresEvento[evento.tipo] || coloresEvento.examen).border;
+                return `<div style="display:flex;gap:10px;margin-bottom:12px;align-items:center;border-bottom:1px solid #f0f0f0;padding-bottom:12px;">
+                    <div style="background:#fdf5f5;color:var(--uni-red-dark);padding:6px 12px;border-radius:4px;text-align:center;min-width:55px;border:1px solid #fadbd8;">
+                        <span style="font-size:0.65rem;font-weight:bold;display:block;">${meses[fecha.getMonth()]}</span>
+                        <strong style="font-size:1.1rem;line-height:1.1;">${String(fecha.getDate()).padStart(2,'0')}</strong>
+                    </div>
+                    <div style="flex:1;min-width:0;">
+                        <h4 style="font-size:0.9rem;margin:0 0 2px 0;color:var(--text-main);font-weight:600;">${escaparHTML(evento.title)}</h4>
+                        <p style="font-size:0.75rem;color:var(--text-light);margin:0;">${escaparHTML(textoHorario(evento))}</p>
+                    </div>
+                    <div style="width:8px;height:8px;border-radius:50%;background:${color};margin-left:auto;flex-shrink:0;"></div>
+                </div>`;
+            }).join('');
+            if (contenedor.lastElementChild) contenedor.lastElementChild.style.borderBottom = 'none';
+        }
+
+        function renderizarListaAdmin() {
+            const contenedor = document.getElementById('calendar-list');
+            const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+            contenedor.innerHTML = [...eventosGuardados]
+                .sort((a, b) => inicioParaOrdenar(a) - inicioParaOrdenar(b))
+                .map(evento => {
+                    const fecha = fechaLocal(evento.start);
+                    const color = (coloresEvento[evento.tipo] || coloresEvento.examen).border;
+                    return `<div class="event-card${idEventoEnEdicion === String(evento.id) ? ' event-card-editing' : ''}">
+                        <div class="event-date-box" style="background-color:${color};color:white;">
+                            <div class="month">${meses[fecha.getMonth()]}</div>
+                            <div class="day">${String(fecha.getDate()).padStart(2,'0')}</div>
+                        </div>
+                        <div class="event-details">
+                            <h4>${escaparHTML(evento.title)}</h4>
+                            <p>${escaparHTML(textoHorario(evento))}</p>
+                        </div>
+                        <div class="event-card-actions">
+                            <button type="button" class="btn-edit-event" data-action="editar" data-event-id="${escaparHTML(evento.id)}" title="Editar evento" aria-label="Editar ${escaparHTML(evento.title)}">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button type="button" class="btn-delete-event" data-action="eliminar" data-event-id="${escaparHTML(evento.id)}" title="Eliminar evento" aria-label="Eliminar ${escaparHTML(evento.title)}">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>`;
+                }).join('');
+        }
+
+        document.getElementById('calendar-list').addEventListener('click', function(e) {
+            const boton = e.target.closest('button[data-action][data-event-id]');
+            if (!boton) return;
+            if (boton.dataset.action === 'editar') editarEvento(boton.dataset.eventId);
+            if (boton.dataset.action === 'eliminar') borrarEvento(boton.dataset.eventId);
+        });
+
+        function borrarEvento(idEvento) {
+            if (!confirm('¿Seguro que deseas eliminar este evento?')) return;
+            if (idEventoEnEdicion === String(idEvento)) cancelarEdicion();
+            eventosGuardados = eventosGuardados.filter(evento => String(evento.id) !== String(idEvento));
+            guardarEventos();
+            if (calendario) {
+                const eventoVisual = calendario.getEventById(idEvento);
+                if (eventoVisual) eventoVisual.remove();
+            }
+            renderizarListaAdmin();
+            renderizarProximasActividades();
         }
     </script>
 </body>
