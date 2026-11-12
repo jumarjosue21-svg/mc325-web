@@ -1,8 +1,0 @@
-Paquete MC325 — Actualización del repositorio GitHub
-
-1. Extraer este ZIP en la RAÍZ del repositorio local. Fusionar carpetas; reemplazar los JSON.
-2. NO borrar las carpetas existentes: el ZIP incluye los artículos nuevos, los editados y los PDF nuevos o reemplazados.
-3. Fusionar data y actualizar unidades.json; si hay ARCHIVOS-A-RETIRAR.txt, revisar y retirar las rutas indicadas.
-4. Confirmar las imágenes a las que apunta cada artículo.
-5. Probar con Live Server y hacer Commit + Push en GitHub Desktop.
-6. Mantener el respaldo original en un lugar privado.
