@@ -110,26 +110,30 @@ body {
     padding-right: 1.5rem;
 }
 
-/* Identidad institucional: logotipo oficial, sin iconos ni texto recreado. */
-.logo-uni-img {
+/* Identidad institucional: el PNG original mide 960 x 456, pero en la
+   barra superior se muestra a escala y nunca debe ampliar el encabezado. */
+.navbar .logo-uni .logo-uni-img {
     display: block;
-    height: 58px;
     width: auto;
-    max-width: none;
+    height: 58px;
+    max-width: 122px;
+    max-height: 58px;
     object-fit: contain;
+    flex: 0 0 auto;
 }
+.navbar .nav-title { min-width: 0; }
 
 /* Ajustes del encabezado para pantallas estrechas. */
 @media (max-width: 950px) {
     .navbar { padding: 0.35rem 1rem; }
     .navbar .logo-uni { padding-right: 0.85rem; }
-    .navbar .logo-uni-img { height: 49px; }
+    .navbar .logo-uni .logo-uni-img { height: 49px; max-height: 49px; max-width: 104px; }
     .navbar .nav-left { gap: 0.85rem; min-width: 0; }
     .navbar .nav-right .search-bar { display: none; }
 }
 @media (max-width: 560px) {
     .navbar .logo-uni { padding-right: 0.65rem; }
-    .navbar .logo-uni-img { height: 43px; }
+    .navbar .logo-uni .logo-uni-img { height: 43px; max-height: 43px; max-width: 91px; }
     .navbar .nav-left { gap: 0.65rem; }
     .navbar .nav-title h1 { font-size: 0.87rem; }
     .navbar .nav-title p { font-size: 0.67rem; }
