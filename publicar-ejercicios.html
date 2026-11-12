@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Publicar ejercicios — MC325</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .pe-wrap{max-width:870px;margin:35px auto;padding:0 20px 60px;}
+    .pe-card{padding:28px 30px;background:white;border-radius:10px;border:1px solid #ddd;box-shadow:0 3px 12px #00000009;}
+    .pe-title{font-size:1.8rem;color:var(--uni-red-dark);margin:0 0 12px;}
+    .pe-text{color:#53616b;font-size:.92rem;line-height:1.75;margin:0 0 15px;}
+    .pe-counts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0;}
+    .pe-count{border:1px solid #e4e6e9;background:#f8fafb;border-radius:8px;padding:15px;text-align:center;}
+    .pe-count strong{font-size:1.6rem;color:var(--uni-red-dark);display:block;}
+    .pe-count span{font-size:.78rem;color:#6b737d;}
+    .pe-btn{display:inline-block;padding:11px 16px;background:var(--uni-red-dark);color:white;border:0;border-radius:5px;cursor:pointer;font-size:.87rem;margin:5px 8px 5px 0;text-decoration:none;}
+    .pe-btn:hover{background:var(--uni-red);}
+    .pe-btn-secondary{background:#fff;color:var(--uni-red-dark);border:1px solid #bd8c85;}
+    .pe-btn-secondary:hover{background:#fff4f2;color:var(--uni-red-dark);}
+    .pe-status{margin:16px 0;padding:14px;border-radius:6px;background:#f4f8fb;border:1px solid #d8e4ec;color:#36586c;white-space:pre-wrap;line-height:1.55;font-size:.88rem;}
+    .pe-warning{background:#fff9f2;border-color:#f1ddc4;color:#7e5628;}
+    @media(max-width:600px){.pe-counts{grid-template-columns:1fr;}.pe-card{padding:20px;}}
+  </style>
+  <script defer src="lib/jszip.min.js"></script>
+  <script defer src="js/ejercicios-datos.js"></script>
+</head>
+<body>
+<header class="navbar"><div class="nav-left"><div class="logo-uni"><i class="fa-solid fa-university"></i><div class="logo-text"><span>UNIVERSIDAD NACIONAL</span><span>DE INGENIERÍA</span></div></div><div class="nav-title"><h1>Resistencia de Materiales II</h1><p>Publicación de ejercicios resueltos</p></div></div></header>
+<main class="pe-wrap">
+ <div class="pe-card">
+  <h1 class="pe-title"><i class="fa-solid fa-file-export"></i> Preparar ejercicios para GitHub</h1>
+  <p class="pe-text">Esta herramienta prepara un ZIP con los cambios de <strong>Ejercicios Resueltos</strong>. No sube nada directamente a GitHub. Debes incorporar el contenido al repositorio y hacer Commit y Push desde GitHub Desktop.</p>
+  <p class="pe-text">Ábrela desde el <strong>mismo Live Server y navegador</strong> donde agregaste o editaste los ejercicios. Los PDF se leen desde el almacenamiento local del navegador.</p>
+  <div class="pe-counts">
+   <div class="pe-count"><strong id="pe-publicados">—</strong><span>Ejercicios publicados</span></div>
+   <div class="pe-count"><strong id="pe-cambios">—</strong><span>Ejercicios nuevos o editados</span></div>
+   <div class="pe-count"><strong id="pe-eliminados">—</strong><span>Retirados</span></div>
+  </div>
+  <div id="pe-estado" class="pe-status" role="status" aria-live="polite">Leyendo archivos y borradores...</div>
+  <button id="pe-exportar" class="pe-btn" type="button" disabled><i class="fa-solid fa-download"></i> Descargar paquete de cambios ZIP</button>
+  <button id="pe-limpiar" class="pe-btn pe-btn-secondary" type="button"><i class="fa-solid fa-broom"></i> Limpiar borradores ya publicados</button>
+  <a class="pe-btn pe-btn-secondary" href="ejercicios.html"><i class="fa-solid fa-arrow-left"></i> Volver a ejercicios</a>
+  <div class="pe-status pe-warning"><strong>Importante:</strong> no pulses «Limpiar borradores» hasta comprobar que el ZIP ya se incorporó y se publicó correctamente en GitHub Pages. Si otros compañeros han actualizado el repositorio desde que creaste tus borradores, detén la exportación y resuelve los cambios antes de reemplazar el JSON.</div>
+ </div>
+</main>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+'use strict';
+const D=window.MC325EjerciciosDatos;
+const $=id=>document.getElementById(id);
+let publicados=[],estadoLocal;
+const rutaValida=r=>typeof r==='string' && r.startsWith('ejercicios/') && !r.split('/').some(x=>x==='..'||x==='.'||!x) && !r.includes('\\');
+const slug=v=>String(v||'ejercicio').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9_.-]/g,'-').replace(/-{2,}/g,'-').slice(0,95);
+function mensaje(t,error=false){$('pe-estado').textContent=t;$('pe-estado').style.color=error?'#a12828':'#36586c';}
+async function cargar(){
+  try{
+    publicados=await D.obtenerPublicados();estadoLocal=D.obtenerLocales();
+    $('pe-publicados').textContent=publicados.length;
+    $('pe-cambios').textContent=Object.keys(estadoLocal.cambios).length;
+    $('pe-eliminados').textContent=estadoLocal.eliminados.length;
+    const cuantos=Object.keys(estadoLocal.cambios).length+estadoLocal.eliminados.length;
+    mensaje(cuantos?`Se detectaron ${cuantos} cambios locales pendientes de publicar.`:'No hay cambios locales pendientes.');
+    $('pe-exportar').disabled=cuantos===0;
+    if(estadoLocal.base && estadoLocal.base!==JSON.stringify(publicados)){
+      mensaje('Advertencia: los ejercicios publicados cambiaron desde que comenzaste estos borradores. Actualiza el repositorio y revisa los cambios antes de exportar. No se generará un ZIP que pueda sobrescribirlos.',true);
+      $('pe-exportar').disabled=true;
+    }
+  }catch(err){mensaje('No se pudieron cargar los datos: '+err.message+'\nAbre esta página con Live Server y comprueba data/ejercicios.json.',true);$('pe-exportar').disabled=true;}
+}
+async function exportar(){
+  if(typeof JSZip==='undefined')return mensaje('Falta lib/jszip.min.js. Asegúrate de mantener la carpeta lib del repositorio.',true);
+  if(estadoLocal.base && estadoLocal.base!==JSON.stringify(publicados))return mensaje('Los datos publicados cambiaron. Revisa y sincroniza antes de exportar.',true);
+  $('pe-exportar').disabled=true;mensaje('Generando paquete...');
+  try{
+    const zip=new JSZip();
+    const mapaOriginal=new Map(publicados.map(e=>[String(e.id),e]));
+    const final=D.combinar(publicados,estadoLocal);
+    const retirados=new Set();
+    const imagenValida=r=>rutaValida(r) && /^ejercicios\/enunciados\/[a-zA-Z0-9_.-]+\.(png|jpe?g|webp)$/i.test(r);
+    for(const e of final){
+      const original=mapaOriginal.get(String(e.id));
+      const modificado=Object.prototype.hasOwnProperty.call(estadoLocal.cambios,String(e.id));
+      if(modificado){
+        if(e.formato==='web'){
+          if(typeof e.contenido==='string'){
+            const ruta=original?.formato==='web' && rutaValida(original.ruta) && /\.md$/i.test(original.ruta) ? original.ruta : `ejercicios/articulos/${slug(e.id)}.md`;
+            zip.file(ruta,e.contenido); e.ruta=ruta;
+          } else if(!e.ruta) throw new Error(`Falta contenido Markdown para ${e.titulo}`);
+        } else if(e.formato==='pdf'){
+          if(e.archivoLocalId){
+            const archivo=await D.leerArchivo(e.archivoLocalId);
+            if(!archivo?.blob)throw new Error(`No se pudo recuperar el PDF local de ${e.titulo}`);
+            const ruta=`ejercicios/pdfs/${slug(e.id)}-${slug(archivo.nombre).replace(/\.pdf$/i,'')}.pdf`;
+            zip.file(ruta,archivo.blob);e.ruta=ruta;
+          } else if(!e.ruta)throw new Error(`No se encontró un PDF para ${e.titulo}`);
+        } else throw new Error(`Formato no admitido: ${e.formato}`);
+      }
+      // La imagen del enunciado es opcional y solo existe para ejercicios WEB.
+      if(e.formato==='web' && modificado && e.enunciadoLocalId){
+        const img=await D.leerArchivo(e.enunciadoLocalId);
+        if(!img?.blob)throw new Error(`No se encontró la imagen del enunciado de ${e.titulo}`);
+        const extension=(img.nombre||'').split('.').pop().toLowerCase();
+        if(!['png','jpg','jpeg','webp'].includes(extension))throw new Error(`La imagen de ${e.titulo} tiene una extensión no admitida.`);
+        const ruta=`ejercicios/enunciados/${slug(e.id)}.${extension}`;
+        zip.file(ruta,img.blob); e.enunciadoRuta=ruta;
+      }
+      if(e.formato!=='web') e.enunciadoRuta=null;
+      if(e.enunciadoRuta && !imagenValida(e.enunciadoRuta))throw new Error(`Ruta del enunciado no permitida: ${e.enunciadoRuta}`);
+      if(original?.ruta && e.ruta!==original.ruta && rutaValida(original.ruta))retirados.add(original.ruta);
+      if(original?.enunciadoRuta && e.enunciadoRuta!==original.enunciadoRuta && imagenValida(original.enunciadoRuta))retirados.add(original.enunciadoRuta);
+      if(e.ruta && !rutaValida(e.ruta))throw new Error(`Ruta no permitida en el ejercicio ${e.titulo}: ${e.ruta}`);
+      delete e.contenido;delete e.archivoLocalId;delete e.enunciadoLocalId;
+    }
+    for(const id of estadoLocal.eliminados){
+      const viejo=mapaOriginal.get(String(id));
+      if(viejo?.ruta && rutaValida(viejo.ruta))retirados.add(viejo.ruta);
+      if(viejo?.enunciadoRuta && imagenValida(viejo.enunciadoRuta))retirados.add(viejo.enunciadoRuta);
+    }
+    const referenciadas=new Set(final.flatMap(e=>[e.ruta,e.enunciadoRuta]).filter(Boolean));
+    const eliminar=[...retirados].filter(r=>!referenciadas.has(r));
+    zip.file('data/ejercicios.json',JSON.stringify(final,null,2)+'\n');
+    if(eliminar.length)zip.file('ARCHIVOS-A-RETIRAR.txt',eliminar.join('\n')+'\n');
+    zip.file('INSTRUCCIONES-PARA-GITHUB.txt',
+      'MC325 — Publicación de ejercicios resueltos\n\n1. Actualiza el repositorio con Fetch/Pull.\n2. Descomprime ESTE ZIP dentro de la raíz del repositorio, combinando carpetas.\n3. Si existe ARCHIVOS-A-RETIRAR.txt, comprueba que los archivos allí enumerados ya no se mencionen en data/ejercicios.json antes de borrarlos.\n4. Revisa el sitio con Live Server, preferentemente en incógnito.\n5. Haz Commit y Push desde GitHub Desktop.\n6. Comprueba GitHub Pages y SOLO ENTONCES borra tus borradores locales si quieres.\n\nLas aportaciones de estudiantes hechas en otros navegadores no se incluyen automáticamente.\n');
+    const archivo=await zip.generateAsync({type:'blob'});
+    const url=URL.createObjectURL(archivo);const a=document.createElement('a');a.href=url;a.download=`mc325-ejercicios-publicacion-${new Date().toISOString().slice(0,10)}.zip`;a.click();setTimeout(()=>URL.revokeObjectURL(url),20000);
+    mensaje(`Paquete generado: ${final.length} ejercicios en el índice JSON y ${eliminar.length} archivos antiguos señalados para retirar. Revisa el ZIP antes de hacer Commit y Push.`);
+  }catch(err){mensaje('Error al generar el ZIP: '+err.message,true);}finally{$('pe-exportar').disabled=false;}
+}
+$('pe-exportar').addEventListener('click',exportar);
+$('pe-limpiar').addEventListener('click',()=>{
+  if(!confirm('Esto elimina únicamente los borradores LOCALES de ejercicios y no elimina los archivos del repositorio. ¿Ya confirmaste que se publicaron correctamente en GitHub Pages?'))return;
+  D.limpiarBorradores();cargar();
+});
+cargar();
+});
+</script>
+</body></html>

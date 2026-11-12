@@ -1,0 +1,28 @@
+[
+  {
+    "id": "3023c9d8-a54e-4d55-945c-b0bdec508294",
+    "origen": "estudiante",
+    "unidad": "unidad3",
+    "titulo": "Ejercicio N°4",
+    "descripcion": "",
+    "autor": "Juan Lopez",
+    "dificultad": "intermedio",
+    "formato": "pdf",
+    "fecha": "2026-11-12T11:07:22.168Z",
+    "ruta": "ejercicios/pdfs/3023c9d8-a54e-4d55-945c-b0bdec508294-Ejercicio-04-1-.pdf",
+    "enunciadoRuta": null
+  },
+  {
+    "id": "749dd942-59a0-4278-af5e-dbcdf38c8c51",
+    "origen": "clase",
+    "unidad": "unidad3",
+    "titulo": "Ejercicio N°3",
+    "descripcion": "",
+    "autor": "Docente",
+    "dificultad": "intermedio",
+    "formato": "web",
+    "fecha": "2026-11-12T11:11:25.752Z",
+    "ruta": "ejercicios/articulos/749dd942-59a0-4278-af5e-dbcdf38c8c51.md",
+    "enunciadoRuta": "ejercicios/enunciados/749dd942-59a0-4278-af5e-dbcdf38c8c51.jpg"
+  }
+]

@@ -6,6 +6,13 @@
     <title>Ejercicios Resueltos - Resistencia de Materiales II</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="ejercicios.css">
+    <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},chtml:{displayAlign:"center",displayIndent:"0"}};</script>
+    <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+    <script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer src="js/ejercicios-datos.js"></script>
+    <script defer src="js/ejercicios-mc325.js"></script>
 </head>
 <body>
     <!-- BARRA SUPERIOR -->
@@ -73,258 +80,97 @@
 
         <!-- ÁREA DE CONTENIDO: EJERCICIOS RESUELTOS -->
         <main class="content-area">
-            
-            <div class="breadcrumb">
-                Inicio / <strong>Ejercicios Resueltos</strong>
-            </div>
-
-            <div class="page-header">
-                <h2>Ejercicios Resueltos</h2>
-                <p>Problemas tipo del curso con su enunciado y solución paso a paso.</p>
-            </div>
-
-            <div class="filter-bar">
-                <div class="filter-buttons">
-                    <button class="active">Todas las unidades</button>
-                    <button>Unidad 1</button>
-                    <button>Unidad 2</button>
-                    <button>Unidad 3</button>
-                    <button>Unidad 4</button>
+            <div class="breadcrumb">Inicio / <strong>Ejercicios Resueltos</strong></div>
+            <div class="page-header ex-heading">
+                <div>
+                    <h2>Ejercicios Resueltos</h2>
+                    <p>Soluciones desarrolladas en clase y aportes de estudiantes, organizados por unidad.</p>
                 </div>
-                <!-- Barra de búsqueda específica de ejercicios -->
-                <div class="exercise-search">
-                    <input type="text" placeholder="Buscar ejercicio...">
+                <div class="ex-heading-actions">
+                    <button id="ex-btn-docente" class="ex-btn ex-btn-outline" type="button"><i class="fa-solid fa-lock"></i> Modo Docente</button>
+                    <button id="ex-btn-publicar" class="ex-btn" type="button"><i class="fa-solid fa-plus"></i> Subir ejercicio resuelto</button>
                 </div>
             </div>
-
-            <div class="material-layout">
-                
-                <!-- COLUMNA IZQUIERDA: LISTA DE EJERCICIOS -->
-                <div class="files-column">
-                    
-                    <!-- UNIDAD 2 -->
-                    <div class="file-group">
-                        <div class="group-header">
-                            <h3><span class="circle-num-white">2</span> Unidad 2: Vigas y Ejes</h3>
-                            <span class="file-count">[03] ejercicios</span>
-                        </div>
-                        <div class="group-content">
-                            <!-- Ejercicio 1 -->
-                            <div class="file-row exercise-row">
-                                <div class="exercise-img-box">
-                                    <i class="fa-solid fa-ruler-horizontal"></i>
-                                </div>
-                                <div class="file-details">
-                                    <h4>Ejercicio 1: [Título del problema]</h4>
-                                    <p>Viga simplemente apoyada con carga distribuida</p>
-                                    <div class="exercise-tags">
-                                        <span class="tag tag-topic">Vigas y ejes</span>
-                                        <span class="tag tag-basic">Básico</span>
-                                        <span class="tag tag-method">Manual</span>
-                                    </div>
-                                </div>
-                                <div class="exercise-actions">
-                                    <button class="btn-outline">Enunciado</button>
-                                    <button class="btn-solid">Ver solución</button>
-                                </div>
-                            </div>
-
-                            <!-- Ejercicio 2 -->
-                            <div class="file-row exercise-row">
-                                <div class="exercise-img-box">
-                                    <i class="fa-solid fa-ruler-horizontal"></i>
-                                </div>
-                                <div class="file-details">
-                                    <h4>Ejercicio 2: [Título del problema]</h4>
-                                    <p>Deflexión por integración doble</p>
-                                    <div class="exercise-tags">
-                                        <span class="tag tag-topic">Vigas y ejes</span>
-                                        <span class="tag tag-intermediate">Intermedio</span>
-                                        <span class="tag tag-method">Manual</span>
-                                    </div>
-                                </div>
-                                <div class="exercise-actions">
-                                    <button class="btn-outline">Enunciado</button>
-                                    <button class="btn-solid">Ver solución</button>
-                                </div>
-                            </div>
-
-                            <!-- Ejercicio 3 -->
-                            <div class="file-row exercise-row">
-                                <div class="exercise-img-box">
-                                    <i class="fa-solid fa-ruler-horizontal"></i>
-                                </div>
-                                <div class="file-details">
-                                    <h4>Ejercicio 3: [Título del problema]</h4>
-                                    <p>Eje sometido a torsión y flexión combinadas</p>
-                                    <div class="exercise-tags">
-                                        <span class="tag tag-topic">Vigas y ejes</span>
-                                        <span class="tag tag-advanced">Avanzado</span>
-                                        <span class="tag tag-method">Manual</span>
-                                    </div>
-                                </div>
-                                <div class="exercise-actions">
-                                    <button class="btn-outline">Enunciado</button>
-                                    <button class="btn-solid">Ver solución</button>
-                                </div>
-                            </div>
-                        </div>
+            <div class="ex-note" role="status"><i class="fa-solid fa-flask"></i><strong>Versión de prueba.</strong> Los ejercicios ya incorporados al repositorio son públicos. Las nuevas aportaciones se guardan solo en este navegador hasta que integremos Firebase. El Modo Docente aún no tiene autenticación real.</div>
+            <section id="ex-admin" class="ex-admin-pane" hidden aria-label="Administración de ejercicios">
+                <div><h3><i class="fa-solid fa-graduation-cap"></i> Gestión de ejercicios</h3><p>Publica ejercicios hechos en clase, o edita y elimina ejercicios existentes. Los cambios se exportan después para GitHub.</p></div>
+                <button type="button" id="ex-btn-clase" class="ex-btn"><i class="fa-solid fa-plus"></i> Añadir ejercicio de clase</button>
+            </section>
+            <section id="ex-editor" class="ex-editor" hidden aria-label="Formulario para publicar ejercicio">
+                <div class="ex-editor-header"><h3 id="ex-editor-titulo">Subir ejercicio resuelto</h3><button class="ex-btn ex-btn-subtle ex-btn-mini" id="ex-editor-cerrar" type="button"><i class="fa-solid fa-xmark"></i> Cerrar</button></div>
+                <form id="ex-form" class="ex-form">
+                    <div class="ex-form-grid">
+                        <div class="ex-form-field"><label for="ex-titulo">Título del ejercicio *</label><input id="ex-titulo" type="text" maxlength="160" required placeholder="Ej. Cálculo de reacciones en una viga curva"></div>
+                        <div class="ex-form-field"><label for="ex-unidad">Unidad del curso *</label><select id="ex-unidad" required></select></div>
+                        <div class="ex-form-field"><label for="ex-autor">Autor o nombre del estudiante *</label><input id="ex-autor" type="text" maxlength="90" required placeholder="Tu nombre o alias"></div>
+                        <div class="ex-form-field"><label for="ex-dificultad">Dificultad</label><select id="ex-dificultad"><option value="basico">Básico</option><option value="intermedio" selected>Intermedio</option><option value="avanzado">Avanzado</option></select></div>
+                        <div class="ex-form-field"><label for="ex-formato">Formato de la solución *</label><select id="ex-formato"><option value="web">Artículo web (Markdown + LaTeX)</option><option value="pdf">Documento PDF</option></select></div>
+                        <div class="ex-form-field"><label for="ex-descripcion">Descripción breve (opcional)</label><input id="ex-descripcion" type="text" maxlength="280" placeholder="Ej. Desarrollo por equilibrio y polígonos de fuerza"></div>
                     </div>
-
-                    <!-- UNIDAD 3 -->
-                    <div class="file-group">
-                        <div class="group-header">
-                            <h3><span class="circle-num-white">3</span> Unidad 3: Placas Continuas</h3>
-                            <span class="file-count">[02] ejercicios</span>
-                        </div>
-                        <div class="group-content">
-                            <!-- Ejercicio 1 -->
-                            <div class="file-row exercise-row">
-                                <div class="exercise-img-box">
-                                    <i class="fa-solid fa-layer-group"></i>
-                                </div>
-                                <div class="file-details">
-                                    <h4>Ejercicio 1: [Título del problema]</h4>
-                                    <p>Placa con apoyos continuos y carga uniforme</p>
-                                    <div class="exercise-tags">
-                                        <span class="tag tag-topic">Placas continuas</span>
-                                        <span class="tag tag-intermediate">Intermedio</span>
-                                        <span class="tag tag-method">Manual</span>
-                                    </div>
-                                </div>
-                                <div class="exercise-actions">
-                                    <button class="btn-outline">Enunciado</button>
-                                    <button class="btn-solid">Ver solución</button>
-                                </div>
-                            </div>
-
-                            <!-- Ejercicio 2 -->
-                            <div class="file-row exercise-row">
-                                <div class="exercise-img-box">
-                                    <i class="fa-solid fa-layer-group"></i>
-                                </div>
-                                <div class="file-details">
-                                    <h4>Ejercicio 2: [Título del problema]</h4>
-                                    <p>Cálculo de momentos en placa continua</p>
-                                    <div class="exercise-tags">
-                                        <span class="tag tag-topic">Placas continuas</span>
-                                        <span class="tag tag-advanced">Avanzado</span>
-                                        <span class="tag tag-method">MATLAB</span>
-                                    </div>
-                                </div>
-                                <div class="exercise-actions">
-                                    <button class="btn-outline">Enunciado</button>
-                                    <button class="btn-solid">Ver solución</button>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="ex-form-field" id="ex-campo-web"><label for="ex-contenido">Enunciado y solución en Markdown + LaTeX *</label><textarea id="ex-contenido" class="ex-large-editor" spellcheck="false" placeholder="## Enunciado&#10;&#10;Describe el problema...&#10;&#10;## Solución paso a paso&#10;&#10;$$&#10;\\sum F_x = 0&#10;$$"></textarea><p class="ex-hint">Usa `##` para títulos; `$...$` para fórmulas en línea y `$$...$$` para ecuaciones centradas. No necesitas código HTML. Las imágenes referenciadas deben incorporarse por separado al repositorio.</p></div>
+                    <div class="ex-form-field ex-enunciado-input" id="ex-campo-enunciado">
+                        <label for="ex-imagen-enunciado">Imagen del enunciado (opcional)</label>
+                        <input id="ex-imagen-enunciado" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+                        <p class="ex-hint">Una imagen con el enunciado completo y su figura (JPG, PNG o WebP, máximo 8 MB). Si no añades ninguna, el botón «Enunciado» aparecerá deshabilitado. La solución en LaTeX seguirá siendo visible.</p>
+                        <p class="ex-hint" id="ex-imagen-actual" hidden></p>
+                        <label class="ex-remove-image" id="ex-quitar-imagen-contenedor" hidden><input type="checkbox" id="ex-quitar-imagen"> Quitar imagen actual del enunciado</label>
                     </div>
-
-                    <!-- UNIDAD 4 -->
-                    <div class="file-group">
-                        <div class="group-header">
-                            <h3><span class="circle-num-white">4</span> Unidad 4: Métodos Numéricos</h3>
-                            <span class="file-count">[01] ejercicios</span>
-                        </div>
-                        <div class="group-content">
-                            <div class="file-row exercise-row">
-                                <div class="exercise-img-box">
-                                    <i class="fa-solid fa-laptop-code"></i>
-                                </div>
-                                <div class="file-details">
-                                    <h4>Ejercicio 1: [Título del problema]</h4>
-                                    <p>Solución numérica de una viga</p>
-                                    <div class="exercise-tags">
-                                        <span class="tag tag-topic">Métodos numéricos</span>
-                                        <span class="tag tag-intermediate">Intermedio</span>
-                                        <span class="tag tag-method">MATLAB</span>
-                                    </div>
-                                </div>
-                                <div class="exercise-actions">
-                                    <button class="btn-outline">Enunciado</button>
-                                    <button class="btn-solid">Ver solución</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                    <div class="ex-form-field" id="ex-campo-pdf" hidden><label for="ex-archivo">Archivo PDF (máx. 25 MB)</label><input id="ex-archivo" type="file" accept=".pdf,application/pdf"><p class="ex-hint" id="ex-pdf-actual">Incluye el enunciado y su resolución en el PDF. En una edición, puedes dejar el campo vacío para conservar el archivo existente.</p></div>
+                    <div class="ex-form-actions"><button type="button" id="ex-cancelar" class="ex-btn ex-btn-subtle">Cancelar</button><button type="submit" class="ex-btn" id="ex-guardar"><i class="fa-solid fa-floppy-disk"></i> Guardar ejercicio (borrador)</button></div>
+                </form>
+            </section>
+            <div id="ex-lista">
+                <div class="ex-stats" aria-live="polite">
+                    <div class="ex-stat"><strong id="ex-stat-total">0</strong><span>Ejercicios disponibles</span></div>
+                    <div class="ex-stat"><strong id="ex-stat-clase">0</strong><span>Hechos en clase</span></div>
+                    <div class="ex-stat"><strong id="ex-stat-estudiantes">0</strong><span>Aportes de estudiantes</span></div>
                 </div>
-
-                <!-- COLUMNA DERECHA: WIDGETS DE FILTROS -->
-                <div class="widgets-column">
-                    
-                    <!-- WIDGET: Dificultad -->
-                    <div class="widget-box">
-                        <div class="widget-header">
-                            <h3>Dificultad</h3>
-                        </div>
-                        <div class="widget-filter-list">
-                            <label class="custom-checkbox">
-                                <input type="checkbox">
-                                <span class="checkmark"></span>
-                                Básico
-                            </label>
-                            <label class="custom-checkbox">
-                                <input type="checkbox">
-                                <span class="checkmark"></span>
-                                Intermedio
-                            </label>
-                            <label class="custom-checkbox">
-                                <input type="checkbox">
-                                <span class="checkmark"></span>
-                                Avanzado
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- WIDGET: Método de resolución -->
-                    <div class="widget-box">
-                        <div class="widget-header">
-                            <h3>Método de resolución</h3>
-                        </div>
-                        <div class="widget-filter-list">
-                            <label class="custom-checkbox">
-                                <input type="checkbox">
-                                <span class="checkmark"></span>
-                                Manual
-                            </label>
-                            <label class="custom-checkbox">
-                                <input type="checkbox">
-                                <span class="checkmark"></span>
-                                MATLAB
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- WIDGET: Más consultados -->
-                    <div class="widget-box">
-                        <div class="widget-header">
-                            <h3>Más consultados</h3>
-                        </div>
-                        <ul class="widget-list">
-                            <li><span class="circle-num-dark">1</span> Ejercicio [00] - [Tema]</li>
-                            <li><span class="circle-num-dark">2</span> Ejercicio [00] - [Tema]</li>
-                            <li><span class="circle-num-dark">3</span> Ejercicio [00] - [Tema]</li>
-                        </ul>
-                    </div>
-
-                    <!-- WIDGET: Material relacionado -->
-                    <div class="widget-box">
-                        <div class="widget-header">
-                            <h3>Material relacionado</h3>
-                        </div>
-                        <ul class="widget-list links-only">
-                            <li><a href="materiales.html">Material del Curso</a></li>
-                            <li><a href="apuntes.html">Apuntes y Cuadernos</a></li>
-                            <li><a href="examenes.html">Exámenes Pasados</a></li>
-                        </ul>
-                    </div>
-
+                <div class="ex-filterbar">
+                    <label class="ex-screen-reader" for="ex-buscar">Buscar ejercicios</label>
+                    <div class="ex-search-wrap"><input id="ex-buscar" type="search" autocomplete="off" placeholder="Buscar por título, autor o tema..."><button type="button" id="ex-limpiar-busqueda" title="Limpiar búsqueda" aria-label="Limpiar búsqueda"><i class="fa-solid fa-xmark"></i></button></div>
+                    <label class="ex-screen-reader" for="ex-filtro-unidad">Filtrar unidad</label><select id="ex-filtro-unidad"><option value="todas">Todas las unidades</option></select>
+                    <label class="ex-screen-reader" for="ex-filtro-dificultad">Filtrar dificultad</label><select id="ex-filtro-dificultad"><option value="todas">Todas las dificultades</option><option value="basico">Básico</option><option value="intermedio">Intermedio</option><option value="avanzado">Avanzado</option></select>
+                    <label class="ex-screen-reader" for="ex-orden">Ordenar ejercicios</label><select id="ex-orden"><option value="recientes">Más recientes</option><option value="antiguos">Más antiguos</option><option value="titulo">Por título</option></select>
                 </div>
-
+                <p id="ex-resultados" class="ex-filter-results" aria-live="polite"></p>
+                <p id="ex-estado" class="ex-status" role="status" aria-live="polite">Cargando unidades y ejercicios...</p>
+                <div class="material-layout">
+                    <div class="files-column">
+                        <section class="ex-section" id="ex-grupo-clase">
+                            <div class="ex-section-header"><h3><i class="fa-solid fa-chalkboard-user"></i> Ejercicios hechos en clase</h3><small id="ex-count-clase">0 ejercicios</small></div>
+                            <div class="ex-section-body" id="ex-lista-clase"></div>
+                        </section>
+                        <section class="ex-section" id="ex-grupo-estudiantes">
+                            <div class="ex-section-header"><h3><i class="fa-solid fa-users"></i> Ejercicios subidos por alumnos y visitantes</h3><small id="ex-count-estudiantes">0 ejercicios</small></div>
+                            <div class="ex-section-body" id="ex-lista-estudiantes"></div>
+                        </section>
+                    </div>
+                    <aside class="widgets-column">
+                        <div class="widget-box"><div class="widget-header"><h3>Cómo aportar una solución</h3></div><ul class="widget-list ex-help"><li><i class="fa-solid fa-check" aria-hidden="true"></i><span>Incluye el enunciado y su desarrollo.</span></li><li><i class="fa-solid fa-check" aria-hidden="true"></i><span>Indica la unidad y el nivel de dificultad.</span></li><li><i class="fa-solid fa-check" aria-hidden="true"></i><span>Publica en PDF o con ecuaciones LaTeX.</span></li><li><i class="fa-solid fa-circle-info" aria-hidden="true"></i><span>Tras enviar, solo el equipo docente podrá editar el aporte.</span></li></ul></div>
+                        <div class="widget-box"><div class="widget-header"><h3>Material relacionado</h3></div><div class="ex-related" style="padding:4px 16px 10px;"><a href="materiales.html">Material del Curso</a><a href="apuntes.html">Apuntes y Cuadernos</a><a href="foro.html">Foro de Consultas</a></div></div>
+                    </aside>
+                </div>
             </div>
-
+            <section id="ex-lector" hidden aria-label="Lectura del ejercicio">
+                <div class="ex-reader-bar"><button type="button" id="ex-volver" class="ex-btn ex-btn-outline"><i class="fa-solid fa-arrow-left"></i> Volver a ejercicios</button></div>
+                <div class="ex-reader-layout">
+                    <article class="ex-paper"><h1 id="ex-lector-titulo"></h1><div id="ex-lector-meta" class="ex-reader-meta"></div><div id="ex-lector-contenido" class="ex-markdown"></div></article>
+                    <aside id="ex-lector-indice" class="ex-toc" hidden><h3><i class="fa-solid fa-list"></i> En este ejercicio</h3><div id="ex-indice-links"></div></aside>
+                </div>
+            </section>
         </main>
+    </div>
+    <!-- Visor idéntico al de Materiales: reutiliza modal-overlay, modal-content,
+         modal-header, modal-body y btn-close del CSS institucional compartido.
+         Solo se cierra con la X, no con Esc ni pulsando fuera. -->
+    <div id="ex-modal" class="modal-overlay ex-modal" hidden role="dialog" aria-modal="true" aria-labelledby="ex-modal-titulo">
+        <div class="modal-content ex-modal-dialog">
+            <div class="modal-header ex-modal-head">
+                <h3 id="ex-modal-titulo">Visor de documento</h3>
+                <button type="button" id="ex-modal-cerrar" class="btn-close ex-modal-close" aria-label="Cerrar visor"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body ex-modal-content" id="ex-modal-contenido"></div>
+        </div>
     </div>
 </body>
 </html>
