@@ -92,7 +92,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.8rem 2rem;
+    padding: 0.35rem 2rem;
     height: 70px;
 }
 
@@ -105,13 +105,41 @@ body {
 .logo-uni {
     display: flex;
     align-items: center;
-    gap: 10px;
+    flex-shrink: 0;
     border-right: 1px solid rgba(255,255,255,0.3);
     padding-right: 1.5rem;
 }
 
-.logo-uni i { font-size: 2rem; }
-.logo-text { display: flex; flex-direction: column; font-size: 0.7rem; font-weight: bold; line-height: 1.1; }
+/* Identidad institucional: logotipo oficial, sin iconos ni texto recreado. */
+.logo-uni-img {
+    display: block;
+    height: 58px;
+    width: auto;
+    max-width: none;
+    object-fit: contain;
+}
+
+/* Ajustes del encabezado para pantallas estrechas. */
+@media (max-width: 950px) {
+    .navbar { padding: 0.35rem 1rem; }
+    .navbar .logo-uni { padding-right: 0.85rem; }
+    .navbar .logo-uni-img { height: 49px; }
+    .navbar .nav-left { gap: 0.85rem; min-width: 0; }
+    .navbar .nav-right .search-bar { display: none; }
+}
+@media (max-width: 560px) {
+    .navbar .logo-uni { padding-right: 0.65rem; }
+    .navbar .logo-uni-img { height: 43px; }
+    .navbar .nav-left { gap: 0.65rem; }
+    .navbar .nav-title h1 { font-size: 0.87rem; }
+    .navbar .nav-title p { font-size: 0.67rem; }
+    .navbar .nav-right { gap: 0.3rem; }
+    .navbar .user-profile { font-size: 1.2rem; }
+}
+@media (max-width: 420px) {
+    .navbar .nav-title p { display: none; }
+    .navbar .nav-title h1 { font-size: 0.8rem; }
+}
 .nav-title h1 { font-size: 1.1rem; }
 .nav-title p { font-size: 0.8rem; opacity: 0.8; }
 

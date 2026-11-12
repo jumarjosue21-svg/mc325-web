@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "docente": {
+    "nombre": "Ing. Capcha Molina, Eden",
+    "correo": "ecapcham@uni.pe",
+    "celular": "",
+    "mostrarCorreo": true,
+    "mostrarCelular": false
+  },
+  "delegado": {
+    "nombre": "Llanos Mori, Christopher Mibbert",
+    "correo": "christopher.llanos.m@uni.pe",
+    "celular": "+51 999999999",
+    "mostrarCorreo": true,
+    "mostrarCelular": true
+  },
+  "curso": {
+    "nombre": "MC325 · Resistencia de Materiales II",
+    "ciclo": "2026 - 2",
+    "horario": "Viernes, 18:00 - 20:00 / Sábado, 16:00 - 20:00"
+  }
+}

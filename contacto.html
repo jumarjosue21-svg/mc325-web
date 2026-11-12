@@ -6,18 +6,57 @@
     <title>Contacto - Resistencia de Materiales II</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+
+    <!-- Estilos locales: no alteran style.css ni el diseño público de la maqueta. -->
+    <style>
+      .contacto-cabecera { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+      .contacto-cabecera > div { min-width: 0; }
+      .contact-layout > .contact-card { align-self: start; }
+      .contacto-admin-toggle { flex-shrink: 0; }
+      #contacto-admin-panel[hidden], #contacto-mensaje[hidden],
+      .contact-card [hidden] { display: none !important; }
+      #contacto-mensaje { padding: 12px 15px; border: 1px solid #cfdbeb; border-radius: 6px; color: #315779; background: #f6f9fd; margin: -2px 0 18px; font-size: .85rem; line-height: 1.55; }
+      #contacto-mensaje.contacto-error { background: #fff5f4; color: #9b2c27; border-color: #e9c1bd; }
+      .contacto-admin { margin: 0 0 24px; border: 1px solid #ecd4d1; background: #fdf6f5; border-radius: 9px; padding: 18px; }
+      .contacto-admin h3 { font-size: 1rem; margin: 0 0 9px; color: var(--uni-red-dark); }
+      .contacto-admin .contacto-admin-help { color: #675f5f; font-size: .85rem; line-height: 1.55; margin: 0 0 15px; }
+      .contacto-admin details { background: #fff; border: 1px solid #ead6d3; border-radius: 7px; margin: 9px 0; overflow: hidden; }
+      .contacto-admin summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 11px; padding: 15px; color: var(--uni-red-dark); font-size: .95rem; font-weight: 700; }
+      .contacto-admin summary::-webkit-details-marker { display: none; }
+      .contacto-admin summary i:last-child { margin-left: auto; transition: transform .17s; }
+      .contacto-admin details[open] summary { background: #f9eeee; border-bottom: 1px solid #f1dbd7; }
+      .contacto-admin details[open] summary i:last-child { transform: rotate(180deg); }
+      .contacto-admin form { padding: 17px 18px 20px; }
+      .contacto-admin-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 15px; }
+      .contacto-form-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+      .contacto-form-field label { font-size: .86rem; font-weight: 650; color: #3a3434; }
+      .contacto-form-field input { width: 100%; padding: 10px 11px; border-radius: 5px; border: 1px solid #cbd1d6; background: #fff; font-size: .88rem; color: #333; }
+      .contacto-form-field input:focus-visible { outline: 2px solid #bf8681; outline-offset: 1px; }
+      .contacto-form-field.contacto-ancho { grid-column: 1 / -1; }
+      .contacto-admin .contacto-switch { display: flex; align-items: center; gap: 8px; font-size: .84rem; color: #544c4b; margin-top: 7px; cursor: pointer; }
+      .contacto-admin .contacto-switch input { width: 17px; height: 17px; accent-color: var(--uni-red-dark); }
+      .contacto-admin .contacto-privacidad { margin-top: 11px; color: #6b6260; font-size: .79rem; line-height: 1.5; }
+      .contacto-form-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 9px; margin-top: 19px; }
+      .contacto-admin-footer { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 17px; }
+      .contacto-admin-footer a { text-decoration: none; display: inline-flex; align-items: center; gap: 7px; }
+      .contacto-admin .contacto-minor-btn { border: 1px solid #dcb5b1; background: #fff; color: var(--uni-red-dark); border-radius: 4px; font-size: .85rem; padding: 9px 12px; cursor: pointer; }
+      .contacto-admin .contacto-minor-btn:hover { background: #f9efed; }
+      .contacto-admin .contacto-warning { font-size: .79rem; line-height: 1.5; color: #665b59; }
+      .contact-card .contacto-link-action { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; font-weight: 400; font-size: .85rem; }
+      .contact-card .contacto-link-action:focus-visible { outline: 2px solid #b78d85; outline-offset: 2px; }
+      @media (max-width: 750px) {
+        .contacto-cabecera { align-items: flex-start; flex-wrap: wrap; }
+        .contacto-admin-grid { grid-template-columns: minmax(0,1fr); }
+        .contacto-admin { padding: 12px; }
+        .contacto-admin form { padding: 13px 12px 15px; }
+      }
+    </style>
 </head>
-<body>
+<body data-contacto-mc325>
     <!-- BARRA SUPERIOR -->
     <header class="navbar">
         <div class="nav-left">
-            <div class="logo-uni">
-                <i class="fa-solid fa-university"></i>
-                <div class="logo-text">
-                    <span>UNIVERSIDAD NACIONAL</span>
-                    <span>DE INGENIERÍA</span>
-                </div>
-            </div>
+            <div class="logo-uni"><img class="logo-uni-img" src="assets/logo-uni-blanco.png" alt="Universidad Nacional de Ingeniería" width="960" height="456" decoding="async"></div>
             <div class="nav-title">
                 <h1>Resistencia de Materiales II</h1>
                 <p>MC325 - Facultad de Ingeniería Mecánica</p>
@@ -58,14 +97,14 @@
                     <i class="fa-solid fa-chalkboard-user"></i>
                     <div>
                         <strong>Docente:</strong>
-                        <p>Ing. Capcha Molina, Eden</p>
+                        <p id="contacto-sidebar-docente">Ing. Capcha Molina, Eden</p>
                     </div>
                 </div>
                 <div class="info-item">
                     <i class="fa-regular fa-calendar-check"></i>
                     <div>
                         <strong>Ciclo Académico:</strong>
-                        <p>2026</p>
+                        <p id="contacto-sidebar-ciclo">2026</p>
                     </div>
                 </div>
             </div>
@@ -78,67 +117,141 @@
                 Inicio / <strong>Contacto</strong>
             </div>
 
-            <div class="page-header">
-                <h2>Contacto</h2>
-                <p>Datos del docente y del delegado del curso.</p>
+            <div class="page-header contacto-cabecera">
+                <div>
+                    <h2>Contacto</h2>
+                    <p>Datos del docente y del delegado del curso.</p>
+                </div>
+                <button type="button" id="contacto-toggle-admin" class="btn-solid contacto-admin-toggle" aria-expanded="false" aria-controls="contacto-admin-panel"><i class="fa-solid fa-lock"></i> Modo Docente</button>
             </div>
+
+            <p id="contacto-mensaje" role="status" aria-live="polite" hidden></p>
+
+            <!-- Edición provisional. Al implementar Firebase se limitará a usuarios autorizados. -->
+            <section id="contacto-admin-panel" class="contacto-admin" hidden>
+                <h3><i class="fa-solid fa-pen-to-square"></i> Administrar página de contacto</h3>
+                <p class="contacto-admin-help">Abre solamente el apartado que deseas modificar. Los cambios se guardan como borradores locales hasta publicarlos desde GitHub.</p>
+
+                <details name="contacto-edicion" id="contacto-editar-docente">
+                    <summary><i class="fa-solid fa-chalkboard-user"></i> Docente <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary>
+                    <form id="contacto-form-docente" novalidate>
+                        <div class="contacto-admin-grid">
+                            <div class="contacto-form-field contacto-ancho">
+                                <label for="docente-input-nombre">Nombre del docente</label>
+                                <input type="text" name="nombre" id="docente-input-nombre" maxlength="130" required placeholder="Nombre y apellidos">
+                            </div>
+                            <div class="contacto-form-field">
+                                <label for="docente-input-correo">Correo electrónico</label>
+                                <input type="email" name="correo" id="docente-input-correo" maxlength="160" placeholder="nombre@uni.edu.pe">
+                                <label class="contacto-switch"><input type="checkbox" name="mostrarCorreo"> Mostrar correo en la página</label>
+                            </div>
+                            <div class="contacto-form-field">
+                                <label for="docente-input-celular">Celular</label>
+                                <input type="tel" name="celular" id="docente-input-celular" maxlength="40" placeholder="+51 999 999 999">
+                                <label class="contacto-switch"><input type="checkbox" name="mostrarCelular"> Mostrar celular en la página</label>
+                            </div>
+                        </div>
+                        <p class="contacto-privacidad"><i class="fa-solid fa-shield-halved"></i> Los campos ocultos se excluyen del JSON que se publicará. Si ocultas un dato y guardas, tendrás que escribirlo de nuevo para volver a mostrarlo.</p>
+                        <div class="contacto-form-actions"><button type="button" class="contacto-minor-btn" id="contacto-cancelar-docente">Cancelar cambios</button><button type="submit" class="btn-solid"><i class="fa-solid fa-floppy-disk"></i> Guardar docente</button></div>
+                    </form>
+                </details>
+
+                <details name="contacto-edicion" id="contacto-editar-delegado">
+                    <summary><i class="fa-solid fa-user-graduate"></i> Delegado <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary>
+                    <form id="contacto-form-delegado" novalidate>
+                        <div class="contacto-admin-grid">
+                            <div class="contacto-form-field contacto-ancho">
+                                <label for="delegado-input-nombre">Nombre del delegado</label>
+                                <input type="text" name="nombre" id="delegado-input-nombre" maxlength="130" required placeholder="Nombre y apellidos">
+                            </div>
+                            <div class="contacto-form-field">
+                                <label for="delegado-input-correo">Correo electrónico</label>
+                                <input type="email" name="correo" id="delegado-input-correo" maxlength="160" placeholder="nombre@uni.edu.pe">
+                                <label class="contacto-switch"><input type="checkbox" name="mostrarCorreo"> Mostrar correo en la página</label>
+                            </div>
+                            <div class="contacto-form-field">
+                                <label for="delegado-input-celular">Celular</label>
+                                <input type="tel" name="celular" id="delegado-input-celular" maxlength="40" placeholder="+51 999 999 999">
+                                <label class="contacto-switch"><input type="checkbox" name="mostrarCelular"> Mostrar celular en la página</label>
+                            </div>
+                        </div>
+                        <p class="contacto-privacidad"><i class="fa-solid fa-shield-halved"></i> Los campos ocultos no se publicarán. Para reactivarlos, vuelve a introducir los datos y marca la casilla.</p>
+                        <div class="contacto-form-actions"><button type="button" class="contacto-minor-btn" id="contacto-cancelar-delegado">Cancelar cambios</button><button type="submit" class="btn-solid"><i class="fa-solid fa-floppy-disk"></i> Guardar delegado</button></div>
+                    </form>
+                </details>
+
+                <details name="contacto-edicion" id="contacto-editar-curso">
+                    <summary><i class="fa-solid fa-book-open"></i> Información del Curso <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary>
+                    <form id="contacto-form-curso">
+                        <div class="contacto-admin-grid">
+                            <div class="contacto-form-field contacto-ancho"><label for="contacto-input-curso">Curso</label><input type="text" name="nombre" id="contacto-input-curso" maxlength="150" required></div>
+                            <div class="contacto-form-field"><label for="contacto-input-ciclo">Ciclo académico</label><input type="text" name="ciclo" id="contacto-input-ciclo" maxlength="65" required placeholder="2026 - 2"></div>
+                            <div class="contacto-form-field"><label for="contacto-input-horario">Horario</label><input type="text" name="horario" id="contacto-input-horario" maxlength="240" required placeholder="Lun · Mié · Vie, 09:00 – 11:00"></div>
+                        </div>
+                        <div class="contacto-form-actions"><button type="button" class="contacto-minor-btn" id="contacto-cancelar-curso">Cancelar cambios</button><button type="submit" class="btn-solid"><i class="fa-solid fa-floppy-disk"></i> Guardar información</button></div>
+                    </form>
+                </details>
+                <div class="contacto-admin-footer">
+                    <div><p class="contacto-warning">Modo Docente de prueba, sin autenticación. Estos cambios aún no se compartirán entre visitantes.</p><button class="contacto-minor-btn" type="button" id="contacto-descartar-borrador" style="margin-top:8px;"><i class="fa-solid fa-rotate-left"></i> Descartar borrador local</button></div>
+                    <a class="btn-solid" href="publicar-contacto.html"><i class="fa-solid fa-file-export"></i> Preparar publicación para GitHub</a>
+                </div>
+            </section>
 
             <div class="contact-layout">
                 
                 <!-- TARJETA: DOCENTE -->
                 <div class="contact-card">
-                    <div class="contact-header">
-                        <h3>Docente</h3>
-                    </div>
+                    <div class="contact-header"><h3>Docente</h3></div>
                     <div class="contact-body">
                         <div class="profile-header">
-                            <div class="profile-avatar">MC</div>
+                            <div id="docente-avatar-publico" class="profile-avatar">MC</div>
                             <div class="profile-info">
-                                <h4>Ing. Capcha Molina, Eden</h4>
+                                <h4 id="docente-nombre-publico">Ing. Capcha Molina, Eden</h4>
                                 <p>Docente del curso · Facultad de Ingeniería Mecánica</p>
                             </div>
                         </div>
-                        
-                        <hr class="contact-divider">
-                        
-                        <div class="contact-section">
+                        <hr class="contact-divider" id="docente-separador-correo" hidden>
+                        <div class="contact-section" id="docente-correo-publico" hidden>
                             <div class="label-title"><i class="fa-regular fa-envelope"></i> CORREO</div>
-                            <p class="contact-text">[correo.docente@uni.edu.pe]</p>
-                            <button class="btn-solid">Enviar correo</button>
+                            <p class="contact-text" id="docente-texto-correo"></p>
+                            <a class="btn-solid contacto-link-action" id="docente-btn-correo" href="#"><i class="fa-regular fa-envelope"></i>&nbsp; Enviar correo</a>
+                        </div>
+                        <hr class="contact-divider" id="docente-separador-celular" hidden>
+                        <div class="contact-section" id="docente-celular-publico" hidden>
+                            <div class="label-title"><i class="fa-solid fa-phone"></i> CELULAR</div>
+                            <p class="contact-text" id="docente-texto-celular"></p>
+                            <div class="action-buttons-row">
+                                <a class="btn-solid contacto-link-action" id="docente-btn-whatsapp" href="#" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                                <a class="btn-outline contacto-link-action" id="docente-btn-llamar" href="#">Llamar</a>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- TARJETA: DELEGADO -->
                 <div class="contact-card">
-                    <div class="contact-header">
-                        <h3>Delegado</h3>
-                    </div>
+                    <div class="contact-header"><h3>Delegado</h3></div>
                     <div class="contact-body">
                         <div class="profile-header">
-                            <div class="profile-avatar">[D]</div>
+                            <div id="delegado-avatar-publico" class="profile-avatar">D</div>
                             <div class="profile-info">
-                                <h4>[Nombre del delegado]</h4>
-                                <p>Delegado del curso · Ciclo 2026</p>
+                                <h4 id="delegado-nombre-publico">Delegado por asignar</h4>
+                                <p id="delegado-descripcion-publica">Delegado del curso · Ciclo 2026</p>
                             </div>
                         </div>
-                        
-                        <hr class="contact-divider">
-                        
-                        <div class="contact-section">
+                        <hr class="contact-divider" id="delegado-separador-correo" hidden>
+                        <div class="contact-section" id="delegado-correo-publico" hidden>
                             <div class="label-title"><i class="fa-regular fa-envelope"></i> CORREO</div>
-                            <p class="contact-text">[correo.delegado@uni.edu.pe]</p>
-                            <button class="btn-solid">Enviar correo</button>
+                            <p class="contact-text" id="delegado-texto-correo"></p>
+                            <a class="btn-solid contacto-link-action" id="delegado-btn-correo" href="#"><i class="fa-regular fa-envelope"></i>&nbsp; Enviar correo</a>
                         </div>
-
-                        <hr class="contact-divider">
-
-                        <div class="contact-section">
+                        <hr class="contact-divider" id="delegado-separador-celular" hidden>
+                        <div class="contact-section" id="delegado-celular-publico" hidden>
                             <div class="label-title"><i class="fa-solid fa-phone"></i> CELULAR</div>
-                            <p class="contact-text">[+51 000 000 000]</p>
+                            <p class="contact-text" id="delegado-texto-celular"></p>
                             <div class="action-buttons-row">
-                                <button class="btn-solid" style="background-color: #5a1a14; border-color: #5a1a14;">WhatsApp</button>
-                                <button class="btn-outline">Llamar</button>
+                                <a class="btn-solid contacto-link-action" id="delegado-btn-whatsapp" href="#" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                                <a class="btn-outline contacto-link-action" id="delegado-btn-llamar" href="#">Llamar</a>
                             </div>
                         </div>
                     </div>
@@ -155,15 +268,15 @@
                         <ul class="course-details-list">
                             <li>
                                 <span>CURSO</span>
-                                <p>MC325 · Resistencia de Materiales II</p>
+                                <p id="contacto-curso-nombre-publico">MC325 · Resistencia de Materiales II</p>
                             </li>
                             <li>
                                 <span>CICLO</span>
-                                <p>2026 - 2</p>
+                                <p id="contacto-curso-ciclo-publico">2026 - 2</p>
                             </li>
                             <li>
                                 <span>HORARIO</span>
-                                <p>Lun · Mié · Vie, 09:00 – 11:00</p>
+                                <p id="contacto-curso-horario-publico">Lun · Mié · Vie, 09:00 – 11:00</p>
                             </li>
                         </ul>
                     </div>
@@ -198,5 +311,6 @@
 
         </main>
     </div>
+    <script src="js/contacto-mc325.js?v=20261112-contacto-01"></script>
 </body>
 </html>
