@@ -1,34 +1,3 @@
-
-# Fundamentos de Estática Tridimensional
-
-**Universidad Nacional de Ingeniería — Facultad de Ingeniería Mecánica**
-
-**Vectores cartesianos, momentos, apoyos y diagramas de cuerpo libre**
-
-Material de estudio ampliado. Nivel universitario: segundo año.
-
-**Material base y figuras:** Ing. Edén Capcha.  
-**Desarrollo didáctico:** Versión ampliada para consulta y edición web.  
-**Lima, Perú — 2026**
-
----
-
-## Presentación y alcance
-
-Este documento transforma las **18 páginas** de la presentación *Conceptos previos: Estática* en un texto de consulta que puede leerse sin la intervención oral del docente. Mantiene el **orden de los temas**, reproduce las **17 láminas con contenido técnico** y conserva la lista bibliográfica del archivo base.
-
-Las ecuaciones se vuelven a escribir en formato matemático y se acompañan de explicaciones, ejemplos y advertencias sobre las hipótesis utilizadas.
-
-La organización comprende: vectores en tres dimensiones (láminas 1–7); momento de una fuerza (lámina 8); equilibrio de cuerpos rígidos (lámina 9); modelos ideales de apoyos y aplicaciones (láminas 10–15); y diagramas de cuerpo libre (láminas 16–17). La lámina 18 corresponde a las referencias, incluidas al final.
-
-**Convención editorial:** Las figuras, temas y relaciones señaladas como *material original* provienen de las diapositivas del profesor. La explicación narrativa, las deducciones intermedias, los ejemplos numéricos, la tabla comparativa, el glosario y las actividades son **ampliaciones didácticas**. No deben atribuirse al profesor sin su revisión y aprobación editorial.
-
-Se supondrán bases ortonormales cartesianas de mano derecha, unidades del Sistema Internacional y cuerpos rígidos idealizados, salvo cuando se indique lo contrario.
-
-Los apoyos reales pueden producir rozamiento, deformaciones y efectos adicionales que no aparecen en el modelo simplificado.
-
----
-
 ## 1. Del espacio físico al modelo de estática
 
 ### 1.1. Qué estudia la estática
@@ -1651,13 +1620,7 @@ $$
 
 ---
 
-## Fuentes, créditos y nota para edición web
-
-**Fuente primaria de las imágenes y la secuencia:** *Conceptos previos: Estática*, 18 páginas, presentación elaborada por el Ing. Edén Capcha, Universidad Nacional de Ingeniería.
-
-Las 17 láminas técnicas aparecen aquí referenciadas mediante marcadores de imagen, con su identificación original. Se conserva el crédito del docente que figura en las diapositivas.
-
-### Referencias que aparecen en la página 18 del material proporcionado
+## Referencias bibliográficas
 
 1. Gere, J. M. y Goodno, B. J. (2012). *Mechanics of Materials*, 8.ª ed. Cengage Learning.
 
@@ -1670,19 +1633,3 @@ Las 17 láminas técnicas aparecen aquí referenciadas mediante marcadores de im
 5. Popov, E. P. (1990). *Engineering Mechanics of Solids*, 2.ª ed. Prentice Hall.
 
 6. Gere, J. M. (2004). *Mechanics of Materials*, 6.ª ed. Brooks/Cole, Thomson Learning.
-
-**Observación importante:** Las referencias anteriores se transcriben del original para preservar su contenido; no implican una verificación independiente de las ediciones ni de la procedencia específica de cada ilustración.
-
-Antes de publicar este recurso en una web institucional, conviene revisar **permisos de reproducción de las ilustraciones de manuales** y corroborar la bibliografía con el profesor.
-
-La explicación conceptual ha sido redactada de manera nueva.
-
-### Recomendación para el sitio tipo wiki
-
-Publicar cada capítulo o apartado como página o sección HTML; escribir las fórmulas en sintaxis compatible con LaTeX/MathJax o KaTeX; cargar las figuras por separado con pies de imagen y crédito; conservar la numeración de láminas para que el alumnado pueda ir de la presentación de clase a la lectura desarrollada.
-
-Este documento ofrece una base editorial, no es por sí mismo el código de una wiki funcional.
-
----
-
-**Fin del material didáctico ampliado.**

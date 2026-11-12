@@ -9,14 +9,26 @@
   },
   {
     "id": "unidad2",
-    "nombre": "Vigas Curvas"
+    "nombre": "Criterios de Falla"
   },
   {
     "id": "unidad3",
-    "nombre": "Teorema de Castigliano"
+    "nombre": "Fatiga"
   },
   {
     "id": "unidad4",
+    "nombre": "Elementos Curvos"
+  },
+  {
+    "id": "unidad5",
     "nombre": "Placas Planas"
+  },
+  {
+    "id": "unidad6",
+    "nombre": "Cilindros de Pared Gruesa y Volantes"
+  },
+  {
+    "id": "unidad7",
+    "nombre": "Vigas de Sección Variable"
   }
 ]

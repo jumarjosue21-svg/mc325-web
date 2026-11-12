@@ -4,19 +4,32 @@
     "ubicacion": "silabo",
     "titulo": "Sílabo MC325 2026-2",
     "descripcion": "Contenido, evaluación y bibliografía",
-    "nombreArchivo": "Silabo_MC325_2026-2.pdf",
-    "tamano": 0,
+    "nombreArchivo": "SYLLABUS-MC325-RESISTENCIA DE MATERIALES II-20262-1794449429.pdf",
+    "tamano": 70362,
     "fechaRegistro": 1793870400000,
-    "ruta": "SYLLABUS-MC325-RESISTENCIA DE MATERIALES II-20262-1793919728.pdf"
+    "ruta": "SYLLABUS-MC325-RESISTENCIA DE MATERIALES II-20262-1793919728.pdf",
+    "revisionArchivo": "1794449453717-mzh25xiyq3e"
   },
   {
-    "id": "15d9375d-579a-4e8c-9b1a-94af78773840",
-    "ubicacion": "unidad1",
-    "titulo": "Criterios de Fallas",
-    "descripcion": "",
-    "nombreArchivo": "RESISTENCIA DE MATERIALES II (2)-3-24.pdf",
-    "tamano": 1436111,
-    "fechaRegistro": 1794393546550,
-    "ruta": "pdfs/unidad1/15d9375d-579a-4e8c-9b1a-94af78773840-RESISTENCIA-DE-MATERIALES-II-2--3-24.pdf"
+    "id": "d5d516b0-a10a-4bda-b1b5-704ad345dfb2",
+    "ubicacion": "unidad3",
+    "titulo": "Factor de Concentración de Esfuerzos",
+    "descripcion": "Gráficos",
+    "fechaRegistro": 1794449000008,
+    "nombreArchivo": "FACTOR DE CONCENTRACION DE ESFUERZOS.pdf",
+    "tamano": 286614,
+    "revisionArchivo": "1794449465549-ie2m1emx0v",
+    "ruta": "pdfs/unidad3/d5d516b0-a10a-4bda-b1b5-704ad345dfb2-FACTOR-DE-CONCENTRACION-DE-ESFUERZOS-pdf.pdf"
+  },
+  {
+    "id": "939244c5-cd38-4f28-ad2e-385ea3cacf4b",
+    "ubicacion": "unidad3",
+    "titulo": "Propiedades mecánicas de aceros",
+    "descripcion": "Tablas de propiedades",
+    "fechaRegistro": 1794449029501,
+    "nombreArchivo": "RESISTENCIA DE MATERIALES II (2)-64-66.pdf",
+    "tamano": 465727,
+    "revisionArchivo": "1794449029501-j1kw8emh13h",
+    "ruta": "pdfs/unidad3/939244c5-cd38-4f28-ad2e-385ea3cacf4b-RESISTENCIA-DE-MATERIALES-II-2-64-66-pdf.pdf"
   }
 ]

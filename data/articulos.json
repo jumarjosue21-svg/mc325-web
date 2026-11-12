@@ -3,12 +3,14 @@
     "id": "1794391819957",
     "unidad": "unidad1",
     "titulo": "Conceptos Fundamentales de Estática",
-    "ruta": "articulos/unidad1/1794391819957-Conceptos-Fundamentales-de-Estatica.md"
+    "ruta": "articulos/unidad1/1794391819957-Conceptos-Fundamentales-de-Estatica.md",
+    "revision": "31074dcc"
   },
   {
-    "id": "1794395748429",
-    "unidad": "unidad1",
-    "titulo": "Criterios de Falla web",
-    "ruta": "articulos/unidad1/1794395748429-Criterios-de-Falla-web.md"
+    "id": "1794446453892",
+    "unidad": "unidad2",
+    "titulo": "Criterios de Falla",
+    "revision": "1a91ac8c",
+    "ruta": "articulos/unidad2/1794446453892-Criterios-de-Falla.md"
   }
 ]
