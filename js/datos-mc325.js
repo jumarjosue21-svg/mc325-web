@@ -24,7 +24,7 @@
   const props = {
     eventos: ['id','start','end','allDay','title','tipo','horaLimite','desc'],
     articulos: ['id','unidad','titulo'],
-    documentos: ['id','ubicacion','titulo','descripcion','nombreArchivo','tamano','fechaRegistro','revisionArchivo'],
+    documentos: ['id','ubicacion','titulo','descripcion','nombreArchivo','tamano','fechaRegistro','revisionArchivo','tipo'],
     unidades: ['id','nombre']
   };
   function hashTexto(texto) {

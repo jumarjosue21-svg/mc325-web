@@ -28,7 +28,7 @@
     .publicacion code {background:#f0f2f4;padding:2px 5px;border-radius:4px}
     @media(max-width:550px){.publicacion .datos {grid-template-columns:1fr 1fr}}
   </style>
-  <script src="js/datos-mc325.js"></script>
+  <script src="js/datos-mc325.js?v=20261112-multiformato-01"></script>
   <script src="lib/jszip.min.js"></script>
 </head>
 <body>
@@ -38,7 +38,7 @@
     <div class="datos" aria-label="Contenido del proyecto">
       <div class="dato"><strong id="cuenta-eventos">—</strong><span>Eventos</span></div>
       <div class="dato"><strong id="cuenta-articulos">—</strong><span>Artículos web</span></div>
-      <div class="dato"><strong id="cuenta-documentos">—</strong><span>PDFs</span></div>
+      <div class="dato"><strong id="cuenta-documentos">—</strong><span>Archivos</span></div>
       <div class="dato"><strong id="cuenta-unidades">—</strong><span>Secciones</span></div>
     </div>
     <p id="estado" class="estado" role="status" aria-live="polite">Cargando datos desde el proyecto…</p>
@@ -70,6 +70,24 @@
         .replace(/-+/g,'-').replace(/^-|-$/g,'').slice(0,70) || 'documento';
     }
     function nombreID(valor) { return String(valor).replace(/[^a-zA-Z0-9_-]/g,'').slice(0,80) || 'sin-id'; }
+    const EXTENSIONES_VALIDAS = new Set(['pdf','docx','pptx','xlsx']);
+    function extension(nombre) {
+      const coincidencia = /\.(pdf|docx|pptx|xlsx)(?:$|[?#])/i.exec(String(nombre || ''));
+      return coincidencia ? coincidencia[1].toLowerCase() : '';
+    }
+    function formatoRegistro(registro) {
+      const tipo=String(registro.tipo || '').toLowerCase();
+      if(EXTENSIONES_VALIDAS.has(tipo)) return tipo;
+      return extension(registro.nombreArchivo) || extension(registro.ruta) || 'pdf';
+    }
+    async function validarFirmaArchivo(archivo,tipo,titulo) {
+      const firma=new Uint8Array(await archivo.slice(0,5).arrayBuffer());
+      const esPDF=String.fromCharCode(...firma)==='%PDF-';
+      const esZIP=firma[0]===0x50&&firma[1]===0x4b&&
+        ((firma[2]===0x03&&firma[3]===0x04)||(firma[2]===0x05&&firma[3]===0x06));
+      if(tipo==='pdf' ? !esPDF : !esZIP) throw new Error('El archivo «'+titulo+'» no coincide con su formato '+tipo.toUpperCase()+'.');
+    }
+
     async function leerPDFLocal(id) {
       return new Promise((resolve,reject) => {
         const req = indexedDB.open('mc325_documentos_pdf_v1',1);
@@ -99,7 +117,7 @@
         }
         const cambios = ['eventos','articulos','documentos','unidades'].filter(tipo => datosExportar[tipo].esBorrador);
         mensaje(cambios.length ?
-          'Borradores detectados: '+cambios.join(', ')+'. El ZIP incluirá los índices actualizados y los artículos o PDFs nuevos o reemplazados.' :
+          'Borradores detectados: '+cambios.join(', ')+'. El ZIP incluirá los índices actualizados y los artículos o archivos nuevos o reemplazados.' :
           'Los datos coinciden con la versión publicada. No hay borradores pendientes; puedes generar el paquete si necesitas una copia de los índices.');
         document.getElementById('btn-exportar').disabled=false;
       } catch(error) {
@@ -121,7 +139,7 @@
         ]);
         datosExportar={eventos:datosEventosActuales,articulos:datosArticulosActuales,
           documentos:datosDocumentosActuales,unidades:datosUnidadesActuales};
-        mensaje('Preparando archivos y verificando los PDFs locales…');
+        mensaje('Preparando archivos y verificando los archivos locales…');
         const zip=new JSZip();
         const publicados = {};
         const retirados = [];
@@ -153,31 +171,40 @@
         for(const viejo of datosExportar.articulos.publicado){
           if(!listaArticulos.some(a=>String(a.id)===String(viejo.id))&&viejo.ruta) retirados.push(viejo.ruta);
         }
-        const listaPDF=[];
-        for(const pdf of datosExportar.documentos.items){
-          const metadato={...pdf};
+        const listaDocumentos=[];
+        for(const documento of datosExportar.documentos.items){
+          const metadato={...documento};
+          const tipo=formatoRegistro(metadato);
+          if(!EXTENSIONES_VALIDAS.has(tipo))throw new Error('Formato no admitido en «'+metadato.titulo+'».');
           const requiereArchivo=Boolean(metadato.archivoPendiente || !metadato.ruta);
           if(requiereArchivo){
-            const local=await leerPDFLocal(pdf.id);
-            if(!local?.archivo)throw new Error('El PDF «'+pdf.titulo+'» no está en IndexedDB de este navegador; se canceló la exportación.');
-            const firmaPDF=await local.archivo.slice(0,5).text();
-            if(firmaPDF!=='%PDF-')throw new Error('El archivo «'+pdf.titulo+'» no es un PDF válido.');
-            if(!metadato.ruta) metadato.ruta='pdfs/'+metadato.ubicacion+'/'+nombreID(metadato.id)+'-'+slug(metadato.nombreArchivo||metadato.titulo)+'.pdf';
-            // Si existe 'ruta', REEMPLAZA los bytes en esa misma ubicación.
+            const local=await leerPDFLocal(documento.id);
+            if(!local?.archivo)throw new Error('El archivo «'+documento.titulo+'» no está en IndexedDB de este navegador; se canceló la exportación.');
+            await validarFirmaArchivo(local.archivo,tipo,documento.titulo);
+            const extensionAnterior=extension(metadato.ruta);
+            // Mantener la ruta al reemplazar un archivo del mismo formato,
+            // y crear una nueva cuando cambie el formato (PDF -> DOCX, etc.).
+            if(!metadato.ruta || extensionAnterior!==tipo){
+              const carpeta=tipo==='pdf'?'pdfs':'documentos';
+              metadato.ruta=carpeta+'/'+metadato.ubicacion+'/'+nombreID(metadato.id)+'-'+slug(metadato.nombreArchivo||metadato.titulo)+'.'+tipo;
+            }
             zip.file(metadato.ruta,await local.archivo.arrayBuffer(),{compression:'STORE'});
           }
+          // No cambiar retroactivamente los registros PDF antiguos sin necesidad.
+          if(metadato.tipo || requiereArchivo)metadato.tipo=tipo;
           delete metadato.archivoPendiente;
-          listaPDF.push(metadato);
+          listaDocumentos.push(metadato);
         }
-        zip.file('data/documentos.json',JSON.stringify(listaPDF,null,2)+'\n');
+        zip.file('data/documentos.json',JSON.stringify(listaDocumentos,null,2)+'\n');
         for(const viejo of datosExportar.documentos.publicado){
-          if(!listaPDF.some(p=>String(p.id)===String(viejo.id))&&viejo.ruta) retirados.push(viejo.ruta);
+          const nuevo=listaDocumentos.find(p=>String(p.id)===String(viejo.id));
+          if(viejo.ruta && (!nuevo || nuevo.ruta!==viejo.ruta)) retirados.push(viejo.ruta);
         }
         if (retirados.length) zip.file('ARCHIVOS-A-RETIRAR.txt',retirados.join('\n')+'\n');
         zip.file('INSTRUCCIONES-DE-PUBLICACION.txt',
           'Paquete MC325 — Actualización del repositorio GitHub\n\n'+
           '1. Extraer este ZIP en la RAÍZ del repositorio local. Fusionar carpetas; reemplazar los JSON.\n'+
-          '2. NO borrar las carpetas existentes: el ZIP incluye los artículos nuevos, los editados y los PDF nuevos o reemplazados.\n'+
+          '2. NO borrar las carpetas existentes: el ZIP incluye los artículos nuevos, los editados y los archivos nuevos o reemplazados.\n'+
           '3. Fusionar data y actualizar unidades.json; si hay ARCHIVOS-A-RETIRAR.txt, revisar y retirar las rutas indicadas.\n'+
           '4. Confirmar las imágenes a las que apunta cada artículo.\n'+
           '5. Probar con Live Server y hacer Commit + Push en GitHub Desktop.\n'+

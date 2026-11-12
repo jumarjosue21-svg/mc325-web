@@ -24,7 +24,7 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>   
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="js/datos-mc325.js"></script>
+    <script src="js/datos-mc325.js?v=20261112-multiformato-01"></script>
 
     <!-- ESTILOS DE LECTURA: afectan únicamente a los artículos, no al resto del sitio -->
     <style>
@@ -359,6 +359,31 @@
         .pdfs-subidos .file-row .uploaded-pdf-actions {flex-wrap:nowrap;}
         .admin-muted {font-size:.82rem;color:#6f5a56;line-height:1.55;}
         @media (max-width:790px){.admin-unit-row input{min-width:135px;}.pdfs-subidos .file-row .uploaded-pdf-actions{flex-wrap:wrap;}}
+
+        /* Paneles docentes plegables: solo se abre el apartado que se va a editar. */
+        #admin-panel-materiales { display: none; }
+        .admin-accordion { border: 1px solid #e6cfc9; border-radius: 9px; background: #fff; margin: 0 0 12px; overflow: hidden; }
+        .admin-accordion > summary { display:flex;align-items:center;gap:12px;cursor:pointer;padding:17px 18px;list-style:none;color:var(--uni-red-dark);background:#fff;transition:background .16s ease; }
+        .admin-accordion > summary::-webkit-details-marker { display:none; }
+        .admin-accordion > summary:hover, .admin-accordion > summary:focus-visible {background:#f9eeee;outline-offset:-3px;}
+        .admin-accordion[open] > summary {background:#f7eae8;border-bottom:1px solid #ead4d1;}
+        .admin-accordion-label,.admin-accordion > summary h4 { flex:1;font-size:1rem;line-height:1.4;font-weight:700;margin:0; }
+        .admin-accordion-label i,.admin-accordion > summary h4 i { margin-right:8px; }
+        .admin-accordion-hint {font-size:.78rem;color:#836b66;font-weight:400;}
+        .admin-accordion-chevron { transition:transform .18s ease;font-size:.82rem; }
+        .admin-accordion[open] .admin-accordion-chevron { transform:rotate(180deg); }
+        .admin-accordion-body { padding:19px 19px 23px; }
+        .admin-accordion-body > p:first-child {margin-bottom:14px;}
+        @media(max-width:700px){.admin-accordion-hint{display:none;}.admin-accordion-body{padding:14px 12px 18px;}}
+        /* Una identidad visual coherente por formato, sin cambiar los botones. */
+        .file-icon-box.mc325-format-icon { min-width:60px; min-height:45px; padding:6px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;line-height:1.1;font-weight:700; }
+        .mc325-format-icon i {font-size:1.15rem;}
+        .mc325-format-icon span {font-size:.67rem;letter-spacing:.015em;}
+        .file-icon-box.mc325-icon-pdf {color:#c42c38;border-color:#e9a4aa;background:#fff3f3;}
+        .file-icon-box.mc325-icon-docx {color:#1864bc;border-color:#9fc5ef;background:#eff7ff;}
+        .file-icon-box.mc325-icon-pptx {color:#b95c16;border-color:#edc49b;background:#fff5e9;}
+        .file-icon-box.mc325-icon-xlsx {color:#18764c;border-color:#95d3b4;background:#edfaf2;}
+        .file-icon-box.mc325-icon-web {color:#651b1a;border-color:#bf9690;background:#f9f0ef;}
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -451,15 +476,20 @@
 
                 <!-- PANEL DE REDACCIÓN DE ARTÍCULOS (Oculto por defecto) -->
                 <div id="admin-panel-materiales" style="display: none; background: #fdf5f5; padding: 20px; border-radius: 8px; border: 1px solid #fadbd8; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-                    <h4 class="admin-section-title"><i class="fa-solid fa-layer-group"></i> Administrar unidades y sección del sílabo</h4>
-                    <p class="admin-muted">Renombra y ordena las unidades sin modificar el HTML. La sección del sílabo también puede renombrarse. Una unidad con artículos o PDFs no podrá eliminarse hasta trasladar sus materiales.</p>
+                    <details class="admin-accordion" id="panel-unidades" name="mc325-gestion">
+                        <summary><span class="admin-accordion-label"><i class="fa-solid fa-layer-group"></i> Administrar unidades y sección del sílabo</span><span class="admin-accordion-hint">Renombrar · Ordenar · Añadir</span><i class="fa-solid fa-chevron-down admin-accordion-chevron" aria-hidden="true"></i></summary>
+                        <div class="admin-accordion-body">
+                    <p class="admin-muted">Renombra y ordena las unidades sin modificar el HTML. La sección del sílabo también puede renombrarse. Una unidad con artículos o archivos no podrá eliminarse hasta trasladar sus materiales.</p>
                     <div id="lista-gestion-unidades" class="admin-units-list" aria-live="polite"></div>
                     <form id="form-unidad" class="admin-add-unit">
                         <input type="text" id="nueva-unidad-nombre" maxlength="120" placeholder="Nombre de la nueva unidad" required aria-label="Nombre de la nueva unidad">
                         <button type="submit" class="btn-download-dark"><i class="fa-solid fa-plus"></i> Agregar unidad</button>
                     </form>
-                    <hr class="admin-section-divider">
-                    <h4 id="art-form-titulo" class="admin-section-title"><i class="fa-solid fa-pen-nib"></i> Redactar Nuevo Artículo (Soporta Markdown y LaTeX)</h4>
+                        </div>
+                    </details>
+                    <details class="admin-accordion" id="panel-articulos" name="mc325-gestion">
+                        <summary><h4 id="art-form-titulo"><i class="fa-solid fa-pen-nib"></i> Redactar Nuevo Artículo (Markdown + LaTeX)</h4><span class="admin-accordion-hint">Crear · Editar artículos web</span><i class="fa-solid fa-chevron-down admin-accordion-chevron" aria-hidden="true"></i></summary>
+                        <div class="admin-accordion-body">
                     <form id="form-articulo" style="display: flex; flex-direction: column; gap: 15px;">
                         <div style="display: flex; gap: 15px; flex-wrap: wrap;">
                             <div style="flex: 1; min-width: 200px;">
@@ -480,10 +510,13 @@
                             <button type="submit" id="art-guardar" class="btn-download-dark" style="padding:10px 25px;">Guardar artículo (borrador)</button>
                         </div>
                     </form>
-                    <!-- Los PDFs nuevos se guardan como borrador hasta preparar una publicación en GitHub. -->
-                    <div style="border-top: 1px solid #e8c9c5; margin: 26px 0 22px;"></div>
-                    <h4 id="pdf-form-titulo" class="admin-section-title"><i class="fa-solid fa-file-pdf"></i> Subir documento PDF</h4>
-                    <p style="font-size:.86rem; line-height:1.65; color:#555; margin-bottom:15px;">Añade material complementario al sílabo o a cualquiera de las unidades. Los documentos subidos podrán visualizarse y descargarse directamente desde su unidad.</p>
+                        </div>
+                    </details>
+                    <!-- Archivos complementarios: PDF, Word, PowerPoint y Excel -->
+                    <details class="admin-accordion" id="panel-documentos" name="mc325-gestion">
+                        <summary><h4 id="pdf-form-titulo"><i class="fa-solid fa-file-arrow-up"></i> Subir archivos del curso</h4><span class="admin-accordion-hint">PDF · Word · PowerPoint · Excel</span><i class="fa-solid fa-chevron-down admin-accordion-chevron" aria-hidden="true"></i></summary>
+                        <div class="admin-accordion-body">
+                    <p style="font-size:.86rem; line-height:1.65; color:#555; margin-bottom:15px;">Añade PDF, Word (.docx), PowerPoint (.pptx) o Excel (.xlsx) al sílabo o a cualquier unidad. Los PDF se pueden visualizar; todos los formatos se pueden descargar.</p>
                     <form id="form-pdf">
                         <div class="pdf-form-row">
                             <div class="pdf-form-field">
@@ -501,18 +534,20 @@
                                 <input id="pdf-descripcion" maxlength="220" placeholder="Ej. Problemas complementarios y soluciones">
                             </div>
                             <div class="pdf-form-field" style="flex:1.4;">
-                                <label for="pdf-archivo">Archivo PDF (máx. 25 MB)</label>
-                                <input id="pdf-archivo" type="file" accept="application/pdf,.pdf" required>
-                                <small id="pdf-ayuda-reemplazo" class="admin-muted" hidden>Opcional al editar. Selecciona otro PDF únicamente si deseas reemplazar el archivo.</small>
+                                <label for="pdf-archivo">Archivo PDF, DOCX, PPTX o XLSX (máx. 25 MB)</label>
+                                <input id="pdf-archivo" type="file" accept=".pdf,.docx,.pptx,.xlsx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required>
+                                <small id="pdf-ayuda-reemplazo" class="admin-muted" hidden>Opcional al editar. Selecciona otro archivo si deseas reemplazar el actual (puedes cambiar de formato).</small>
                             </div>
                         </div>
                         <div style="display:flex; justify-content:flex-end; gap:12px; flex-wrap:wrap; align-items:center; margin-top:15px;">
                             <button type="button" id="pdf-cancelar" class="btn-mc325-inline" hidden>Cancelar edición</button>
-                            <button class="btn-download-dark" id="pdf-btn-subir" type="submit"><i class="fa-solid fa-upload"></i> Guardar PDF (borrador)</button>
+                            <button class="btn-download-dark" id="pdf-btn-subir" type="submit"><i class="fa-solid fa-upload"></i> Guardar archivo (borrador)</button>
                         </div>
                         <p id="pdf-mensaje" class="pdf-upload-message" role="status" aria-live="polite"></p>
                     </form>
-                    <p style="font-size:.79rem; line-height:1.55; color:#7b4c45; margin-top:13px;">Los documentos publicados se leen desde GitHub. Los nuevos PDFs y artículos quedan como borradores locales hasta preparar y subir el paquete de cambios. El Modo Docente sigue siendo de prueba, sin autenticación.</p>
+                        <p style="font-size:.79rem; line-height:1.55; color:#7b4c45; margin-top:13px;">Los materiales publicados se leen desde GitHub. Los nuevos archivos y artículos quedan como borradores locales hasta preparar y subir el paquete de cambios. El Modo Docente sigue siendo de prueba, sin autenticación.</p>
+                        </div>
+                    </details>
                 </div>
 
                 <div id="publicacion-materiales" style="display:none;margin:-5px 0 20px;padding:13px 16px;border:1px solid #e3ccc9;background:#fff;border-radius:7px;gap:14px;justify-content:space-between;align-items:center;flex-wrap:wrap;">
@@ -809,7 +844,9 @@
             const panel = document.getElementById('admin-panel-materiales');
             const isOculto = panel.style.display === 'none';
             panel.style.display = isOculto ? 'block' : 'none';
-            
+            if (!isOculto) {
+                panel.querySelectorAll('.admin-accordion').forEach(apartado => { apartado.open = false; });
+            }
             document.getElementById('publicacion-materiales').style.display = isOculto ? 'flex' : 'none';
             renderizarGestionUnidades();
             renderizarArticulos();
@@ -828,13 +865,59 @@
             })[caracter]);
         }
 
+        const TIPOS_DOCUMENTO = Object.freeze({
+            pdf: {etiqueta:'PDF', icono:'fa-solid fa-file-pdf', mime:'application/pdf'},
+            docx:{etiqueta:'DOCX',icono:'fa-solid fa-file-word',mime:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'},
+            pptx:{etiqueta:'PPTX',icono:'fa-solid fa-file-powerpoint',mime:'application/vnd.openxmlformats-officedocument.presentationml.presentation'},
+            xlsx:{etiqueta:'XLSX',icono:'fa-solid fa-file-excel',mime:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'},
+            web: {etiqueta:'WEB', icono:'fa-solid fa-book-open',mime:''}
+        });
+        function extensionDocumento(nombre) {
+            const match = /\.(pdf|docx|pptx|xlsx)(?:$|[?#])/i.exec(String(nombre || ''));
+            return match ? match[1].toLowerCase() : '';
+        }
+        function formatoDocumento(registro) {
+            const tipo = String(registro.tipo || '').toLowerCase();
+            return TIPOS_DOCUMENTO[tipo] ? tipo :
+                (extensionDocumento(registro.nombreArchivo) || extensionDocumento(registro.ruta) || 'pdf');
+        }
+        function urlPublicadaDocumento(registro) {
+            const url = new URL(registro.ruta, document.baseURI);
+            if (registro.revisionArchivo) url.searchParams.set('v', String(registro.revisionArchivo));
+            return url.href;
+        }
+        function insigniaFormato(tipo) {
+            const nombre = TIPOS_DOCUMENTO[tipo] ? tipo : 'pdf';
+            const definicion = TIPOS_DOCUMENTO[nombre];
+            const caja = document.createElement('div');
+            caja.className = 'file-icon-box mc325-format-icon mc325-icon-' + nombre;
+            const icono = document.createElement('i'); icono.className = definicion.icono;
+            icono.setAttribute('aria-hidden','true');
+            const texto = document.createElement('span'); texto.textContent = definicion.etiqueta;
+            caja.append(icono, texto); return caja;
+        }
+        function abrirSeccionAdmin(id) {
+            for (const apartado of document.querySelectorAll('#admin-panel-materiales .admin-accordion')) {
+                apartado.open = apartado.id === id;
+            }
+        }
+        // Permitir solo un editor abierto, incluso al usar el teclado.
+        document.querySelectorAll('#admin-panel-materiales .admin-accordion').forEach(apartado => {
+            apartado.addEventListener('toggle', () => {
+                if (!apartado.open) return;
+                document.querySelectorAll('#admin-panel-materiales .admin-accordion').forEach(otro => {
+                    if (otro !== apartado) otro.open = false;
+                });
+            });
+        });
+
         function renderizarArticulos() {
             for(const u of unidadesCurso()) document.getElementById('articulos-'+u.id)?.replaceChildren();
             articulosGuardados.forEach(art=>{
                 const destino=document.getElementById('articulos-'+art.unidad);
                 if(!destino)return;
                 const fila=document.createElement('div'); fila.className='file-row';
-                const icono=document.createElement('div'); icono.className='file-icon-box border-red'; icono.textContent='WEB';
+                const icono=insigniaFormato('web');
                 const detalle=document.createElement('div'); detalle.className='file-details';
                 const titulo=document.createElement('h4'); titulo.className='clickable-title'; titulo.textContent=art.titulo;
                 titulo.style.cssText='cursor:pointer;color:var(--uni-red-dark)';
@@ -853,7 +936,7 @@
         function reiniciarEditorArticulo() {
             idArticuloEnEdicion=null; contenidoArticuloBase=null;
             const formulario=document.getElementById('form-articulo'); formulario.reset();
-            document.getElementById('art-form-titulo').innerHTML='<i class="fa-solid fa-pen-nib"></i> Redactar Nuevo Artículo (Soporta Markdown y LaTeX)';
+            document.getElementById('art-form-titulo').innerHTML='<i class="fa-solid fa-pen-nib"></i> Redactar Nuevo Artículo (Markdown + LaTeX)';
             document.getElementById('art-guardar').textContent='Guardar artículo (borrador)';
             document.getElementById('art-cancelar').hidden=true;
         }
@@ -878,7 +961,8 @@
                 document.getElementById('art-form-titulo').innerHTML='<i class="fa-solid fa-pen"></i> Editar artículo existente';
                 document.getElementById('art-guardar').textContent='Guardar cambios del artículo';
                 document.getElementById('art-cancelar').hidden=false;
-                document.getElementById('form-articulo').scrollIntoView({behavior:'smooth',block:'start'});
+                abrirSeccionAdmin('panel-articulos');
+                document.getElementById('panel-articulos').scrollIntoView({behavior:'smooth',block:'start'});
             } catch(error){alert('No se pudo cargar el artículo para editar: '+error.message);}
         }
         function hashContenido(valor){
@@ -1009,15 +1093,16 @@
                 const destino=document.getElementById('pdfs-'+pdf.ubicacion);
                 if(!destino)continue;
                 const fila=document.createElement('div'); fila.className='file-row uploaded-pdf-row';
-                const icono=document.createElement('div'); icono.className='file-icon-box border-red'; icono.textContent='PDF';
+                const tipo=formatoDocumento(pdf); const icono=insigniaFormato(tipo);
                 const detalle=document.createElement('div'); detalle.className='file-details';
                 const titulo=document.createElement('h4'); titulo.textContent=pdf.titulo;
                 titulo.className='clickable-title'; titulo.style.cssText='cursor:pointer;color:var(--uni-red-dark)';
-                titulo.title='Abrir visor PDF'; titulo.addEventListener('click',()=>abrirPDFSubido(pdf.id));
+                titulo.title=tipo==='pdf'?'Abrir visor PDF':'Descargar archivo original';
+                titulo.addEventListener('click',()=>tipo==='pdf'?abrirPDFSubido(pdf.id):descargarPDFSubido(pdf.id));
                 const descripcion=document.createElement('p'); descripcion.textContent=pdf.descripcion||'Documento complementario';
                 detalle.append(titulo,descripcion);
                 const meta=document.createElement('span');meta.className='pdf-file-meta';
-                meta.textContent=pdf.tamano ? (pdf.tamano/(1024*1024)).toFixed(2)+' MB' : 'PDF';
+                meta.textContent=pdf.tamano ? (pdf.tamano/(1024*1024)).toFixed(2)+' MB' : TIPOS_DOCUMENTO[tipo].etiqueta;
                 const acciones=document.createElement('div');acciones.className='uploaded-pdf-actions';
                 if(esModoDocenteActivo()){
                     acciones.append(nuevoBotonPDF('Editar','fa-solid fa-pen',()=>editarPDFSubido(pdf.id),'btn-mc325-inline'));
@@ -1034,8 +1119,8 @@
             document.getElementById('form-pdf').reset();
             document.getElementById('pdf-archivo').required=true;
             document.getElementById('pdf-ayuda-reemplazo').hidden=true;
-            document.getElementById('pdf-form-titulo').innerHTML='<i class="fa-solid fa-file-pdf"></i> Subir documento PDF';
-            document.getElementById('pdf-btn-subir').innerHTML='<i class="fa-solid fa-upload"></i> Guardar PDF (borrador)';
+            document.getElementById('pdf-form-titulo').innerHTML='<i class="fa-solid fa-file-arrow-up"></i> Subir archivo del curso';
+            document.getElementById('pdf-btn-subir').innerHTML='<i class="fa-solid fa-upload"></i> Guardar archivo (borrador)';
             document.getElementById('pdf-cancelar').hidden=true;
         }
         document.getElementById('pdf-cancelar').addEventListener('click',()=>{reiniciarEditorPDF(); informarPDF('Edición cancelada.');});
@@ -1049,54 +1134,56 @@
             document.getElementById('pdf-descripcion').value=pdf.descripcion||'';
             document.getElementById('pdf-archivo').required=false;
             document.getElementById('pdf-ayuda-reemplazo').hidden=false;
-            document.getElementById('pdf-form-titulo').innerHTML='<i class="fa-solid fa-pen"></i> Editar PDF existente';
-            document.getElementById('pdf-btn-subir').textContent='Guardar cambios del PDF';
+            document.getElementById('pdf-form-titulo').innerHTML='<i class="fa-solid fa-pen"></i> Editar archivo existente';
+            document.getElementById('pdf-btn-subir').textContent='Guardar cambios del archivo';
             document.getElementById('pdf-cancelar').hidden=false;
-            informarPDF('Puedes cambiar los datos sin subir otro PDF, o elegir un archivo para reemplazarlo.');
-            document.getElementById('form-pdf').scrollIntoView({behavior:'smooth',block:'start'});
+            informarPDF('Puedes cambiar los datos sin subir otro archivo o seleccionar uno nuevo para sustituirlo.');
+            abrirSeccionAdmin('panel-documentos');
+            document.getElementById('panel-documentos').scrollIntoView({behavior:'smooth',block:'start'});
         }
         async function abrirPDFSubido(id) {
             try {
                 const pdf = documentosGuardados.find(p => String(p.id) === String(id));
-                if (!pdf) { alert('El PDF ya no está disponible.'); return; }
+                if (!pdf) { alert('El archivo ya no está disponible.'); return; }
+                if (formatoDocumento(pdf) !== 'pdf') { await descargarPDFSubido(id); return; }
                 if (pdf.ruta && !pdf.archivoPendiente) {
-                    abrirVisorPDF(new URL(pdf.ruta, document.baseURI).href, pdf.titulo, false, pdf.id);
+                    abrirVisorPDF(urlPublicadaDocumento(pdf), pdf.titulo, false, pdf.id);
                     return;
                 }
                 const local = await obtenerPDF(id);
-                if (!local?.archivo) throw new Error('No se encontró el PDF del borrador en este navegador.');
+                if (!local?.archivo) throw new Error('No se encontró el archivo del borrador en este navegador.');
                 abrirVisorPDF(URL.createObjectURL(local.archivo), pdf.titulo, true, pdf.id);
             } catch (error) { alert('No se pudo abrir el PDF: ' + error.message); }
         }
         async function descargarPDFSubido(id) {
             try {
                 const pdf = documentosGuardados.find(p => String(p.id) === String(id));
-                if (!pdf) { alert('El PDF ya no está disponible.'); return; }
+                if (!pdf) { alert('El archivo ya no está disponible.'); return; }
                 const usarPublicado = Boolean(pdf.ruta && !pdf.archivoPendiente);
                 const local = usarPublicado ? null : await obtenerPDF(id);
-                if (!usarPublicado && !local?.archivo) throw new Error('No se encontró el PDF local.');
-                const url = usarPublicado ? new URL(pdf.ruta, document.baseURI).href :
+                if (!usarPublicado && !local?.archivo) throw new Error('No se encontró el archivo local.');
+                const url = usarPublicado ? urlPublicadaDocumento(pdf) :
                     URL.createObjectURL(local.archivo);
                 const enlace = document.createElement('a');
                 enlace.href = url;
-                enlace.download = pdf.nombreArchivo || (pdf.titulo + '.pdf');
+                enlace.download = pdf.nombreArchivo || (pdf.titulo + '.' + formatoDocumento(pdf));
                 document.body.appendChild(enlace);
                 enlace.click(); enlace.remove();
                 if (!usarPublicado) setTimeout(() => URL.revokeObjectURL(url), 5000);
-            } catch (error) { alert('No se pudo descargar el PDF: ' + error.message); }
+            } catch (error) { alert('No se pudo descargar el archivo: ' + error.message); }
         }
         async function borrarPDFSubido(id) {
             if (!esModoDocenteActivo() || !materialesListos) return;
             const pdf = documentosGuardados.find(p => String(p.id) === String(id));
-            if (!pdf || !confirm('¿Retirar el PDF «' + pdf.titulo + '» del listado? Para publicar la eliminación debes exportar los cambios a GitHub.')) return;
+            if (!pdf || !confirm('¿Retirar el archivo «' + pdf.titulo + '» del listado? Para publicar la eliminación debes exportar los cambios a GitHub.')) return;
             try {
                 if (String(pdfAbiertoId) === String(id)) cerrarVisorPDF();
                 if (!pdf.ruta) await eliminarPDF(id);
                 documentosGuardados = documentosGuardados.filter(p => String(p.id) !== String(id));
                 MC325Datos.guardar('documentos', documentosGuardados);
                 await renderizarPDFs();
-                informarPDF('PDF retirado del borrador. Prepara una publicación para actualizar GitHub.', 'success');
-            } catch (error) { informarPDF('No se pudo retirar el PDF: ' + error.message, 'error'); }
+                informarPDF('Archivo retirado del borrador. Prepara una publicación para actualizar GitHub.', 'success');
+            } catch (error) { informarPDF('No se pudo retirar el archivo: ' + error.message, 'error'); }
         }
 
         document.getElementById('form-pdf').addEventListener('submit',async function(evento){
@@ -1106,16 +1193,22 @@
             const titulo=document.getElementById('pdf-titulo').value.trim();
             const editando=idPDFEnEdicion!==null;
             const anterior=editando?documentosGuardados.find(p=>String(p.id)===String(idPDFEnEdicion)):null;
-            if(!titulo||(!editando&&!archivo)){informarPDF('Indica título y selecciona un PDF.','error');return;}
+            if(!titulo||(!editando&&!archivo)){informarPDF('Indica título y selecciona un archivo.','error');return;}
             if(editando&&!anterior){informarPDF('No se encontró el documento para editar.','error');return;}
-            if(archivo && (archivo.size>LIMITE_PDF||archivo.size===0||!/\.pdf$/i.test(archivo.name))){
-                informarPDF('Selecciona un PDF válido, de un máximo de 25 MB.','error');return;
+            const tipoArchivoNuevo = archivo ? extensionDocumento(archivo.name) : '';
+            if (archivo && (archivo.size>LIMITE_PDF || archivo.size===0 || !TIPOS_DOCUMENTO[tipoArchivoNuevo] || tipoArchivoNuevo==='web')) {
+                informarPDF('Selecciona PDF, DOCX, PPTX o XLSX válido, de un máximo de 25 MB.','error');return;
             }
             const boton=document.getElementById('pdf-btn-subir');boton.disabled=true;
             try{
                 if(archivo){
                     const firma=new Uint8Array(await archivo.slice(0,5).arrayBuffer());
-                    if(String.fromCharCode(...firma)!=='%PDF-')throw new Error('El archivo no tiene la cabecera de PDF válida.');
+                    const esPDF = String.fromCharCode(...firma)==='%PDF-';
+                    const esZIP = firma[0]===0x50 && firma[1]===0x4b &&
+                        ((firma[2]===0x03 && firma[3]===0x04) || (firma[2]===0x05 && firma[3]===0x06));
+                    if(tipoArchivoNuevo==='pdf' ? !esPDF : !esZIP) {
+                        throw new Error('El contenido del archivo no corresponde al formato seleccionado.');
+                    }
                 }
                 const id=editando?anterior.id:((window.crypto&&crypto.randomUUID)?crypto.randomUUID():'pdf-'+Date.now());
                 const meta={...(anterior||{}),id,
@@ -1123,12 +1216,14 @@
                     titulo,descripcion:document.getElementById('pdf-descripcion').value.trim(),
                     fechaRegistro:anterior?.fechaRegistro || Date.now()};
                 if(archivo){
-                    // Se conserva la ruta del PDF publicado para que la sustitución
+                    // Se conserva la ruta publicada si el formato no cambia. Si cambia,
+                    // el exportador creará una nueva ruta y retirará la antigua.
+                    // Se conserva la ruta del archivo publicado para que la sustitución
                     // actualice el archivo existente; su versión permite detectar cambios.
-                    meta.nombreArchivo=archivo.name;meta.tamano=archivo.size;
+                    meta.nombreArchivo=archivo.name;meta.tamano=archivo.size;meta.tipo=tipoArchivoNuevo;
                     meta.revisionArchivo=String(Date.now())+'-'+Math.random().toString(36).slice(2);
                     meta.archivoPendiente=true;
-                    await guardarPDF({...meta,archivo:new Blob([archivo],{type:'application/pdf'})});
+                    await guardarPDF({...meta,archivo:new Blob([archivo],{type:TIPOS_DOCUMENTO[tipoArchivoNuevo].mime})});
                 }
                 if(editando){
                     const indice=documentosGuardados.findIndex(p=>String(p.id)===String(id));
@@ -1138,7 +1233,7 @@
                 reiniciarEditorPDF(); await renderizarPDFs();
                 informarPDF('Cambios guardados como borrador. Utiliza «Preparar publicación» para compartirlos en GitHub.','success');
             }catch(error){
-                console.error(error); informarPDF('No se pudo guardar el PDF: '+error.message,'error');
+                console.error(error); informarPDF('No se pudo guardar el archivo: '+error.message,'error');
             }finally{boton.disabled=false;}
         });
 
