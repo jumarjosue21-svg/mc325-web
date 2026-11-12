@@ -1,5 +1,15 @@
 [
   {
+    "id": "silabo-2026-2",
+    "ubicacion": "silabo",
+    "titulo": "Sílabo MC325 2026-2",
+    "descripcion": "Contenido, evaluación y bibliografía",
+    "nombreArchivo": "Silabo_MC325_2026-2.pdf",
+    "tamano": 0,
+    "fechaRegistro": 1793870400000,
+    "ruta": "SYLLABUS-MC325-RESISTENCIA DE MATERIALES II-20262-1793919728.pdf"
+  },
+  {
     "id": "15d9375d-579a-4e8c-9b1a-94af78773840",
     "ubicacion": "unidad1",
     "titulo": "Criterios de Fallas",

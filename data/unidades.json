@@ -1,0 +1,22 @@
+[
+  {
+    "id": "silabo",
+    "nombre": "Sílabo y presentación del curso"
+  },
+  {
+    "id": "unidad1",
+    "nombre": "Fundamentos y Conceptos Básicos"
+  },
+  {
+    "id": "unidad2",
+    "nombre": "Vigas Curvas"
+  },
+  {
+    "id": "unidad3",
+    "nombre": "Teorema de Castigliano"
+  },
+  {
+    "id": "unidad4",
+    "nombre": "Placas Planas"
+  }
+]

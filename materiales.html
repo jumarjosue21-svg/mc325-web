@@ -340,6 +340,25 @@
         .uploaded-pdf-actions .btn-pdf-delete:focus-visible { background:#fcf1f0; color:#7b241c; }
         .pdf-file-meta { color:#697481; font-size:.78rem; white-space:nowrap; }
         @media (max-width: 760px) { .uploaded-pdf-actions { justify-content:flex-start; } .uploaded-pdf-row { flex-wrap:wrap; } }
+        /* Edición administrativa, sin alterar el CSS global del sitio. */
+        .admin-section-title { color:var(--uni-red-dark);margin:0 0 13px;font-size:1.05rem; }
+        .admin-section-divider { border:0;border-top:1px solid #e8c9c5;margin:25px 0 20px; }
+        .admin-units-list { display:flex;flex-direction:column;gap:9px;margin:14px 0 18px; }
+        .admin-unit-row {display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:9px 10px;border:1px solid #ebd9d6;background:white;border-radius:6px;}
+        .admin-unit-row .unit-ordinal {color:var(--uni-red-dark);font-weight:bold;font-size:.82rem;min-width:74px;}
+        .admin-unit-row input {flex:1;min-width:180px;padding:8px;border:1px solid #cbd1d6;border-radius:4px;font:inherit;font-size:.87rem;}
+        .admin-unit-row button {font-size:.8rem;padding:8px 10px;border:1px solid #cdb5b2;background:white;color:#5a1a14;cursor:pointer;border-radius:4px;}
+        .admin-unit-row button:hover {background:#f9eeee;}
+        .admin-add-unit {display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+        .admin-add-unit input {flex:1;min-width:210px;padding:10px;border:1px solid #cbd1d6;border-radius:5px;}
+        .btn-mc325-inline {display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 10px;border:1px solid #dcc5c3;border-radius:5px;background:#fff;color:var(--uni-red-dark);cursor:pointer;font-size:.82rem;}
+        .btn-mc325-inline:hover {background:#fbefed;}
+        .admin-form-actions {display:flex;align-items:center;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:9px;}
+        .btn-article-actions {display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end;}
+        .btn-article-actions .btn-download-dark {min-width:90px;}
+        .pdfs-subidos .file-row .uploaded-pdf-actions {flex-wrap:nowrap;}
+        .admin-muted {font-size:.82rem;color:#6f5a56;line-height:1.55;}
+        @media (max-width:790px){.admin-unit-row input{min-width:135px;}.pdfs-subidos .file-row .uploaded-pdf-actions{flex-wrap:wrap;}}
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -432,17 +451,20 @@
 
                 <!-- PANEL DE REDACCIÓN DE ARTÍCULOS (Oculto por defecto) -->
                 <div id="admin-panel-materiales" style="display: none; background: #fdf5f5; padding: 20px; border-radius: 8px; border: 1px solid #fadbd8; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-                    <h4 style="color: var(--uni-red-dark); margin-bottom: 15px;"><i class="fa-solid fa-pen-nib"></i> Redactar Nuevo Artículo (Soporta Markdown y LaTeX)</h4>
+                    <h4 class="admin-section-title"><i class="fa-solid fa-layer-group"></i> Administrar unidades y sección del sílabo</h4>
+                    <p class="admin-muted">Renombra y ordena las unidades sin modificar el HTML. La sección del sílabo también puede renombrarse. Una unidad con artículos o PDFs no podrá eliminarse hasta trasladar sus materiales.</p>
+                    <div id="lista-gestion-unidades" class="admin-units-list" aria-live="polite"></div>
+                    <form id="form-unidad" class="admin-add-unit">
+                        <input type="text" id="nueva-unidad-nombre" maxlength="120" placeholder="Nombre de la nueva unidad" required aria-label="Nombre de la nueva unidad">
+                        <button type="submit" class="btn-download-dark"><i class="fa-solid fa-plus"></i> Agregar unidad</button>
+                    </form>
+                    <hr class="admin-section-divider">
+                    <h4 id="art-form-titulo" class="admin-section-title"><i class="fa-solid fa-pen-nib"></i> Redactar Nuevo Artículo (Soporta Markdown y LaTeX)</h4>
                     <form id="form-articulo" style="display: flex; flex-direction: column; gap: 15px;">
                         <div style="display: flex; gap: 15px; flex-wrap: wrap;">
                             <div style="flex: 1; min-width: 200px;">
                                 <label style="font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; display:block;">Unidad de destino:</label>
-                                <select id="art-unidad" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-                                    <option value="unidad1">Unidad 1: Fundamentos y Conceptos Básicos</option>
-                                    <option value="unidad2">Unidad 2: Vigas Curvas</option>
-                                    <option value="unidad3">Unidad 3: Teorema de Castigliano</option>
-                                    <option value="unidad4">Unidad 4: Placas Planas</option>
-                                </select>
+                                <select id="art-unidad" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"></select>
                             </div>
                             <div style="flex: 2; min-width: 300px;">
                                 <label style="font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; display:block;">Título del Tema:</label>
@@ -453,23 +475,20 @@
                             <label style="font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; display:block;">Contenido del artículo (Markdown para texto, $$ para fórmulas):</label>
                             <textarea id="art-contenido" rows="8" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; line-height: 1.5; resize: vertical;" placeholder="Ejemplo:&#10;### Esfuerzo Normal&#10;El esfuerzo normal promedio está dado por:&#10;$$ \sigma = \frac{P}{A} $$"></textarea>
                         </div>
-                        <button type="submit" class="btn-download-dark" style="align-self: flex-end; padding: 10px 25px;">Guardar artículo (borrador)</button>
+                        <div class="admin-form-actions">
+                            <button type="button" id="art-cancelar" class="btn-mc325-inline" hidden>Cancelar edición</button>
+                            <button type="submit" id="art-guardar" class="btn-download-dark" style="padding:10px 25px;">Guardar artículo (borrador)</button>
+                        </div>
                     </form>
                     <!-- Los PDFs nuevos se guardan como borrador hasta preparar una publicación en GitHub. -->
                     <div style="border-top: 1px solid #e8c9c5; margin: 26px 0 22px;"></div>
-                    <h4 style="color: var(--uni-red-dark); margin-bottom: 9px;"><i class="fa-solid fa-file-pdf"></i> Subir documento PDF</h4>
+                    <h4 id="pdf-form-titulo" class="admin-section-title"><i class="fa-solid fa-file-pdf"></i> Subir documento PDF</h4>
                     <p style="font-size:.86rem; line-height:1.65; color:#555; margin-bottom:15px;">Añade material complementario al sílabo o a cualquiera de las unidades. Los documentos subidos podrán visualizarse y descargarse directamente desde su unidad.</p>
                     <form id="form-pdf">
                         <div class="pdf-form-row">
                             <div class="pdf-form-field">
                                 <label for="pdf-ubicacion">Ubicación</label>
-                                <select id="pdf-ubicacion" required>
-                                    <option value="silabo">Sílabo y presentación del curso</option>
-                                    <option value="unidad1">Unidad 1: Fundamentos y Conceptos Básicos</option>
-                                    <option value="unidad2">Unidad 2: Vigas Curvas</option>
-                                    <option value="unidad3">Unidad 3: Teorema de Castigliano</option>
-                                    <option value="unidad4">Unidad 4: Placas Planas</option>
-                                </select>
+                                <select id="pdf-ubicacion" required></select>
                             </div>
                             <div class="pdf-form-field" style="flex:2;">
                                 <label for="pdf-titulo">Título del documento</label>
@@ -484,9 +503,11 @@
                             <div class="pdf-form-field" style="flex:1.4;">
                                 <label for="pdf-archivo">Archivo PDF (máx. 25 MB)</label>
                                 <input id="pdf-archivo" type="file" accept="application/pdf,.pdf" required>
+                                <small id="pdf-ayuda-reemplazo" class="admin-muted" hidden>Opcional al editar. Selecciona otro PDF únicamente si deseas reemplazar el archivo.</small>
                             </div>
                         </div>
                         <div style="display:flex; justify-content:flex-end; gap:12px; flex-wrap:wrap; align-items:center; margin-top:15px;">
+                            <button type="button" id="pdf-cancelar" class="btn-mc325-inline" hidden>Cancelar edición</button>
                             <button class="btn-download-dark" id="pdf-btn-subir" type="submit"><i class="fa-solid fa-upload"></i> Guardar PDF (borrador)</button>
                         </div>
                         <p id="pdf-mensaje" class="pdf-upload-message" role="status" aria-live="polite"></p>
@@ -501,10 +522,7 @@
                 <div class="filter-bar">
                     <div class="filter-buttons">
                         <button class="active" onclick="filtrarUnidades('todas', this)">Todas las unidades</button>
-                        <button onclick="filtrarUnidades('unidad1', this)">Unidad 1</button>
-                        <button onclick="filtrarUnidades('unidad2', this)">Unidad 2</button>
-                        <button onclick="filtrarUnidades('unidad3', this)">Unidad 3</button>
-                        <button onclick="filtrarUnidades('unidad4', this)">Unidad 4</button>
+                        <span id="botones-filtro-unidades" style="display:contents;"></span>
                     </div>
                 </div>
 
@@ -516,66 +534,15 @@
                         <!-- Grupo: Sílabo -->
                         <div class="file-group" id="grupo-silabo">
                             <div class="group-header">
-                                <h3><i class="fa-solid fa-star"></i> Sílabo y presentación del curso</h3>
+                                <h3><i class="fa-solid fa-star"></i> <span id="titulo-seccion-silabo">Sílabo y presentación del curso</span></h3>
                             </div>
                             <div class="group-content">
                                 <div id="pdfs-silabo" class="pdfs-subidos"></div>
-                                <div class="file-row">
-                                    <div class="file-icon-box border-red">PDF</div>
-                                    <div class="file-details">
-                                        <h4 class="clickable-title" onclick="abrirVisorPDF('SYLLABUS-MC325-RESISTENCIA DE MATERIALES II-20262-1793919728.pdf', 'Sílabo MC325 2026-2')">Sílabo MC325 2026-2</h4>
-                                        <p>Contenido, evaluación y bibliografía</p>
-                                    </div>
-                                    <div class="file-meta" id="meta-silabo">Cargando info...</div>
-                                    <a href="SYLLABUS-MC325-RESISTENCIA DE MATERIALES II-20262-1793919728.pdf" download="Silabo_MC325_2026-2.pdf" class="btn-download-dark" style="text-decoration: none; text-align: center; display: inline-block;">Descargar</a>
-                                </div>
                             </div>
                         </div>
 
-                        <!-- Grupo: Unidad 1 -->
-                        <div class="file-group" id="grupo-unidad1">
-                            <div class="group-header">
-                                <h3><span class="circle-num-white">1</span> Unidad 1: Fundamentos y Conceptos Básicos</h3>
-                            </div>
-                            <div class="group-content">
-                                <!-- Contenedor dinámico integrado dentro del grupo para guardar el mismo estilo -->
-                                <div id="articulos-unidad1"></div>
-                                <div id="pdfs-unidad1" class="pdfs-subidos"></div>
-                            </div>
-                        </div>
-
-                        <!-- Grupo: Unidad 2 -->
-                        <div class="file-group" id="grupo-unidad2">
-                            <div class="group-header">
-                                <h3><span class="circle-num-white">2</span> Unidad 2: Vigas Curvas</h3>
-                            </div>
-                            <div class="group-content">
-                                <div id="articulos-unidad2"></div>
-                                <div id="pdfs-unidad2" class="pdfs-subidos"></div>
-                            </div>
-                        </div>
-                    
-                        <!-- Grupo: Unidad 3 -->
-                        <div class="file-group" id="grupo-unidad3">
-                            <div class="group-header">
-                                <h3><span class="circle-num-white">3</span> Unidad 3: Teorema de Castigliano</h3>
-                            </div>
-                            <div class="group-content">
-                                <div id="articulos-unidad3"></div>
-                                <div id="pdfs-unidad3" class="pdfs-subidos"></div>
-                            </div>
-                        </div>
-
-                        <!-- Grupo: Unidad 4 -->
-                        <div class="file-group" id="grupo-unidad4">
-                            <div class="group-header">
-                                <h3><span class="circle-num-white">4</span> Unidad 4: Placas Planas</h3>
-                            </div>
-                            <div class="group-content">
-                                <div id="articulos-unidad4"></div>
-                                <div id="pdfs-unidad4" class="pdfs-subidos"></div>
-                            </div>
-                        </div>
+                        <!-- Las unidades se crean dinámicamente desde data/unidades.json. -->
+                        <div id="grupos-unidades"></div>
 
                     </div>
 
@@ -587,20 +554,7 @@
                             <div class="widget-header">
                                 <h3>Ir a la unidad</h3>
                             </div>
-                            <ul class="widget-list">
-                                <li onclick="ubicarUnidad('unidad1')" style="cursor: pointer;">
-                                    <span class="circle-num-dark">1</span> Fundamentos y Conceptos Básicos
-                                </li>
-                                <li onclick="ubicarUnidad('unidad2')" style="cursor: pointer;">
-                                    <span class="circle-num-dark">2</span> Vigas Curvas
-                                </li>
-                                <li onclick="ubicarUnidad('unidad3')" style="cursor: pointer;">
-                                    <span class="circle-num-dark">3</span> Teorema de Castigliano
-                                </li>
-                                <li onclick="ubicarUnidad('unidad4')" style="cursor: pointer;">
-                                    <span class="circle-num-dark">4</span> Placas Planas
-                                </li>
-                            </ul>
+                            <ul class="widget-list" id="nav-unidades"></ul>
                         </div>
 
                         <div class="widget-box">
@@ -663,7 +617,7 @@
 
     <!-- SCRIPT PRINCIPAL -->
     <script>
-        // Visor reutilizado por el sílabo y los nuevos PDFs guardados en el navegador.
+        // Visor de documentos publicado, incluido el sílabo administrable.
         let urlTemporalPDF = null;
         let pdfAbiertoId = null;
         function abrirVisorPDF(rutaArchivo, titulo, urlTemporal = false, idDocumento = null) {
@@ -705,14 +659,15 @@
         }
 
         window.addEventListener('DOMContentLoaded', async () => {
-            obtenerMetadatos('SYLLABUS-MC325-RESISTENCIA DE MATERIALES II-20262-1793919728.pdf', 'meta-silabo');
             try {
-                const [articulos, documentos] = await Promise.all([
-                    MC325Datos.leer('articulos'), MC325Datos.leer('documentos')
+                const [articulos, documentos, unidades] = await Promise.all([
+                    MC325Datos.leer('articulos'), MC325Datos.leer('documentos'), MC325Datos.leer('unidades')
                 ]);
                 articulosGuardados = articulos.items;
                 documentosGuardados = documentos.items;
+                unidadesGuardadas = unidades.items;
                 materialesListos = true;
+                renderizarUnidades();
                 renderizarArticulos();
                 await renderizarPDFs();
             } catch (error) {
@@ -722,38 +677,132 @@
             }
         });
 
-        // Filtrado de Unidades
-        function filtrarUnidades(filtro, botonClick) {
-            const botones = document.querySelectorAll('.filter-buttons button');
-            botones.forEach(btn => btn.classList.remove('active'));
-            botonClick.classList.add('active');
+        // Las unidades provienen de data/unidades.json (sílabo es una sección fija
+        // pero su título es editable). Mantener sus IDs evita romper los enlaces.
+        let unidadesGuardadas = [];
+        let idArticuloEnEdicion = null;
+        let contenidoArticuloBase = null;
+        let idPDFEnEdicion = null;
 
-            const grupos = document.querySelectorAll('.file-group');
-            grupos.forEach(grupo => {
-                if (filtro === 'todas') {
-                    grupo.style.display = 'block';
-                } else {
-                    if (grupo.id === 'grupo-' + filtro) {
-                        grupo.style.display = 'block';
-                    } else {
-                        grupo.style.display = 'none';
-                    }
-                }
+        function unidadesCurso() { return unidadesGuardadas.filter(u => u.id !== 'silabo'); }
+        function nombreUnidad(id) {
+            const unidad = unidadesGuardadas.find(u => u.id === id);
+            return unidad ? unidad.nombre : id;
+        }
+        function crearOption(select, id, texto) {
+            const option = document.createElement('option');
+            option.value = id; option.textContent = texto; select.appendChild(option);
+        }
+        function renderizarUnidades() {
+            const cursos = unidadesCurso();
+            const contenedor = document.getElementById('grupos-unidades');
+            contenedor.replaceChildren();
+            const filtros = document.getElementById('botones-filtro-unidades');
+            filtros.replaceChildren();
+            const nav = document.getElementById('nav-unidades');
+            nav.replaceChildren();
+            const artSel = document.getElementById('art-unidad');
+            const pdfSel = document.getElementById('pdf-ubicacion');
+            const anteriorArticulo = artSel.value;
+            const anteriorPDF = pdfSel.value;
+            artSel.replaceChildren(); pdfSel.replaceChildren();
+            crearOption(pdfSel, 'silabo', nombreUnidad('silabo'));
+            document.getElementById('titulo-seccion-silabo').textContent = nombreUnidad('silabo');
+            cursos.forEach((u, index) => {
+                const numero = index + 1;
+                const grupo = document.createElement('div');
+                grupo.className = 'file-group'; grupo.id = 'grupo-' + u.id;
+                const cabecera = document.createElement('div'); cabecera.className = 'group-header';
+                const h3 = document.createElement('h3');
+                const circulo = document.createElement('span'); circulo.className='circle-num-white'; circulo.textContent=numero;
+                h3.append(circulo, document.createTextNode(' Unidad ' + numero + ': ' + u.nombre));
+                cabecera.appendChild(h3);
+                const cuerpo = document.createElement('div'); cuerpo.className='group-content';
+                const divArt = document.createElement('div'); divArt.id='articulos-'+u.id;
+                const divPDF = document.createElement('div'); divPDF.id='pdfs-'+u.id; divPDF.className='pdfs-subidos';
+                cuerpo.append(divArt, divPDF); grupo.append(cabecera,cuerpo); contenedor.appendChild(grupo);
+                const boton = document.createElement('button');
+                boton.textContent='Unidad '+numero; boton.type='button';
+                boton.addEventListener('click', () => filtrarUnidades(u.id,boton));
+                filtros.appendChild(boton);
+                const li = document.createElement('li'); li.style.cursor='pointer';
+                const bola = document.createElement('span'); bola.className='circle-num-dark'; bola.textContent=numero;
+                li.append(bola,document.createTextNode(' '+u.nombre));
+                li.addEventListener('click', () => ubicarUnidad(u.id));
+                nav.appendChild(li);
+                crearOption(artSel,u.id,'Unidad '+numero+': '+u.nombre);
+                crearOption(pdfSel,u.id,'Unidad '+numero+': '+u.nombre);
+            });
+            if ([...artSel.options].some(x=>x.value===anteriorArticulo)) artSel.value=anteriorArticulo;
+            if ([...pdfSel.options].some(x=>x.value===anteriorPDF)) pdfSel.value=anteriorPDF;
+            renderizarGestionUnidades();
+            if (materialesListos) { renderizarArticulos(); renderizarPDFs(); }
+        }
+        function filtrarUnidades(filtro, botonClick) {
+            document.querySelectorAll('.filter-buttons button').forEach(btn=>btn.classList.remove('active'));
+            botonClick.classList.add('active');
+            document.querySelectorAll('.file-group').forEach(grupo => {
+                grupo.style.display=(filtro==='todas'||grupo.id==='grupo-'+filtro)?'block':'none';
             });
         }
-
         function ubicarUnidad(idUnidad) {
-            const botonTodas = document.querySelector('.filter-buttons button:first-child');
-            if (botonTodas) {
-                filtrarUnidades('todas', botonTodas);
-            }
-            setTimeout(() => {
-                const elemento = document.getElementById('grupo-' + idUnidad);
-                if (elemento) {
-                    elemento.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }, 50); 
+            const botonTodas=document.querySelector('.filter-buttons button:first-child');
+            if(botonTodas) filtrarUnidades('todas',botonTodas);
+            setTimeout(()=>document.getElementById('grupo-'+idUnidad)?.scrollIntoView({behavior:'smooth',block:'start'}),50);
         }
+        function guardarUnidades() {
+            MC325Datos.guardar('unidades',unidadesGuardadas);
+            renderizarUnidades();
+        }
+        function renderizarGestionUnidades() {
+            const lista=document.getElementById('lista-gestion-unidades');
+            lista.replaceChildren();
+            unidadesGuardadas.forEach((u,index)=>{
+                const fila=document.createElement('div'); fila.className='admin-unit-row';
+                const nombre=document.createElement('span'); nombre.className='unit-ordinal';
+                nombre.textContent=u.id==='silabo'?'Sílabo':('Unidad '+(unidadesCurso().findIndex(x=>x.id===u.id)+1));
+                const input=document.createElement('input'); input.value=u.nombre; input.maxLength=120;
+                input.setAttribute('aria-label','Nombre de '+nombre.textContent);
+                const save=nuevoBotonPDF('Guardar','fa-solid fa-floppy-disk',()=>{
+                    if(!esModoDocenteActivo())return;
+                    const nuevo=input.value.trim();
+                    if(!nuevo){alert('El nombre no puede estar vacío.');return;}
+                    u.nombre=nuevo; guardarUnidades();
+                },'btn-mc325-inline');
+                fila.append(nombre,input,save);
+                if(u.id!=='silabo'){
+                    for (const [paso,icono,texto] of [[-1,'fa-solid fa-arrow-up','Subir'],[1,'fa-solid fa-arrow-down','Bajar']]){
+                        const boton=nuevoBotonPDF(texto,icono,()=>{
+                            if(!esModoDocenteActivo())return;
+                            const nuevoIndex=index+paso;
+                            if(nuevoIndex<1||nuevoIndex>=unidadesGuardadas.length)return;
+                            [unidadesGuardadas[index],unidadesGuardadas[nuevoIndex]]=[unidadesGuardadas[nuevoIndex],unidadesGuardadas[index]];
+                            guardarUnidades();
+                        },'btn-mc325-inline');
+                        boton.disabled = index+paso<1||index+paso>=unidadesGuardadas.length;
+                        fila.append(boton);
+                    }
+                    fila.append(nuevoBotonPDF('Eliminar','fa-solid fa-trash',()=>{
+                        if(!esModoDocenteActivo())return;
+                        if(articulosGuardados.some(a=>a.unidad===u.id)||documentosGuardados.some(d=>d.ubicacion===u.id)){
+                            alert('Esta unidad contiene artículos o PDFs. Mueve esos materiales a otra unidad antes de eliminarla.');return;
+                        }
+                        if(!confirm('¿Eliminar la unidad «'+u.nombre+'»?'))return;
+                        unidadesGuardadas=unidadesGuardadas.filter(x=>x.id!==u.id); guardarUnidades();
+                    },'btn-mc325-inline'));
+                }
+                lista.appendChild(fila);
+            });
+        }
+        document.getElementById('form-unidad').addEventListener('submit',event=>{
+            event.preventDefault();
+            if(!esModoDocenteActivo()||!materialesListos)return;
+            const nombre=document.getElementById('nueva-unidad-nombre').value.trim();
+            if(!nombre)return;
+            const numeros=unidadesCurso().map(x=>/^unidad(\d+)$/.exec(x.id)).filter(Boolean).map(x=>Number(x[1]));
+            const id='unidad'+(Math.max(0,...numeros)+1);
+            unidadesGuardadas.push({id,nombre}); guardarUnidades(); event.target.reset();
+        });
 
         // LÓGICA DE ARTÍCULOS (MODO DOCENTE Y SPA)
         function toggleAdminMateriales() {
@@ -761,11 +810,9 @@
             const isOculto = panel.style.display === 'none';
             panel.style.display = isOculto ? 'block' : 'none';
             
-            const deleteBtns = document.querySelectorAll('.btn-delete-article');
-            deleteBtns.forEach(btn => {
-                btn.style.display = isOculto ? 'inline-block' : 'none';
-            });
             document.getElementById('publicacion-materiales').style.display = isOculto ? 'flex' : 'none';
+            renderizarGestionUnidades();
+            renderizarArticulos();
             renderizarPDFs();
         }
         function esModoDocenteActivo() {
@@ -782,62 +829,92 @@
         }
 
         function renderizarArticulos() {
-            const panelAdmin = document.getElementById('admin-panel-materiales');
-            const isAdminActivo = panelAdmin && panelAdmin.style.display === 'block';
-
-            ['unidad1', 'unidad2', 'unidad3', 'unidad4'].forEach(u => {
-                const contenedor = document.getElementById('articulos-' + u);
-                if (contenedor) contenedor.innerHTML = '';
-            });
-
-            articulosGuardados.forEach(art => {
-                const contenedor = document.getElementById('articulos-' + art.unidad);
-                if (contenedor) {
-                    const displayBtn = isAdminActivo ? 'inline-block' : 'none';
-                    
-                    // Fila idéntica al PDF pero con icono WEB y dentro del contenedor de la unidad
-                    const html = `
-                        <div class="file-row">
-                            <div class="file-icon-box border-red" style="font-size:0.75rem; font-weight:bold;">WEB</div>
-                            <div class="file-details">
-                                <h4 class="clickable-title" onclick="abrirVistaLectura('${escaparHTMLMaterial(art.id)}')" style="cursor: pointer; color: var(--uni-red-dark);">${escaparHTMLMaterial(art.titulo)}</h4>
-                                <p>Artículo interactivo (Teoría)</p>
-                            </div>
-                            <div class="file-meta" style="display: flex; align-items: center; gap: 10px;">
-                                <button class="btn-delete-article" onclick="borrarArticulo('${escaparHTMLMaterial(art.id)}')" title="Eliminar artículo" style="display: ${displayBtn}; background: none; border: none; color: #ccc; cursor: pointer; font-size: 1.1rem; transition: color 0.2s;" onmouseover="this.style.color='var(--uni-red-dark)'" onmouseout="this.style.color='#ccc'"><i class="fa-solid fa-trash"></i></button>
-                            </div>
-                            <button class="btn-download-dark" onclick="abrirVistaLectura('${escaparHTMLMaterial(art.id)}')" style="min-width: 90px; text-align: center;">Leer</button>
-                        </div>
-                    `;
-                    contenedor.innerHTML += html;
+            for(const u of unidadesCurso()) document.getElementById('articulos-'+u.id)?.replaceChildren();
+            articulosGuardados.forEach(art=>{
+                const destino=document.getElementById('articulos-'+art.unidad);
+                if(!destino)return;
+                const fila=document.createElement('div'); fila.className='file-row';
+                const icono=document.createElement('div'); icono.className='file-icon-box border-red'; icono.textContent='WEB';
+                const detalle=document.createElement('div'); detalle.className='file-details';
+                const titulo=document.createElement('h4'); titulo.className='clickable-title'; titulo.textContent=art.titulo;
+                titulo.style.cssText='cursor:pointer;color:var(--uni-red-dark)';
+                titulo.addEventListener('click',()=>abrirVistaLectura(art.id));
+                const descripcion=document.createElement('p'); descripcion.textContent='Artículo interactivo (Teoría)';
+                detalle.append(titulo,descripcion);
+                const acciones=document.createElement('div'); acciones.className='btn-article-actions';
+                if(esModoDocenteActivo()){
+                    acciones.append(nuevoBotonPDF('Editar','fa-solid fa-pen',()=>editarArticulo(art.id),'btn-mc325-inline'));
+                    acciones.append(nuevoBotonPDF('Eliminar','fa-solid fa-trash',()=>borrarArticulo(art.id),'btn-mc325-inline'));
                 }
+                acciones.append(nuevoBotonPDF('Leer','fa-solid fa-book-open',()=>abrirVistaLectura(art.id)));
+                fila.append(icono,detalle,acciones); destino.appendChild(fila);
             });
         }
-
-        document.getElementById('form-articulo').addEventListener('submit', function(e) {
-            e.preventDefault();
-            if (!esModoDocenteActivo() || !materialesListos) return;
-            const nuevoArticulo = {
-                id: Date.now().toString(),
-                unidad: document.getElementById('art-unidad').value,
-                titulo: document.getElementById('art-titulo').value,
-                contenido: document.getElementById('art-contenido').value
-            };
-            articulosGuardados.push(nuevoArticulo);
-            MC325Datos.guardar('articulos', articulosGuardados);
-            renderizarArticulos();
-            this.reset();
-        });
-
-        function borrarArticulo(id) {
-            if (!esModoDocenteActivo()) return;
-            if (confirm("¿Estás seguro de que deseas eliminar este artículo?")) {
-                articulosGuardados = articulosGuardados.filter(a => a.id !== id);
-                MC325Datos.guardar('articulos', articulosGuardados);
-                renderizarArticulos();
-            }
+        function reiniciarEditorArticulo() {
+            idArticuloEnEdicion=null; contenidoArticuloBase=null;
+            const formulario=document.getElementById('form-articulo'); formulario.reset();
+            document.getElementById('art-form-titulo').innerHTML='<i class="fa-solid fa-pen-nib"></i> Redactar Nuevo Artículo (Soporta Markdown y LaTeX)';
+            document.getElementById('art-guardar').textContent='Guardar artículo (borrador)';
+            document.getElementById('art-cancelar').hidden=true;
         }
-
+        document.getElementById('art-cancelar').addEventListener('click',reiniciarEditorArticulo);
+        async function editarArticulo(id) {
+            if(!esModoDocenteActivo()||!materialesListos)return;
+            const art=articulosGuardados.find(x=>String(x.id)===String(id));
+            if(!art)return;
+            try {
+                let contenido=art.contenido;
+                if(contenido===undefined&&art.ruta){
+                    const respuesta=await fetch(art.ruta,{cache:'no-store'});
+                    if(!respuesta.ok)throw new Error('HTTP '+respuesta.status);
+                    contenido=await respuesta.text();
+                }
+                if(typeof contenido!=='string')throw new Error('No está disponible el contenido Markdown.');
+                reiniciarEditorArticulo();
+                idArticuloEnEdicion=art.id; contenidoArticuloBase=contenido;
+                document.getElementById('art-unidad').value=art.unidad;
+                document.getElementById('art-titulo').value=art.titulo;
+                document.getElementById('art-contenido').value=contenido;
+                document.getElementById('art-form-titulo').innerHTML='<i class="fa-solid fa-pen"></i> Editar artículo existente';
+                document.getElementById('art-guardar').textContent='Guardar cambios del artículo';
+                document.getElementById('art-cancelar').hidden=false;
+                document.getElementById('form-articulo').scrollIntoView({behavior:'smooth',block:'start'});
+            } catch(error){alert('No se pudo cargar el artículo para editar: '+error.message);}
+        }
+        function hashContenido(valor){
+            let h=2166136261;
+            for(let i=0;i<valor.length;i++){h^=valor.charCodeAt(i);h=Math.imul(h,16777619);}
+            return (h>>>0).toString(16);
+        }
+        document.getElementById('form-articulo').addEventListener('submit',function(e){
+            e.preventDefault();
+            if(!esModoDocenteActivo()||!materialesListos)return;
+            const contenido=document.getElementById('art-contenido').value;
+            const unidad=document.getElementById('art-unidad').value;
+            const titulo=document.getElementById('art-titulo').value.trim();
+            if(!titulo||!contenido.trim())return;
+            if(idArticuloEnEdicion!==null){
+                const art=articulosGuardados.find(x=>String(x.id)===String(idArticuloEnEdicion));
+                if(!art)return;
+                art.titulo=titulo;art.unidad=unidad;
+                if(contenido!==contenidoArticuloBase){
+                    art.contenido=contenido;
+                    art.revision=hashContenido(contenido);
+                }
+            } else {
+                articulosGuardados.push({id:Date.now().toString(),unidad,titulo,contenido,revision:hashContenido(contenido)});
+            }
+            MC325Datos.guardar('articulos',articulosGuardados);
+            reiniciarEditorArticulo();renderizarArticulos();
+        });
+        function borrarArticulo(id){
+            if(!esModoDocenteActivo())return;
+            if(!confirm('¿Eliminar este artículo? La eliminación se publicará al exportar los cambios.'))return;
+            articulosGuardados=articulosGuardados.filter(a=>String(a.id)!==String(id));
+            MC325Datos.guardar('articulos',articulosGuardados);
+            if(String(idArticuloEnEdicion)===String(id))reiniciarEditorArticulo();
+            renderizarArticulos();
+        }
 
         // =============================================================
         // GESTIÓN DE PDF (prototipo local sin backend)
@@ -925,58 +1002,64 @@
         }
 
         async function renderizarPDFs() {
-            for (const ubicacion of ['silabo', 'unidad1', 'unidad2', 'unidad3', 'unidad4']) {
-                document.getElementById('pdfs-' + ubicacion).replaceChildren();
-            }
-            try {
-                const registros = [...documentosGuardados];
-                registros.sort((a, b) => (b.fechaRegistro || 0) - (a.fechaRegistro || 0));
-                const admin = esModoDocenteActivo();
-                for (const pdf of registros) {
-                    const destino = document.getElementById('pdfs-' + pdf.ubicacion);
-                    if (!destino) continue;
-                    const fila = document.createElement('div');
-                    fila.className = 'file-row uploaded-pdf-row';
-                    const icono = document.createElement('div');
-                    icono.className = 'file-icon-box border-red';
-                    icono.textContent = 'PDF';
-                    const detalle = document.createElement('div');
-                    detalle.className = 'file-details';
-                    const titulo = document.createElement('h4');
-                    titulo.textContent = pdf.titulo;
-                    titulo.className = 'clickable-title';
-                    titulo.style.cssText = 'cursor:pointer; color:var(--uni-red-dark);';
-                    titulo.addEventListener('click', () => abrirPDFSubido(pdf.id));
-                    const descripcion = document.createElement('p');
-                    descripcion.textContent = pdf.descripcion || 'Documento complementario';
-                    detalle.append(titulo, descripcion);
-                    const info = document.createElement('span');
-                    info.className = 'pdf-file-meta';
-                    info.textContent = (pdf.tamano / (1024 * 1024)).toFixed(2) + ' MB';
-                    const acciones = document.createElement('div');
-                    acciones.className = 'uploaded-pdf-actions';
-                    acciones.appendChild(nuevoBotonPDF('Ver', 'fa-solid fa-eye', () => abrirPDFSubido(pdf.id)));
-                    // Todos los PDFs complementarios pueden descargarse, incluidos los guardados anteriormente.
-                    acciones.appendChild(nuevoBotonPDF('Descargar', 'fa-solid fa-download', () => descargarPDFSubido(pdf.id)));
-                    if (admin) {
-                        const botonBorrar = nuevoBotonPDF('Eliminar', 'fa-solid fa-trash', () => borrarPDFSubido(pdf.id), 'btn-pdf-delete');
-                        botonBorrar.title = 'Eliminar PDF';
-                        acciones.appendChild(botonBorrar);
-                    }
-                    fila.append(icono, detalle, info, acciones);
-                    destino.appendChild(fila);
+            for(const ubicacion of ['silabo',...unidadesCurso().map(u=>u.id)])
+                document.getElementById('pdfs-'+ubicacion)?.replaceChildren();
+            const registros=[...documentosGuardados].sort((a,b)=>(b.fechaRegistro||0)-(a.fechaRegistro||0));
+            for(const pdf of registros){
+                const destino=document.getElementById('pdfs-'+pdf.ubicacion);
+                if(!destino)continue;
+                const fila=document.createElement('div'); fila.className='file-row uploaded-pdf-row';
+                const icono=document.createElement('div'); icono.className='file-icon-box border-red'; icono.textContent='PDF';
+                const detalle=document.createElement('div'); detalle.className='file-details';
+                const titulo=document.createElement('h4'); titulo.textContent=pdf.titulo;
+                titulo.className='clickable-title'; titulo.style.cssText='cursor:pointer;color:var(--uni-red-dark)';
+                titulo.title='Abrir visor PDF'; titulo.addEventListener('click',()=>abrirPDFSubido(pdf.id));
+                const descripcion=document.createElement('p'); descripcion.textContent=pdf.descripcion||'Documento complementario';
+                detalle.append(titulo,descripcion);
+                const meta=document.createElement('span');meta.className='pdf-file-meta';
+                meta.textContent=pdf.tamano ? (pdf.tamano/(1024*1024)).toFixed(2)+' MB' : 'PDF';
+                const acciones=document.createElement('div');acciones.className='uploaded-pdf-actions';
+                if(esModoDocenteActivo()){
+                    acciones.append(nuevoBotonPDF('Editar','fa-solid fa-pen',()=>editarPDFSubido(pdf.id),'btn-mc325-inline'));
+                    acciones.append(nuevoBotonPDF('Eliminar','fa-solid fa-trash',()=>borrarPDFSubido(pdf.id),'btn-mc325-inline'));
                 }
-            } catch (error) {
-                console.error('No se pudieron cargar los PDFs:', error);
-                informarPDF('No fue posible acceder a los PDFs guardados: ' + error.message, 'error');
+                // Una sola acción pública, igual que los artículos web.
+                // Al hacer clic en el título del PDF se abre el visor.
+                acciones.append(nuevoBotonPDF('Descargar','fa-solid fa-download',()=>descargarPDFSubido(pdf.id)));
+                fila.append(icono,detalle,meta,acciones);destino.appendChild(fila);
             }
         }
-
+        function reiniciarEditorPDF(){
+            idPDFEnEdicion=null;
+            document.getElementById('form-pdf').reset();
+            document.getElementById('pdf-archivo').required=true;
+            document.getElementById('pdf-ayuda-reemplazo').hidden=true;
+            document.getElementById('pdf-form-titulo').innerHTML='<i class="fa-solid fa-file-pdf"></i> Subir documento PDF';
+            document.getElementById('pdf-btn-subir').innerHTML='<i class="fa-solid fa-upload"></i> Guardar PDF (borrador)';
+            document.getElementById('pdf-cancelar').hidden=true;
+        }
+        document.getElementById('pdf-cancelar').addEventListener('click',()=>{reiniciarEditorPDF(); informarPDF('Edición cancelada.');});
+        function editarPDFSubido(id){
+            if(!esModoDocenteActivo()||!materialesListos)return;
+            const pdf=documentosGuardados.find(x=>String(x.id)===String(id));
+            if(!pdf)return;
+            reiniciarEditorPDF(); idPDFEnEdicion=pdf.id;
+            document.getElementById('pdf-ubicacion').value=pdf.ubicacion;
+            document.getElementById('pdf-titulo').value=pdf.titulo;
+            document.getElementById('pdf-descripcion').value=pdf.descripcion||'';
+            document.getElementById('pdf-archivo').required=false;
+            document.getElementById('pdf-ayuda-reemplazo').hidden=false;
+            document.getElementById('pdf-form-titulo').innerHTML='<i class="fa-solid fa-pen"></i> Editar PDF existente';
+            document.getElementById('pdf-btn-subir').textContent='Guardar cambios del PDF';
+            document.getElementById('pdf-cancelar').hidden=false;
+            informarPDF('Puedes cambiar los datos sin subir otro PDF, o elegir un archivo para reemplazarlo.');
+            document.getElementById('form-pdf').scrollIntoView({behavior:'smooth',block:'start'});
+        }
         async function abrirPDFSubido(id) {
             try {
                 const pdf = documentosGuardados.find(p => String(p.id) === String(id));
                 if (!pdf) { alert('El PDF ya no está disponible.'); return; }
-                if (pdf.ruta) {
+                if (pdf.ruta && !pdf.archivoPendiente) {
                     abrirVisorPDF(new URL(pdf.ruta, document.baseURI).href, pdf.titulo, false, pdf.id);
                     return;
                 }
@@ -989,14 +1072,17 @@
             try {
                 const pdf = documentosGuardados.find(p => String(p.id) === String(id));
                 if (!pdf) { alert('El PDF ya no está disponible.'); return; }
-                const url = pdf.ruta ? new URL(pdf.ruta, document.baseURI).href :
-                    URL.createObjectURL((await obtenerPDF(id)).archivo);
+                const usarPublicado = Boolean(pdf.ruta && !pdf.archivoPendiente);
+                const local = usarPublicado ? null : await obtenerPDF(id);
+                if (!usarPublicado && !local?.archivo) throw new Error('No se encontró el PDF local.');
+                const url = usarPublicado ? new URL(pdf.ruta, document.baseURI).href :
+                    URL.createObjectURL(local.archivo);
                 const enlace = document.createElement('a');
                 enlace.href = url;
                 enlace.download = pdf.nombreArchivo || (pdf.titulo + '.pdf');
                 document.body.appendChild(enlace);
                 enlace.click(); enlace.remove();
-                if (!pdf.ruta) setTimeout(() => URL.revokeObjectURL(url), 5000);
+                if (!usarPublicado) setTimeout(() => URL.revokeObjectURL(url), 5000);
             } catch (error) { alert('No se pudo descargar el PDF: ' + error.message); }
         }
         async function borrarPDFSubido(id) {
@@ -1013,44 +1099,47 @@
             } catch (error) { informarPDF('No se pudo retirar el PDF: ' + error.message, 'error'); }
         }
 
-        document.getElementById('form-pdf').addEventListener('submit', async function(evento) {
+        document.getElementById('form-pdf').addEventListener('submit',async function(evento){
             evento.preventDefault();
-            if (!esModoDocenteActivo() || !materialesListos) return;
-            const archivo = document.getElementById('pdf-archivo').files[0];
-            const titulo = document.getElementById('pdf-titulo').value.trim();
-            if (!archivo || !titulo) { informarPDF('Indica el título y selecciona un PDF.', 'error'); return; }
-            if (archivo.size > LIMITE_PDF) { informarPDF('El archivo excede el límite de 25 MB.', 'error'); return; }
-            if (archivo.size === 0 || !/\.pdf$/i.test(archivo.name)) {
-                informarPDF('Selecciona un archivo PDF válido (.pdf).', 'error'); return;
+            if(!esModoDocenteActivo()||!materialesListos)return;
+            const archivo=document.getElementById('pdf-archivo').files[0];
+            const titulo=document.getElementById('pdf-titulo').value.trim();
+            const editando=idPDFEnEdicion!==null;
+            const anterior=editando?documentosGuardados.find(p=>String(p.id)===String(idPDFEnEdicion)):null;
+            if(!titulo||(!editando&&!archivo)){informarPDF('Indica título y selecciona un PDF.','error');return;}
+            if(editando&&!anterior){informarPDF('No se encontró el documento para editar.','error');return;}
+            if(archivo && (archivo.size>LIMITE_PDF||archivo.size===0||!/\.pdf$/i.test(archivo.name))){
+                informarPDF('Selecciona un PDF válido, de un máximo de 25 MB.','error');return;
             }
-            const boton = document.getElementById('pdf-btn-subir');
-            boton.disabled = true;
-            informarPDF('Guardando el archivo en este navegador…');
-            try {
-                const firma = new Uint8Array(await archivo.slice(0, 5).arrayBuffer());
-                if (String.fromCharCode(...firma) !== '%PDF-') throw new Error('El archivo seleccionado no tiene la cabecera de un PDF válido.');
-                const id = window.crypto && crypto.randomUUID ? crypto.randomUUID() : ('pdf-' + Date.now() + '-' + Math.random().toString(36).slice(2));
-                const meta = {
-                    id,
-                    ubicacion: document.getElementById('pdf-ubicacion').value,
-                    titulo,
-                    descripcion: document.getElementById('pdf-descripcion').value.trim(),
-                    nombreArchivo: archivo.name,
-                    tamano: archivo.size,
-                    fechaRegistro: Date.now()
-                };
-                await guardarPDF({ ...meta, archivo: new Blob([archivo], { type: 'application/pdf' }) });
-                documentosGuardados.push(meta);
-                MC325Datos.guardar('documentos', documentosGuardados);
-                this.reset();
-                await renderizarPDFs();
-                informarPDF('PDF guardado como borrador. Para hacerlo público utiliza «Preparar publicación».', 'success');
-            } catch (error) {
-                console.error('Error al subir el PDF:', error);
-                informarPDF('No se pudo guardar el PDF: ' + error.message + '. Comprueba el espacio disponible.', 'error');
-            } finally {
-                boton.disabled = false;
-            }
+            const boton=document.getElementById('pdf-btn-subir');boton.disabled=true;
+            try{
+                if(archivo){
+                    const firma=new Uint8Array(await archivo.slice(0,5).arrayBuffer());
+                    if(String.fromCharCode(...firma)!=='%PDF-')throw new Error('El archivo no tiene la cabecera de PDF válida.');
+                }
+                const id=editando?anterior.id:((window.crypto&&crypto.randomUUID)?crypto.randomUUID():'pdf-'+Date.now());
+                const meta={...(anterior||{}),id,
+                    ubicacion:document.getElementById('pdf-ubicacion').value,
+                    titulo,descripcion:document.getElementById('pdf-descripcion').value.trim(),
+                    fechaRegistro:anterior?.fechaRegistro || Date.now()};
+                if(archivo){
+                    // Se conserva la ruta del PDF publicado para que la sustitución
+                    // actualice el archivo existente; su versión permite detectar cambios.
+                    meta.nombreArchivo=archivo.name;meta.tamano=archivo.size;
+                    meta.revisionArchivo=String(Date.now())+'-'+Math.random().toString(36).slice(2);
+                    meta.archivoPendiente=true;
+                    await guardarPDF({...meta,archivo:new Blob([archivo],{type:'application/pdf'})});
+                }
+                if(editando){
+                    const indice=documentosGuardados.findIndex(p=>String(p.id)===String(id));
+                    documentosGuardados[indice]=meta;
+                }else documentosGuardados.push(meta);
+                MC325Datos.guardar('documentos',documentosGuardados);
+                reiniciarEditorPDF(); await renderizarPDFs();
+                informarPDF('Cambios guardados como borrador. Utiliza «Preparar publicación» para compartirlos en GitHub.','success');
+            }catch(error){
+                console.error(error); informarPDF('No se pudo guardar el PDF: '+error.message,'error');
+            }finally{boton.disabled=false;}
         });
 
         // ÍNDICE DINÁMICO: utiliza los h2/h3 reales generados a partir del Markdown.

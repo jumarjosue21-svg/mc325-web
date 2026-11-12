@@ -14,7 +14,7 @@
     .publicacion ol {margin:10px 0 25px;padding-left:26px;line-height:1.75}
     .publicacion li{margin:7px 0}
     .publicacion .intro {color:#5e6772}
-    .publicacion .datos {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:24px 0;}
+    .publicacion .datos {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:24px 0;}
     .publicacion .dato {padding:16px;border-radius:8px;border:1px solid #e0e4e8;text-align:center;background:#f9fafc}
     .publicacion .dato strong {display:block;font-size:1.8rem;color:#5a1a14}
     .publicacion .dato span {font-size:.83rem;color:#54616d}
@@ -34,11 +34,12 @@
 <body>
   <main class="publicacion">
     <h1>Preparar cambios para GitHub</h1>
-    <p class="intro">Esta herramienta convierte los borradores locales del Calendario y Materiales en archivos de publicación. No hace <em>Push</em>, no modifica el repositorio y no borra tus borradores.</p>
+    <p class="intro">Esta herramienta convierte los borradores locales del Calendario, unidades y Materiales en archivos de publicación. No hace <em>Push</em>, no modifica el repositorio y no borra tus borradores.</p>
     <div class="datos" aria-label="Contenido del proyecto">
       <div class="dato"><strong id="cuenta-eventos">—</strong><span>Eventos</span></div>
       <div class="dato"><strong id="cuenta-articulos">—</strong><span>Artículos web</span></div>
       <div class="dato"><strong id="cuenta-documentos">—</strong><span>PDFs</span></div>
+      <div class="dato"><strong id="cuenta-unidades">—</strong><span>Secciones</span></div>
     </div>
     <p id="estado" class="estado" role="status" aria-live="polite">Cargando datos desde el proyecto…</p>
     <div class="fila">
@@ -49,7 +50,7 @@
     <h2>Cómo publicar</h2>
     <ol>
       <li>Antes de editar, utiliza <strong>Fetch/Pull origin</strong> en GitHub Desktop, para partir de la versión más reciente del equipo.</li>
-      <li>Descarga el ZIP y <strong>extrae su contenido en la raíz de tu copia local del repositorio</strong>, combinando las carpetas <code>data</code>, <code>articulos</code> y <code>pdfs</code>. Reemplaza los JSON del proyecto cuando se solicite; conserva los archivos existentes que no aparezcan en este ZIP.</li>
+      <li>Descarga el ZIP y <strong>extrae su contenido en la raíz de tu copia local del repositorio</strong>, combinando las carpetas <code>data</code>, <code>articulos</code> y <code>pdfs</code>. Reemplaza los índices JSON y los archivos Markdown o PDF que hayas editado; conserva los demás archivos.</li>
       <li>Revisa <code>ARCHIVOS-A-RETIRAR.txt</code>, si aparece. Si eliminaste un artículo o PDF, borra también del repositorio los archivos allí indicados; quitar una entrada del índice no elimina el archivo físico.</li>
       <li>Comprueba el calendario y los artículos con Live Server; revisa las figuras de los artículos si sus imágenes están disponibles.</li>
       <li>En GitHub Desktop, revisa los cambios, haz <strong>Commit</strong> y después <strong>Push origin</strong>. Comparte con los compañeros la versión publicada.</li>
@@ -88,16 +89,17 @@
     }
     async function cargar() {
       try {
-        const [eventos,articulos,documentos] = await Promise.all([
-          MC325Datos.leer('eventos'),MC325Datos.leer('articulos'),MC325Datos.leer('documentos')
+        const [eventos,articulos,documentos,unidades] = await Promise.all([
+          MC325Datos.leer('eventos'),MC325Datos.leer('articulos'),
+          MC325Datos.leer('documentos'),MC325Datos.leer('unidades')
         ]);
-        datosExportar={eventos,articulos,documentos};
-        for (const tipo of ['eventos','articulos','documentos']) {
+        datosExportar={eventos,articulos,documentos,unidades};
+        for (const tipo of ['eventos','articulos','documentos','unidades']) {
           document.getElementById('cuenta-'+tipo).textContent = datosExportar[tipo].items.length;
         }
-        const cambios = ['eventos','articulos','documentos'].filter(tipo => datosExportar[tipo].esBorrador);
+        const cambios = ['eventos','articulos','documentos','unidades'].filter(tipo => datosExportar[tipo].esBorrador);
         mensaje(cambios.length ?
-          'Borradores detectados: '+cambios.join(', ')+'. El ZIP contendrá sus índices completos y los nuevos archivos necesarios.' :
+          'Borradores detectados: '+cambios.join(', ')+'. El ZIP incluirá los índices actualizados y los artículos o PDFs nuevos o reemplazados.' :
           'Los datos coinciden con la versión publicada. No hay borradores pendientes; puedes generar el paquete si necesitas una copia de los índices.');
         document.getElementById('btn-exportar').disabled=false;
       } catch(error) {
@@ -113,56 +115,70 @@
       try {
         // Releer al generar: evita exportar una instantánea antigua si otra
         // pestaña ha modificado los borradores mientras este panel estaba abierto.
-        const [datosEventosActuales,datosArticulosActuales,datosDocumentosActuales] = await Promise.all([
-          MC325Datos.leer('eventos'),MC325Datos.leer('articulos'),MC325Datos.leer('documentos')
+        const [datosEventosActuales,datosArticulosActuales,datosDocumentosActuales,datosUnidadesActuales] = await Promise.all([
+          MC325Datos.leer('eventos'),MC325Datos.leer('articulos'),
+          MC325Datos.leer('documentos'),MC325Datos.leer('unidades')
         ]);
-        datosExportar = {eventos:datosEventosActuales,articulos:datosArticulosActuales,documentos:datosDocumentosActuales};
+        datosExportar={eventos:datosEventosActuales,articulos:datosArticulosActuales,
+          documentos:datosDocumentosActuales,unidades:datosUnidadesActuales};
         mensaje('Preparando archivos y verificando los PDFs locales…');
         const zip=new JSZip();
         const publicados = {};
         const retirados = [];
         const eventos=datosExportar.eventos.items;
         zip.file('data/eventos.json',JSON.stringify(eventos,null,2)+'\n');
-        // Los artículos publicados ya están en el repositorio: el paquete
-        // solo incorpora los Markdown NUEVOS y los índices modificados.
+        // Las unidades y el título de la sección del sílabo se publican
+        // en su propio índice; los identificadores permanecen estables.
+        zip.file('data/unidades.json',JSON.stringify(datosExportar.unidades.items,null,2)+'\n');
         const listaArticulos=[];
         for (const art of datosExportar.articulos.items) {
           const metadato={...art};
-          if (!metadato.ruta) {
-            if (typeof metadato.contenido !== 'string') throw new Error('Falta el contenido del artículo: '+metadato.titulo);
+          if(!metadato.ruta){
+            if(typeof metadato.contenido!=='string') throw new Error('Falta el contenido del artículo: '+metadato.titulo);
             metadato.ruta='articulos/'+metadato.unidad+'/'+nombreID(metadato.id)+'-'+slug(metadato.titulo)+'.md';
+          }
+          // También se incluyen los artículos editados que YA existían en GitHub.
+          if(typeof metadato.contenido==='string'){
             zip.file(metadato.ruta,metadato.contenido);
+            if(!metadato.revision){
+              let hash=2166136261;
+              for(let i=0;i<metadato.contenido.length;i++){hash^=metadato.contenido.charCodeAt(i);hash=Math.imul(hash,16777619);}
+              metadato.revision=(hash>>>0).toString(16);
+            }
           }
           delete metadato.contenido;
           listaArticulos.push(metadato);
         }
         zip.file('data/articulos.json',JSON.stringify(listaArticulos,null,2)+'\n');
-        for (const viejo of datosExportar.articulos.publicado) {
-          if (!listaArticulos.some(a => String(a.id)===String(viejo.id)) && viejo.ruta) retirados.push(viejo.ruta);
+        for(const viejo of datosExportar.articulos.publicado){
+          if(!listaArticulos.some(a=>String(a.id)===String(viejo.id))&&viejo.ruta) retirados.push(viejo.ruta);
         }
         const listaPDF=[];
-        for (const pdf of datosExportar.documentos.items) {
+        for(const pdf of datosExportar.documentos.items){
           const metadato={...pdf};
-          if (!metadato.ruta) {
+          const requiereArchivo=Boolean(metadato.archivoPendiente || !metadato.ruta);
+          if(requiereArchivo){
             const local=await leerPDFLocal(pdf.id);
-            if (!local?.archivo) throw new Error('El PDF «'+pdf.titulo+'» no está en IndexedDB de este navegador; se canceló la exportación.');
-            const tipo=await local.archivo.slice(0,5).text();
-            if (tipo!=='%PDF-') throw new Error('El archivo «'+pdf.titulo+'» no es un PDF válido.');
-            metadato.ruta='pdfs/'+metadato.ubicacion+'/'+nombreID(metadato.id)+'-'+slug(metadato.nombreArchivo||metadato.titulo)+'.pdf';
+            if(!local?.archivo)throw new Error('El PDF «'+pdf.titulo+'» no está en IndexedDB de este navegador; se canceló la exportación.');
+            const firmaPDF=await local.archivo.slice(0,5).text();
+            if(firmaPDF!=='%PDF-')throw new Error('El archivo «'+pdf.titulo+'» no es un PDF válido.');
+            if(!metadato.ruta) metadato.ruta='pdfs/'+metadato.ubicacion+'/'+nombreID(metadato.id)+'-'+slug(metadato.nombreArchivo||metadato.titulo)+'.pdf';
+            // Si existe 'ruta', REEMPLAZA los bytes en esa misma ubicación.
             zip.file(metadato.ruta,await local.archivo.arrayBuffer(),{compression:'STORE'});
           }
+          delete metadato.archivoPendiente;
           listaPDF.push(metadato);
         }
         zip.file('data/documentos.json',JSON.stringify(listaPDF,null,2)+'\n');
-        for (const viejo of datosExportar.documentos.publicado) {
-          if (!listaPDF.some(p => String(p.id)===String(viejo.id)) && viejo.ruta) retirados.push(viejo.ruta);
+        for(const viejo of datosExportar.documentos.publicado){
+          if(!listaPDF.some(p=>String(p.id)===String(viejo.id))&&viejo.ruta) retirados.push(viejo.ruta);
         }
         if (retirados.length) zip.file('ARCHIVOS-A-RETIRAR.txt',retirados.join('\n')+'\n');
         zip.file('INSTRUCCIONES-DE-PUBLICACION.txt',
           'Paquete MC325 — Actualización del repositorio GitHub\n\n'+
           '1. Extraer este ZIP en la RAÍZ del repositorio local. Fusionar carpetas; reemplazar los JSON.\n'+
-          '2. NO borrar las carpetas existentes: el ZIP incluye solo los artículos/PDFs añadidos.\n'+
-          '3. Si existe ARCHIVOS-A-RETIRAR.txt, borrar físicamente esas rutas del repositorio.\n'+
+          '2. NO borrar las carpetas existentes: el ZIP incluye los artículos nuevos, los editados y los PDF nuevos o reemplazados.\n'+
+          '3. Fusionar data y actualizar unidades.json; si hay ARCHIVOS-A-RETIRAR.txt, revisar y retirar las rutas indicadas.\n'+
           '4. Confirmar las imágenes a las que apunta cada artículo.\n'+
           '5. Probar con Live Server y hacer Commit + Push en GitHub Desktop.\n'+
           '6. Mantener el respaldo original en un lugar privado.\n');
