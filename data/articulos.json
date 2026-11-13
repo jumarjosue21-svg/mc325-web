@@ -12,5 +12,12 @@
     "titulo": "Criterios de Falla",
     "revision": "1a91ac8c",
     "ruta": "articulos/unidad2/1794446453892-Criterios-de-Falla.md"
-  }
+  },
+  {
+  "id": "179444678901",
+  "unidad": "unidad3",
+  "titulo": "Fatiga en Elementos Mecánicos",
+  "revision": "3b2c1d4e",
+  "ruta": "articulos/unidad3/fatiga.md"
+}
 ]
