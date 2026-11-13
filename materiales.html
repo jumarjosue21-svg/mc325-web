@@ -1422,7 +1422,7 @@
                 if (!parrafo.querySelector('img')) return;
                 parrafo.classList.add('article-figure');
                 const siguiente = parrafo.nextElementSibling;
-                if (siguiente && siguiente.tagName === 'P' && /^Figura\s+\d/i.test(siguiente.textContent.trim())) {
+                if (siguiente && siguiente.tagName === 'P' && /^Figura\s+(?:(?:N(?:[.º°]|o\.?)?|N[úu]mero)\s*)?\d/i.test(siguiente.textContent.trim())) {
                     siguiente.classList.add('article-caption');
                 }
             });
