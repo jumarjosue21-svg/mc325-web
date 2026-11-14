@@ -289,6 +289,21 @@
             line-height: 1.7;
             color: #65717e;
         }
+        .latex-content .tikz-figure {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 2em auto 1.2em;
+            overflow-x: auto;
+            max-width: 100%;
+        }
+        .latex-content .tikz-figure svg {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+        }
         .latex-content pre, .latex-content code {
             font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace;
             font-size: 0.88em;
@@ -1357,7 +1372,7 @@
             }
         }
 
-        // LECTOR DE ARTÍCULOS: preserva Markdown y separa las fórmulas de bloque.
+        // LECTOR DE ARTÍCULOS: preserva TikZ, Markdown y separa las fórmulas de bloque.
         async function abrirVistaLectura(idArticulo) {
             const articulo = articulosGuardados.find(a => a.id === idArticulo);
             if (!articulo) return;
@@ -1381,17 +1396,29 @@
             if (typeof contenidoCrudo !== 'string') {
                 alert('Este artículo no tiene contenido disponible.'); return;
             }
+
+            const bloquesTikz = [];
             const bloquesMatematicos = [];
             const formulasEnLinea = [];
 
-            // Extraer $$ ... $$ ANTES de convertir Markdown. Un div independiente
+            // 1. Extraer bloques TikZ ANTES de procesar LaTeX y Markdown para que
+            // Marked.js y las expresiones regulares de $...$ no rompan el código TikZ.
+            contenidoCrudo = contenidoCrudo.replace(/<script\s+type=["']text\/tikz["'][^>]*>([\s\S]*?)<\/script>/gi, function (_, codigoTikz) {
+                const codigoLimpio = codigoTikz
+                    .replace(/\\boldsymbol\s*\{([^{}]*(?:\{[^{}]*\}[^{}]*)*)\}/g, '$1')
+                    .trim();
+                const indice = bloquesTikz.push(codigoLimpio) - 1;
+                return '\n\n<div class="tikz-figure" data-tikz-block="' + indice + '"></div>\n\n';
+            });
+
+            // 2. Extraer $$ ... $$ ANTES de convertir Markdown. Un div independiente
             // evita que Marked los coloque dentro de un <p>, donde perderían jerarquía.
             contenidoCrudo = contenidoCrudo.replace(/\$\$([\s\S]+?)\$\$/g, function (formula) {
                 const indice = bloquesMatematicos.push(formula) - 1;
                 return '\n\n<div class="math-equation" data-math-block="' + indice + '"></div>\n\n';
             });
 
-            // Proteger también $ ... $ de las reglas de escape de Markdown.
+            // 3. Proteger también $ ... $ de las reglas de escape de Markdown.
             contenidoCrudo = contenidoCrudo.replace(/\$((?:\\.|[^\$\n])+?)\$/g, function (formula) {
                 const indice = formulasEnLinea.push(formula) - 1;
                 return 'MATHINLINEPROTECTED' + indice + 'END';
@@ -1400,14 +1427,14 @@
             const lector = document.getElementById('lectura-contenido');
             lector.innerHTML = marked.parse(contenidoCrudo);
 
-            // Insertar fórmulas como TEXTO, no como HTML; MathJax las interpretará.
+            // 4. Insertar fórmulas de bloque como TEXTO para que MathJax las interprete.
             lector.querySelectorAll('[data-math-block]').forEach(function (bloque) {
                 const indice = Number(bloque.dataset.mathBlock);
                 bloque.textContent = bloquesMatematicos[indice] || '';
                 bloque.removeAttribute('data-math-block');
             });
 
-            // Recuperar las fórmulas en línea, incluso dentro de títulos y listas.
+            // 5. Recuperar las fórmulas en línea, incluso dentro de títulos y listas.
             const nodosTexto = [];
             const recorrido = document.createTreeWalker(lector, NodeFilter.SHOW_TEXT);
             while (recorrido.nextNode()) nodosTexto.push(recorrido.currentNode);
@@ -1419,21 +1446,18 @@
                 );
             });
 
-            // Clases semánticas para figuras y sus pies, sin cambiar el Markdown fuente.
+            // 6. Clases semánticas para figuras (imágenes o TikZ) y sus pies de figura.
             lector.querySelectorAll('p').forEach(function (parrafo) {
+                if (/^Figura\s+(?:(?:N(?:[.º°]|o\.?)?|N[úu]mero)\s*)?\d/i.test(parrafo.textContent.trim())) {
+                    parrafo.classList.add('article-caption');
+                }
                 if (!parrafo.querySelector('img')) return;
                 parrafo.classList.add('article-figure');
-                const siguiente = parrafo.nextElementSibling;
-                if (siguiente && siguiente.tagName === 'P' && /^Figura\s+(?:(?:N(?:[.º°]|o\.?)?|N[úu]mero)\s*)?\d/i.test(siguiente.textContent.trim())) {
-                    siguiente.classList.add('article-caption');
-                }
             });
+
             lector.querySelectorAll('img').forEach(function (img) {
-                // Las imágenes referenciadas por el .md se buscan junto a ese archivo.
                 const src = img.getAttribute('src') || '';
                 if (articulo.ruta && src && !/^(?:[a-z]+:|\/|#)/i.test(src)) {
-                    // Compatibilidad: algunas imágenes de versiones anteriores
-                    // pueden estar en la raíz del sitio y no junto al Markdown.
                     const alternativaRaiz = new URL(src, document.baseURI).href;
                     img.onerror = function () {
                         img.onerror = null;
@@ -1444,15 +1468,14 @@
                 img.loading = 'lazy';
             });
 
-            // Construir los enlaces de capítulos y subapartados para este artículo.
+            // 7. Construir el índice lateral de capítulos y subapartados.
             construirIndiceArticulo(lector);
 
             document.getElementById('vista-lista-materiales').style.display = 'none';
             document.getElementById('vista-lectura-articulo').style.display = 'block';
             document.querySelector('.content-area').scrollTop = 0;
 
-            // Los recursos externos pueden continuar cargando: typesetPromise reintenta
-            // de forma ordenada cuando MathJax termine de inicializar.
+            // 8. Renderizar ecuaciones con MathJax.
             if (window.MathJax && typeof MathJax.typesetPromise === 'function') {
                 MathJax.typesetPromise([lector]).catch(error => console.error('Error al mostrar las fórmulas:', error));
             } else if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
@@ -1461,14 +1484,18 @@
                 }).catch(error => console.error('Error al mostrar las fórmulas:', error));
             }
 
-            // --- NUEVO CÓDIGO: DISPARADOR DE GRÁFICOS TIKZ ---
-            setTimeout(() => {
-                const scriptsTikz = lector.querySelectorAll('script[type="text/tikz"]');
-                if (scriptsTikz.length > 0 && window.tikzjax) {
-                    window.tikzjax.process();
-                }
-            }, 150);
-            // -------------------------------------------------
+            // 9. Montar dinámicamente los nodos <script type="text/tikz"> con createElement
+            // para que el MutationObserver de TikZJax los detecte y compile en SVG.
+            lector.querySelectorAll('[data-tikz-block]').forEach(function (contenedorTikz) {
+                const indice = Number(contenedorTikz.dataset.tikzBlock);
+                contenedorTikz.removeAttribute('data-tikz-block');
+                const codigo = bloquesTikz[indice];
+                if (!codigo) return;
+                const scriptTikz = document.createElement('script');
+                scriptTikz.type = 'text/tikz';
+                scriptTikz.textContent = codigo;
+                contenedorTikz.appendChild(scriptTikz);
+            });
         }
 
         function cerrarVistaLectura() {
