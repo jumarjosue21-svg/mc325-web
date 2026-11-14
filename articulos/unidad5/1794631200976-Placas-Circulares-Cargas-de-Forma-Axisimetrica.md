@@ -1,4 +1,4 @@
-![Placa circular sometida a una carga axisimétrica representada mediante elementos finitos](placas_circulares_figura_01.jpg)
+![Placa circular sometida a una carga axisimétrica representada mediante elementos finitos](placas_circulares_figura_01.png)
 
 *Figura N°1. Placa circular con carga axisimetrica modelada calculada usando el método del elemento finito.*
 
@@ -6,7 +6,7 @@ Una carga es **axisimétrica** cuando su distribución no cambia al girar alrede
 
 La imagen muestra el resultado de un modelo de elementos finitos. Las flechas representan la acción transversal sobre la superficie y la geometría deformada permite observar que la placa se curva bajo la carga. El análisis que sigue busca describir ese mismo comportamiento mediante ecuaciones de equilibrio, curvatura y flexión.
 
-## Curvaturas en una placa circular
+### Curvaturas en una placa circular
 
 $$
 \frac{1}{r_n}=-\frac{d^2w}{dr^2}=\frac{d\varphi}{dr}
@@ -16,7 +16,7 @@ $$
 \frac{1}{r_t}=-\frac{1}{r}\frac{dw}{dr}=\frac{\varphi}{r}
 $$
 
-![Esquema de la deformación y del giro de una sección radial de placa circular](placas_circulares_figura_02.jpg)
+![Esquema de la deformación y del giro de una sección radial de placa circular](placas_circulares_figura_02.png)
 
 *Figura N°2. Esquema de la deflexión y del giro de una sección radial de la placa circular.*
 
@@ -26,7 +26,7 @@ La primera relación mide cómo cambia la pendiente de la superficie cuando nos 
 
 El signo negativo que aparece delante de las derivadas de $w$ responde a la convención de giro adoptada. En particular, el giro se relaciona con el cambio de deflexión mediante $\varphi=-dw/dr$. Así se pueden expresar las curvaturas directamente en función del giro, tal como indican las igualdades anteriores.
 
-## Relación entre los momentos radiales y circunferenciales
+### Relación entre los momentos radiales y circunferenciales
 
 $$
 M_r=-D\left(\frac{d^2w}{dr^2}+\frac{\nu}{r}\frac{dw}{dr}\right)=D\left(\frac{d\varphi}{dr}+\frac{\nu}{r}\varphi\right)
@@ -42,11 +42,11 @@ La letra $D$ representa la rigidez flexional de la placa y $\nu$ es el coeficien
 
 Obsérvese que las fórmulas ofrecen dos formas de trabajar: mediante derivadas de la deflexión $w$ o mediante el giro $\varphi$. Más adelante se utilizarán ambas expresiones para llegar a la ecuación de equilibrio.
 
-![Equilibrio de momentos y fuerza cortante en un elemento radial diferencial](placas_circulares_figura_03.jpg)
+![Equilibrio de momentos y fuerza cortante en un elemento radial diferencial](placas_circulares_figura_03.png)
 
 *Figura N°3. Equilibrio entre momentos radiales y fuerza cortante en un elemento diferencial de la placa circular.*
 
-![Sector anular diferencial de una placa circular usado para establecer el equilibrio](placas_circulares_figura_04.jpg)
+![Sector anular diferencial de una placa circular usado para establecer el equilibrio](placas_circulares_figura_04.png)
 
 *Figura N°4. Sector anular diferencial utilizado para establecer el equilibrio de una placa circular.*
 
@@ -116,7 +116,7 @@ El miembro izquierdo contiene derivadas sucesivas de la deflexión radial. Aunqu
 
 La integración de esta ecuación diferencial junto con las condiciones de contorno apropiadas nos permitirá encontrar la deflexión como una función del radio.
 
-## CASO DE PLACAS CIRCULARES UNIFORMEMENTE CARGADAS
+### CASO DE PLACAS CIRCULARES UNIFORMEMENTE CARGADAS
 
 Si la carga distribuida sobre la placa circular es uniforme se puede obtener el cortante a una distancia radial r como:
 
@@ -166,7 +166,7 @@ Esta es una solución general para el caso de carga uniforme antes de imponer la
 
 Ahora se estudiarán distintas condiciones de contorno. Se empezará con el caso de placa circular con bordes empotrados.
 
-### Placas circulares con bordes empotrados
+#### Placas circulares con bordes empotrados
 
 En una placa empotrada, el borde exterior no puede desplazarse transversalmente ni girar. Además, para una placa circular completa y una carga axisimétrica, el comportamiento debe ser regular en el centro: allí no puede aparecer una pendiente infinita ni una dirección radial privilegiada. Estas condiciones permitirán hallar las constantes de integración sin cambiar la solución general obtenida.
 
@@ -276,13 +276,13 @@ En esta relación, $h$ es el espesor de la placa. El esfuerzo de flexión se rel
 
 Finalmente, se muestra la variación del esfuerzo radial y tangencial
 
-![Variación del esfuerzo radial y tangencial con la posición radial en una placa circular empotrada](placas_circulares_figura_05.jpg)
+![Variación del esfuerzo radial y tangencial con la posición radial en una placa circular empotrada](placas_circulares_figura_05.png)
 
 *Figura N°5. Variación de los esfuerzos radial y tangencial a lo largo del radio de una placa circular empotrada.*
 
 El eje horizontal del gráfico corresponde al cociente $r/a$: en $r/a=0$ estamos en el centro y en $r/a=1$ se encuentra el borde. Las curvas $\sigma_r$ y $\sigma_t$ representan los esfuerzos radial y tangencial. Ambas comienzan con el mismo valor en el centro, pero disminuyen a ritmos distintos a medida que aumenta el radio. Los valores señalados aproximadamente como $0.628$ y $0.827$ indican dónde cada curva cruza el eje horizontal para el caso representado. Al llegar al empotramiento, los esfuerzos asociados a la flexión son negativos según la convención del gráfico.
 
-## Referencias
+### Referencias
 
 1) Timoshenko, S., & Woinowsky-Krieger, S. (1959). Theory of plates and shells (2nd ed.). McGraw-Hill.
 
