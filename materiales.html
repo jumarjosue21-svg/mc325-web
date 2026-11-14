@@ -24,7 +24,7 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>   
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="js/datos-mc325.js?v=20261112-multiformato-01"></script>
+    <script src="js/datos-mc325.js?v=20261114-orden-materiales"></script>
 <!-- MOTOR TIKZJAX (Agregado para leer los gráficos vectoriales) -->
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
     <script src="https://tikzjax.com/v1/tikzjax.js"></script>
@@ -392,6 +392,23 @@
         .admin-accordion-body { padding:19px 19px 23px; }
         .admin-accordion-body > p:first-child {margin-bottom:14px;}
         @media(max-width:700px){.admin-accordion-hint{display:none;}.admin-accordion-body{padding:14px 12px 18px;}}
+        /* Orden editorial: artículos WEB y documentos comparten una sola lista visual.
+           display:contents permite intercalarlos sin alterar los IDs existentes. */
+        .group-content { display:flex; flex-direction:column; }
+        .group-content > div[id^="articulos-"],
+        .group-content > div[id^="pdfs-"] { display: contents; }
+        .mc325-mover-material { display:inline-flex; flex-direction:column; gap:3px; flex:none; margin-right:3px; }
+        .mc325-mover-material button {
+            display:inline-flex; align-items:center; justify-content:center;
+            width:31px; height:25px; padding:0;
+            border:1px solid #d6bcb9; border-radius:4px;
+            background:#fff; color:var(--uni-red-dark); cursor:pointer;
+        }
+        .mc325-mover-material button:hover:not(:disabled) { background:#f9eeee; }
+        .mc325-mover-material button:disabled { opacity:.32; cursor:not-allowed; }
+        @media(max-width:700px) {
+            .btn-article-actions, .uploaded-pdf-actions {flex-wrap:wrap;}
+        }
         /* Una identidad visual coherente por formato, sin cambiar los botones. */
         .file-icon-box.mc325-format-icon { min-width:60px; min-height:45px; padding:6px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;line-height:1.1;font-weight:700; }
         .mc325-format-icon i {font-size:1.15rem;}
@@ -922,12 +939,71 @@
             });
         });
 
+        // Un único orden editorial para WEB, PDF y demás documentos dentro de cada unidad.
+        // Los contenidos previos SIN "orden" mantienen el aspecto original: WEB primero,
+        // documentos después (más recientes primero). Las nuevas entradas van al final
+        // de una unidad que ya fue ordenada manualmente.
+        function materialesOrdenadosDe(ubicacion) {
+            const articulos = articulosGuardados.filter(a => a.unidad === ubicacion)
+                .map(item => ({ tipo:'articulo', item }));
+            const documentos = documentosGuardados.filter(d => d.ubicacion === ubicacion)
+                .sort((a,b) => (b.fechaRegistro || 0) - (a.fechaRegistro || 0))
+                .map(item => ({ tipo:'documento', item }));
+            return [...articulos, ...documentos]
+                .map((entrada, original) => ({ ...entrada, original }))
+                .sort((a,b) => {
+                    const ordenA = Number.isSafeInteger(a.item.orden) && a.item.orden >= 0 ? a.item.orden : Number.MAX_SAFE_INTEGER;
+                    const ordenB = Number.isSafeInteger(b.item.orden) && b.item.orden >= 0 ? b.item.orden : Number.MAX_SAFE_INTEGER;
+                    return ordenA - ordenB || a.original - b.original;
+                });
+        }
+        function posicionMaterialEnUnidad(tipo, id, ubicacion) {
+            return materialesOrdenadosDe(ubicacion).findIndex(
+                entrada => entrada.tipo === tipo && String(entrada.item.id) === String(id));
+        }
+        function moverMaterialEnUnidad(tipo, id, ubicacion, desplazamiento) {
+            if (!esModoDocenteActivo() || !materialesListos) return;
+            const ordenados = materialesOrdenadosDe(ubicacion);
+            const actual = ordenados.findIndex(entrada => entrada.tipo === tipo && String(entrada.item.id) === String(id));
+            const destino = actual + desplazamiento;
+            if (actual < 0 || destino < 0 || destino >= ordenados.length) return;
+            [ordenados[actual], ordenados[destino]] = [ordenados[destino], ordenados[actual]];
+            ordenados.forEach((entrada, indice) => { entrada.item.orden = indice; });
+            // Se guardan ambos índices: el orden intercala artículos y documentos.
+            // js/datos-mc325.js debe incluir "orden" en las propiedades comparadas.
+            MC325Datos.guardar('articulos', articulosGuardados);
+            MC325Datos.guardar('documentos', documentosGuardados);
+            renderizarArticulos();
+            renderizarPDFs();
+        }
+        function controlesOrdenMaterial(tipo, id, ubicacion) {
+            const contenedor = document.createElement('div');
+            contenedor.className = 'mc325-mover-material';
+            const posicion = posicionMaterialEnUnidad(tipo,id,ubicacion);
+            const total = materialesOrdenadosDe(ubicacion).length;
+            for (const [paso, icono, titulo] of [
+                [-1,'fa-solid fa-arrow-up','Subir este material'],
+                [1,'fa-solid fa-arrow-down','Bajar este material']
+            ]) {
+                const boton = document.createElement('button');
+                boton.type = 'button'; boton.title = titulo;
+                boton.setAttribute('aria-label', titulo);
+                const i = document.createElement('i'); i.className = icono;
+                i.setAttribute('aria-hidden','true'); boton.appendChild(i);
+                boton.disabled = paso < 0 ? posicion <= 0 : posicion >= total - 1;
+                boton.addEventListener('click',() => moverMaterialEnUnidad(tipo,id,ubicacion,paso));
+                contenedor.appendChild(boton);
+            }
+            return contenedor;
+        }
+
         function renderizarArticulos() {
             for(const u of unidadesCurso()) document.getElementById('articulos-'+u.id)?.replaceChildren();
             articulosGuardados.forEach(art=>{
                 const destino=document.getElementById('articulos-'+art.unidad);
                 if(!destino)return;
                 const fila=document.createElement('div'); fila.className='file-row';
+                fila.style.order = posicionMaterialEnUnidad('articulo',art.id,art.unidad);
                 const icono=insigniaFormato('web');
                 const detalle=document.createElement('div'); detalle.className='file-details';
                 const titulo=document.createElement('h4'); titulo.className='clickable-title'; titulo.textContent=art.titulo;
@@ -937,6 +1013,7 @@
                 detalle.append(titulo,descripcion);
                 const acciones=document.createElement('div'); acciones.className='btn-article-actions';
                 if(esModoDocenteActivo()){
+                    acciones.append(controlesOrdenMaterial('articulo',art.id,art.unidad));
                     acciones.append(nuevoBotonPDF('Editar','fa-solid fa-pen',()=>editarArticulo(art.id),'btn-mc325-inline'));
                     acciones.append(nuevoBotonPDF('Eliminar','fa-solid fa-trash',()=>borrarArticulo(art.id),'btn-mc325-inline'));
                 }
@@ -991,6 +1068,7 @@
             if(idArticuloEnEdicion!==null){
                 const art=articulosGuardados.find(x=>String(x.id)===String(idArticuloEnEdicion));
                 if(!art)return;
+                if(art.unidad !== unidad) delete art.orden; // Al cambiar de unidad, añadir al final.
                 art.titulo=titulo;art.unidad=unidad;
                 if(contenido!==contenidoArticuloBase){
                     art.contenido=contenido;
@@ -1000,7 +1078,7 @@
                 articulosGuardados.push({id:Date.now().toString(),unidad,titulo,contenido,revision:hashContenido(contenido)});
             }
             MC325Datos.guardar('articulos',articulosGuardados);
-            reiniciarEditorArticulo();renderizarArticulos();
+            reiniciarEditorArticulo();renderizarArticulos();renderizarPDFs();
         });
         function borrarArticulo(id){
             if(!esModoDocenteActivo())return;
@@ -1008,7 +1086,7 @@
             articulosGuardados=articulosGuardados.filter(a=>String(a.id)!==String(id));
             MC325Datos.guardar('articulos',articulosGuardados);
             if(String(idArticuloEnEdicion)===String(id))reiniciarEditorArticulo();
-            renderizarArticulos();
+            renderizarArticulos();renderizarPDFs();
         }
 
         // =============================================================
@@ -1104,6 +1182,7 @@
                 const destino=document.getElementById('pdfs-'+pdf.ubicacion);
                 if(!destino)continue;
                 const fila=document.createElement('div'); fila.className='file-row uploaded-pdf-row';
+                fila.style.order = posicionMaterialEnUnidad('documento',pdf.id,pdf.ubicacion);
                 const tipo=formatoDocumento(pdf); const icono=insigniaFormato(tipo);
                 const detalle=document.createElement('div'); detalle.className='file-details';
                 const titulo=document.createElement('h4'); titulo.textContent=pdf.titulo;
@@ -1116,6 +1195,7 @@
                 meta.textContent=pdf.tamano ? (pdf.tamano/(1024*1024)).toFixed(2)+' MB' : TIPOS_DOCUMENTO[tipo].etiqueta;
                 const acciones=document.createElement('div');acciones.className='uploaded-pdf-actions';
                 if(esModoDocenteActivo()){
+                    acciones.append(controlesOrdenMaterial('documento',pdf.id,pdf.ubicacion));
                     acciones.append(nuevoBotonPDF('Editar','fa-solid fa-pen',()=>editarPDFSubido(pdf.id),'btn-mc325-inline'));
                     acciones.append(nuevoBotonPDF('Eliminar','fa-solid fa-trash',()=>borrarPDFSubido(pdf.id),'btn-mc325-inline'));
                 }
@@ -1192,7 +1272,7 @@
                 if (!pdf.ruta) await eliminarPDF(id);
                 documentosGuardados = documentosGuardados.filter(p => String(p.id) !== String(id));
                 MC325Datos.guardar('documentos', documentosGuardados);
-                await renderizarPDFs();
+                renderizarArticulos(); await renderizarPDFs();
                 informarPDF('Archivo retirado del borrador. Prepara una publicación para actualizar GitHub.', 'success');
             } catch (error) { informarPDF('No se pudo retirar el archivo: ' + error.message, 'error'); }
         }
@@ -1226,6 +1306,7 @@
                     ubicacion:document.getElementById('pdf-ubicacion').value,
                     titulo,descripcion:document.getElementById('pdf-descripcion').value.trim(),
                     fechaRegistro:anterior?.fechaRegistro || Date.now()};
+                if(anterior && anterior.ubicacion !== meta.ubicacion) delete meta.orden; // Nueva unidad: al final.
                 if(archivo){
                     // Se conserva la ruta publicada si el formato no cambia. Si cambia,
                     // el exportador creará una nueva ruta y retirará la antigua.
@@ -1241,7 +1322,7 @@
                     documentosGuardados[indice]=meta;
                 }else documentosGuardados.push(meta);
                 MC325Datos.guardar('documentos',documentosGuardados);
-                reiniciarEditorPDF(); await renderizarPDFs();
+                reiniciarEditorPDF(); renderizarArticulos(); await renderizarPDFs();
                 informarPDF('Cambios guardados como borrador. Utiliza «Preparar publicación» para compartirlos en GitHub.','success');
             }catch(error){
                 console.error(error); informarPDF('No se pudo guardar el archivo: '+error.message,'error');
