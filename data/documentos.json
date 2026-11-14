@@ -20,5 +20,31 @@
     "tamano": 465727,
     "revisionArchivo": "1794449029501-j1kw8emh13h",
     "ruta": "pdfs/unidad3/939244c5-cd38-4f28-ad2e-385ea3cacf4b-RESISTENCIA-DE-MATERIALES-II-2-64-66-pdf.pdf"
+  },
+  {
+    "id": "ca316f94-c840-463a-a856-ebd427ea0602",
+    "ubicacion": "unidad5",
+    "titulo": "Tablas de Placas Rectangulares",
+    "descripcion": "",
+    "fechaRegistro": 1794641099298,
+    "nombreArchivo": "Tablas_Placas_Rectangulares.pdf",
+    "tamano": 6722256,
+    "tipo": "pdf",
+    "revisionArchivo": "1794641099298-fdi8g43gyj4",
+    "orden": 1,
+    "ruta": "pdfs/unidad5/ca316f94-c840-463a-a856-ebd427ea0602-Tablas-Placas-Rectangulares-pdf.pdf"
+  },
+  {
+    "id": "9b57d27a-d9bf-4af2-bef2-b7f0dcb5c966",
+    "ubicacion": "unidad5",
+    "titulo": "Tablas de Placas Circulares",
+    "descripcion": "",
+    "fechaRegistro": 1794641114513,
+    "nombreArchivo": "Tablas_Placas_Circulares.pdf",
+    "tamano": 3535132,
+    "tipo": "pdf",
+    "revisionArchivo": "1794641114513-i7leumqm6f",
+    "orden": 3,
+    "ruta": "pdfs/unidad5/9b57d27a-d9bf-4af2-bef2-b7f0dcb5c966-Tablas-Placas-Circulares-pdf.pdf"
   }
 ]
