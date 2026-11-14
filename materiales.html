@@ -1453,7 +1453,7 @@
             }
         }
 
-        // LECTOR DE ARTÍCULOS: preserva TikZ, Markdown y separa las fórmulas de bloque.
+       // LECTOR DE ARTÍCULOS: preserva TikZ, Markdown y separa las fórmulas de bloque.
         async function abrirVistaLectura(idArticulo) {
             const articulo = articulosGuardados.find(a => a.id === idArticulo);
             if (!articulo) return;
@@ -1482,18 +1482,26 @@
             const bloquesMatematicos = [];
             const formulasEnLinea = [];
 
-            // 1. Extraer bloques TikZ ANTES de procesar LaTeX y Markdown para que
-            // Marked.js y las expresiones regulares de $...$ no rompan el código TikZ.
+           // 1. Extraer bloques TikZ ANTES de procesar LaTeX y Markdown,
+            // eliminando comentarios (%) y forzando fuente normal (cmr10) para '.' y '/'.
             contenidoCrudo = contenidoCrudo.replace(/<script\s+type=["']text\/tikz["'][^>]*>([\s\S]*?)<\/script>/gi, function (_, codigoTikz) {
                 const codigoLimpio = codigoTikz
+                    .replace(/^[ \t]*%.*$/gm, '')
+                    .replace(/([^\\])%.*$/gm, '$1')
                     .replace(/\\boldsymbol\s*\{([^{}]*(?:\{[^{}]*\}[^{}]*)*)\}/g, '$1')
+                    .replace(/\\text\s*\{/g, '\\mathrm{')
+                    .replace(/\$\\val\$/g, '\\val')
+                    .replace(/\$([^$]+)\$/g, function (_, formulaTikz) {
+                        return '$' + formulaTikz
+                            .replace(/(\d)\.(\d)/g, '$1\\mbox{.}$2')
+                            .replace(/\//g, '\\mbox{/}') + '$';
+                    })
                     .trim();
                 const indice = bloquesTikz.push(codigoLimpio) - 1;
                 return '\n\n<div class="tikz-figure" data-tikz-block="' + indice + '"></div>\n\n';
             });
 
-            // 2. Extraer $$ ... $$ ANTES de convertir Markdown. Un div independiente
-            // evita que Marked los coloque dentro de un <p>, donde perderían jerarquía.
+            // 2. Extraer $$ ... $$ ANTES de convertir Markdown.
             contenidoCrudo = contenidoCrudo.replace(/\$\$([\s\S]+?)\$\$/g, function (formula) {
                 const indice = bloquesMatematicos.push(formula) - 1;
                 return '\n\n<div class="math-equation" data-math-block="' + indice + '"></div>\n\n';
@@ -1565,8 +1573,7 @@
                 }).catch(error => console.error('Error al mostrar las fórmulas:', error));
             }
 
-            // 9. Montar dinámicamente los nodos <script type="text/tikz"> con createElement
-            // para que el MutationObserver de TikZJax los detecte y compile en SVG.
+            // 9. Montar los nodos <script type="text/tikz"> y despertar el motor de TikZJax.
             lector.querySelectorAll('[data-tikz-block]').forEach(function (contenedorTikz) {
                 const indice = Number(contenedorTikz.dataset.tikzBlock);
                 contenedorTikz.removeAttribute('data-tikz-block');
@@ -1577,6 +1584,10 @@
                 scriptTikz.textContent = codigo;
                 contenedorTikz.appendChild(scriptTikz);
             });
+
+            if (bloquesTikz.length > 0 && typeof window.onload === 'function') {
+                setTimeout(() => { window.onload(); }, 60);
+            }
         }
 
         function cerrarVistaLectura() {

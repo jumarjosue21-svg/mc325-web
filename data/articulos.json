@@ -21,5 +21,26 @@
     "revision": "66c2f668",
     "ruta": "articulos/unidad5/1794631200976-Placas-Circulares-Cargas-de-Forma-Axisimetrica.md",
     "orden": 2
+  },
+  {
+    "id": "1794671307819",
+    "unidad": "unidad6",
+    "titulo": "Tubos de Pared Gruesa: Ecuaciones de Lamé y Casos Especiales",
+    "revision": "b267fa50",
+    "ruta": "articulos/unidad6/1794671307819-Tubos-de-Pared-Gruesa-Ecuaciones-de-Lame-y-Casos-Especiales.md"
+  },
+  {
+    "id": "1794671336968",
+    "unidad": "unidad6",
+    "titulo": "Cilindros Compuestos (Zunchado) y Diseño de Espesor de Pared",
+    "revision": "16c8231a",
+    "ruta": "articulos/unidad6/1794671336968-Cilindros-Compuestos-Zunchado-y-Diseno-de-Espesor-de-Pared.md"
+  },
+  {
+    "id": "1794671371373",
+    "unidad": "unidad6",
+    "titulo": "Discos Rotativos de Espesor Uniforme y Volantes de Inercia",
+    "revision": "ad776386",
+    "ruta": "articulos/unidad6/1794671371373-Discos-Rotativos-de-Espesor-Uniforme-y-Volantes-de-Inercia.md"
   }
 ]
