@@ -11,6 +11,9 @@
     software: { title: 'Software Útil', icon: 'fa-solid fa-gear', singular: 'programa', action: 'Sitio oficial', types: ['Software','Herramienta','Guía'] }
   });
   const CATEGORY_IDS = Object.keys(CATEGORIES);
+  const INITIAL_VISIBLE = 3;
+  // Estado visual de cada sección. No se almacena en los JSON ni altera el orden.
+  const expandedSections = Object.fromEntries(CATEGORY_IDS.map(id => [id, false]));
   const $ = id => document.getElementById(id);
   const clone = x => JSON.parse(JSON.stringify(x));
   let published = [], items = [], baseHash = '', conflict = false, loadError = '', admin = false, editingId = null;
@@ -99,6 +102,7 @@
       if (!group.length) { box.appendChild(el('p','recursos-vacio','Todavía no hay recursos en esta sección.')); continue; }
       group.forEach((a,i) => {
         const row = el('div','exam-row recursos-fila');
+        row.hidden = i >= INITIAL_VISIBLE && !expandedSections[id];
         const labelWrap = el('div','col-examen');
         const iconAndText = el('div','file-icon-text');
         const iconBox = el('div','icon-box-resource border-red');
@@ -131,6 +135,35 @@
         }
         row.append(labelWrap,type,actions); box.appendChild(row);
       });
+      if (group.length > INITIAL_VISIBLE) {
+        const footer = el('div','recursos-expandir-contenedor');
+        const toggle = el('button','recursos-expandir-boton');
+        toggle.type = 'button';
+        toggle.setAttribute('aria-controls',box.id);
+        const icon = el('i');
+        icon.setAttribute('aria-hidden','true');
+        const label = el('span');
+        function updateExpanded() {
+          const expanded = expandedSections[id];
+          box.querySelectorAll('.recursos-fila').forEach((row, index) => {
+            row.hidden = index >= INITIAL_VISIBLE && !expanded;
+          });
+          toggle.setAttribute('aria-expanded',String(expanded));
+          toggle.setAttribute('aria-label',expanded
+            ? 'Mostrar solo los primeros tres recursos de '+CATEGORIES[id].title
+            : 'Ver todos los '+group.length+' recursos de '+CATEGORIES[id].title);
+          icon.className = expanded ? 'fa-solid fa-chevron-up' : 'fa-solid fa-chevron-down';
+          label.textContent = expanded ? 'Mostrar menos' : 'Ver todos ('+group.length+')';
+        }
+        toggle.append(label,icon);
+        toggle.addEventListener('click',() => {
+          expandedSections[id] = !expandedSections[id];
+          updateExpanded();
+        });
+        footer.appendChild(toggle);
+        box.appendChild(footer);
+        updateExpanded();
+      }
     }
     const panel = $('recursos-admin');
     if (panel) panel.hidden = !admin;
@@ -217,6 +250,7 @@
       while(items.some(x=>x.id===id));
       items.push({id,categoria:category,tipo:type,titulo:title,descripcion:description,url});
     }
+    expandedSections[category] = true;
     resetForm();$('recursos-editor').open=false;
     persist();
   }
