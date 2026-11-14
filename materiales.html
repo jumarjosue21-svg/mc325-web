@@ -25,7 +25,9 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>   
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="js/datos-mc325.js?v=20261112-multiformato-01"></script>
-
+<!-- MOTOR TIKZJAX (Agregado para leer los gráficos vectoriales) -->
+    <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
     <!-- ESTILOS DE LECTURA: afectan únicamente a los artículos, no al resto del sitio -->
     <style>
         /* Lector de doble columna: artículo + índice contextual (solo esta página). */
@@ -1458,6 +1460,15 @@
                     if (typeof MathJax.typesetPromise === 'function') return MathJax.typesetPromise([lector]);
                 }).catch(error => console.error('Error al mostrar las fórmulas:', error));
             }
+
+            // --- NUEVO CÓDIGO: DISPARADOR DE GRÁFICOS TIKZ ---
+            setTimeout(() => {
+                const scriptsTikz = lector.querySelectorAll('script[type="text/tikz"]');
+                if (scriptsTikz.length > 0 && window.tikzjax) {
+                    window.tikzjax.process();
+                }
+            }, 150);
+            // -------------------------------------------------
         }
 
         function cerrarVistaLectura() {
