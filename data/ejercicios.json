@@ -63,5 +63,18 @@
     "fecha": "2026-11-14T22:45:20.985Z",
     "ruta": "ejercicios/articulos/eaf8699d-bdc4-4406-83f7-d7cd856804f9.md",
     "enunciadoRuta": null
+  },
+  {
+    "id": "3da43c18-ba3e-47a0-aeb9-f45692ae3820",
+    "origen": "estudiante",
+    "unidad": "unidad4",
+    "titulo": "Ejercicio N°1",
+    "descripcion": "Deflexión en barra curva de cuarto de círculo bajo carga puntual",
+    "autor": "Docente",
+    "dificultad": "basico",
+    "formato": "web",
+    "fecha": "2026-11-15T22:55:36.321Z",
+    "ruta": "ejercicios/articulos/3da43c18-ba3e-47a0-aeb9-f45692ae3820.md",
+    "enunciadoRuta": null
   }
 ]
