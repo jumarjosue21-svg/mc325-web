@@ -75,6 +75,513 @@ Se adopta tracción positiva y compresión negativa. Los esfuerzos y resistencia
 | ksi, MPa | Unidades de esfuerzo: kilolibra por pulgada cuadrada y megapascal. |
 | Mpsi | Millones de libras por pulgada cuadrada, unidad de módulo elástico. |
 | ASTM, UNS, AISI/SAE | Sistemas de designación o identificación de materiales. |
+| $S_{yt},\,S_{yc}$ | Resistencias de fluencia a tracción y compresión, usadas cuando el modelo de Mohr distingue ambos valores. |
+| $\tau_y$ | Resistencia de fluencia en cortante, medida o adoptada para una envolvente de Mohr. |
+| $\sigma_1,\sigma_2,\sigma_3$ | Esfuerzos principales en 3D, ordenados de mayor a menor. |
+| $\sigma_A,\sigma_B$ | Dos esfuerzos principales en el plano, ordenados de mayor a menor, usados en los criterios planos por regiones. |
+| $n$ | Factor de seguridad estático respecto del criterio indicado. |
+| $\nu$ | Coeficiente de Poisson. |
+| $u,\;u_v,\;u_d$ | Energía de deformación total, volumétrica y de distorsión por unidad de volumen. |
+| $\sigma_{\mathrm{VM}}$ | Esfuerzo equivalente de von Mises. |
+| $\tau_{\max},\;\tau_{\mathrm{oct}}$ | Esfuerzo cortante máximo absoluto y esfuerzo cortante octaédrico. |
+ 
+<a id="criterios-de-falla-estatica"></a>
+## Criterios de falla estática
+ 
+Un criterio de falla compara el estado de esfuerzos de un punto con la resistencia del material. En materiales dúctiles, la condición de diseño suele limitar el inicio de la fluencia; en materiales frágiles, se compara el estado con las resistencias últimas a tracción y compresión. La elección del criterio debe concordar con el tipo de material y con las propiedades disponibles.
+ 
+Esta sección trata cargas estáticas y monotónicas. No redefine cargas cíclicas ni repite los métodos de vida: esos contenidos están en las secciones de fatiga.
+ 
+<a id="esfuerzos-principales"></a>
+### Esfuerzos principales que se usan en los criterios
+ 
+Los criterios multiaxiales se expresan con los esfuerzos principales, que actúan en planos donde el esfuerzo cortante es cero. Para esfuerzo plano, a partir de $\sigma_x$, $\sigma_y$ y $\tau_{xy}$:
+ 
+$$
+\sigma_{1,2}=\frac{\sigma_x+\sigma_y}{2}\pm
+\sqrt{\left(\frac{\sigma_x-\sigma_y}{2}\right)^2+\tau_{xy}^{\,2}}.
+$$
+ 
+En esfuerzo plano, la fórmula anterior da los dos principales en el plano. Para aplicar criterios tridimensionales basados en el máximo o mínimo principal, se añade el principal fuera del plano, $0$, y se ordenan los tres valores. En las fórmulas planas de Mohr–Coulomb y Mohr modificado, $\sigma_A\geq\sigma_B$ denota, en cambio, los dos principales en el plano.
+ 
+Para un estado general 3D se usa la ordenación:
+ 
+$$
+\sigma_1\geq\sigma_2\geq\sigma_3.
+$$
+ 
+Con esta convención, la máxima diferencia entre principales es $\sigma_1-\sigma_3$ y el esfuerzo cortante máximo absoluto es:
+ 
+$$
+\tau_{\max}=\frac{\sigma_1-\sigma_3}{2}.
+$$
+ 
+Se adopta tracción positiva y compresión negativa. Deben mantenerse las mismas unidades para esfuerzos aplicados y resistencias.
+ 
+<a id="criterios-materiales-ductiles"></a>
+### Criterios para materiales dúctiles
+ 
+Los metales dúctiles pueden sufrir deformación plástica apreciable antes de fracturarse. Para diseño estático, la propiedad de referencia suele ser la resistencia de fluencia $S_y$. En un estado multiaxial no basta, en general, con comparar cada componente por separado con $S_y$; se usa un criterio que representa la interacción entre los esfuerzos.
+ 
+#### Energía de deformación y energía de distorsión
+ 
+Para un material elástico, homogéneo e isotrópico, la energía de deformación por unidad de volumen en coordenadas principales puede escribirse como:
+ 
+$$
+u=\frac{1}{2E}\left[
+\sigma_1^2+\sigma_2^2+\sigma_3^2
+-2\nu(\sigma_1\sigma_2+\sigma_2\sigma_3+\sigma_3\sigma_1)
+\right],
+$$
+ 
+donde $E$ es el módulo de Young y $\nu$ el coeficiente de Poisson. Se separa en una contribución volumétrica $u_v$, asociada al cambio de volumen, y una contribución de distorsión $u_d$, asociada al cambio de forma:
+ 
+$$
+u_v=\frac{1-2\nu}{6E}(\sigma_1+\sigma_2+\sigma_3)^2,
+$$
+ 
+$$
+u_d=\frac{1+\nu}{6E}\left[
+(\sigma_1-\sigma_2)^2+
+(\sigma_2-\sigma_3)^2+
+(\sigma_3-\sigma_1)^2
+\right].
+$$
+ 
+Un esfuerzo hidrostático igual en las tres direcciones modifica el volumen, pero no las diferencias entre esfuerzos principales. Por eso no contribuye a la energía de distorsión que utiliza von Mises.
+ 
+<div class="dec-card">
+<style>
+.dec-card{max-width:740px;margin:25px 0;background:#ffffff;border:1px solid #cbd5e1;border-radius:12px;padding:20px;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;box-shadow:0 10px 25px rgba(15,23,42,0.08);color:#1e293b;box-sizing:border-box;text-align:left;}
+.dec-title{font-size:1.15rem;font-weight:700;color:#5c1d1d;margin:0 0 4px 0;}
+.dec-subtitle{font-size:0.85rem;color:#64748b;margin:0 0 14px 0;}
+.dec-radio{display:none;}
+.dec-tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:16px;}
+@media (max-width:650px){.dec-tabs{grid-template-columns:repeat(2,1fr);}}
+.dec-tab{background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:8px 4px;font-size:0.72rem;font-weight:600;color:#475569;text-align:center;cursor:pointer;transition:all 0.2s ease;user-select:none;}
+.dec-tab:hover{background:#e2e8f0;color:#1e293b;}
+.dec-viewport{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;min-height:300px;box-sizing:border-box;}
+.dec-slide{display:none;width:100%;animation:decFade 0.3s ease-in-out;}
+@keyframes decFade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+#dec1:checked ~ .dec-tabs label[for="dec1"],
+#dec2:checked ~ .dec-tabs label[for="dec2"],
+#dec3:checked ~ .dec-tabs label[for="dec3"],
+#dec4:checked ~ .dec-tabs label[for="dec4"],
+#dec5:checked ~ .dec-tabs label[for="dec5"]{background:#fef2f2;color:#991b1b;border-color:#ef4444;box-shadow:0 2px 5px rgba(239,68,68,0.12);}
+#dec1:checked ~ .dec-viewport #dec-s1,
+#dec2:checked ~ .dec-viewport #dec-s2,
+#dec3:checked ~ .dec-viewport #dec-s3,
+#dec4:checked ~ .dec-viewport #dec-s4,
+#dec5:checked ~ .dec-viewport #dec-s5{display:block;}
+.dec-svg{width:100%;height:auto;display:block;margin:0 auto 10px auto;}
+.dec-note{font-size:0.85rem;color:#334155;line-height:1.55;margin:0;text-align:left;}
+.dec-eq{background:#ffffff;border:1px solid #cbd5e1;border-radius:8px;padding:10px 12px;margin:8px 0 0 0;font-size:0.9rem;line-height:1.7;text-align:left;}
+.dec-table{width:100%;border-collapse:collapse;font-size:0.85rem;background:#ffffff;}
+.dec-table th,.dec-table td{border:1px solid #cbd5e1;padding:6px 10px;text-align:center;}
+.dec-table th{background:#fef2f2;color:#991b1b;}
+</style>
+<input type="radio" name="dec-group" id="dec1" class="dec-radio" checked>
+<input type="radio" name="dec-group" id="dec2" class="dec-radio">
+<input type="radio" name="dec-group" id="dec3" class="dec-radio">
+<input type="radio" name="dec-group" id="dec4" class="dec-radio">
+<input type="radio" name="dec-group" id="dec5" class="dec-radio">
+<h4 class="dec-title">Descomposición del Estado Triaxial: Hidrostático + Distorsión</h4>
+<p class="dec-subtitle">Haz clic en las pestañas para ver cada componente y cómo se suman</p>
+<div class="dec-tabs">
+<label class="dec-tab" for="dec1">1. Estado triaxial</label>
+<label class="dec-tab" for="dec2">2. Hidrostático</label>
+<label class="dec-tab" for="dec3">3. Distorsión</label>
+<label class="dec-tab" for="dec4">4. Suma completa</label>
+<label class="dec-tab" for="dec5">5. Ejemplo numérico</label>
+</div>
+<div class="dec-viewport">
+<!-- SLIDE 1: ESTADO TRIAXIAL -->
+<div class="dec-slide" id="dec-s1">
+<svg class="dec-svg" viewBox="0 0 520 230">
+<g transform="translate(190,120)">
+<polygon points="0,0 28,-24 98,-24 70,0" fill="#e5e7eb" stroke="#475569" stroke-width="1.5"/>
+<rect x="0" y="0" width="70" height="70" fill="#d1d5db" stroke="#475569" stroke-width="1.5"/>
+<polygon points="70,0 98,-24 98,46 70,70" fill="#9ca3af" stroke="#475569" stroke-width="1.5"/>
+<line x1="84" y1="23" x2="130" y2="23" stroke="#dc2626" stroke-width="3"/>
+<polygon points="136,23 124,17 124,29" fill="#dc2626"/>
+<text x="142" y="28" font-size="15" font-weight="bold" fill="#dc2626">σ₁</text>
+<line x1="49" y1="-12" x2="49" y2="-48" stroke="#2563eb" stroke-width="3"/>
+<polygon points="49,-56 43,-44 55,-44" fill="#2563eb"/>
+<text x="58" y="-50" font-size="15" font-weight="bold" fill="#2563eb">σ₂</text>
+<line x1="35" y1="35" x2="0" y2="68" stroke="#059669" stroke-width="3"/>
+<polygon points="-6,74 6,69 -2,61" fill="#059669"/>
+<text x="-30" y="88" font-size="15" font-weight="bold" fill="#059669">σ₃</text>
+</g>
+<text x="260" y="215" font-size="13" font-weight="bold" fill="#1e293b" text-anchor="middle">σ₁ &gt; σ₂ &gt; σ₃  (esfuerzos principales)</text>
+</svg>
+<p class="dec-note"><strong>Estado triaxial:</strong> un elemento sometido a tres esfuerzos principales distintos. Para analizarlo, se separa en un promedio igual en las tres direcciones (que cambia el volumen) y un resto (que cambia la forma).</p>
+<div class="dec-eq">σ<sub>prom</sub> = (σ₁ + σ₂ + σ₃) / 3</div>
+</div>
+<!-- SLIDE 2: HIDROSTATICO -->
+<div class="dec-slide" id="dec-s2">
+<svg class="dec-svg" viewBox="0 0 520 230">
+<g transform="translate(100,120)">
+<polygon points="0,0 28,-24 98,-24 70,0" fill="#e5e7eb" stroke="#475569" stroke-width="1.5"/>
+<rect x="0" y="0" width="70" height="70" fill="#d1d5db" stroke="#475569" stroke-width="1.5"/>
+<polygon points="70,0 98,-24 98,46 70,70" fill="#9ca3af" stroke="#475569" stroke-width="1.5"/>
+<line x1="84" y1="23" x2="130" y2="23" stroke="#d97706" stroke-width="3"/>
+<polygon points="136,23 124,17 124,29" fill="#d97706"/>
+<text x="142" y="28" font-size="14" font-weight="bold" fill="#d97706">σ<tspan font-size="10" dy="3">prom</tspan></text>
+<line x1="49" y1="-12" x2="49" y2="-48" stroke="#d97706" stroke-width="3"/>
+<polygon points="49,-56 43,-44 55,-44" fill="#d97706"/>
+<text x="58" y="-50" font-size="14" font-weight="bold" fill="#d97706">σ<tspan font-size="10" dy="3">prom</tspan></text>
+<line x1="35" y1="35" x2="0" y2="68" stroke="#d97706" stroke-width="3"/>
+<polygon points="-6,74 6,69 -2,61" fill="#d97706"/>
+<text x="-40" y="88" font-size="14" font-weight="bold" fill="#d97706">σ<tspan font-size="10" dy="3">prom</tspan></text>
+</g>
+<text x="215" y="150" font-size="26" font-weight="bold" fill="#475569">→</text>
+<g transform="translate(360,120)">
+<polygon points="0,0 28,-24 98,-24 70,0" fill="none" stroke="#475569" stroke-width="1.3" stroke-dasharray="5,4"/>
+<rect x="0" y="0" width="70" height="70" fill="none" stroke="#475569" stroke-width="1.3" stroke-dasharray="5,4"/>
+<polygon points="70,0 98,-24 98,46 70,70" fill="none" stroke="#475569" stroke-width="1.3" stroke-dasharray="5,4"/>
+</g>
+<g transform="translate(379.6,134.2) scale(0.6)">
+<polygon points="0,0 28,-24 98,-24 70,0" fill="#fde68a" stroke="#92400e" stroke-width="2"/>
+<rect x="0" y="0" width="70" height="70" fill="#fcd34d" stroke="#92400e" stroke-width="2"/>
+<polygon points="70,0 98,-24 98,46 70,70" fill="#f59e0b" stroke="#92400e" stroke-width="2"/>
+</g>
+<text x="410" y="215" font-size="13" font-weight="bold" fill="#92400e" text-anchor="middle">Deformación volumétrica</text>
+<text x="150" y="215" font-size="13" font-weight="bold" fill="#1e293b" text-anchor="middle">Componente hidrostático</text>
+</svg>
+<p class="dec-note"><strong>Componente hidrostático:</strong> el mismo esfuerzo σ<sub>prom</sub> en las tres direcciones. El cubo cambia de tamaño pero conserva su forma; por eso no aporta a la fluencia por distorsión (von Mises).</p>
+<div class="dec-eq">u<sub>v</sub> = (1 − 2ν) / (6E) · (σ₁ + σ₂ + σ₃)²</div>
+</div>
+<!-- SLIDE 3: DISTORSION -->
+<div class="dec-slide" id="dec-s3">
+<svg class="dec-svg" viewBox="0 0 520 230">
+<g transform="translate(110,120)">
+<polygon points="0,0 28,-24 98,-24 70,0" fill="#e5e7eb" stroke="#475569" stroke-width="1.5"/>
+<rect x="0" y="0" width="70" height="70" fill="#d1d5db" stroke="#475569" stroke-width="1.5"/>
+<polygon points="70,0 98,-24 98,46 70,70" fill="#9ca3af" stroke="#475569" stroke-width="1.5"/>
+<line x1="84" y1="23" x2="130" y2="23" stroke="#dc2626" stroke-width="3"/>
+<polygon points="136,23 124,17 124,29" fill="#dc2626"/>
+<text x="142" y="28" font-size="13" font-weight="bold" fill="#dc2626">σ₁ − σ<tspan font-size="9" dy="3">prom</tspan></text>
+<line x1="49" y1="-12" x2="49" y2="-48" stroke="#2563eb" stroke-width="3"/>
+<polygon points="49,-56 43,-44 55,-44" fill="#2563eb"/>
+<text x="58" y="-50" font-size="13" font-weight="bold" fill="#2563eb">σ₂ − σ<tspan font-size="9" dy="3">prom</tspan></text>
+<line x1="35" y1="35" x2="0" y2="68" stroke="#059669" stroke-width="3"/>
+<polygon points="-6,74 6,69 -2,61" fill="#059669"/>
+<text x="-60" y="88" font-size="13" font-weight="bold" fill="#059669">σ₃ − σ<tspan font-size="9" dy="3">prom</tspan></text>
+</g>
+<text x="318" y="150" font-size="26" font-weight="bold" fill="#475569">→</text>
+<g transform="translate(380,120)">
+<polygon points="0,0 28,-24 98,-24 70,0" fill="none" stroke="#475569" stroke-width="1.3" stroke-dasharray="5,4"/>
+<rect x="0" y="0" width="70" height="70" fill="none" stroke="#475569" stroke-width="1.3" stroke-dasharray="5,4"/>
+<polygon points="70,0 98,-24 98,46 70,70" fill="none" stroke="#475569" stroke-width="1.3" stroke-dasharray="5,4"/>
+<polygon points="12,0 42,-24 112,-24 82,0" fill="#fef08a" stroke="#854d0e" stroke-width="2"/>
+<polygon points="12,0 82,0 70,70 0,70" fill="#facc15" stroke="#854d0e" stroke-width="2"/>
+<polygon points="82,0 112,-24 100,46 70,70" fill="#eab308" stroke="#854d0e" stroke-width="2"/>
+</g>
+<text x="430" y="215" font-size="13" font-weight="bold" fill="#854d0e" text-anchor="middle">Distorsión (cambio de forma)</text>
+<text x="150" y="215" font-size="13" font-weight="bold" fill="#1e293b" text-anchor="middle">Componente de distorsión</text>
+</svg>
+<p class="dec-note"><strong>Componente de distorsión:</strong> lo que queda al restar el promedio a cada esfuerzo principal. Las tres diferencias suman cero, así que el volumen no cambia, solo la forma. Esta energía es la que gobierna la fluencia según von Mises.</p>
+<div class="dec-eq">u<sub>d</sub> = (1 + ν) / (6E) · [ (σ₁ − σ₂)² + (σ₂ − σ₃)² + (σ₃ − σ₁)² ]</div>
+</div>
+<!-- SLIDE 4: SUMA COMPLETA -->
+<div class="dec-slide" id="dec-s4">
+<svg class="dec-svg" viewBox="0 0 560 210">
+<g transform="translate(40,95) scale(0.75)">
+<polygon points="0,0 28,-24 98,-24 70,0" fill="#e5e7eb" stroke="#475569" stroke-width="1.5"/>
+<rect x="0" y="0" width="70" height="70" fill="#d1d5db" stroke="#475569" stroke-width="1.5"/>
+<polygon points="70,0 98,-24 98,46 70,70" fill="#9ca3af" stroke="#475569" stroke-width="1.5"/>
+<line x1="84" y1="23" x2="126" y2="23" stroke="#dc2626" stroke-width="3.5"/>
+<polygon points="134,23 122,16 122,30" fill="#dc2626"/>
+<line x1="49" y1="-12" x2="49" y2="-44" stroke="#2563eb" stroke-width="3.5"/>
+<polygon points="49,-54 42,-42 56,-42" fill="#2563eb"/>
+<line x1="35" y1="35" x2="2" y2="66" stroke="#059669" stroke-width="3.5"/>
+<polygon points="-6,74 6,68 -3,58" fill="#059669"/>
+</g>
+<text x="40" y="195" font-size="13" font-weight="bold" fill="#1e293b">a) Triaxial</text>
+<text x="190" y="125" font-size="30" font-weight="bold" fill="#5c1d1d">=</text>
+<g transform="translate(240,95) scale(0.75)">
+<polygon points="0,0 28,-24 98,-24 70,0" fill="#e5e7eb" stroke="#475569" stroke-width="1.5"/>
+<rect x="0" y="0" width="70" height="70" fill="#d1d5db" stroke="#475569" stroke-width="1.5"/>
+<polygon points="70,0 98,-24 98,46 70,70" fill="#9ca3af" stroke="#475569" stroke-width="1.5"/>
+<line x1="84" y1="23" x2="126" y2="23" stroke="#d97706" stroke-width="3.5"/>
+<polygon points="134,23 122,16 122,30" fill="#d97706"/>
+<line x1="49" y1="-12" x2="49" y2="-44" stroke="#d97706" stroke-width="3.5"/>
+<polygon points="49,-54 42,-42 56,-42" fill="#d97706"/>
+<line x1="35" y1="35" x2="2" y2="66" stroke="#d97706" stroke-width="3.5"/>
+<polygon points="-6,74 6,68 -3,58" fill="#d97706"/>
+</g>
+<text x="235" y="195" font-size="13" font-weight="bold" fill="#92400e">b) Hidrostático</text>
+<text x="395" y="125" font-size="30" font-weight="bold" fill="#5c1d1d">+</text>
+<g transform="translate(440,95) scale(0.75)">
+<polygon points="0,0 28,-24 98,-24 70,0" fill="#e5e7eb" stroke="#475569" stroke-width="1.5"/>
+<rect x="0" y="0" width="70" height="70" fill="#d1d5db" stroke="#475569" stroke-width="1.5"/>
+<polygon points="70,0 98,-24 98,46 70,70" fill="#9ca3af" stroke="#475569" stroke-width="1.5"/>
+<line x1="84" y1="23" x2="126" y2="23" stroke="#dc2626" stroke-width="3.5"/>
+<polygon points="134,23 122,16 122,30" fill="#dc2626"/>
+<line x1="49" y1="-12" x2="49" y2="-44" stroke="#2563eb" stroke-width="3.5"/>
+<polygon points="49,-54 42,-42 56,-42" fill="#2563eb"/>
+<line x1="35" y1="35" x2="2" y2="66" stroke="#059669" stroke-width="3.5"/>
+<polygon points="-6,74 6,68 -3,58" fill="#059669"/>
+</g>
+<text x="440" y="195" font-size="13" font-weight="bold" fill="#854d0e">c) Distorsión</text>
+</svg>
+<p class="dec-note"><strong>Suma completa:</strong> el estado triaxial equivale al componente hidrostático (cambia el volumen) más el componente de distorsión (cambia la forma). Las energías se suman igual:</p>
+<div class="dec-eq">u = u<sub>v</sub> + u<sub>d</sub><br>u = 1/(2E) · [ σ₁² + σ₂² + σ₃² − 2ν(σ₁σ₂ + σ₂σ₃ + σ₃σ₁) ]</div>
+</div>
+<!-- SLIDE 5: EJEMPLO NUMERICO -->
+<div class="dec-slide" id="dec-s5">
+<p class="dec-note"><strong>Ejemplo numérico</strong> (esfuerzos principales en MPa): σ₁ = 120, σ₂ = 60, σ₃ = 0.</p>
+<div class="dec-eq">σ<sub>prom</sub> = (120 + 60 + 0) / 3 = <strong>60 MPa</strong></div>
+<table class="dec-table" style="margin-top:12px;">
+<tr><th>Esfuerzo</th><th>Total</th><th>Hidrostático (σ<sub>prom</sub>)</th><th>Distorsión (resta)</th></tr>
+<tr><td>σ₁</td><td>120</td><td>60</td><td>+60</td></tr>
+<tr><td>σ₂</td><td>60</td><td>60</td><td>0</td></tr>
+<tr><td>σ₃</td><td>0</td><td>60</td><td>−60</td></tr>
+<tr><td><strong>Suma</strong></td><td>180</td><td>180</td><td><strong>0</strong></td></tr>
+</table>
+<div class="dec-eq">Las diferencias son (σ₁ − σ₂) = 60, (σ₂ − σ₃) = 60 y (σ₃ − σ₁) = −120.<br>Von Mises: σ<sub>VM</sub> = √[ (60² + 60² + 120²) / 2 ] = √10800 ≈ <strong>103.9 MPa</strong></div>
+<p class="dec-note" style="margin-top:10px;">La columna de distorsión suma cero: no hay cambio de volumen. Solo ella determina σ<sub>VM</sub>; el valor de σ<sub>prom</sub> no influye.</p>
+</div>
+</div>
+</div>
+ 
+#### Esfuerzo cortante máximo — Tresca
+ 
+En un ensayo uniaxial de tracción, cuando comienza la fluencia, el estado principal es $(S_y,0,0)$ y el esfuerzo cortante máximo es $S_y/2$. Tresca extiende esta observación al estado multiaxial y predice fluencia cuando el mayor cortante alcanza ese valor:
+ 
+$$
+\tau_{\max}\geq\frac{S_y}{2}
+\quad\Longleftrightarrow\quad
+\sigma_1-\sigma_3\geq S_y.
+$$
+ 
+Para una condición de diseño con factor de seguridad $n$:
+ 
+$$
+\sigma_1-\sigma_3\leq\frac{S_y}{n},
+\qquad
+n_{\mathrm{Tresca}}=\frac{S_y}{\sigma_1-\sigma_3}.
+$$
+ 
+El criterio equivale a limitar la máxima diferencia entre esfuerzos principales. En el espacio de esfuerzos principales, su frontera es de forma poligonal; en el plano desviador se representa mediante un hexágono. Frente a von Mises, Tresca normalmente predice fluencia antes o al mismo nivel, por lo que suele resultar conservador para metales dúctiles.
+ 
+<p align="center">
+  <img src="../assets/grafica_curvaSN/grafica-12.png" alt="Gráfica de Tresca y líneas de carga" width="450">
+</p>
+<p><em>Figura:</em> Representación gráfica del criterio de fluencia de Tresca en conjunto con las líneas de carga para el análisis de resistencia de materiales.</p>
+ 
+#### Energía de distorsión — von Mises
+ 
+Von Mises predice fluencia cuando la energía de distorsión del estado aplicado alcanza la energía de distorsión del ensayo uniaxial al inicio de la fluencia. El esfuerzo equivalente de von Mises es:
+ 
+$$
+\sigma_{\mathrm{VM}}=\sqrt{\frac{
+(\sigma_1-\sigma_2)^2+
+(\sigma_2-\sigma_3)^2+
+(\sigma_3-\sigma_1)^2}{2}}.
+$$
+ 
+En componentes cartesianas, la misma magnitud se calcula como:
+ 
+$$
+\sigma_{\mathrm{VM}}=\sqrt{
+\sigma_x^2+\sigma_y^2+\sigma_z^2
+-\sigma_x\sigma_y-\sigma_y\sigma_z-\sigma_z\sigma_x
++3(\tau_{xy}^2+\tau_{yz}^2+\tau_{zx}^2)
+}.
+$$
+ 
+La fluencia se predice cuando $\sigma_{\mathrm{VM}}\geq S_y$. Para diseño:
+ 
+$$
+\sigma_{\mathrm{VM}}\leq\frac{S_y}{n},
+\qquad
+n_{\mathrm{VM}}=\frac{S_y}{\sigma_{\mathrm{VM}}}.
+$$
+ 
+En esfuerzo plano, con $\sigma_z=\tau_{xz}=\tau_{yz}=0$:
+ 
+$$
+\sigma_{\mathrm{VM}}=
+\sqrt{\sigma_x^2-\sigma_x\sigma_y+\sigma_y^2+3\tau_{xy}^{\,2}}.
+$$
+ 
+La superficie de fluencia de von Mises es elíptica/cilíndrica en el espacio de esfuerzos principales y circular en el plano desviador. El criterio suele representar bien el inicio de fluencia de muchos metales dúctiles isotrópicos; no reemplaza propiedades específicas si el material es anisotrópico o tiene respuesta no convencional.
+ 
+<p align="center">
+  <img src="../assets/grafica_curvaSN/grafica-13.png" alt="Comparación entre Energía de Distorsión (ED) y Esfuerzo Cortante Máximo (ECM)" width="450">
+</p>
+<p><em>Figura:</em> Comparación gráfica entre los criterios de la Energía de Distorsión (ED - von Mises) y el Esfuerzo Cortante Máximo (ECM - Tresca), indicando las fronteras de fluencia y la línea de carga por cortante puro.</p>
+ 
+#### Esfuerzo cortante octaédrico
+ 
+Los planos octaédricos tienen normales que forman el mismo ángulo con las tres direcciones principales. El esfuerzo cortante sobre estos planos es:
+ 
+$$
+\tau_{\mathrm{oct}}=
+\frac{1}{3}\sqrt{
+(\sigma_1-\sigma_2)^2+
+(\sigma_2-\sigma_3)^2+
+(\sigma_3-\sigma_1)^2
+}.
+$$
+ 
+En tracción uniaxial al alcanzar $S_y$, resulta $\tau_{\mathrm{oct}}=\sqrt{2}\,S_y/3$. Por consiguiente, el criterio octaédrico establece:
+ 
+$$
+\tau_{\mathrm{oct}}\geq\frac{\sqrt{2}}{3}S_y.
+$$
+ 
+Al sustituir la definición de $\tau_{\mathrm{oct}}$, se obtiene la misma condición que von Mises. Es una interpretación equivalente del criterio de energía de distorsión, no un criterio independiente que requiera otra propiedad material.
+ 
+<p align="center">
+  <img src="../assets/grafica_curvaSN/grafica-14.png" alt="Esfuerzo cortante octaédrico y espacio de esfuerzos principales" width="450">
+</p>
+<p><em>Figura:</em> Representación tridimensional en el espacio de esfuerzos principales ($\sigma_1, \sigma_2, \sigma_3$), ilustrando el esfuerzo normal promedio ($\sigma_{\text{av}}$) y el esfuerzo cortante octaédrico ($\tau_{\text{oct}}$).</p>
+ 
+#### Criterio de Mohr para materiales dúctiles
+ 
+El criterio general de Mohr se usa cuando las resistencias de fluencia en tracción y compresión no son iguales o cuando el comportamiento en cortante debe incorporarse explícitamente. La envolvente se construye en el plano $\sigma$–$\tau$ a partir de ensayos representativos. Para su descripción se requieren, según la formulación adoptada, la fluencia a tracción $S_{yt}$, la fluencia a compresión $S_{yc}$ y la fluencia en cortante $\tau_y$.
+ 
+Cada estado de esfuerzos principales genera uno o más círculos de Mohr. La falla se predice cuando uno de esos círculos es tangente a la envolvente experimental. La ventaja es que permite representar asimetrías que Tresca y von Mises, en sus formulaciones usuales, no incorporan. Su limitación práctica es que la envolvente depende de los datos de ensayo y no se reduce a una única ecuación universal.
+ 
+#### Aproximación de Mohr–Coulomb para materiales dúctiles
+ 
+Mohr–Coulomb aproxima la envolvente de Mohr mediante rectas tangentes a los círculos correspondientes a ensayos uniaxiales de tracción y compresión. Para esfuerzo plano, con $\sigma_A\geq\sigma_B$, una forma de la frontera de diseño basada en las resistencias de fluencia es:
+ 
+$$
+\begin{aligned}
+\sigma_A&=\frac{S_{yt}}{n},
+&&\sigma_A\geq\sigma_B\geq0,\\[3pt]
+\frac{\sigma_A}{S_{yt}}-\frac{\sigma_B}{S_{yc}}&=\frac{1}{n},
+&&\sigma_A\geq0\geq\sigma_B,\\[3pt]
+\sigma_B&=-\frac{S_{yc}}{n},
+&&0\geq\sigma_A\geq\sigma_B.
+\end{aligned}
+$$
+ 
+La ecuación central corresponde a tracción y compresión simultáneas; como $\sigma_B$ es negativo, la compresión también contribuye a alcanzar la frontera. En formulaciones para materiales frágiles se sustituyen las resistencias de fluencia por resistencias últimas. Debe verificarse qué propiedad corresponde a la definición de falla usada.
+ 
+<p align="center">
+  <img src="../assets/grafica_curvaSN/grafica-15.png" alt="Criterio de falla de Coulomb-Mohr" width="450">
+</p>
+<p><em>Figura:</em> Representación del criterio de falla de Coulomb-Mohr, mostrando la envolvente lineal de resistencia, los círculos de Mohr y los puntos críticos de tangencia para materiales con diferentes resistencias a la tracción y compresión.</p>
+ 
+#### Comparación de criterios dúctiles
+ 
+| Criterio | Magnitud o condición | Propiedades necesarias | Interpretación y uso |
+| --- | --- | --- | --- |
+| Tresca | $\sigma_1-\sigma_3\leq S_y/n$ | Resistencia de fluencia $S_y$ | Limita el máximo esfuerzo cortante; sencillo y usualmente conservador. |
+| von Mises | $\sigma_{\mathrm{VM}}\leq S_y/n$ | Resistencia de fluencia $S_y$ | Basado en energía de distorsión; apropiado para muchos metales dúctiles isotrópicos. |
+| Octaédrico | $\tau_{\mathrm{oct}}\leq\sqrt{2}\,S_y/(3n)$ | $S_y$ | Es algebraicamente equivalente a von Mises. |
+| Mohr experimental | Círculo de Mohr dentro de la envolvente | $S_{yt}$, $S_{yc}$ y $\tau_y$, según ensayos | Útil si hay asimetría entre tracción, compresión y cortante. |
+| Mohr–Coulomb | Fronteras lineales por región | Resistencias de tracción y compresión | Aproximación de la envolvente de Mohr; se debe aplicar por región de signos. |
+ 
+Los siguientes estados permiten comprobar las expresiones y comparar sus predicciones:
+ 
+| Estado de esfuerzo | Esfuerzos principales | Equivalente Tresca $\sigma_T$ | Equivalente von Mises $\sigma_{VM}$ |
+| --- | --- | ---: | ---: |
+| Tracción uniaxial de magnitud $\lvert\sigma\rvert$ | $(\sigma,0,0)$, ordenados según el signo | $\lvert\sigma\rvert$ | $\lvert\sigma\rvert$ |
+| Cortante puro de magnitud $\lvert\tau\rvert$ | $(\lvert\tau\rvert,0,-\lvert\tau\rvert)$ | $2\lvert\tau\rvert$ | $\sqrt{3}\,\lvert\tau\rvert$ |
+| Presión hidrostática ideal $p$ | $(p,p,p)$ | $0$ | $0$ |
+ 
+En cortante puro, las predicciones de fluencia son $\lvert\tau\rvert=S_y/2$ para Tresca y $\lvert\tau\rvert=S_y/\sqrt{3}$ para von Mises. Bajo presión hidrostática ideal, las diferencias entre principales son nulas, por lo que ambos criterios de fluencia desviadora predicen esfuerzo equivalente nulo.
+ 
+<a id="criterios-materiales-fragiles"></a>
+### Criterios para materiales frágiles
+ 
+Los materiales frágiles suelen fracturarse con poca deformación plástica y sus resistencias últimas pueden diferir mucho entre tracción y compresión. Se emplean $S_{ut}$ para tracción y $S_{uc}$ para compresión, ambas como magnitudes positivas. Los esfuerzos compresivos se escriben negativos.
+ 
+#### Esfuerzo normal máximo
+ 
+La teoría del esfuerzo normal máximo predice fractura cuando el principal más traccionado alcanza $S_{ut}$ o cuando el principal más compresivo alcanza $-S_{uc}$:
+ 
+$$
+\sigma_1\geq S_{ut}
+\qquad\text{o}\qquad
+\sigma_3\leq-S_{uc}.
+$$
+ 
+Con factor de seguridad $n$, las condiciones de diseño son:
+ 
+$$
+\sigma_1\leq\frac{S_{ut}}{n},
+\qquad
+\sigma_3\geq-\frac{S_{uc}}{n}.
+$$
+ 
+En esfuerzo plano se incluye el principal fuera del plano igual a cero antes de seleccionar los principales extremos para estas comparaciones. Este criterio genera una región segura rectangular en el plano de esfuerzos principales, pero no representa la interacción de tracción y compresión simultáneas. En ensayos de muchos materiales frágiles puede ajustar peor que las envolventes de Mohr.
+ 
+<p align="center">
+  <img src="../assets/grafica_curvaSN/grafica-16.png" alt="Criterio de resistencia y región sin falla" width="450">
+</p>
+<p><em>Figura:</em> Representación de la envolvente de diseño y la región sin falla delimitada por los límites de resistencia a la tracción ($S_{ut}$) y a la compresión ($S_{uc}$) en función de los esfuerzos principales $\sigma_A$ y $\sigma_B$.</p>
+ 
+#### Criterio de Mohr para materiales frágiles
+ 
+El criterio de Mohr para material frágil utiliza la misma construcción de círculos y envolvente experimental descrita para materiales dúctiles, pero se calibra con resistencias últimas. La fractura se predice cuando un círculo del estado aplicado toca la envolvente. A diferencia del esfuerzo normal máximo, toma en cuenta la combinación de esfuerzos normales y cortantes y puede representar diferentes capacidades a tracción y compresión.
+ 
+#### Mohr–Coulomb para materiales frágiles
+ 
+La aproximación lineal de Mohr–Coulomb, para esfuerzo plano y principales $\sigma_A\geq\sigma_B$, queda definida por regiones:
+ 
+$$
+\begin{aligned}
+\sigma_A&=\frac{S_{ut}}{n},
+&&\sigma_A\geq\sigma_B\geq0,\\[3pt]
+\frac{\sigma_A}{S_{ut}}-\frac{\sigma_B}{S_{uc}}&=\frac{1}{n},
+&&\sigma_A\geq0\geq\sigma_B,\\[3pt]
+\sigma_B&=-\frac{S_{uc}}{n},
+&&0\geq\sigma_A\geq\sigma_B.
+\end{aligned}
+$$
+ 
+En el primer cuadrante gobierna la resistencia a tracción; en el tercero, la resistencia a compresión. En la región mixta, ambos esfuerzos principales intervienen. Si el factor de seguridad no está incorporado en la ecuación, la frontera de falla se obtiene tomando $n=1$.
+ 
+#### Mohr–Coulomb modificado
+ 
+El criterio modificado conserva los límites uniaxiales, pero cambia parte de la frontera mixta. En esfuerzo plano, con $\sigma_A\geq\sigma_B$:
+ 
+| Región de esfuerzos | Condición de diseño |
+| --- | --- |
+| Tracción biaxial: $\sigma_A\geq\sigma_B\geq0$ | $\sigma_A=S_{ut}/n$ |
+| Compresión biaxial: $0\geq\sigma_A\geq\sigma_B$ | $\sigma_B=-S_{uc}/n$ |
+| Carga mixta y $\lvert\sigma_B\rvert\leq\lvert\sigma_A\rvert$ | $\sigma_A=S_{ut}/n$ |
+| Carga mixta y $\lvert\sigma_B\rvert>\lvert\sigma_A\rvert$ | $\displaystyle\frac{(S_{uc}-S_{ut})\,\sigma_A}{S_{uc}S_{ut}}-\frac{\sigma_B}{S_{uc}}=\frac{1}{n}$ |
+ 
+La frontera de esfuerzo normal máximo se mantiene en una parte de la región mixta; en la otra, la ecuación se modifica para representar de forma diferente el efecto de la compresión. La relación solo se utiliza en la región que indica la tabla. Como con otros criterios empíricos, la selección debe justificarse con datos y condiciones de servicio representativos.
+
+ 
+#### Comparación de criterios frágiles
+ 
+| Criterio | Resistencias de referencia | Tratamiento de esfuerzos mixtos | Observación |
+| --- | --- | --- | --- |
+| Esfuerzo normal máximo | $S_{ut}$ y $S_{uc}$ | No modela explícitamente la interacción; verifica los extremos principales | Muy simple; puede correlacionar peor con ensayos. |
+| Mohr experimental | Resistencias últimas medidas en ensayos de tracción, compresión y cortante | Envolvente experimental de círculos de Mohr | Flexible, pero necesita datos suficientes para construir la envolvente. |
+| Mohr–Coulomb | $S_{ut}$ y $S_{uc}$ | Frontera lineal por regiones | Aproxima la envolvente con pocos parámetros. |
+| Mohr–Coulomb modificado | $S_{ut}$ y $S_{uc}$ | Cambia la frontera en parte de la región mixta | Aplicar con cuidado las condiciones de cada región. |
+ 
+<a id="datos-y-seleccion-del-criterio"></a>
+### Datos necesarios y selección del criterio
+ 
+Los apuntes no proporcionan una tabla universal de resistencias numéricas para estos criterios: los valores dependen del material, su proceso y condición. Por tanto, no se asignan cifras genéricas a $S_y$, $S_{ut}$ o $S_{uc}$. Para un diseño se deben usar valores medidos o especificados para el material real.
+ 
+| Material y modelo | Datos mínimos requeridos | Comparación de diseño |
+| --- | --- | --- |
+| Dúctil, Tresca | $S_y$ y los tres esfuerzos principales | $\sigma_1-\sigma_3\leq S_y/n$ |
+| Dúctil, von Mises | $S_y$ y componentes del estado de esfuerzos | $\sigma_{\mathrm{VM}}\leq S_y/n$ |
+| Dúctil, Mohr | $S_{yt}$, $S_{yc}$, $\tau_y$ o envolvente experimental | El círculo de esfuerzos debe quedar dentro de la envolvente reducida por $n$. |
+| Frágil, esfuerzo normal máximo | $S_{ut}$, $S_{uc}$ y esfuerzos principales | $\sigma_1\leq S_{ut}/n$ y $\sigma_3\geq-S_{uc}/n$ |
+| Frágil, Mohr o Mohr–Coulomb | $S_{ut}$, $S_{uc}$ y, para Mohr general, datos de cortante | Círculo o estado principal dentro de la envolvente de diseño. |
+ 
+Para aplicar cualquiera de los criterios:
+ 
+1. Calcular el estado de esfuerzos en los puntos críticos y obtener los esfuerzos principales, con la convención de tracción positiva.
+2. Clasificar el material y confirmar si el límite pertinente es fluencia o fractura; no sustituir una resistencia por otra sin justificación.
+3. Elegir el criterio compatible con el material y con los ensayos disponibles.
+4. Aplicar la condición completa, incluidas las regiones de signos cuando corresponda, y calcular el factor de seguridad con una misma convención.
+5. Revisar de forma independiente otros modos pertinentes, como inestabilidad, deformación excesiva, fractura o las cargas cíclicas tratadas en las secciones de fatiga.
+Un factor de seguridad $n>1$ indica que el estado queda dentro de la frontera del modelo para la carga considerada; no garantiza por sí solo la seguridad frente a incertidumbres, defectos, variabilidad del material o modos de falla no incluidos.
 
 <a id="fundamentos-de-fatiga"></a>
 ## Fundamentos de fatiga
