@@ -49,5 +49,13 @@
     "titulo": "Elementos curvos",
     "revision": "4d97d34d",
     "ruta": "articulos/unidad4/1794771812128-Elementos-curvos.md"
+  },
+  {
+    "id": "1794773940000",
+    "unidad": "unidad7",
+    "titulo": "Vigas de Sección Variable",
+    "revision": "vigas07",
+    "ruta": "articulos/unidad7/vigas-de-seccion-variable.md",
+    "orden": 1
   }
 ]
