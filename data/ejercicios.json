@@ -24,5 +24,44 @@
     "fecha": "2026-11-12T11:11:25.752Z",
     "ruta": "ejercicios/articulos/749dd942-59a0-4278-af5e-dbcdf38c8c51.md",
     "enunciadoRuta": "ejercicios/enunciados/749dd942-59a0-4278-af5e-dbcdf38c8c51.jpg"
+  },
+  {
+    "id": "a0ddf3b6-86ea-4a99-873e-da72d67bc377",
+    "origen": "estudiante",
+    "unidad": "unidad6",
+    "titulo": "Ejercicio N°1",
+    "descripcion": "Determinación de la velocidad angular máxima mediante el criterio de corte máximo",
+    "autor": "Docente",
+    "dificultad": "intermedio",
+    "formato": "web",
+    "fecha": "2026-11-14T22:07:49.238Z",
+    "ruta": "ejercicios/articulos/a0ddf3b6-86ea-4a99-873e-da72d67bc377.md",
+    "enunciadoRuta": null
+  },
+  {
+    "id": "1c61f3dd-8758-4874-83ff-c562b17ab839",
+    "origen": "estudiante",
+    "unidad": "unidad6",
+    "titulo": "Ejercicio N°2",
+    "descripcion": "Análisis comparativo de la velocidad límite en el borde interior y en la sección de esfuerzo radial máximo",
+    "autor": "Docente",
+    "dificultad": "intermedio",
+    "formato": "web",
+    "fecha": "2026-11-14T22:18:48.052Z",
+    "ruta": "ejercicios/articulos/1c61f3dd-8758-4874-83ff-c562b17ab839.md",
+    "enunciadoRuta": null
+  },
+  {
+    "id": "eaf8699d-bdc4-4406-83f7-d7cd856804f9",
+    "origen": "estudiante",
+    "unidad": "unidad6",
+    "titulo": "Ejercicio N°3",
+    "descripcion": "Cálculo de la presión de contacto y distribución de esfuerzos circunferenciales por interferencia radial",
+    "autor": "Docente",
+    "dificultad": "intermedio",
+    "formato": "web",
+    "fecha": "2026-11-14T22:45:20.985Z",
+    "ruta": "ejercicios/articulos/eaf8699d-bdc4-4406-83f7-d7cd856804f9.md",
+    "enunciadoRuta": null
   }
 ]

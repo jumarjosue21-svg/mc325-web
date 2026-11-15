@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "recursos": [
+    {
+      "id": "enlace-efunda",
+      "categoria": "enlaces",
+      "tipo": "Web",
+      "titulo": "eFunda — Engineering Fundamentals",
+      "descripcion": "Tresca, Von Mises y criterios de falla frágil. U1",
+      "url": "https://www.efunda.com/formulae/solid_mechanics/failure_criteria/failure_criteria.cfm"
+    },
+    {
+      "id": "enlace-canal-uni",
+      "categoria": "enlaces",
+      "tipo": "Video",
+      "titulo": "Resistencia de los materiales",
+      "descripcion": "The Efficient Engineer - Videos sobre criterios de falla y fatiga",
+      "url": "https://youtube.com/playlist?list=PLEYqyyrm-hQ1kTm4Ce5uQzsHG89fXsIa5&si=603v9OTK5_mtN79s"
+    },
+    {
+      "id": "recurso-f5749b24-4567-41fd-9f82-f91c071891a5",
+      "categoria": "enlaces",
+      "tipo": "Herramienta",
+      "titulo": "Círculo de Mohr (Calculadora)",
+      "descripcion": "Eng Bench",
+      "url": "https://www.engbench.com/mohr.php"
+    },
+    {
+      "id": "recurso-10b076c4-f2e0-4389-ae86-053b46596f4f",
+      "categoria": "software",
+      "tipo": "Herramienta",
+      "titulo": "Octave (Online)",
+      "descripcion": "Alternativa gratuita a MATLAB",
+      "url": "https://octave-online.net/"
+    },
+    {
+      "id": "software-ansys",
+      "categoria": "software",
+      "tipo": "Software",
+      "titulo": "ANSYS Workbench",
+      "descripcion": "Simulación y análisis de esfuerzos · Ansys Student",
+      "url": "https://ansys.synopsys.com/academic/students/ansys-student"
+    },
+    {
+      "id": "recurso-3a15d61a-7a6b-4e35-ab93-82be2c7475e7",
+      "categoria": "software",
+      "tipo": "Herramienta",
+      "titulo": "SMath",
+      "descripcion": "Alternativa gratuita a Mathcad",
+      "url": "https://smath.com/en-US/"
+    },
+    {
+      "id": "recurso-3d038f0e-4206-4a39-bd81-ec9cf4a2eaa1",
+      "categoria": "bibliografia",
+      "tipo": "Libro",
+      "titulo": "Resistencia de Materiales: Algunos temas especiales",
+      "descripcion": "Héctor E. Jaramillo Suárez - Criterios de falla, fatiga, Castigliano y deflexiones.",
+      "url": "https://www.academia.edu/36701099/_Libro_Resistencia_de_Materiales_edicion"
+    },
+    {
+      "id": "recurso-aba01dd3-cad2-4a5f-bae6-0c1ea874c149",
+      "categoria": "bibliografia",
+      "tipo": "Libro",
+      "titulo": "Shigley's Mechanical Engineering Design",
+      "descripcion": "Budynas y Nisbett - Von Mises, Tresca, Goodman, Soderberg, Gerber y fatiga en ejes.",
+      "url": "https://termoaplicadaunefm.wordpress.com/wp-content/uploads/2015/03/disec3b1o-en-ingenierc3ada-mecc3a1nica-de-shigley-8-edicic3b3n-budynas.pdf"
+    },
+    {
+      "id": "recurso-d3068c48-0ae9-4827-a245-af8e4ceae676",
+      "categoria": "bibliografia",
+      "tipo": "Libro",
+      "titulo": "Formulas for Stress, Strain, and Structural Matrices",
+      "descripcion": "Walter D. Pilkey - Vigas curvas, placas, rotores, cilindros y tablas de esfuerzos.",
+      "url": "https://es.scribd.com/document/368759861/Formulas-for-Stress-Strain-and-Structural-Matrices-Second-Edition"
+    },
+    {
+      "id": "recurso-15ebf0ab-4de7-4ef1-bca6-9a7a3ad3818e",
+      "categoria": "bibliografia",
+      "tipo": "Libro",
+      "titulo": "Advanced Mechanics of Materials and Applied Elasticity",
+      "descripcion": "Ugural y Fenster - Falla, fatiga, vigas curvas, cilindros gruesos y discos rotatorios.",
+      "url": "https://es.scribd.com/document/554655418/Ansel-C-Ugural-Saul-K-Fenster-Advanced-Mechanics-of-Materials-and-Applied-Elasticity-Prentice-Hall-2019"
+    },
+    {
+      "id": "recurso-2362de1c-864b-4bb3-bd01-3b9946c50130",
+      "categoria": "bibliografia",
+      "tipo": "Libro",
+      "titulo": "Theory of Plates and Shells",
+      "descripcion": "Timoshenko y Woinowsky-Krieger - Flexión de placas rectangulares y circulares, condiciones de apoyo",
+      "url": "https://docs.google.com/file/d/0Bw8MfqmgWLS4RndlZ3RZMzRBdFk/edit?resourcekey=0--yQasa2GxnJh4ES85LMiug"
+    },
+    {
+      "id": "recurso-bda8a9ea-cf4e-401b-9642-23f22be1515e",
+      "categoria": "bibliografia",
+      "tipo": "Libro",
+      "titulo": "Roark's Formulas for Stress and Strain",
+      "descripcion": "Budynas y otros - Tablas de placas, vigas curvas, recipientes a presión y deflexiones",
+      "url": "http://academia.edu/37289482/Roarks_Formulas_for_Stress_and_Strain"
+    },
+    {
+      "id": "recurso-a5be8aa0-2398-4d2b-944a-0babab0d5dca",
+      "categoria": "bibliografia",
+      "tipo": "Libro",
+      "titulo": "Stresses in plates and shells",
+      "descripcion": "Ugural, A. C. - Flexión de placas rectangulares y circulares, condiciones de apoyo",
+      "url": "https://es.scribd.com/document/97633020/Stresses-in-Plates-and-Shells-a-C-Ugural#page=1"
+    },
+    {
+      "id": "recurso-c2f53023-6fe7-46b4-9020-5e8a8ba23a65",
+      "categoria": "enlaces",
+      "tipo": "Herramienta",
+      "titulo": "Diagrama de vida constante de Goodman, Soderberg y Gerber (Calculadora)",
+      "descripcion": "Eng Bench",
+      "url": "https://engbench.com/fatigue.php"
+    },
+    {
+      "id": "recurso-16d863fc-53b4-42f9-9aa6-1f4268744085",
+      "categoria": "enlaces",
+      "tipo": "Web",
+      "titulo": "Teoría de esfuerzos y flexión en vigas curvas",
+      "descripcion": "RoyMech",
+      "url": "https://www.roymech.co.uk/Useful_Tables/Beams/Curved_beams.html"
+    },
+    {
+      "id": "recurso-81a1c053-1e61-4095-9712-e266e23d0746",
+      "categoria": "enlaces",
+      "tipo": "Video",
+      "titulo": "Placas Planas",
+      "descripcion": "Universidad Nacional de La Plata",
+      "url": "https://youtube.com/playlist?list=PLHXF9tQHIOJctDtufbEgqf95J09F2u6t3&si=H2z3ktWtSh9aoHa_"
+    },
+    {
+      "id": "recurso-acbeda14-cd9f-4f70-a8f8-c2e55a4f881e",
+      "categoria": "enlaces",
+      "tipo": "Herramienta",
+      "titulo": "Placas Planas (Calculadora)",
+      "descripcion": "eFunda",
+      "url": "https://www.efunda.com/formulae/solid_mechanics/plates/casestudy_list.cfm"
+    },
+    {
+      "id": "recurso-3fd09b54-4d59-40cb-9f39-212ee7ea3252",
+      "categoria": "enlaces",
+      "tipo": "Web",
+      "titulo": "Cilindros de paredes gruesas: ecuaciones de Lame y ajustes por interferencia",
+      "descripcion": "RoyMech",
+      "url": "https://www.roymech.co.uk/Useful_Tables/Mechanics/Cylinders.html"
+    },
+    {
+      "id": "recurso-97ec9135-5f91-4278-abbd-7e4cf5895dee",
+      "categoria": "enlaces",
+      "tipo": "Herramienta",
+      "titulo": "Calculadora de cilindro de paredes gruesas (Lamé)",
+      "descripcion": "CBYTT",
+      "url": "https://www.cbytt.com/thick_cylinder_calculator.php"
+    },
+    {
+      "id": "enlace-skyciv",
+      "categoria": "enlaces",
+      "tipo": "Herramienta",
+      "titulo": "Calculadora de vigas (SkyCiv)",
+      "descripcion": "Herramienta en línea para diagramas de corte y flexión",
+      "url": "https://skyciv.com/free-beam-calculator/"
+    },
+    {
+      "id": "recurso-9fd8a87c-1bea-43d5-aa1f-934fd9c09d3e",
+      "categoria": "software",
+      "tipo": "Software",
+      "titulo": "FreeCAD",
+      "descripcion": "Simulación de vigas, placas, cilindros y concentraciones de esfuerzo (FEM)",
+      "url": "https://freecad.github.io/Website/news/getting-started-with-fem/"
+    },
+    {
+      "id": "recurso-9c847883-941b-49e4-9dcf-691535c6d1a3",
+      "categoria": "software",
+      "tipo": "Software",
+      "titulo": "Autodesk Inventor Nastran",
+      "descripcion": "Análisis estructural, térmico y de fatiga desde modelos de Inventor - Licencia de estudiante",
+      "url": "https://www.autodesk.com/education/edu-software/overview#NINCAD"
+    },
+    {
+      "id": "software-matlab",
+      "categoria": "software",
+      "tipo": "Herramienta",
+      "titulo": "MATLAB",
+      "descripcion": "Cálculo numérico de vigas y placas · Versión Online",
+      "url": "https://la.mathworks.com/products/matlab-online.html"
+    },
+    {
+      "id": "software-hp-prime",
+      "categoria": "software",
+      "tipo": "Herramienta",
+      "titulo": "Emulador HP Prime G2",
+      "descripcion": "",
+      "url": "https://support.hp.com/lamerica_nsc_cnt_amer-es/drivers/HP-Prime-Graphing-Calculator/model/5367460"
+    }
+  ]
+}

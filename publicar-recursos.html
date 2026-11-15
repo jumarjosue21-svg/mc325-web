@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preparar publicación de Recursos | MC325</title>
+<link rel="stylesheet" href="style.css?v=mc325-header-20261112-v2">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+.publicador-mc325 {max-width:820px;margin:32px auto;padding:0 18px 50px;}
+.publicador-mc325 header {background:#5a1a14;color:white;border-radius:8px 8px 0 0;padding:20px 24px;}
+.publicador-mc325 header h1 {font-size:1.3rem;}
+.publicador-mc325 header p {font-size:.88rem;margin-top:5px;color:#f3dedc;}
+.publicador-mc325 main {background:#fff;border:1px solid #ddd;border-radius:0 0 8px 8px;padding:24px;line-height:1.65;}
+.publicador-mc325 main p {margin:0 0 16px;}
+.publicador-mc325 .notice {padding:14px 15px;border-radius:5px;background:#f1f7fc;border:1px solid #d0e0ef;color:#265475;margin-bottom:19px;}
+.publicador-mc325 .notice.ok {background:#eff8f0;border-color:#cde7d0;color:#276b38;}
+.publicador-mc325 .notice.error {background:#fff1f0;border-color:#ecc6c0;color:#983b30;}
+.publicador-mc325 .resumen {border:1px solid #e5e5e5;border-radius:6px;padding:15px;margin-bottom:18px;}
+.publicador-mc325 .resumen div {display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #eee;padding:8px 2px;}
+.publicador-mc325 .resumen div:last-child {border:none;}
+.publicador-mc325 ol {padding-left:24px;margin:15px 0 22px;}
+.publicador-mc325 li {margin-bottom:8px;}
+.publicador-mc325 .acciones {display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:20px 0 24px;}
+.publicador-mc325 button[disabled] {opacity:.45;cursor:not-allowed;}
+.publicador-mc325 a {color:#5a1a14;}
+@media(max-width:600px){.publicador-mc325 main{padding:17px;}}
+</style>
+</head>
+<body>
+<div class="publicador-mc325">
+  <header><h1><i class="fa-solid fa-file-export"></i> Publicar Recursos Adicionales</h1><p>Exportar borradores locales para GitHub Pages</p></header>
+  <main>
+    <p>Esta herramienta prepara exclusivamente los cambios de <strong>Recursos Adicionales</strong>. No modifica GitHub automáticamente ni afecta Materiales, Ejercicios o Calendario.</p>
+    <div id="estado-publicacion-recursos" class="notice" role="status" aria-live="polite">Comprobando los borradores...</div>
+    <div class="resumen">
+      <div><strong>Bibliografía</strong><span id="resumen-bibliografia">—</span></div>
+      <div><strong>Enlaces</strong><span id="resumen-enlaces">—</span></div>
+      <div><strong>Software</strong><span id="resumen-software">—</span></div>
+      <div><strong>Estado</strong><span id="resumen-pendiente">—</span></div>
+    </div>
+    <div class="acciones"><button type="button" class="btn-solid" id="boton-exportar-recursos" disabled><i class="fa-solid fa-download"></i> Descargar ZIP para GitHub</button><a href="recursos.html">Volver a Recursos</a></div>
+    <h2 style="font-size:1.08rem;color:#5a1a14">Pasos para publicar</h2>
+    <ol>
+      <li>Antes de reemplazar el JSON, revisa en GitHub Desktop los cambios de tus compañeros. Haz <strong>Fetch/Pull</strong> con el repositorio limpio.</li>
+      <li>Genera el ZIP y extrae su contenido en la raíz de <code>mc325-web</code>. Debe sustituirse únicamente <code>data/recursos.json</code>.</li>
+      <li>Comprueba mediante Live Server, preferiblemente en incógnito, que los recursos y su orden sean correctos.</li>
+      <li>Revisa <strong>Changes</strong>, realiza Commit y Push origin. Verifica GitHub Pages cuando se despliegue.</li>
+    </ol>
+    <p style="font-size:.83rem;color:#666">Si un compañero también modificó <code>data/recursos.json</code>, no lo sobrescribas: compara los registros y fusiona los cambios. El exportador detecta discrepancias entre el borrador y el JSON que sirve tu Live Server, pero no puede detectar automáticamente todos los cambios de GitHub remoto. El Modo Docente todavía no tiene autenticación.</p>
+  </main>
+</div>
+<script src="lib/jszip.min.js"></script>
+<script src="js/recursos-mc325.js?v=20261114-recursos-01"></script>
+<script>
+(async () => {
+  const store=window.MC325Recursos;
+  await store.ready;
+  const state=store.getState();
+  const status=document.getElementById('estado-publicacion-recursos');
+  const button=document.getElementById('boton-exportar-recursos');
+  for (const name of ['bibliografia','enlaces','software']) {
+    document.getElementById('resumen-'+name).textContent=state.current.recursos.filter(r=>r.categoria===name).length+' recursos';
+  }
+  document.getElementById('resumen-pendiente').textContent = state.error ? 'Error' : state.conflict ? 'Conflicto' : state.pending ? 'Borrador pendiente' : 'Sin cambios';
+  if (state.error) {status.textContent='Error: '+state.error;status.className='notice error';}
+  else if (state.conflict) {status.textContent='El borrador se creó con un catálogo anterior. Para evitar pérdidas de datos, no puedes exportarlo hasta conciliar las versiones.';status.className='notice error';}
+  else if (!state.pending) {status.textContent='No hay cambios pendientes. Primero crea, edita, elimina u ordena recursos desde Modo Docente.';}
+  else {status.textContent='Hay cambios pendientes. Se exportará el catálogo completo de Recursos Adicionales.';status.className='notice ok';button.disabled=false;}
+  button.addEventListener('click',async()=>{
+    button.disabled=true;
+    try {
+      const json=await store.verifyLatest();
+      if (typeof JSZip!=='function') throw new Error('No se pudo cargar lib/jszip.min.js. Confirma que la carpeta lib existe.');
+      const zip=new JSZip();
+      zip.file('data/recursos.json',JSON.stringify(json,null,2)+'\n');
+      const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE'});
+      const url=URL.createObjectURL(blob);const anchor=document.createElement('a');
+      const date=new Date();
+      const fecha=[date.getFullYear(),String(date.getMonth()+1).padStart(2,'0'),String(date.getDate()).padStart(2,'0')].join('-');
+      anchor.href=url;anchor.download='mc325-publicacion-recursos-'+fecha+'.zip';
+      document.body.appendChild(anchor);anchor.click();anchor.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),15000);
+      status.className='notice ok';status.textContent='ZIP generado. Falta extraerlo y publicarlo en GitHub Desktop.';
+    } catch(error){status.className='notice error';status.textContent='No se pudo exportar: '+error.message;}
+    finally {button.disabled=false;}
+  });
+})();
+</script>
+</body>
+</html>

@@ -7,10 +7,35 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css?v=mc325-header-20261112-v2">
     <link rel="stylesheet" href="ejercicios.css">
-    <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},chtml:{displayAlign:"center",displayIndent:"0"}};</script>
+    <!-- MOTOR TIKZJAX -->
+    <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
+    <style>
+        .ex-markdown .tikz-figure {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 1.8em auto 1em;
+            overflow-x: auto;
+            max-width: 100%;
+        }
+        .ex-markdown .tikz-figure svg {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+        }
+        .ex-markdown mjx-container[display="true"] {
+            display: block !important;
+            text-align: center !important;
+            margin: 1.2em auto !important;
+        }
+    </style>
+    <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},svg:{fontCache:"global",displayAlign:"center",displayIndent:"0"}};</script>
     <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
-    <script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
     <script defer src="js/ejercicios-datos.js"></script>
     <script defer src="js/ejercicios-mc325.js"></script>
 </head>

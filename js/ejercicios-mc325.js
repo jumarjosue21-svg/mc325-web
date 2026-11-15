@@ -204,13 +204,26 @@
   function renderMarkdownSegura(md, contenedor) {
     contenedor.replaceChildren();
     if(!window.marked || !window.DOMPurify) {const pre=document.createElement('pre');pre.textContent=md;contenedor.appendChild(pre);return;}
-    const bloques=[];const lineas=[];
-    let preparado=String(md).replace(/\$\$([\s\S]+?)\$\$/g,(_match,tex)=>{
+    const bloquesTikz=[];const bloques=[];const lineas=[];
+    let preparado=String(md).replace(/<script\s+type=["']text\/tikz["'][^>]*>([\s\S]*?)<\/script>/gi,(_match,codigoTikz)=>{
+      const codigoLimpio=codigoTikz
+        .replace(/^[ \t]*%.*$/gm,'')
+        .replace(/([^\\])%.*$/gm,'$1')
+        .replace(/\\boldsymbol\s*\{([^{}]*(?:\{[^{}]*\}[^{}]*)*)\}/g,'$1')
+        .replace(/\\dfrac\s*\{/g,'\\frac{')
+        .replace(/\\text\s*\{/g,'\\mathrm{')
+        .replace(/\$\\val\$/g,'\\val')
+        .replace(/\$([^$]+)\$/g,(_,formulaTikz)=>'$'+formulaTikz.replace(/(\d)\.(\d)/g,'$1\\mbox{.}$2').replace(/\//g,'\\mbox{/}')+'$')
+        .trim();
+      const idx=bloquesTikz.push(codigoLimpio)-1;
+      return `\n\n<div class="tikz-figure" data-ex-tikz="${idx}"></div>\n\n`;
+    });
+    preparado=preparado.replace(/\$\$([\s\S]+?)\$\$/g,(_match,tex)=>{
       const i=bloques.push(tex)-1;return `\n\n<div class="ex-mathblock" data-ex-math="${i}"></div>\n\n`;
     });
     preparado=preparado.replace(/\$((?:\\.|[^$\n])+?)\$/g,(_match,tex)=>`EXINLINEFORMULA${lineas.push(tex)-1}FIN`);
     const html=window.marked.parse(preparado);
-    contenedor.innerHTML=window.DOMPurify.sanitize(html,{USE_PROFILES:{html:true},FORBID_TAGS:['style','script','iframe','object','embed'],FORBID_ATTR:['style']});
+    contenedor.innerHTML=window.DOMPurify.sanitize(html,{USE_PROFILES:{html:true},ADD_ATTR:['data-ex-tikz','data-ex-math'],FORBID_TAGS:['style','script','iframe','object','embed'],FORBID_ATTR:['style']});
     contenedor.querySelectorAll('[data-ex-math]').forEach(el=>{
       const idx=Number(el.dataset.exMath);if(Number.isInteger(idx)&&idx>=0&&idx<bloques.length)el.textContent=`$$${bloques[idx]}$$`;
     });
@@ -220,6 +233,19 @@
     contenedor.querySelectorAll('a').forEach(a=>{if(a.href?.startsWith('javascript:'))a.removeAttribute('href');else if(a.href){a.target='_blank';a.rel='noopener noreferrer';}});
     contenedor.querySelectorAll('img').forEach(img=>{img.loading='lazy';img.alt=img.alt||'Ilustración del ejercicio';});
     if(window.MathJax?.typesetPromise)window.MathJax.typesetPromise([contenedor]).catch(console.warn);
+    contenedor.querySelectorAll('[data-ex-tikz]').forEach(el=>{
+      const idx=Number(el.dataset.exTikz);
+      el.removeAttribute('data-ex-tikz');
+      const codigo=bloquesTikz[idx];
+      if(!codigo)return;
+      const scriptTikz=document.createElement('script');
+      scriptTikz.type='text/tikz';
+      scriptTikz.textContent=codigo;
+      el.appendChild(scriptTikz);
+    });
+    if(bloquesTikz.length>0 && typeof window.onload==='function'){
+      setTimeout(()=>{ window.onload(); },60);
+    }
   }
   function crearIndice() {
     const nodos=[...$('ex-lector-contenido').querySelectorAll('h2, h3')];const aside=$('ex-lector-indice');

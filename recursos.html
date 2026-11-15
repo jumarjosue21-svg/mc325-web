@@ -6,6 +6,96 @@
     <title>Recursos Adicionales - Resistencia de Materiales II</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css?v=mc325-header-20261112-v2">
+<style>
+/* Solo recursos.html · no se modifica el style.css compartido */
+#btn-modo-docente-recursos { white-space: nowrap; }
+.recursos-cabecera { display:flex; align-items:center; justify-content:space-between; gap:20px; margin-bottom:20px; }
+.recursos-cabecera .page-header { margin-bottom:0; }
+.recursos-estado { font-size:.87rem; line-height:1.65; padding:12px 14px; border:1px solid #d5e0e9; background:#f3f8fc; border-radius:6px; color:#285070; margin-bottom:16px; }
+.recursos-estado.ok { background:#eef8f0; color:#27683c; border-color:#c9e5d0; }
+.recursos-estado.error { background:#fff2f1; color:#8c2d27; border-color:#e8c7c3; }
+.recursos-admin { padding:16px; margin:0 0 18px; background:#fdf5f5; border:1px solid #ead2ce; border-radius:8px; }
+.recursos-admin[hidden], .recursos-estado[hidden], .recursos-publicacion[hidden], #recursos-cancelar[hidden] { display:none !important; }
+.recursos-admin-tips { margin-bottom:12px; line-height:1.55; font-size:.82rem; color:#76564f; }
+.recursos-editor { background:#fff; border:1px solid #ead6d1; border-radius:7px; overflow:hidden; }
+.recursos-editor > summary { cursor:pointer; padding:15px 17px; font-weight:700; color:#5a1a14; list-style:none; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.recursos-editor > summary::-webkit-details-marker { display:none; }
+.recursos-editor > summary:hover, .recursos-editor[open] > summary { background:#f9eeee; }
+.recursos-editor-body { border-top:1px solid #e8d9d6; padding:19px; }
+.recursos-grid-form { display:grid; grid-template-columns: 1fr 1fr; gap:15px; }
+.recursos-form-field { display:flex; flex-direction:column; gap:6px; min-width:0; }
+.recursos-form-field--full { grid-column:1/-1; }
+.recursos-form-field label { font-size:.85rem; font-weight:650; }
+.recursos-form-field input, .recursos-form-field select { width:100%; font:inherit; font-size:.89rem; border:1px solid #cbd1d6; padding:10px 11px; border-radius:5px; background:#fff; }
+.recursos-form-field small { font-size:.75rem; color:#786d68; line-height:1.5; }
+.recursos-form-actions { display:flex; gap:8px; justify-content:flex-end; align-items:center; flex-wrap:wrap; margin-top:16px; }
+.recursos-btn-secondary { padding:9px 13px; border-radius:5px; border:1px solid #d1ada7; background:#fff; color:#5a1a14; font:inherit; font-size:.82rem; cursor:pointer; }
+.recursos-btn-secondary:hover { background:#fbefed; }
+.recursos-btn-secondary:disabled { cursor:not-allowed; opacity:.4; }
+.recursos-publicacion { display:flex; justify-content:space-between; align-items:center; gap:15px; flex-wrap:wrap; margin:13px 0 0; font-size:.82rem; color:#644942; }
+.recursos-publicacion .btn-download-dark { text-decoration:none; display:inline-flex; align-items:center; gap:7px; }
+.recursos-fila { grid-template-columns: minmax(0,1fr) minmax(85px,110px) auto; gap:14px; }
+.recursos-fila .col-examen { min-width:0; padding-right:0; }
+.recursos-fila .file-icon-text { min-width:0; }
+.recursos-fila .file-details { min-width:0; overflow-wrap:anywhere; }
+.recursos-fila .icon-box-resource { flex:0 0 44px; }
+.recursos-fila .col-tipo { justify-content:center; }
+.recursos-acciones { display:flex; align-items:center; justify-content:flex-end; gap:10px; flex-wrap:wrap; }
+.recursos-gestion-fila { display:flex; gap:4px; align-items:center; }
+.recursos-icon-action { background:#fff; border:1px solid #dec5c0; border-radius:5px; cursor:pointer; width:31px; height:33px; color:#5a1a14; display:inline-flex; align-items:center; justify-content:center; }
+.recursos-icon-action:hover:not(:disabled) { background:#f9eeec; }
+.recursos-icon-action:disabled { opacity:.27; cursor:not-allowed; }
+.recursos-abrir { text-decoration:none; display:inline-flex; align-items:center; justify-content:center; padding:9px 15px; min-width:95px; white-space:nowrap; }
+.recursos-sin-enlace { font-size:.77rem; color:#776b66; background:#f5f6f7; border:1px solid #e4e6e8; border-radius:5px; padding:8px 10px; white-space:nowrap; }
+.recursos-vacio { padding:22px; color:#67717d; font-size:.9rem; }
+
+/* Mostrar solo tres recursos por sección; el botón despliega los restantes. */
+.recursos-fila[hidden] { display:none !important; }
+.recursos-expandir-contenedor {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 16px;
+  border-top:1px solid #e8e8e8;
+  background:#fff;
+  border-radius:0 0 8px 8px;
+}
+.recursos-expandir-boton {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  padding:9px 16px;
+  font:inherit;
+  font-size:.87rem;
+  font-weight:600;
+  color:var(--uni-red-dark);
+  border:1px solid #d6b5b0;
+  background:#fff;
+  border-radius:6px;
+  cursor:pointer;
+  transition:background .15s ease, border-color .15s ease;
+}
+.recursos-expandir-boton:hover { background:#fbefed; border-color:var(--uni-red-dark); }
+.recursos-expandir-boton:focus-visible { outline:2px solid var(--uni-red-dark); outline-offset:3px; }
+.recursos-expandir-boton i { font-size:.75rem; }
+
+@media(max-width:1100px){
+  .recursos-fila { grid-template-columns:minmax(0,1fr) auto; }
+  .recursos-fila .col-tipo { display:none; }
+  .recursos-acciones { grid-column:2; }
+}
+@media(max-width:650px){
+  .recursos-cabecera { align-items:flex-start; flex-direction:column; }
+  .recursos-grid-form { grid-template-columns:1fr; }
+  .recursos-fila { display:flex; flex-direction:column; align-items:stretch; gap:12px; padding:16px; }
+  .recursos-fila .col-tipo { display:none; }
+  .recursos-acciones { justify-content:space-between; }
+  .recursos-abrir { flex:1; }
+  .recursos-publicacion { align-items:flex-start; flex-direction:column; }
+}
+
+</style>
 </head>
 <body>
     <!-- BARRA SUPERIOR -->
@@ -72,247 +162,66 @@
                 Inicio / <strong>Recursos Adicionales</strong>
             </div>
 
-            <div class="page-header">
-                <h2>Recursos Adicionales</h2>
-                <p>Bibliografía, enlaces, software y guías de laboratorio para complementar el curso.</p>
+            <div class="recursos-cabecera">
+                <div class="page-header">
+                    <h2>Recursos Adicionales</h2>
+                    <p>Bibliografía, enlaces y software para complementar el curso.</p>
+                </div>
+                <button id="btn-modo-docente-recursos" type="button" class="btn-download-dark" aria-pressed="false"><i class="fa-solid fa-lock"></i> Modo Docente</button>
             </div>
+            <p id="recursos-estado" class="recursos-estado" hidden role="status" aria-live="polite"></p>
+
+            <section id="recursos-admin" class="recursos-admin" hidden aria-label="Administrar recursos">
+              <p class="recursos-admin-tips">Administración de prueba: crea o edita referencias, enlaces y programas. Los cambios se guardan en este navegador hasta publicarlos en GitHub. Aún no existe autenticación real.</p>
+              <details id="recursos-editor" class="recursos-editor">
+                <summary><span><i class="fa-solid fa-square-pen"></i> <span id="recursos-form-title">Añadir recurso</span></span><i class="fa-solid fa-chevron-down"></i></summary>
+                <div class="recursos-editor-body">
+                  <form id="form-recurso">
+                    <div class="recursos-grid-form">
+                      <div class="recursos-form-field"><label for="recurso-categoria">Sección</label>
+                        <select id="recurso-categoria" required>
+                          <option value="bibliografia">Bibliografía Recomendada</option>
+                          <option value="enlaces">Enlaces de Interés</option>
+                          <option value="software">Software Útil</option>
+                        </select>
+                      </div>
+                      <div class="recursos-form-field"><label for="recurso-tipo">Tipo</label><select id="recurso-tipo" required></select></div>
+                      <div class="recursos-form-field recursos-form-field--full"><label for="recurso-titulo">Nombre del recurso</label><input id="recurso-titulo" maxlength="180" placeholder="Ej. Mecánica de Materiales" required></div>
+                      <div class="recursos-form-field recursos-form-field--full"><label for="recurso-descripcion">Descripción, autor o edición (opcional)</label><input id="recurso-descripcion" maxlength="350" placeholder="Referencia bibliográfica, versión o utilidad"></div>
+                      <div class="recursos-form-field recursos-form-field--full"><label for="recurso-url">Dirección del recurso (URL)</label>
+                        <input id="recurso-url" type="url" placeholder="https://ejemplo.com/recurso" autocomplete="url">
+                        <small>Los nuevos recursos requieren una URL válida (http o https). Los recursos de la maqueta que todavía no tienen enlace aparecerán como pendientes hasta que los edites.</small>
+                      </div>
+                    </div>
+                    <div class="recursos-form-actions">
+                      <button id="recursos-cancelar" type="button" class="recursos-btn-secondary" hidden>Cancelar edición</button>
+                      <button id="recursos-submit" type="submit" class="btn-download-dark">Guardar recurso (borrador)</button>
+                    </div>
+                  </form>
+                </div>
+              </details>
+              <div id="recursos-publicacion" class="recursos-publicacion" hidden>
+                <button id="recursos-descartar" type="button" class="recursos-btn-secondary">Descartar borradores locales</button>
+                <a href="publicar-recursos.html" class="btn-download-dark"><i class="fa-solid fa-file-export"></i> Preparar publicación</a>
+              </div>
+            </section>
 
             <div class="material-layout">
                 
                 <!-- COLUMNA IZQUIERDA: LISTAS DE RECURSOS -->
                 <div class="files-column">
-                    
-                    <!-- SECCIÓN 1: BIBLIOGRAFÍA -->
-                    <div class="file-group" id="bibliografia">
-                        <div class="group-header">
-                            <h3><i class="fa-solid fa-book-open"></i> Bibliografía Recomendada</h3>
-                            <span class="file-count">[03] libros</span>
-                        </div>
-                        <div class="group-content">
-                            <!-- Libro 1 -->
-                            <div class="exam-row">
-                                <div class="col-examen" style="grid-column: span 2;">
-                                    <div class="file-icon-text">
-                                        <div class="icon-box-resource border-red"><i class="fa-solid fa-book"></i></div>
-                                        <div class="file-details">
-                                            <h4>Mecánica de Materiales - R.C. Hibbeler</h4>
-                                            <p>[Autor] - [Edición] • Unidades [1-4]</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-tipo"><span class="tag tag-resource">Libro</span></div>
-                                <div class="col-archivos" style="justify-content: flex-end;">
-                                    <button class="btn-solid">Ver</button>
-                                </div>
-                            </div>
-
-                            <!-- Libro 2 -->
-                            <div class="exam-row">
-                                <div class="col-examen" style="grid-column: span 2;">
-                                    <div class="file-icon-text">
-                                        <div class="icon-box-resource border-red"><i class="fa-solid fa-book"></i></div>
-                                        <div class="file-details">
-                                            <h4>Resistencia de Materiales - Singer y Pytel</h4>
-                                            <p>[Autor] - [Edición] • Unidades [1-4]</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-tipo"><span class="tag tag-resource">Libro</span></div>
-                                <div class="col-archivos" style="justify-content: flex-end;">
-                                    <button class="btn-solid">Ver</button>
-                                </div>
-                            </div>
-
-                            <!-- Referencia 3 -->
-                            <div class="exam-row">
-                                <div class="col-examen" style="grid-column: span 2;">
-                                    <div class="file-icon-text">
-                                        <div class="icon-box-resource border-red"><i class="fa-solid fa-book-bookmark"></i></div>
-                                        <div class="file-details">
-                                            <h4>Artículo técnico sobre fatiga de materiales</h4>
-                                            <p>[Autor] - [Año]</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-tipo"><span class="tag tag-resource">Referencia</span></div>
-                                <div class="col-archivos" style="justify-content: flex-end;">
-                                    <button class="btn-solid">Ver</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SECCIÓN 2: ENLACES DE INTERÉS -->
-                    <div class="file-group" id="enlaces">
-                        <div class="group-header">
-                            <h3><i class="fa-solid fa-link"></i> Enlaces de Interés</h3>
-                            <span class="file-count">[03] enlaces</span>
-                        </div>
-                        <div class="group-content">
-                            <div class="exam-row">
-                                <div class="col-examen" style="grid-column: span 2;">
-                                    <div class="file-icon-text">
-                                        <div class="icon-box-resource border-red"><i class="fa-solid fa-link"></i></div>
-                                        <div class="file-details">
-                                            <h4>Efunda - Engineering Fundamentals</h4>
-                                            <p>Tablas de propiedades mecánicas y fórmulas</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-tipo"><span class="tag tag-resource">Web</span></div>
-                                <div class="col-archivos" style="justify-content: flex-end;">
-                                    <button class="btn-solid">Abrir</button>
-                                </div>
-                            </div>
-
-                            <div class="exam-row">
-                                <div class="col-examen" style="grid-column: span 2;">
-                                    <div class="file-icon-text">
-                                        <div class="icon-box-resource border-red"><i class="fa-solid fa-play"></i></div>
-                                        <div class="file-details">
-                                            <h4>Canal de Ingeniería Mecánica UNI</h4>
-                                            <p>Demostraciones de laboratorio en video</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-tipo"><span class="tag tag-resource">Video</span></div>
-                                <div class="col-archivos" style="justify-content: flex-end;">
-                                    <button class="btn-solid">Abrir</button>
-                                </div>
-                            </div>
-
-                            <div class="exam-row">
-                                <div class="col-examen" style="grid-column: span 2;">
-                                    <div class="file-icon-text">
-                                        <div class="icon-box-resource border-red"><i class="fa-solid fa-calculator"></i></div>
-                                        <div class="file-details">
-                                            <h4>Calculadora de vigas en línea (SkyCiv)</h4>
-                                            <p>Herramienta rápida para diagramas de fuerza cortante</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-tipo"><span class="tag tag-resource">Herramienta</span></div>
-                                <div class="col-archivos" style="justify-content: flex-end;">
-                                    <button class="btn-solid">Abrir</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SECCIÓN 3: SOFTWARE ÚTIL -->
-                    <div class="file-group" id="software">
-                        <div class="group-header">
-                            <h3><i class="fa-solid fa-gear"></i> Software Útil (MATLAB, etc.)</h3>
-                            <span class="file-count">[03] programas</span>
-                        </div>
-                        <div class="group-content">
-                            <div class="exam-row">
-                                <div class="col-examen" style="grid-column: span 2;">
-                                    <div class="file-icon-text">
-                                        <div class="icon-box-resource border-red"><i class="fa-solid fa-code"></i></div>
-                                        <div class="file-details">
-                                            <h4>MATLAB</h4>
-                                            <p>Cálculo numérico de vigas y placas - Unidad 4</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-tipo"><span class="tag tag-resource">Software</span></div>
-                                <div class="col-archivos" style="justify-content: flex-end;">
-                                    <button class="btn-solid" style="width: 140px;">Guía de instalación</button>
-                                </div>
-                            </div>
-
-                            <div class="exam-row">
-                                <div class="col-examen" style="grid-column: span 2;">
-                                    <div class="file-icon-text">
-                                        <div class="icon-box-resource border-red"><i class="fa-solid fa-cubes"></i></div>
-                                        <div class="file-details">
-                                            <h4>ANSYS Workbench</h4>
-                                            <p>Simulación y análisis de esfuerzos (Von Mises)</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-tipo"><span class="tag tag-resource">Software</span></div>
-                                <div class="col-archivos" style="justify-content: flex-end;">
-                                    <button class="btn-solid" style="width: 140px;">Sitio oficial</button>
-                                </div>
-                            </div>
-
-                            <div class="exam-row">
-                                <div class="col-examen" style="grid-column: span 2;">
-                                    <div class="file-icon-text">
-                                        <div class="icon-box-resource border-red"><i class="fa-solid fa-mobile-screen-button"></i></div>
-                                        <div class="file-details">
-                                            <h4>Emulador HP Prime G2</h4>
-                                            <p>Programación UserRPL para cálculo de diagramas</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-tipo"><span class="tag tag-resource">Software</span></div>
-                                <div class="col-archivos" style="justify-content: flex-end;">
-                                    <button class="btn-solid" style="width: 140px;">Sitio oficial</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SECCIÓN 4: GUÍAS DE LABORATORIO -->
-                    <div class="file-group" id="laboratorio">
-                        <div class="group-header">
-                            <h3><i class="fa-solid fa-flask"></i> Guías de Laboratorio</h3>
-                            <span class="file-count">[03] guías</span>
-                        </div>
-                        <div class="group-content">
-                            <div class="exam-row" style="grid-template-columns: 3fr 1fr 1fr;">
-                                <div class="col-examen">
-                                    <div class="file-icon-text">
-                                        <div class="file-icon-box border-red">PDF</div>
-                                        <div class="file-details">
-                                            <h4>Guía de Laboratorio 1 - Ensayos de Tracción</h4>
-                                            <p>Laboratorio de Mecánica</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-tipo" style="color: var(--text-light); font-size: 0.8rem;">[0.0 MB]</div>
-                                <div class="col-archivos" style="justify-content: flex-end;">
-                                    <button class="btn-solid">Descargar</button>
-                                </div>
-                            </div>
-
-                            <div class="exam-row" style="grid-template-columns: 3fr 1fr 1fr;">
-                                <div class="col-examen">
-                                    <div class="file-icon-text">
-                                        <div class="file-icon-box border-red">PDF</div>
-                                        <div class="file-details">
-                                            <h4>Guía de Laboratorio 2 - Ensayo Charpy (Impacto)</h4>
-                                            <p>Laboratorio de Mecánica</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-tipo" style="color: var(--text-light); font-size: 0.8rem;">[0.0 MB]</div>
-                                <div class="col-archivos" style="justify-content: flex-end;">
-                                    <button class="btn-solid">Descargar</button>
-                                </div>
-                            </div>
-
-                            <div class="exam-row" style="grid-template-columns: 3fr 1fr 1fr;">
-                                <div class="col-examen">
-                                    <div class="file-icon-text">
-                                        <div class="file-icon-box border-red">PDF</div>
-                                        <div class="file-details">
-                                            <h4>Guía de Laboratorio 3 - Flexión en vigas de madera</h4>
-                                            <p>Laboratorio de Mecánica</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-tipo" style="color: var(--text-light); font-size: 0.8rem;">[0.0 MB]</div>
-                                <div class="col-archivos" style="justify-content: flex-end;">
-                                    <button class="btn-solid">Descargar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                  <div class="file-group" id="bibliografia">
+                    <div class="group-header"><h3><i class="fa-solid fa-book-open"></i> Bibliografía Recomendada</h3><span class="file-count" id="contador-recursos-bibliografia">—</span></div>
+                    <div class="group-content" id="lista-recursos-bibliografia"></div>
+                  </div>
+                  <div class="file-group" id="enlaces">
+                    <div class="group-header"><h3><i class="fa-solid fa-link"></i> Enlaces de Interés</h3><span class="file-count" id="contador-recursos-enlaces">—</span></div>
+                    <div class="group-content" id="lista-recursos-enlaces"></div>
+                  </div>
+                  <div class="file-group" id="software">
+                    <div class="group-header"><h3><i class="fa-solid fa-gear"></i> Software Útil</h3><span class="file-count" id="contador-recursos-software">—</span></div>
+                    <div class="group-content" id="lista-recursos-software"></div>
+                  </div>
                 </div>
 
                 <!-- COLUMNA DERECHA: WIDGETS -->
@@ -337,5 +246,6 @@
 
         </main>
     </div>
+<script src="js/recursos-mc325.js?v=20261114-recursos-plegable-01" defer></script>
 </body>
 </html>
