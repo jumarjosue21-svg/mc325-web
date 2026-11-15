@@ -254,11 +254,12 @@
   // Los bloques TikZ se extraen ANTES de pasar el HTML por DOMPurify:
   // DOMPurify debe seguir prohibiendo scripts ejecutables de los aportes.
   function prepararCodigoTikz(codigo){
-    // Misma normalización usada en Material del Curso para compatibilidad con TikZJax v1.
+    // Normalización completa homologada con Ejercicios Resueltos y Material del Curso.
     return codigo
       .replace(/^[ \t]*%.*$/gm,'')
       .replace(/([^\\])%.*$/gm,'$1')
       .replace(/\\boldsymbol\s*\{([^{}]*(?:\{[^{}]*\}[^{}]*)*)\}/g,'$1')
+      .replace(/\\dfrac\s*\{/g,'\\frac{')
       .replace(/\\text\s*\{/g,'\\mathrm{')
       .replace(/\$\\val\$/g,'\\val')
       .replace(/\$([^$]+)\$/g,(_,formula)=>'$'+formula
@@ -278,7 +279,7 @@
       const indice=dibujos.push(prepararCodigoTikz(codigo))-1;
       return `\n\n<div class="tikz-figure" data-em-tikz="${indice}"></div>\n\n`;
     });
-    raw=raw.replace(/\$\$([\s\S]+?)\$\$/g,(_,tex)=>`\n\n<div data-em-math="${bloques.push(tex)-1}"></div>\n\n`);
+    raw=raw.replace(/\$\$([\s\S]+?)\$\$/g,(_,tex)=>`\n\n<div class="ex-mathblock" data-em-math="${bloques.push(tex)-1}"></div>\n\n`);
     raw=raw.replace(/\$((?:\\.|[^$\n])+?)\$/g,(_,tex)=>`EMINLINEFORMULA${inline.push(tex)-1}FIN`);
     contenedor.innerHTML=window.DOMPurify.sanitize(window.marked.parse(raw),{
       USE_PROFILES:{html:true},ADD_ATTR:['data-em-math','data-em-tikz'],
@@ -294,6 +295,10 @@
     contenedor.querySelectorAll('a').forEach(a=>{
       if(!/^https?:$/i.test(a.protocol))a.removeAttribute('href');
       else {a.target='_blank';a.rel='noopener noreferrer';}
+    });
+    contenedor.querySelectorAll('img').forEach(img=>{
+      img.loading='lazy';
+      img.alt=img.alt||'Ilustración del examen';
     });
     contenedor.querySelectorAll('p').forEach(p=>{
       if(/^Figura\s+(?:(?:N(?:[.º°]|o\.?)?|N[úu]mero)\s*)?\d/i.test(p.textContent.trim()))p.classList.add('article-caption');
@@ -436,7 +441,13 @@
     $('em-lector-meta').textContent=`${e.ciclo} · ${e.tipo==='pc'?'PC'+e.pc:NOMBRES[e.tipo]} · ${e.autor||'Sin autor'} · ${fechaBonita(e.fecha)}`;
     const out=$('em-lector-contenido');out.textContent='Cargando desarrollo...';
     $('em-lector-indice').hidden=true;
-    try{renderMarkdown(await D.markdown(e),out);crearIndice();}catch(err){out.textContent='No se pudo abrir: '+err.message;}
+    try{
+      renderMarkdown(await D.markdown(e),out);
+      crearIndice();
+      if(window.MathJax?.typesetPromise && !$('em-lector-indice').hidden){
+        window.MathJax.typesetPromise([$('em-indice-links')]).catch(console.warn);
+      }
+    }catch(err){out.textContent='No se pudo abrir: '+err.message;}
   }
   function volver(){cambiarVista('lista');}
   async function exportarAporte(){

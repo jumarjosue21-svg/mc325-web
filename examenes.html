@@ -37,13 +37,24 @@
 }
 #em-lector-contenido .tikz-figure > svg.em-tikz-ajustado {
   display: block !important;
-  width: min(100%, 592px) !important;
+  width: min(100%, 780px) !important;
   max-width: 100% !important;
   height: auto !important;
   min-width: 0 !important;
   margin: 0 auto !important;
   overflow: visible !important;
   position: static !important;
+}
+#em-lector-contenido mjx-container[display="true"] {
+  display: block !important;
+  text-align: center !important;
+  margin: 1.2em auto !important;
+}
+#em-lector-contenido img {
+  display: block;
+  max-width: min(100%, 720px);
+  height: auto;
+  margin: 1.5em auto;
 }
 
 </style>
@@ -252,7 +263,7 @@ Desarrollo en Markdown + LaTeX..."></textarea></label>
       figura.style.setProperty('justify-content', 'center', 'important');
       figura.style.setProperty('height', 'auto', 'important');
       svg.style.setProperty('display', 'block', 'important');
-      svg.style.setProperty('width', 'min(100%, 592px)', 'important');
+      svg.style.setProperty('width', 'min(100%, 780px)', 'important');
       svg.style.setProperty('max-width', '100%', 'important');
       svg.style.setProperty('height', 'auto', 'important');
       svg.style.setProperty('overflow', 'visible', 'important');
