@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Preparar publicación de exámenes — MC325</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css?v=mc325-header-20261112-v2">
+  <link rel="stylesheet" href="examenes.css?v=20261115-03">
+  <script defer src="lib/jszip.min.js"></script>
+  <script defer src="js/examenes-datos.js?v=20261115-opcional-v6"></script>
+  <style>
+    .em-publish-wrap{max-width:870px;margin:36px auto;padding:0 20px 65px}
+    .em-publish-card{border:1px solid #dedfe2;border-radius:8px;background:white;padding:26px 30px;box-shadow:0 4px 16px #0000000a}
+    .em-publish-card h2{color:var(--uni-red-dark,#851b20);font-size:1.55rem;margin:0 0 15px}
+    .em-publish-card p{font-size:.9rem;line-height:1.7;color:#576571}
+    .em-publish-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+    .em-publish-stat{border:1px solid #e5e7e9;background:#f9fafb;padding:14px;border-radius:7px;text-align:center}
+    .em-publish-stat strong{display:block;font-size:1.7rem;color:var(--uni-red-dark,#851b20)}
+    .em-publish-stat span{font-size:.8rem;color:#67737d}
+    .em-publish-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+    @media(max-width:550px){.em-publish-grid{grid-template-columns:1fr}.em-publish-card{padding:18px}}
+  </style>
+</head>
+<body>
+  <header class="navbar"><div class="nav-left"><div class="logo-uni"><img class="logo-uni-img" src="assets/logo-uni-blanco.png" alt="Universidad Nacional de Ingeniería" width="122" height="58"></div><div class="nav-title"><h1>Resistencia de Materiales II</h1><p>Publicación de exámenes pasados</p></div></div></header>
+  <main class="em-publish-wrap"><div class="em-publish-card">
+    <h2><i class="fa-solid fa-file-export"></i> Preparar exámenes para GitHub</h2>
+    <p>Genera un ZIP que incluye el catálogo actualizado, los PDF y los artículos Markdown nuevos o modificados. <strong>No sube archivos automáticamente a GitHub.</strong> Es el mismo proceso de publicación manual utilizado en otras secciones del proyecto.</p>
+    <p>Abre esta herramienta desde el <strong>mismo navegador y origen web</strong> (por ejemplo, Live Server) donde guardaste los cambios. Revisa antes de exportar si tus compañeros han actualizado el repositorio.</p>
+    <div class="em-publish-grid">
+      <div class="em-publish-stat"><strong id="ep-publicados">—</strong><span>Exámenes publicados</span></div>
+      <div class="em-publish-stat"><strong id="ep-cambios">—</strong><span>Nuevos o modificados</span></div>
+      <div class="em-publish-stat"><strong id="ep-eliminados">—</strong><span>Eliminados</span></div>
+    </div>
+    <p id="ep-estado" class="em-message" role="status" aria-live="polite">Leyendo catálogo y borradores...</p>
+    <div class="em-publish-actions">
+      <button id="ep-exportar" class="em-primary" type="button" disabled><i class="fa-solid fa-download"></i> Descargar paquete ZIP</button>
+      <button id="ep-limpiar" class="em-secondary" type="button"><i class="fa-solid fa-broom"></i> Limpiar borradores ya publicados</button>
+      <a class="em-secondary" href="examenes.html"><i class="fa-solid fa-arrow-left"></i> Volver a exámenes</a>
+    </div>
+    <p class="em-note"><strong>Antes de limpiar:</strong> descomprime el ZIP en la raíz del repositorio, revisa los archivos, haz Commit y Push desde GitHub Desktop, y verifica que la web publicada funcione. Nunca reemplaces un JSON desactualizado sin conciliar primero los cambios de otros colaboradores.</p>
+  </div></main>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  'use strict';
+  const D=window.MC325ExamenesDatos,$=id=>document.getElementById(id);
+  let publicados=[],borrador=null,habilitado=false;
+  function msg(t,error=false){$('ep-estado').textContent=t;$('ep-estado').classList.toggle('em-error',error);}
+  const paths=e=>[e.ruta,e.enunciadoRuta,e.enunciadoPdfRuta,e.solucionPdfRuta].filter(Boolean);
+  const rutaPermitida=r=>D.rutaSegura(r,'pdf')||D.rutaSegura(r,'imagen')||D.rutaSegura(r,'markdown');
+  async function cargar(){
+    habilitado=false;$('ep-exportar').disabled=true;
+    try{
+      publicados=await D.publicados();borrador=D.local();
+      $('ep-publicados').textContent=publicados.length;
+      $('ep-cambios').textContent=Object.keys(borrador.cambios).length;
+      $('ep-eliminados').textContent=borrador.eliminados.length;
+      const cantidad=Object.keys(borrador.cambios).length+borrador.eliminados.length;
+      if(D.existeConflicto(publicados,borrador)){
+        msg('Conflicto: el catálogo de GitHub cambió desde que creaste los borradores. Revisa y concilia las modificaciones antes de generar un paquete.',true);
+      } else {
+        msg(cantidad?`${cantidad} cambios pendientes. El ZIP contendrá también data/examenes.json actualizado.`:'No hay exámenes pendientes de publicar.');
+        habilitado=cantidad>0;$('ep-exportar').disabled=!habilitado;
+      }
+    }catch(err){msg('No se pudieron leer los datos: '+err.message+'. Usa Live Server y comprueba data/examenes.json.',true);}
+  }
+  async function exportar(){
+    if(!habilitado||typeof JSZip==='undefined')return msg('La exportación no está disponible.',true);
+    $('ep-exportar').disabled=true;
+    msg('Preparando paquete de publicación...');
+    try{
+      // Revalidar catálogo justo antes de generar el paquete.
+      const actual=await D.publicados();
+      if(JSON.stringify(actual)!==JSON.stringify(publicados)||D.existeConflicto(actual,borrador))throw new Error('El catálogo publicado cambió. Actualiza la página antes de continuar.');
+      const zip=new JSZip(),map=new Map(publicados.map(e=>[String(e.id),e]));
+      const final=[],paraBorrar=new Set();
+      for(const e of D.combinar(publicados,borrador)){
+        const original=map.get(String(e.id));
+        const modificado=Object.prototype.hasOwnProperty.call(borrador.cambios,String(e.id));
+        const listo=modificado?await D.empaquetar(e,zip,original):D.clone(e);
+        for(const viejo of paths(original||{}))if(!paths(listo).includes(viejo)&&rutaPermitida(viejo))paraBorrar.add(viejo);
+        final.push(listo);
+      }
+      for(const id of borrador.eliminados){
+        const anterior=map.get(String(id));
+        if(anterior)paths(anterior).filter(rutaPermitida).forEach(r=>paraBorrar.add(r));
+      }
+      const usados=new Set(final.flatMap(paths));
+      const eliminar=[...paraBorrar].filter(r=>!usados.has(r));
+      zip.file('data/examenes.json',JSON.stringify(final,null,2)+'\n');
+      if(eliminar.length)zip.file('ARCHIVOS-A-RETIRAR.txt',eliminar.join('\n')+'\n');
+      zip.file('INSTRUCCIONES-PARA-GITHUB.txt',
+        'MC325 — Exámenes Pasados\n\n1. Actualiza el repositorio con Fetch/Pull.\n2. Descomprime este ZIP en la raíz del repositorio, combinando carpetas.\n3. Si hay ARCHIVOS-A-RETIRAR.txt, comprueba que no se usen los archivos antes de eliminarlos.\n4. Prueba con Live Server: un único PDF, Markdown + LaTeX sin PDF adicional y, cuando exista, el enunciado multipágina; comprueba los filtros.\n5. Haz Commit y Push desde GitHub Desktop.\n6. Verifica GitHub Pages. SOLO después limpia los borradores locales desde publicar-examenes.html.\n\nNOTA: Modo Docente NO es autenticación. No hay publicación directa ni permisos de escritura desde GitHub Pages.\n');
+      const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE'});
+      const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='mc325-examenes-cambios.zip';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);
+      msg(`Paquete generado: ${final.length} exámenes en el catálogo, ${Object.keys(borrador.cambios).length} modificados y ${eliminar.length} archivos opcionales a retirar.`);
+    }catch(err){msg('No se generó el ZIP: '+err.message,true);}finally{$('ep-exportar').disabled=!habilitado;}
+  }
+  $('ep-exportar').addEventListener('click',exportar);
+  $('ep-limpiar').addEventListener('click',()=>{
+    if(!confirm('¿Ya publicaste el paquete en GitHub Pages y verificaste los archivos? Esta acción descarta los borradores de exámenes del navegador.'))return;
+    D.limpiar();cargar();msg('Se limpiaron los borradores de exámenes. Los archivos del navegador no se publican ni eliminan automáticamente.');
+  });
+  cargar();
+});
+</script>
+</body>
+</html>

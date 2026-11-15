@@ -6,6 +6,47 @@
     <title>Exámenes Pasados - Resistencia de Materiales II</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css?v=mc325-header-20261112-v2">
+    <link rel="stylesheet" href="ejercicios.css?v=20261115-04">
+    <link rel="stylesheet" href="examenes.css?v=20261115-indice-v5">
+    <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},svg:{fontCache:'global',displayAlign:'center'}};</script>
+    <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
+    <script defer src="lib/jszip.min.js"></script>
+    <script defer src="js/datos-mc325.js"></script>
+    <script defer src="js/examenes-datos.js?v=20261115-opcional-v6"></script>
+    <script defer src="js/examenes-mc325.js?v=20261115-opcional-v6"></script>
+<style id="em-tikz-tamano-v4">
+
+/* Ajuste final TikZJax: el SVG ocupa el ancho disponible SIN scroll interno. */
+#em-lector-contenido .tikz-figure {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  margin: 2em auto 1.2em !important;
+  padding: 12px 0 !important;
+}
+#em-lector-contenido .tikz-figure > svg.em-tikz-ajustado {
+  display: block !important;
+  width: min(100%, 592px) !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-width: 0 !important;
+  margin: 0 auto !important;
+  overflow: visible !important;
+  position: static !important;
+}
+
+</style>
 </head>
 <body>
     <!-- BARRA SUPERIOR -->
@@ -67,272 +108,177 @@
 
         <!-- ÁREA DE CONTENIDO: EXÁMENES PASADOS -->
         <main class="content-area">
-            
-            <div class="breadcrumb">
-                Inicio / <strong>Exámenes Pasados</strong>
+          <div class="breadcrumb">Inicio / <strong>Exámenes Pasados</strong></div>
+          <div class="page-header em-heading">
+            <div><h2>Exámenes Pasados</h2><p>Prácticas calificadas, parciales, finales y sustitutorios de ciclos anteriores.</p></div>
+            <div class="em-header-actions">
+              <button type="button" id="em-docente" class="em-secondary" aria-pressed="false"><i class="fa-solid fa-lock"></i> Modo Docente</button>
+              <button type="button" id="em-aportar" class="em-primary"><i class="fa-solid fa-file-circle-plus"></i> Aportar examen</button>
             </div>
-
-            <div class="page-header">
-                <h2>Exámenes Pasados</h2>
-                <p>Pruebas de ciclos anteriores con sus soluciones, para practicar antes de rendir.</p>
+          </div>
+          <div class="em-info" role="note"><i class="fa-solid fa-flask" aria-hidden="true"></i><strong>Versión de prueba.</strong> Los exámenes publicados en el repositorio son públicos. Los registros nuevos quedan en este navegador hasta incorporarlos a GitHub. El Modo Docente aún no cuenta con autenticación real.</div>
+          <div id="em-mensaje" class="em-message" hidden role="status" aria-live="polite"></div>
+          <section id="em-docente-panel" class="em-admin-panel" hidden aria-label="Herramientas docentes">
+            <div class="em-admin-description"><h3><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i> Gestión de exámenes</h3><p>Registra, edita y ordena exámenes. Los cambios se guardan como borradores locales y se exportan después para publicarlos en GitHub.</p></div>
+            <div class="em-admin-actions">
+              <button id="em-agregar" type="button" class="em-primary"><i class="fa-solid fa-plus"></i> Añadir examen</button>
+              <label for="em-importar" class="em-secondary em-upload-label"><i class="fa-solid fa-file-import"></i> Importar aporte ZIP</label>
+              <input id="em-importar" type="file" accept=".zip,application/zip" hidden>
+              <a class="em-primary em-link" href="publicar-examenes.html"><i class="fa-solid fa-file-export"></i> Preparar publicación</a>
+              <button id="em-descartar" type="button" class="em-secondary">Descartar borradores</button>
             </div>
+          </section>
+          <section id="em-editor" class="em-editor" hidden aria-label="Formulario para registrar examen">
+            <div class="em-editor-heading"><h3 id="em-editor-title">Registrar examen</h3><button type="button" id="em-cerrar-editor" class="em-secondary em-close" aria-label="Cerrar formulario"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Cerrar</button></div>
+            <p id="em-editor-ayuda" class="em-note" role="note" hidden></p>
+            <form id="em-form">
+              <div class="em-form-grid">
+                <label>Tipo de evaluación *<select id="em-tipo" required><option value="pc">Práctica Calificada</option><option value="parcial">Examen Parcial</option><option value="final">Examen Final</option><option value="sustitutorio">Examen Sustitutorio</option></select></label>
+                <label id="em-pc-wrap">Práctica<select id="em-pc"><option value="1">PC1</option><option value="2">PC2</option><option value="3">PC3</option><option value="4">PC4</option></select></label>
+                <label>Ciclo académico *<input id="em-ciclo" type="text" placeholder="2026-2" pattern="[0-9]{4}-[12]" maxlength="6" required></label>
+                <label>Autor o responsable *<input id="em-autor" maxlength="100" required placeholder="Nombre del aportante"></label>
+                <label class="em-wide">Título del examen *<input id="em-titulo" maxlength="180" required placeholder="Ej. Práctica Calificada 1 — 2025-2"></label>
+                <label class="em-wide">Descripción (opcional)<input id="em-descripcion" maxlength="300" placeholder="Temas, observaciones o contenido"></label>
+                <label>Formato del examen *<select id="em-formato"><option value="pdf">PDF (enunciado, solución o ambos)</option><option value="web">Markdown + LaTeX (enunciado y/o solución)</option></select></label>
+              </div>
+              <p id="em-pdf-ayuda" class="em-note">Puedes adjuntar un único PDF con el examen completo, o separar el enunciado y el solucionario en dos PDF. Es suficiente con un archivo.</p>
+              <div id="em-pdf-campos" class="em-file-fields">
+                <label>PDF del enunciado (opcional; varias páginas, hasta 25 MB)<input id="em-pdf-enunciado" type="file" accept=".pdf,application/pdf"><small id="em-actual-enunciado-pdf"></small></label>
+                <label>PDF de la solución o documento completo (opcional; hasta 25 MB)<input id="em-pdf-solucion" type="file" accept=".pdf,application/pdf"><small id="em-actual-solucion-pdf"></small></label>
+              </div>
+              <div id="em-web-campos" class="em-file-fields" hidden>
+                <label>Contenido en Markdown + LaTeX (enunciado, solución o ambos) *<textarea id="em-contenido" rows="10" placeholder="## Enunciado
+Escribe aquí el problema...
 
-            <div class="filter-bar">
-                <div class="filter-buttons">
-                    <button class="active">Todos los ciclos</button>
-                    <button>2026-2</button>
-                    <button>2026-1</button>
-                    <button>2025-2</button>
-                    <button>2025-1</button>
-                </div>
-                <select class="sort-select">
-                    <option>Tipo: todos</option>
-                    <option>Parciales</option>
-                    <option>Finales</option>
-                    <option>Sustitutorios</option>
-                </select>
+## Solución
+Desarrollo en Markdown + LaTeX..."></textarea></label>
+                <label>PDF del enunciado (opcional; varias páginas, hasta 25 MB)<input id="em-pdf-enunciado-web" type="file" accept=".pdf,application/pdf"><small id="em-actual-enunciado-web">Si el enunciado ya está dentro del Markdown + LaTeX, no adjuntes ningún PDF.</small></label>
+              </div>
+              <div class="em-form-actions"><button type="button" id="em-cancelar" class="em-secondary">Cancelar</button><button id="em-guardar" type="submit" class="em-primary"><i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Guardar examen (borrador)</button></div>
+            </form>
+          </section>
+          <section id="em-aporte-resultado" class="em-submission" hidden aria-live="polite">
+            <h3><i class="fa-solid fa-circle-check"></i> Aporte preparado</h3>
+            <p>Tu examen está guardado únicamente en este navegador. Descarga el paquete ZIP y entrégalo al delegado o docente para que lo incorpore al repositorio. El envío no es automático.</p>
+            <button id="em-descargar-aporte" type="button" class="em-primary"><i class="fa-solid fa-download"></i> Descargar ZIP del aporte</button>
+            <button id="em-cerrar-aporte" type="button" class="em-secondary">Entendido</button>
+          </section>
+          <!-- Vista de catálogo: se oculta completa al abrir una solución, como en Ejercicios Resueltos. -->
+          <div id="em-vista-lista">
+            <div class="filter-bar em-filterbar ex-filterbar"><div id="em-ciclos" class="filter-buttons em-ciclos" aria-label="Filtrar por ciclo académico"><button class="active" type="button" data-ciclo="todos" aria-pressed="true">Todos los ciclos</button></div>
+              <div class="em-search-wrap"><label class="em-sr" for="em-buscar">Buscar examen</label><i class="fa-solid fa-magnifying-glass"></i><input type="search" id="em-buscar" placeholder="Buscar examen..."></div>
             </div>
-
             <div class="material-layout">
-                
-                <!-- COLUMNA IZQUIERDA: LISTA DE EXÁMENES -->
-                <div class="files-column">
-                    
-                    <!-- SECCIÓN 1: EXÁMENES PARCIALES -->
-                    <div class="file-group">
-                        <div class="group-header">
-                            <h3><span class="circle-num-white">1</span> Exámenes parciales</h3>
-                            <span class="file-count">[03] exámenes</span>
-                        </div>
-                        <div class="group-content">
-                            <!-- Cabecera de la tabla -->
-                            <div class="exam-table-header">
-                                <div class="col-examen">EXAMEN</div>
-                                <div class="col-ciclo">CICLO</div>
-                                <div class="col-tipo">TIPO</div>
-                                <div class="col-archivos">ARCHIVOS</div>
-                            </div>
-                            
-                            <!-- Fila 1 -->
-                            <div class="exam-row">
-                                <div class="col-examen">
-                                    <div class="file-icon-text">
-                                        <div class="file-icon-box border-red">PDF</div>
-                                        <div class="file-details">
-                                            <h4>Examen Parcial 1 (2026-2)</h4>
-                                            <p>Enunciado y solución</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-ciclo">2026-2</div>
-                                <div class="col-tipo"><span class="tag tag-exam">Parcial</span></div>
-                                <div class="col-archivos">
-                                    <div class="exercise-actions">
-                                        <button class="btn-outline">Enunciado</button>
-                                        <button class="btn-solid">Solución</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Fila 2 -->
-                            <div class="exam-row">
-                                <div class="col-examen">
-                                    <div class="file-icon-text">
-                                        <div class="file-icon-box border-red">PDF</div>
-                                        <div class="file-details">
-                                            <h4>Examen Parcial 1 ([Ciclo])</h4>
-                                            <p>Enunciado y solución</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-ciclo">[Ciclo]</div>
-                                <div class="col-tipo"><span class="tag tag-exam">Parcial</span></div>
-                                <div class="col-archivos">
-                                    <div class="exercise-actions">
-                                        <button class="btn-outline">Enunciado</button>
-                                        <button class="btn-solid">Solución</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Fila 3 -->
-                            <div class="exam-row">
-                                <div class="col-examen">
-                                    <div class="file-icon-text">
-                                        <div class="file-icon-box border-red">PDF</div>
-                                        <div class="file-details">
-                                            <h4>Examen Parcial 2 ([Ciclo])</h4>
-                                            <p>Enunciado y solución</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-ciclo">[Ciclo]</div>
-                                <div class="col-tipo"><span class="tag tag-exam">Parcial</span></div>
-                                <div class="col-archivos">
-                                    <div class="exercise-actions">
-                                        <button class="btn-outline">Enunciado</button>
-                                        <button class="btn-solid">Solución</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SECCIÓN 2: EXÁMENES FINALES -->
-                    <div class="file-group">
-                        <div class="group-header">
-                            <h3><span class="circle-num-white">2</span> Exámenes finales</h3>
-                            <span class="file-count">[02] exámenes</span>
-                        </div>
-                        <div class="group-content">
-                            <div class="exam-table-header">
-                                <div class="col-examen">EXAMEN</div>
-                                <div class="col-ciclo">CICLO</div>
-                                <div class="col-tipo">TIPO</div>
-                                <div class="col-archivos">ARCHIVOS</div>
-                            </div>
-                            
-                            <div class="exam-row">
-                                <div class="col-examen">
-                                    <div class="file-icon-text">
-                                        <div class="file-icon-box border-red">PDF</div>
-                                        <div class="file-details">
-                                            <h4>Examen Final ([Ciclo])</h4>
-                                            <p>Exámenes de ciclos pasados</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-ciclo">[Ciclo]</div>
-                                <div class="col-tipo"><span class="tag tag-exam">Final</span></div>
-                                <div class="col-archivos">
-                                    <div class="exercise-actions">
-                                        <button class="btn-outline">Enunciado</button>
-                                        <button class="btn-solid">Solución</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="exam-row">
-                                <div class="col-examen">
-                                    <div class="file-icon-text">
-                                        <div class="file-icon-box border-red">PDF</div>
-                                        <div class="file-details">
-                                            <h4>Examen Final ([Ciclo])</h4>
-                                            <p>Exámenes de ciclos pasados</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-ciclo">[Ciclo]</div>
-                                <div class="col-tipo"><span class="tag tag-exam">Final</span></div>
-                                <div class="col-archivos">
-                                    <div class="exercise-actions">
-                                        <button class="btn-outline">Enunciado</button>
-                                        <button class="btn-solid">Solución</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SECCIÓN 3: EXÁMENES SUSTITUTORIOS -->
-                    <div class="file-group">
-                        <div class="group-header">
-                            <h3><span class="circle-num-white">3</span> Exámenes sustitutorios</h3>
-                            <span class="file-count">[01] exámenes</span>
-                        </div>
-                        <div class="group-content">
-                            <div class="exam-table-header">
-                                <div class="col-examen">EXAMEN</div>
-                                <div class="col-ciclo">CICLO</div>
-                                <div class="col-tipo">TIPO</div>
-                                <div class="col-archivos">ARCHIVOS</div>
-                            </div>
-                            
-                            <div class="exam-row">
-                                <div class="col-examen">
-                                    <div class="file-icon-text">
-                                        <div class="file-icon-box border-red">PDF</div>
-                                        <div class="file-details">
-                                            <h4>Examen Sustitutorio ([Ciclo])</h4>
-                                            <p>Enunciado y solución</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-ciclo">[Ciclo]</div>
-                                <div class="col-tipo"><span class="tag tag-exam">Sustitutorio</span></div>
-                                <div class="col-archivos">
-                                    <div class="exercise-actions">
-                                        <button class="btn-outline">Enunciado</button>
-                                        <button class="btn-solid">Solución</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+              <div class="files-column" id="em-listas" aria-live="polite">
+                <section class="ex-section" id="em-grupo-pc"><div class="ex-section-header"><h3><i class="fa-solid fa-clipboard-check" aria-hidden="true"></i> Prácticas Calificadas</h3><small id="em-count-pc">0 exámenes</small></div><div class="ex-section-body" id="em-lista-pc"></div></section>
+                <section class="ex-section" id="em-grupo-parcial"><div class="ex-section-header"><h3><i class="fa-solid fa-file-lines" aria-hidden="true"></i> Exámenes Parciales</h3><small id="em-count-parcial">0 exámenes</small></div><div class="ex-section-body" id="em-lista-parcial"></div></section>
+                <section class="ex-section" id="em-grupo-final"><div class="ex-section-header"><h3><i class="fa-solid fa-file-circle-check" aria-hidden="true"></i> Exámenes Finales</h3><small id="em-count-final">0 exámenes</small></div><div class="ex-section-body" id="em-lista-final"></div></section>
+                <section class="ex-section" id="em-grupo-sustitutorio"><div class="ex-section-header"><h3><i class="fa-solid fa-arrow-rotate-right" aria-hidden="true"></i> Exámenes Sustitutorios</h3><small id="em-count-sustitutorio">0 exámenes</small></div><div class="ex-section-body" id="em-lista-sustitutorio"></div></section>
+                <p id="em-sin-filtros" class="em-message" hidden>No hay exámenes que coincidan con los filtros seleccionados.</p>
+              </div>
+            <aside class="widgets-column">
+              <div class="widget-box"><div class="widget-header"><h3>Próximo examen</h3></div><div id="em-proximo" class="em-next" aria-live="polite"><p>Consultando el calendario...</p></div></div>
+              <div class="widget-box"><div class="widget-header"><h3>Tipo de examen</h3></div>
+                <div id="em-tipos" class="em-checkboxes">
+                  <label class="em-check em-check-all"><input type="checkbox" id="em-todos-tipos" checked> Todos los tipos</label>
+                  <div class="em-pc-check"><label class="em-check"><input type="checkbox" id="em-tipo-pc" checked> Prácticas Calificadas</label><div class="em-subchecks">
+                    <label class="em-check"><input type="checkbox" data-pc="1" checked> PC1</label>
+                    <label class="em-check"><input type="checkbox" data-pc="2" checked> PC2</label>
+                    <label class="em-check"><input type="checkbox" data-pc="3" checked> PC3</label>
+                    <label class="em-check"><input type="checkbox" data-pc="4" checked> PC4</label>
+                  </div></div>
+                  <label class="em-check"><input type="checkbox" data-tipo="parcial" checked> Exámenes Parciales</label>
+                  <label class="em-check"><input type="checkbox" data-tipo="final" checked> Exámenes Finales</label>
+                  <label class="em-check"><input type="checkbox" data-tipo="sustitutorio" checked> Exámenes Sustitutorios</label>
                 </div>
-
-                <!-- COLUMNA DERECHA: WIDGETS -->
-                <div class="widgets-column">
-                    
-                    <!-- WIDGET: Próximo examen -->
-                    <div class="widget-box">
-                        <div class="widget-header">
-                            <h3>Próximo examen</h3>
-                        </div>
-                        <div style="padding: 15px;">
-                            <div class="activity-item">
-                                <div class="date-box"><span>NOV</span><strong>10</strong></div>
-                                <div class="act-info">
-                                    <h4 style="color: var(--text-main); margin-bottom: 2px;">Examen Parcial II</h4>
-                                    <p style="font-size: 0.8rem; color: var(--text-light);">Horario: 09:00 - 11:00</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- WIDGET: Tipo de examen -->
-                    <div class="widget-box">
-                        <div class="widget-header">
-                            <h3>Tipo de examen</h3>
-                        </div>
-                        <div class="widget-filter-list">
-                            <label class="custom-checkbox">
-                                <input type="checkbox" checked>
-                                <span class="checkmark"></span>
-                                Parcial
-                            </label>
-                            <label class="custom-checkbox">
-                                <input type="checkbox" checked>
-                                <span class="checkmark"></span>
-                                Final
-                            </label>
-                            <label class="custom-checkbox">
-                                <input type="checkbox" checked>
-                                <span class="checkmark"></span>
-                                Sustitutorio
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- WIDGET: Cómo prepararte -->
-                    <div class="widget-box">
-                        <div class="widget-header">
-                            <h3>Cómo prepararte</h3>
-                        </div>
-                        <ul class="widget-list links-only">
-                            <li><a href="ejercicios.html">Ejercicios Resueltos</a></li>
-                            <li><a href="foro.html">Foro de consultas</a></li>
-                            <li><a href="materiales.html">Material del Curso</a></li>
-                            <li><a href="apuntes.html">Apuntes y Cuadernos</a></li>
-                        </ul>
-                    </div>
-
-                </div>
-
+              </div>
+              <div class="widget-box"><div class="widget-header"><h3>Cómo prepararte</h3></div><ul class="widget-list links-only"><li><a href="ejercicios.html">Ejercicios Resueltos</a></li><li><a href="foro.html">Foro de Consultas</a></li><li><a href="materiales.html">Material del Curso</a></li><li><a href="apuntes.html">Apuntes y Cuadernos</a></li><li><a href="calendario.html">Calendario del Curso</a></li></ul></div>
+            </aside>
+          </div>
+          </div><!-- /em-vista-lista -->
+          <!-- Vista de lectura independiente, con la misma estructura que Ejercicios Resueltos. -->
+          <section id="em-lector" hidden class="em-reader" aria-label="Lectura del examen">
+            <div class="ex-reader-bar"><button id="em-volver" type="button" class="ex-btn"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Volver a exámenes</button></div>
+            <div class="ex-reader-layout">
+              <article class="ex-paper"><h1 id="em-lector-titulo"></h1><div id="em-lector-meta" class="ex-reader-meta"></div><div id="em-lector-contenido" class="ex-markdown em-markdown"></div></article>
+              <aside id="em-lector-indice" class="ex-toc" hidden><h3><i class="fa-solid fa-list" aria-hidden="true"></i> En este examen</h3><nav id="em-indice-links" aria-label="Secciones y subapartados del examen"></nav><button type="button" id="em-indice-inicio" class="toc-top"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i> Volver al inicio</button></aside>
             </div>
-
+          </section>
         </main>
     </div>
+
+    <div id="em-modal" class="modal-overlay em-modal" hidden role="dialog" aria-modal="true" aria-labelledby="em-modal-title">
+      <div class="modal-content em-modal-dialog"><div class="modal-header"><h3 id="em-modal-title">Visor</h3><button id="em-modal-cerrar" type="button" class="btn-close" aria-label="Cerrar visor">&times;</button></div><div class="modal-body em-modal-body" id="em-modal-body"></div></div>
+    </div>
+<script id="em-tikz-reparacion-v4">
+/* Corrección TikZJax: normaliza los SVG DESPUÉS de ser creados. */
+(function () {
+  'use strict';
+  function iniciar() {
+    const lector = document.getElementById('em-lector-contenido');
+    if (!lector) return;
+    function ajustar(figura) {
+      const svg = figura.querySelector('svg');
+      if (!svg || svg.classList.contains('em-tikz-ajustado')) return;
+
+      // getBBox obtiene la geometría dibujada en el sistema de coordenadas
+      // SVG, sin depender del ancho/alto de página impuestos por TikZJax.
+      try {
+        const r = svg.getBBox();
+        if ([r.x, r.y, r.width, r.height].every(Number.isFinite) &&
+            r.width > 0 && r.height > 0) {
+          const px = Math.max(r.width * 0.035, 4);
+          const py = Math.max(r.height * 0.045, 4);
+          svg.setAttribute('viewBox', [
+            r.x - px, r.y - py, r.width + 2 * px, r.height + 2 * py
+          ].join(' '));
+        }
+      } catch (e) {
+        // Si la geometría todavía no está disponible, usamos el viewBox
+        // original en vez de hacer desaparecer la figura.
+        console.warn('TikZJax: no se pudo calcular la caja del SVG', e);
+      }
+      svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+      svg.removeAttribute('width');
+      svg.removeAttribute('height');
+
+      // El DIV que inserta TikZJax tiene width/height fijos en pt.
+      // Se retira, dejando solo el SVG real; así no hay recorte ni scroll.
+      figura.replaceChildren(svg);
+      svg.classList.add('em-tikz-ajustado');
+      figura.style.setProperty('overflow', 'visible', 'important');
+      figura.style.setProperty('display', 'flex', 'important');
+      figura.style.setProperty('align-items', 'center', 'important');
+      figura.style.setProperty('justify-content', 'center', 'important');
+      figura.style.setProperty('height', 'auto', 'important');
+      svg.style.setProperty('display', 'block', 'important');
+      svg.style.setProperty('width', 'min(100%, 592px)', 'important');
+      svg.style.setProperty('max-width', '100%', 'important');
+      svg.style.setProperty('height', 'auto', 'important');
+      svg.style.setProperty('overflow', 'visible', 'important');
+      svg.style.setProperty('margin', '0 auto', 'important');
+    }
+    let pendiente = false;
+    function revisar() {
+      pendiente = false;
+      lector.querySelectorAll('.tikz-figure').forEach(ajustar);
+    }
+    const observador = new MutationObserver(function () {
+      if (!pendiente) {
+        pendiente = true;
+        requestAnimationFrame(revisar);
+      }
+    });
+    observador.observe(lector, { childList: true, subtree: true });
+    revisar();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', iniciar, { once: true });
+  } else {
+    iniciar();
+  }
+})();
+
+</script>
 </body>
 </html>

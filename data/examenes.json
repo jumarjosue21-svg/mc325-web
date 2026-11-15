@@ -1,0 +1,34 @@
+[
+  {
+    "id": "90b3998f-8306-42ab-96f5-75142a677cb6",
+    "tipo": "parcial",
+    "pc": null,
+    "ciclo": "2025-1",
+    "titulo": "Examen Parcial 2025-1",
+    "descripcion": "",
+    "autor": "Docente",
+    "origen": "docente",
+    "formato": "web",
+    "fecha": "2026-11-15T09:49:32.762Z",
+    "ruta": "examenes/articulos/90b3998f-8306-42ab-96f5-75142a677cb6.md",
+    "enunciadoRuta": null,
+    "enunciadoPdfRuta": "examenes/pdfs/90b3998f-8306-42ab-96f5-75142a677cb6-enunciado.pdf",
+    "solucionPdfRuta": null
+  },
+  {
+    "id": "40434db8-79bf-47ca-8849-747a961046bf",
+    "tipo": "parcial",
+    "pc": null,
+    "ciclo": "2026-1",
+    "titulo": "Examen Parcial 2026-1",
+    "descripcion": "",
+    "autor": "Visitante",
+    "origen": "estudiante",
+    "formato": "pdf",
+    "fecha": "2026-11-15T11:09:40.983Z",
+    "ruta": null,
+    "enunciadoRuta": null,
+    "enunciadoPdfRuta": "examenes/pdfs/40434db8-79bf-47ca-8849-747a961046bf-enunciado.pdf",
+    "solucionPdfRuta": "examenes/pdfs/40434db8-79bf-47ca-8849-747a961046bf-solucion.pdf"
+  }
+]
