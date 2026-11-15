@@ -30,5 +30,21 @@
     "enunciadoRuta": null,
     "enunciadoPdfRuta": "examenes/pdfs/40434db8-79bf-47ca-8849-747a961046bf-enunciado.pdf",
     "solucionPdfRuta": "examenes/pdfs/40434db8-79bf-47ca-8849-747a961046bf-solucion.pdf"
+  },
+  {
+    "id": "341f1bb3-2c7b-4d13-8aa8-5f53c8dd88cc",
+    "tipo": "parcial",
+    "pc": null,
+    "ciclo": "2026-2",
+    "titulo": "Examen Parcial 2026-2",
+    "descripcion": "",
+    "autor": "Docente",
+    "origen": "docente",
+    "formato": "web",
+    "fecha": "2026-11-15T16:53:54.680Z",
+    "ruta": "examenes/articulos/341f1bb3-2c7b-4d13-8aa8-5f53c8dd88cc.md",
+    "enunciadoRuta": null,
+    "enunciadoPdfRuta": "examenes/pdfs/341f1bb3-2c7b-4d13-8aa8-5f53c8dd88cc-enunciado.pdf",
+    "solucionPdfRuta": null
   }
 ]
