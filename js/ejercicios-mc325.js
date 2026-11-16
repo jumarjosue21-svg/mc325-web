@@ -6,12 +6,39 @@
   'use strict';
   const D = window.MC325EjerciciosDatos;
   const $ = id => document.getElementById(id);
-  const NIVELES = {basico:'Básico',intermedio:'Intermedio',avanzado:'Avanzado'};
   const estado = {
     publicados: [], unidades: [], ejercicios: [], admin: false,
     editorRol: null, editandoId: null, seleccionadoId: null,
-    modalUrl: null, modalReturnFocus: null, bodyOverflow: null
+    modalUrl: null, modalReturnFocus: null, bodyOverflow: null,
+    recorridoDesdeCurso: false, lecturaVersion: 0
   };
+  // Contexto de la visita desde un capítulo. Nunca usamos URLs de terceros:
+  // el destino se construye exclusivamente como materiales.html?articulo=ID.
+  const paramsVisita = new URLSearchParams(window.location.search);
+  const ejercicioDeOrigen = paramsVisita.get('ejercicio');
+  const capituloOrigen = paramsVisita.get('capituloOrigen');
+  const capituloSiguiente = paramsVisita.get('siguienteCapitulo');
+  const cambiaUnidad = paramsVisita.get('siguienteUnidad') === '1';
+  const idValido = v => typeof v === 'string' && v.length > 0 && v.length <= 160 && /^[a-zA-Z0-9_-]+$/.test(v);
+  function configurarRecorrido(sufijo, ejercicioId) {
+    const nav = $(`mc325-recorrido-${sufijo}`);
+    if (!nav) return;
+    const corresponde = idValido(capituloOrigen) && (
+      String(ejercicioId) === ejercicioDeOrigen ||
+      (sufijo === 'lector' && estado.recorridoDesdeCurso && ejercicioId !== null)
+    );
+    nav.hidden = !corresponde;
+    if (!corresponde) return;
+    $(`mc325-volver-${sufijo}`).href = `materiales.html?articulo=${encodeURIComponent(capituloOrigen)}`;
+    const siguiente = $(`mc325-siguiente-${sufijo}`);
+    siguiente.hidden = !idValido(capituloSiguiente);
+    if (!siguiente.hidden) {
+      siguiente.href = `materiales.html?articulo=${encodeURIComponent(capituloSiguiente)}`;
+      siguiente.querySelector('span').textContent = sufijo === 'lector'
+        ? (cambiaUnidad ? 'Siguiente unidad del curso' : 'Siguiente capítulo de teoría')
+        : (cambiaUnidad ? 'Siguiente unidad del curso' : 'Siguiente capítulo');
+    }
+  }
   const escapar = (v) => String(v ?? '').replace(/[&<>"']/g,c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const normalizar = texto => String(texto ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('es').replace(/\s+/g,' ').trim();
   const rutaImagenValida = ruta => typeof ruta === 'string' && /^ejercicios\/enunciados\/[a-zA-Z0-9_.-]+\.(png|jpe?g|webp)$/i.test(ruta);
@@ -22,7 +49,13 @@
   function formatoFecha(valor) { if(!valor) return 'Fecha no indicada'; const fecha=new Date(valor); return Number.isNaN(fecha.getTime())?'Fecha no indicada':fecha.toLocaleDateString('es-PE',{day:'2-digit',month:'short',year:'numeric'}); }
   function cambiarVista(vista) {
     $('ex-lista').hidden=vista!=='lista'; $('ex-lector').hidden=vista!=='lector';
-    if (vista!=='lector') estado.seleccionadoId=null;
+    if (vista!=='lector') {
+      estado.seleccionadoId=null;
+      estado.recorridoDesdeCurso=false;
+      estado.lecturaVersion++;
+      configurarNavegacionEjercicios(null);
+      configurarRecorrido('lector', null);
+    }
     document.querySelector('.content-area').scrollTo?.({top:0,behavior:'smooth'});
   }
   function actualizar() { estado.ejercicios=D.combinar(estado.publicados); renderizar(); }
@@ -36,7 +69,7 @@
     return `<article class="ex-card" data-ejercicio="${escapar(e.id)}">
       <div class="ex-fileicon ex-format-${clase}"><i class="fa-solid ${icono}" aria-hidden="true"></i><span>${etiqueta}</span></div>
       <div class="ex-card-body">
-        <div class="ex-tags"><span class="ex-tag ${e.origen==='clase'?'ex-tag-clase':'ex-tag-aporte'}">${e.origen==='clase'?'Hecho en clase':'Aporte estudiantil'}</span><span class="ex-tag ex-tag-level">${NIVELES[e.dificultad]||'Sin nivel'}</span></div>
+        <div class="ex-tags"><span class="ex-tag ${e.origen==='clase'?'ex-tag-clase':'ex-tag-aporte'}">${e.origen==='clase'?'Hecho en clase':'Aporte estudiantil'}</span></div>
         <h4 class="ex-card-title" data-accion="leer" data-id="${escapar(e.id)}" role="button" tabindex="0">${titulo}</h4>
         <p class="ex-card-desc">${detalles}</p>
         <div class="ex-meta">${escapar(e.autor||'Sin autor')} · ${formatoFecha(e.fecha)}</div>
@@ -48,29 +81,84 @@
       </div>
     </article>`;
   }
-  function listarGrupo(origen, contenedor) {
+  // Mantiene el orden elegido para el listado y para la navegación WEB.
+  function ordenarEjercicios(arr) {
+    const orden=$('ex-orden').value;
+    return arr.sort((a,b)=>orden==='titulo'
+      ? String(a.titulo).localeCompare(String(b.titulo),'es')
+      : orden==='antiguos'
+        ? (Date.parse(a.fecha||0)||0)-(Date.parse(b.fecha||0)||0)
+        : (Date.parse(b.fecha||0)||0)-(Date.parse(a.fecha||0)||0));
+  }
+  function unidadesEnOrden(arr) {
+    const ordenUnidad=new Map(estado.unidades.map((u,i)=>[u.id,i]));
+    return [...new Set(arr.map(e=>e.unidad))].sort((a,b)=>
+      (ordenUnidad.get(a)??Number.MAX_SAFE_INTEGER)-(ordenUnidad.get(b)??Number.MAX_SAFE_INTEGER)
+      || String(a).localeCompare(String(b),'es'));
+  }
+  // Incluye solamente artículos Markdown + LaTeX, incluso cuando se llega
+  // desde el enlace de un capítulo o el listado tiene una búsqueda activa.
+  // Los PDF nunca forman parte de la secuencia.
+  function secuenciaEjerciciosWeb() {
+    const web=ordenarEjercicios(estado.ejercicios.filter(e=>e.formato==='web'));
+    return unidadesEnOrden(web).flatMap(unidad=>web.filter(e=>e.unidad===unidad));
+  }
+  function configurarNavegacionEjercicios(ejercicio) {
+    const nav=$('mc325-nav-ejercicios');
+    const anteriorBtn=$('mc325-ej-anterior');
+    const siguienteBtn=$('mc325-ej-siguiente');
+    nav.hidden=true;
+    anteriorBtn.hidden=true; siguienteBtn.hidden=true;
+    delete anteriorBtn.dataset.ejercicioId;
+    delete siguienteBtn.dataset.ejercicioId;
+    if (!ejercicio || ejercicio.formato!=='web') return;
+    const secuencia=secuenciaEjerciciosWeb();
+    const indice=secuencia.findIndex(e=>String(e.id)===String(ejercicio.id));
+    if (indice<0) return;
+    const anterior=indice>0?secuencia[indice-1]:null;
+    const siguiente=indice+1<secuencia.length?secuencia[indice+1]:null;
+    nav.hidden=!anterior&&!siguiente;
+    if (anterior) {
+      anteriorBtn.hidden=false;
+      anteriorBtn.dataset.ejercicioId=String(anterior.id);
+      anteriorBtn.querySelector('span').textContent=anterior.unidad===ejercicio.unidad?'Ejercicio anterior':'Ejercicio de la unidad anterior';
+      anteriorBtn.title=anterior.titulo;
+    }
+    if (siguiente) {
+      siguienteBtn.hidden=false;
+      siguienteBtn.dataset.ejercicioId=String(siguiente.id);
+      siguienteBtn.querySelector('span').textContent=siguiente.unidad===ejercicio.unidad?'Siguiente ejercicio':'Ejercicio de la siguiente unidad';
+      siguienteBtn.title=siguiente.titulo;
+    }
+  }
+  // Vista única: se mezclan los dos orígenes y se agrupan exclusivamente por unidad.
+  // Se conserva el campo origen para mostrar la etiqueta de cada ejercicio.
+  function listarEjercicios() {
     const terminos=normalizar($('ex-buscar').value).split(' ').filter(Boolean);
     const unidad=$('ex-filtro-unidad').value;
-    const dificultad=$('ex-filtro-dificultad').value;
-    const orden=$('ex-orden').value;
-    const arr=estado.ejercicios.filter(e=>e.origen===origen && (unidad==='todas'||e.unidad===unidad) && (dificultad==='todas'||e.dificultad===dificultad) && terminos.every(t => normalizar(`${e.titulo} ${e.descripcion||''} ${e.autor||''} ${nombreUnidad(e.unidad)} ${NIVELES[e.dificultad]||''}`).includes(t)));
-    arr.sort((a,b)=>orden==='titulo'?String(a.titulo).localeCompare(String(b.titulo),'es'):orden==='antiguos'?Date.parse(a.fecha||0)-Date.parse(b.fecha||0):Date.parse(b.fecha||0)-Date.parse(a.fecha||0));
-    $(origen==='clase'?'ex-count-clase':'ex-count-estudiantes').textContent=`${arr.length} ${arr.length===1?'ejercicio':'ejercicios'}`;
+    const arr=estado.ejercicios.filter(e=>
+      (unidad==='todas'||e.unidad===unidad) &&
+      terminos.every(t => normalizar(`${e.titulo} ${e.descripcion||''} ${e.autor||''} ${nombreUnidad(e.unidad)}`).includes(t))
+    );
+    ordenarEjercicios(arr);
+    $('ex-count-total').textContent=`${arr.length} ${arr.length===1?'ejercicio':'ejercicios'}`;
+    const contenedor=$('ex-lista-unificada');
     if (!arr.length) {
-      contenedor.innerHTML=`<p class="ex-empty">${origen==='clase'?'No hay ejercicios de clase que coincidan con los filtros.':'Todavía no hay aportes de estudiantes que coincidan con los filtros.'}</p>`;
-      return;
+      contenedor.innerHTML='<p class="ex-empty">No hay ejercicios que coincidan con la búsqueda o la unidad seleccionada.</p>';
+      return 0;
     }
-    const ids=[...new Set(arr.map(e=>e.unidad))].sort((a,b)=>estado.unidades.findIndex(u=>u.id===a)-estado.unidades.findIndex(u=>u.id===b));
-    contenedor.innerHTML=ids.map(id=>`<div class="ex-unit-head">${escapar(nombreUnidad(id))}</div>${arr.filter(e=>e.unidad===id).map(crearCard).join('')}`).join('');
+    const ids=unidadesEnOrden(arr);
+    contenedor.innerHTML=ids.map(id=>
+      `<div class="ex-unit-head">${escapar(nombreUnidad(id))}</div>${arr.filter(e=>e.unidad===id).map(crearCard).join('')}`
+    ).join('');
+    return arr.length;
   }
   function renderizar() {
     $('ex-stat-total').textContent=estado.ejercicios.length;
-    $('ex-stat-clase').textContent=estado.ejercicios.filter(e=>e.origen==='clase').length;
-    $('ex-stat-estudiantes').textContent=estado.ejercicios.filter(e=>e.origen==='estudiante').length;
-    listarGrupo('clase',$('ex-lista-clase'));
-    listarGrupo('estudiante',$('ex-lista-estudiantes'));
-    const visibles = [...document.querySelectorAll('#ex-lista-clase .ex-card, #ex-lista-estudiantes .ex-card')].length;
-    const filtrando = Boolean($('ex-buscar').value.trim() || $('ex-filtro-unidad').value !== 'todas' || $('ex-filtro-dificultad').value !== 'todas');
+    $('ex-stat-web').textContent=estado.ejercicios.filter(e=>e.formato==='web').length;
+    $('ex-stat-pdf').textContent=estado.ejercicios.filter(e=>e.formato==='pdf').length;
+    const visibles=listarEjercicios();
+    const filtrando=Boolean($('ex-buscar').value.trim() || $('ex-filtro-unidad').value !== 'todas');
     $('ex-resultados').textContent = filtrando
       ? visibles ? `Mostrando ${visibles} de ${estado.ejercicios.length} ejercicios.` : 'No hay ejercicios que coincidan con la búsqueda o los filtros.'
       : '';
@@ -129,7 +217,6 @@
     $('ex-unidad').value=e.unidad;
     $('ex-autor').value=e.autor||'';
     $('ex-descripcion').value=e.descripcion||'';
-    $('ex-dificultad').value=NIVELES[e.dificultad]?e.dificultad:'intermedio';
     $('ex-formato').value=e.formato==='pdf'?'pdf':'web';
     alternarFormato();
     $('ex-pdf-actual').textContent=`${e.formato==='pdf'?'Se conserva el PDF actual si no seleccionas uno nuevo.':'Selecciona un PDF para sustituir la versión web.'} Máx. 25 MB.`;
@@ -169,7 +256,7 @@
     const registro = {
       id, origen: anterior?anterior.origen:estado.editorRol==='clase'?'clase':'estudiante',
       unidad:$('ex-unidad').value, titulo, descripcion:$('ex-descripcion').value.trim(),
-      autor, dificultad:$('ex-dificultad').value, formato,
+      autor, formato,
       fecha:anterior?.fecha || new Date().toISOString(),
       ruta:anterior?.ruta||null,
       archivoLocalId: formato==='pdf'?(anterior?.formato==='pdf'?anterior.archivoLocalId||null:null):null,
@@ -263,12 +350,13 @@
     if(estado.modalReturnFocus?.isConnected) estado.modalReturnFocus.focus({preventScroll:true});
     estado.modalReturnFocus=null;
   }
-  function mostrarModal(titulo,contenido){
+  function mostrarModal(titulo,contenido,ejercicioId=null){
     cerrarModal();
     estado.modalReturnFocus=document.activeElement;
     estado.bodyOverflow=document.body.style.overflow;
     $('ex-modal-titulo').textContent=titulo;
     $('ex-modal-contenido').replaceChildren(contenido);
+    configurarRecorrido('pdf', ejercicioId); // No aparece al abrir una imagen de enunciado.
     $('ex-modal').hidden=false;
     document.body.style.overflow='hidden';
     $('ex-modal-cerrar').focus();
@@ -285,7 +373,7 @@
       const iframe=document.createElement('iframe');
       iframe.title=`Visor PDF: ${e.titulo}`;
       iframe.src=url;
-      mostrarModal(e.titulo,iframe);
+      mostrarModal(e.titulo,iframe,e.id);
       if(url.startsWith('blob:'))estado.modalUrl=url;
     } catch(err){alert('No se pudo abrir el PDF: '+err.message);}
   }
@@ -309,12 +397,20 @@
     const e=estado.ejercicios.find(x=>String(x.id)===String(id));if(!e)return;
     if(e.formato==='pdf'){await abrirPdf(e);return;}
     estado.seleccionadoId=e.id;
+    const version=++estado.lecturaVersion;
     cambiarVista('lector');
+    configurarNavegacionEjercicios(e);
+    configurarRecorrido('lector', e.id);
     $('ex-lector-titulo').textContent=e.titulo;
-    $('ex-lector-meta').textContent=`${nombreUnidad(e.unidad)} · ${NIVELES[e.dificultad]||''} · ${e.origen==='clase'?'Hecho en clase':'Aporte de estudiante'} · ${e.autor||'Sin autor'} · ${formatoFecha(e.fecha)}`;
+    $('ex-lector-meta').textContent=`${nombreUnidad(e.unidad)} · ${e.origen==='clase'?'Hecho en clase':'Aporte de estudiante'} · ${e.autor||'Sin autor'} · ${formatoFecha(e.fecha)}`;
     const out=$('ex-lector-contenido');out.replaceChildren();out.textContent='Cargando ejercicio...';$('ex-lector-indice').hidden=true;
-    try {renderMarkdownSegura(await D.obtenerMarkdown(e),out);crearIndice();}
-    catch(err){out.textContent='No se pudo abrir el ejercicio: '+err.message;}
+    try {
+      const markdown=await D.obtenerMarkdown(e);
+      if (version!==estado.lecturaVersion || String(estado.seleccionadoId)!==String(e.id)) return;
+      renderMarkdownSegura(markdown,out);crearIndice();
+    } catch(err) {
+      if (version===estado.lecturaVersion) out.textContent='No se pudo abrir el ejercicio: '+err.message;
+    }
   }
   function delegarClick(ev) {
     const el=ev.target.closest('[data-accion]');if(!el)return;
@@ -336,23 +432,40 @@
     $('ex-formato').addEventListener('change',alternarFormato);
     $('ex-form').addEventListener('submit',guardar);
     $('ex-volver').addEventListener('click',()=>cambiarVista('lista'));
+    // Controles propios de Ejercicios: coexisten con la continuación del curso.
+    for (const id of ['mc325-ej-anterior','mc325-ej-siguiente']) {
+      $(id).addEventListener('click',ev=>{
+        const destino=ev.currentTarget.dataset.ejercicioId;
+        if (destino) abrirLector(destino);
+      });
+    }
     $('ex-modal-cerrar').addEventListener('click',cerrarModal);
     $('ex-limpiar-busqueda').addEventListener('click',()=>{
       $('ex-buscar').value=''; renderizar(); $('ex-buscar').focus();
     });
-    $('ex-lista-clase').addEventListener('click',delegarClick);
-    $('ex-lista-estudiantes').addEventListener('click',delegarClick);
+    $('ex-lista-unificada').addEventListener('click',delegarClick);
     document.addEventListener('keydown',ev=>{
       if(ev.key!=='Enter'||!ev.target.matches('.ex-card-title[data-accion]'))return;
       ev.preventDefault();abrirLector(ev.target.dataset.id);
     });
-    ['ex-buscar','ex-filtro-unidad','ex-filtro-dificultad','ex-orden'].forEach(id=>$(id).addEventListener(id==='ex-buscar'?'input':'change',renderizar));
+    ['ex-buscar','ex-filtro-unidad','ex-orden'].forEach(id=>$(id).addEventListener(id==='ex-buscar'?'input':'change',renderizar));
     try {estado.publicados=await D.obtenerPublicados();}
     catch(err){setEstado(`No se pudieron cargar los ejercicios publicados: ${err.message}. Abre la página con Live Server y verifica data/ejercicios.json.`,true);estado.publicados=[];}
     try {estado.unidades=await D.obtenerUnidades();if(!estado.unidades.length)throw new Error('No hay unidades definidas.');}
     catch(err){setEstado(`No se pudieron cargar las unidades desde data/unidades.json: ${err.message}`,true);estado.unidades=[];}
     rellenarUnidades();actualizar();
     if(estado.unidades.length)setEstado('Los materiales del repositorio están disponibles. Las nuevas aportaciones quedan como borradores locales hasta su publicación.');
+    // Enlace directo desde el botón «Ejercicios del capítulo» de Materiales.
+    // Usa el mismo ID para ejercicios WEB (lector) y PDF (visor modal).
+    const ejercicioSolicitado=new URLSearchParams(window.location.search).get('ejercicio');
+    if (ejercicioSolicitado) {
+      const encontrado=estado.ejercicios.find(e=>String(e.id)===ejercicioSolicitado);
+      if(encontrado) {
+        estado.recorridoDesdeCurso=idValido(capituloOrigen) && String(encontrado.id)===ejercicioDeOrigen;
+        await abrirLector(encontrado.id);
+      }
+      else setEstado('El ejercicio vinculado no está disponible. Puede que aún no se haya publicado o que haya sido eliminado.',true);
+    }
   }
   document.addEventListener('DOMContentLoaded',iniciar);
 })();

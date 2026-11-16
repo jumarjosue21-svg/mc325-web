@@ -31,13 +31,61 @@
             text-align: center !important;
             margin: 1.2em auto !important;
         }
+        /* Dos recorridos identificados: seguir ejercicios y retomar la teoría.
+           Afecta únicamente al lector WEB de Ejercicios Resueltos. */
+        .mc325-route-panel {
+            display:block; margin-top:24px; padding:17px 19px 19px;
+            border:1px solid var(--border-color); border-radius:9px;
+            background:#f7f8fa;
+        }
+        .mc325-route-panel[hidden],
+        .mc325-route-panel .ex-btn[hidden] {display:none!important;}
+        .mc325-route-panel--course {background:#fcf8f7; border-left:4px solid #7b241c;}
+        .mc325-route-heading {display:flex; align-items:flex-start; gap:12px; margin-bottom:15px;}
+        .mc325-route-icon {
+            display:flex; align-items:center; justify-content:center;
+            flex:0 0 38px; width:38px; height:38px; border-radius:7px;
+            color:#355575; background:#e5edf5;
+        }
+        .mc325-route-panel--course .mc325-route-icon {color:#7b241c; background:#f1e6e3;}
+        .mc325-route-heading h3 {margin:0 0 4px; color:#293440; font-size:1.02rem; line-height:1.3;}
+        .mc325-route-heading p {margin:0; color:#5c6775; font-size:.84rem; line-height:1.5;}
+        .mc325-route-actions {display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;}
+        .mc325-route-actions .ex-btn {display:inline-flex; align-items:center; justify-content:center; gap:9px; max-width:100%; min-height:40px; text-align:center; text-decoration:none; white-space:normal;}
+        .mc325-route-actions .mc325-continuar,
+        .mc325-route-actions .mc325-ejercicio-siguiente {margin-left:auto;}
+        /* El visor PDF conserva la barra compacta preexistente. */
+        .mc325-recorrido-curso--pdf {display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin:0;padding:12px 18px;flex:none;border-top:1px solid var(--border-color);}
+        .mc325-recorrido-curso--pdf[hidden],
+        .mc325-recorrido-curso--pdf a[hidden] {display:none!important;}
+        .mc325-recorrido-curso--pdf .ex-btn {display:inline-flex;align-items:center;justify-content:center;gap:9px;font-size:.85rem;padding:9px 12px;text-decoration:none;}
+        .mc325-recorrido-curso--pdf .mc325-continuar {margin-left:auto;}
+        /* Los colores de ambas rutas se adaptan al modo oscuro sin cambiar las acciones. */
+        html[data-theme="dark"] .mc325-route-panel {
+            background:#292e42; border-color:#464c65;
+        }
+        html[data-theme="dark"] .mc325-route-panel--course {
+            background:#302d41; border-left-color:#8f5553;
+        }
+        html[data-theme="dark"] .mc325-route-heading h3 {color:#f0f2fa;}
+        html[data-theme="dark"] .mc325-route-heading p {color:#b3bcd6;}
+        html[data-theme="dark"] .mc325-route-icon {background:#41465f; color:#fff;}
+        html[data-theme="dark"] .mc325-route-panel--course .mc325-route-icon {background:#592524; color:#fff;}
+        @media (max-width:650px) {
+            .mc325-route-panel {padding:14px 13px 16px;}
+            .mc325-route-actions .ex-btn {flex:1 1 100%;}
+            .mc325-route-actions .mc325-continuar,
+            .mc325-route-actions .mc325-ejercicio-siguiente {margin-left:0;}
+            .mc325-recorrido-curso--pdf .ex-btn {flex:1 1 100%;}
+            .mc325-recorrido-curso--pdf .mc325-continuar {margin-left:0;}
+        }
     </style>
     <script>window.MathJax={output:{font:"mathjax-termes"},options:{enableExplorerHelp:false},tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},svg:{fontCache:"global",displayAlign:"center",displayIndent:"0"}};</script>
     <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
     <script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@4.1.3/tex-svg-nofont.js"></script>
     <script defer src="js/ejercicios-datos.js"></script>
-    <script defer src="js/ejercicios-mc325.js"></script>
+    <script defer src="js/ejercicios-mc325.js?v=mc325-rutas-clasificadas-20261116"></script>
     <!-- Modo oscuro persistente: se aplica antes de pintar la página. -->
     <script src="js/tema-mc325.js?v=20261115-02"></script>
     <link rel="stylesheet" href="modo-oscuro.css?v=20261115-05">
@@ -120,7 +168,7 @@
             <div class="page-header ex-heading">
                 <div>
                     <h2>Ejercicios Resueltos</h2>
-                    <p>Soluciones desarrolladas en clase y aportes de estudiantes, organizados por unidad.</p>
+                    <p>Soluciones de clase y aportes de estudiantes reunidos en una sola lista, organizados por unidad.</p>
                 </div>
                 <div class="ex-heading-actions">
                     <button id="ex-btn-docente" class="ex-btn ex-btn-outline" type="button"><i class="fa-solid fa-lock"></i> Modo Docente</button>
@@ -139,7 +187,6 @@
                         <div class="ex-form-field"><label for="ex-titulo">Título del ejercicio *</label><input id="ex-titulo" type="text" maxlength="160" required placeholder="Ej. Cálculo de reacciones en una viga curva"></div>
                         <div class="ex-form-field"><label for="ex-unidad">Unidad del curso *</label><select id="ex-unidad" required></select></div>
                         <div class="ex-form-field"><label for="ex-autor">Autor o nombre del estudiante *</label><input id="ex-autor" type="text" maxlength="90" required placeholder="Tu nombre o alias"></div>
-                        <div class="ex-form-field"><label for="ex-dificultad">Dificultad</label><select id="ex-dificultad"><option value="basico">Básico</option><option value="intermedio" selected>Intermedio</option><option value="avanzado">Avanzado</option></select></div>
                         <div class="ex-form-field"><label for="ex-formato">Formato de la solución *</label><select id="ex-formato"><option value="web">Artículo web (Markdown + LaTeX)</option><option value="pdf">Documento PDF</option></select></div>
                         <div class="ex-form-field"><label for="ex-descripcion">Descripción breve (opcional)</label><input id="ex-descripcion" type="text" maxlength="280" placeholder="Ej. Desarrollo por equilibrio y polígonos de fuerza"></div>
                     </div>
@@ -158,31 +205,26 @@
             <div id="ex-lista">
                 <div class="ex-stats" aria-live="polite">
                     <div class="ex-stat"><strong id="ex-stat-total">0</strong><span>Ejercicios disponibles</span></div>
-                    <div class="ex-stat"><strong id="ex-stat-clase">0</strong><span>Hechos en clase</span></div>
-                    <div class="ex-stat"><strong id="ex-stat-estudiantes">0</strong><span>Aportes de estudiantes</span></div>
+                    <div class="ex-stat"><strong id="ex-stat-web">0</strong><span>Soluciones WEB</span></div>
+                    <div class="ex-stat"><strong id="ex-stat-pdf">0</strong><span>Soluciones PDF</span></div>
                 </div>
                 <div class="ex-filterbar">
                     <label class="ex-screen-reader" for="ex-buscar">Buscar ejercicios</label>
                     <div class="ex-search-wrap"><input id="ex-buscar" type="search" autocomplete="off" placeholder="Buscar por título, autor o tema..."><button type="button" id="ex-limpiar-busqueda" title="Limpiar búsqueda" aria-label="Limpiar búsqueda"><i class="fa-solid fa-xmark"></i></button></div>
                     <label class="ex-screen-reader" for="ex-filtro-unidad">Filtrar unidad</label><select id="ex-filtro-unidad"><option value="todas">Todas las unidades</option></select>
-                    <label class="ex-screen-reader" for="ex-filtro-dificultad">Filtrar dificultad</label><select id="ex-filtro-dificultad"><option value="todas">Todas las dificultades</option><option value="basico">Básico</option><option value="intermedio">Intermedio</option><option value="avanzado">Avanzado</option></select>
                     <label class="ex-screen-reader" for="ex-orden">Ordenar ejercicios</label><select id="ex-orden"><option value="recientes">Más recientes</option><option value="antiguos">Más antiguos</option><option value="titulo">Por título</option></select>
                 </div>
                 <p id="ex-resultados" class="ex-filter-results" aria-live="polite"></p>
                 <p id="ex-estado" class="ex-status" role="status" aria-live="polite">Cargando unidades y ejercicios...</p>
                 <div class="material-layout">
                     <div class="files-column">
-                        <section class="ex-section" id="ex-grupo-clase">
-                            <div class="ex-section-header"><h3><i class="fa-solid fa-chalkboard-user"></i> Ejercicios hechos en clase</h3><small id="ex-count-clase">0 ejercicios</small></div>
-                            <div class="ex-section-body" id="ex-lista-clase"></div>
-                        </section>
-                        <section class="ex-section" id="ex-grupo-estudiantes">
-                            <div class="ex-section-header"><h3><i class="fa-solid fa-users"></i> Ejercicios subidos por alumnos y visitantes</h3><small id="ex-count-estudiantes">0 ejercicios</small></div>
-                            <div class="ex-section-body" id="ex-lista-estudiantes"></div>
+                        <section class="ex-section" id="ex-grupo-unificado">
+                            <div class="ex-section-header"><h3><i class="fa-solid fa-list-check" aria-hidden="true"></i> Ejercicios Resueltos</h3><small id="ex-count-total">0 ejercicios</small></div>
+                            <div class="ex-section-body" id="ex-lista-unificada"></div>
                         </section>
                     </div>
                     <aside class="widgets-column">
-                        <div class="widget-box"><div class="widget-header"><h3>Cómo aportar una solución</h3></div><ul class="widget-list ex-help"><li><i class="fa-solid fa-check" aria-hidden="true"></i><span>Incluye el enunciado y su desarrollo.</span></li><li><i class="fa-solid fa-check" aria-hidden="true"></i><span>Indica la unidad y el nivel de dificultad.</span></li><li><i class="fa-solid fa-check" aria-hidden="true"></i><span>Publica en PDF o con ecuaciones LaTeX.</span></li><li><i class="fa-solid fa-circle-info" aria-hidden="true"></i><span>Tras enviar, solo el equipo docente podrá editar el aporte.</span></li></ul></div>
+                        <div class="widget-box"><div class="widget-header"><h3>Cómo aportar una solución</h3></div><ul class="widget-list ex-help"><li><i class="fa-solid fa-check" aria-hidden="true"></i><span>Incluye el enunciado y su desarrollo.</span></li><li><i class="fa-solid fa-check" aria-hidden="true"></i><span>Indica la unidad del curso a la que corresponde.</span></li><li><i class="fa-solid fa-check" aria-hidden="true"></i><span>Publica en PDF o con ecuaciones LaTeX.</span></li><li><i class="fa-solid fa-circle-info" aria-hidden="true"></i><span>Tras enviar, solo el equipo docente podrá editar el aporte.</span></li></ul></div>
                         <div class="widget-box"><div class="widget-header"><h3>Material relacionado</h3></div><div class="ex-related" style="padding:4px 16px 10px;"><a href="materiales.html">Desarrollo del Curso</a><a href="apuntes.html">Apuntes y Cuadernos</a><a href="foro.html">Foro de Consultas</a></div></div>
                     </aside>
                 </div>
@@ -190,7 +232,28 @@
             <section id="ex-lector" hidden aria-label="Lectura del ejercicio">
                 <div class="ex-reader-bar"><button type="button" id="ex-volver" class="ex-btn ex-btn-outline"><i class="fa-solid fa-arrow-left"></i> Volver a ejercicios</button></div>
                 <div class="ex-reader-layout">
-                    <article class="ex-paper"><h1 id="ex-lector-titulo"></h1><div id="ex-lector-meta" class="ex-reader-meta"></div><div id="ex-lector-contenido" class="ex-markdown"></div></article>
+                    <article class="ex-paper"><h1 id="ex-lector-titulo"></h1><div id="ex-lector-meta" class="ex-reader-meta"></div><div id="ex-lector-contenido" class="ex-markdown"></div>
+                        <nav id="mc325-nav-ejercicios" class="mc325-route-panel mc325-route-panel--exercises" aria-label="Seguir resolviendo ejercicios" hidden>
+                            <div class="mc325-route-heading">
+                                <span class="mc325-route-icon"><i class="fa-solid fa-list-check" aria-hidden="true"></i></span>
+                                <div><h3>Seguir resolviendo ejercicios</h3><p>Continúa repasando soluciones de ejercicios de este u otros temas.</p></div>
+                            </div>
+                            <div class="mc325-route-actions">
+                                <button id="mc325-ej-anterior" class="ex-btn ex-btn-outline" type="button" hidden><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> <span>Ejercicio anterior</span></button>
+                                <button id="mc325-ej-siguiente" class="ex-btn mc325-ejercicio-siguiente" type="button" hidden><span>Siguiente ejercicio</span> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+                            </div>
+                        </nav>
+                        <nav id="mc325-recorrido-lector" class="mc325-route-panel mc325-route-panel--course" aria-label="Regresar a la teoría de Desarrollo del Curso" hidden>
+                            <div class="mc325-route-heading">
+                                <span class="mc325-route-icon"><i class="fa-solid fa-book-open" aria-hidden="true"></i></span>
+                                <div><h3>Retomar Desarrollo del Curso</h3><p>Regresa al capítulo de teoría que te trajo aquí o continúa con la explicación siguiente.</p></div>
+                            </div>
+                            <div class="mc325-route-actions">
+                                <a id="mc325-volver-lector" class="ex-btn ex-btn-outline" href="materiales.html"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Volver al capítulo de teoría</a>
+                                <a id="mc325-siguiente-lector" class="ex-btn mc325-continuar" href="materiales.html" hidden><span>Siguiente capítulo de teoría</span> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                            </div>
+                        </nav>
+                    </article>
                     <aside id="ex-lector-indice" class="ex-toc" hidden><h3><i class="fa-solid fa-list"></i> En este ejercicio</h3><div id="ex-indice-links"></div></aside>
                 </div>
             </section>
@@ -206,6 +269,10 @@
                 <button type="button" id="ex-modal-cerrar" class="btn-close ex-modal-close" aria-label="Cerrar visor"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body ex-modal-content" id="ex-modal-contenido"></div>
+            <nav id="mc325-recorrido-pdf" class="mc325-recorrido-curso mc325-recorrido-curso--pdf" aria-label="Continuar el desarrollo del curso desde el PDF" hidden>
+                <a id="mc325-volver-pdf" class="ex-btn ex-btn-outline" href="materiales.html"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Volver al capítulo</a>
+                <a id="mc325-siguiente-pdf" class="ex-btn mc325-continuar" href="materiales.html" hidden><span>Siguiente capítulo</span> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            </nav>
         </div>
     </div>
 </body>

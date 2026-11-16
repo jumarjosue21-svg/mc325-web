@@ -113,6 +113,8 @@ async function exportar(){
       if(original?.ruta && e.ruta!==original.ruta && rutaValida(original.ruta))retirados.add(original.ruta);
       if(original?.enunciadoRuta && e.enunciadoRuta!==original.enunciadoRuta && imagenValida(original.enunciadoRuta))retirados.add(original.enunciadoRuta);
       if(e.ruta && !rutaValida(e.ruta))throw new Error(`Ruta no permitida en el ejercicio ${e.titulo}: ${e.ruta}`);
+      // La dificultad ya no se utiliza: no trasladarla al JSON publicado.
+      delete e.dificultad;
       delete e.contenido;delete e.archivoLocalId;delete e.enunciadoLocalId;
     }
     for(const id of estadoLocal.eliminados){
