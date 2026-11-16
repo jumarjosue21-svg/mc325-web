@@ -734,3 +734,634 @@ html[data-theme="dark"] .view-all-link:focus-visible {
   outline: 2px solid #d7dbed;
   outline-offset: 3px;
 }
+
+
+/* ========================================================================
+   MC325 · V5 — LEGIBILIDAD Y CONTRASTE EN MODO OSCURO (2026-11-15)
+   No modifica modo claro, datos, imágenes, documentos ni el tema persistente.
+   Paleta azul marino / gris violáceo con granate UNI #592524 para acciones.
+   ======================================================================== */
+html[data-theme="dark"] {
+  --dm-accent-text: #f2f4fc; /* antes: coral sobre gris azulado */
+  --dm-icon-neutral: #dce2f4;
+  --dm-calendar-grid: #2d3249;
+  --dm-calendar-outside: #272b3f;
+  --dm-calendar-today: #44475f;
+}
+
+/* Titulares, enlaces y cifras que aún heredaban el rojo del modo claro. */
+html[data-theme="dark"] .file-details .clickable-title,
+html[data-theme="dark"] .file-details .clickable-title:hover,
+html[data-theme="dark"] .ex-card-title:hover,
+html[data-theme="dark"] .em-row .file-details h4,
+html[data-theme="dark"] .ex-stat strong,
+html[data-theme="dark"] .ex-editor-header h3,
+html[data-theme="dark"] .em-editor-heading h3,
+html[data-theme="dark"] .contacto-admin h3,
+html[data-theme="dark"] .admin-section-title,
+html[data-theme="dark"] .em-next a,
+html[data-theme="dark"] .ex-btn-subtle,
+html[data-theme="dark"] .em-small-btn,
+html[data-theme="dark"] .widget-list a:hover,
+html[data-theme="dark"] .recursos-expandir-boton,
+html[data-theme="dark"] .recursos-btn-secondary,
+html[data-theme="dark"] .contacto-link-action,
+html[data-theme="dark"] .contacto-minor-btn,
+html[data-theme="dark"] [style*="color: var(--uni-red-dark)"],
+html[data-theme="dark"] [style*="color:var(--uni-red-dark)"] {
+  color: var(--dm-accent-text) !important;
+}
+html[data-theme="dark"] .file-details .clickable-title:hover,
+html[data-theme="dark"] .ex-card-title:hover,
+html[data-theme="dark"] .widget-list a:hover {
+  text-decoration-color: var(--dm-muted);
+}
+
+/* Los pictogramas decorativos y las insignias de formatos: gris suave o
+   granate de marca, en vez de salmón sobre fondos azulados. */
+html[data-theme="dark"] .link-card .icon-red,
+html[data-theme="dark"] .link-card .icon-red i,
+html[data-theme="dark"] .icon-box-resource,
+html[data-theme="dark"] .icon-box-resource i,
+html[data-theme="dark"] .rules-list li i,
+html[data-theme="dark"] .ex-help li i,
+html[data-theme="dark"] .ex-note i,
+html[data-theme="dark"] .widget-list li > i,
+html[data-theme="dark"] .mc325-format-icon i {
+  color: var(--dm-icon-neutral) !important;
+}
+html[data-theme="dark"] .file-icon-box.mc325-format-icon,
+html[data-theme="dark"] body[data-mc325-page="materiales"] .file-icon-box.mc325-format-icon {
+  color: var(--dm-icon-neutral) !important;
+  background: #41465d !important;
+  border-color: #565d79 !important;
+}
+html[data-theme="dark"] .file-icon-box.mc325-icon-pdf,
+html[data-theme="dark"] body[data-mc325-page="materiales"] .file-icon-box.mc325-icon-pdf,
+html[data-theme="dark"] .ex-fileicon,
+html[data-theme="dark"] .ex-fileicon.ex-format-web,
+html[data-theme="dark"] .ex-fileicon.ex-format-pdf,
+html[data-theme="dark"] .em-icon-box {
+  background: var(--dm-header-maroon) !important;
+  border: 1px solid #754243 !important;
+  color: #ffffff !important;
+}
+html[data-theme="dark"] .ex-fileicon i,
+html[data-theme="dark"] .ex-fileicon span,
+html[data-theme="dark"] .em-icon-box i,
+html[data-theme="dark"] .em-icon-box span,
+html[data-theme="dark"] .file-icon-box.mc325-icon-pdf i,
+html[data-theme="dark"] .file-icon-box.mc325-icon-pdf span,
+html[data-theme="dark"] body[data-mc325-page="materiales"] .file-icon-box.mc325-icon-pdf i {
+  color: #ffffff !important;
+}
+/* Materiales: los otros formatos mantienen la identidad por siglas y símbolo. */
+html[data-theme="dark"] .file-icon-box.mc325-format-icon span {
+  color: inherit !important;
+}
+
+/* Acciones secundarias y botones 'Modo Docente' con fondo gris:
+   texto e icono claros, sin rojo de contraste insuficiente. */
+html[data-theme="dark"] .ex-btn-outline,
+html[data-theme="dark"] .ex-btn-outline:hover,
+html[data-theme="dark"] .em-secondary,
+html[data-theme="dark"] .em-secondary:hover,
+html[data-theme="dark"] #ex-btn-docente,
+html[data-theme="dark"] #em-docente,
+html[data-theme="dark"] .ex-btn-preview,
+html[data-theme="dark"] .ex-btn-preview:hover,
+html[data-theme="dark"] .em-small-btn {
+  color: #f7f8fc !important;
+  border-color: var(--dm-border);
+}
+html[data-theme="dark"] .ex-btn-outline i,
+html[data-theme="dark"] .em-secondary i,
+html[data-theme="dark"] #ex-btn-docente i,
+html[data-theme="dark"] #em-docente i,
+html[data-theme="dark"] .ex-btn-preview i {
+  color: inherit !important;
+}
+html[data-theme="dark"] .ex-btn-outline:focus-visible,
+html[data-theme="dark"] .em-secondary:focus-visible {
+  outline: 2px solid var(--dm-icon-neutral);
+  outline-offset: 2px;
+}
+
+/* Fechas de los widgets: mes y número se leen de inmediato. */
+html[data-theme="dark"] .date-box,
+html[data-theme="dark"] .event-date-box,
+html[data-theme="dark"] #em-proximo .date-box,
+html[data-theme="dark"] #proximas-actividades-inicio .date-box {
+  background: #493344 !important;
+  border: 1px solid #6f4a5a;
+  color: #f5f5fc !important;
+}
+html[data-theme="dark"] .date-box span,
+html[data-theme="dark"] .date-box strong,
+html[data-theme="dark"] .event-date-box .month,
+html[data-theme="dark"] .event-date-box .day,
+html[data-theme="dark"] #proximas-actividades-list [style*="background:#fdf5f5"] span,
+html[data-theme="dark"] #proximas-actividades-list [style*="background:#fdf5f5"] strong {
+  color: #f5f5fc !important;
+}
+html[data-theme="dark"] #proximas-actividades-list [style*="background:#fdf5f5"] {
+  border-color: #6f4a5a !important;
+}
+html[data-theme="dark"] #proximas-actividades-list [style*="border-bottom:1px solid #f0f0f0"] {
+  border-bottom-color: var(--dm-border) !important;
+}
+/* En exámenes, el acceso al calendario se presenta como botón institucional. */
+html[data-theme="dark"] #em-proximo a[href*="calendario.html"] {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 8px 12px;
+  border-radius: 5px;
+  background: var(--dm-header-maroon);
+  border: 1px solid var(--dm-header-maroon);
+  color: white !important;
+  text-decoration: none;
+  line-height: 1.2;
+  font-weight: 600;
+}
+html[data-theme="dark"] #em-proximo a[href*="calendario.html"]:hover {
+  background: #71302f;
+  border-color: #71302f;
+}
+
+/* ===================== FULLCALENDAR · CALENDARIO ===================== */
+/* fullcalendar trae superficies y botones blancos con !important en style.css;
+   aquí se anulan únicamente en modo oscuro. */
+html[data-theme="dark"] #calendario-web {
+  background: var(--dm-surface) !important;
+  color: var(--dm-text);
+  border-color: var(--dm-border) !important;
+}
+html[data-theme="dark"] #calendario-web.fc {
+  --fc-page-bg-color: var(--dm-surface);
+  --fc-neutral-bg-color: var(--dm-surface-raised);
+  --fc-border-color: #505671;
+  --fc-today-bg-color: var(--dm-calendar-today);
+  --fc-list-event-hover-bg-color: var(--dm-surface-hover);
+  --fc-event-text-color: white;
+}
+html[data-theme="dark"] .fc .fc-scrollgrid,
+html[data-theme="dark"] .fc .fc-view-harness,
+html[data-theme="dark"] .fc .fc-daygrid-body,
+html[data-theme="dark"] .fc .fc-timegrid-body,
+html[data-theme="dark"] .fc .fc-scrollgrid-section-body > td,
+html[data-theme="dark"] .fc .fc-scrollgrid-section-footer > td,
+html[data-theme="dark"] .fc .fc-daygrid-day,
+html[data-theme="dark"] .fc .fc-timegrid-col,
+html[data-theme="dark"] .fc .fc-timegrid-slot {
+  background-color: var(--dm-calendar-grid) !important;
+  color: var(--dm-text) !important;
+}
+html[data-theme="dark"] .fc .fc-col-header-cell,
+html[data-theme="dark"] .fc .fc-timegrid-axis,
+html[data-theme="dark"] .fc .fc-scrollgrid-section-header th,
+html[data-theme="dark"] .fc .fc-timegrid-slot-label {
+  background-color: #373c54 !important;
+  color: var(--dm-text) !important;
+}
+html[data-theme="dark"] .fc .fc-day-other,
+html[data-theme="dark"] .fc .fc-day-other .fc-daygrid-day-frame {
+  background-color: var(--dm-calendar-outside) !important;
+}
+html[data-theme="dark"] .fc .fc-daygrid-day:not(.fc-day-today):hover,
+html[data-theme="dark"] .fc .fc-timegrid-col:not(.fc-day-today):hover {
+  background-color: #3a4059 !important;
+}
+html[data-theme="dark"] .fc .fc-day-today,
+html[data-theme="dark"] .fc .fc-daygrid-day.fc-day-today,
+html[data-theme="dark"] .fc .fc-timegrid-col.fc-day-today,
+html[data-theme="dark"] .fc .fc-day-today .fc-daygrid-day-frame {
+  background-color: var(--dm-calendar-today) !important;
+}
+html[data-theme="dark"] .fc .fc-daygrid-day.fc-day-today {
+  box-shadow: inset 0 0 0 1px #9099bc;
+}
+html[data-theme="dark"] .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+  background-color: var(--dm-header-maroon);
+  border: 1px solid #ab797b;
+  color: white !important;
+  border-radius: 50%;
+  width: 29px;
+  height: 29px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 3px 5px 0 0;
+  font-weight: 700;
+}
+html[data-theme="dark"] .fc .fc-daygrid-day-number,
+html[data-theme="dark"] .fc .fc-col-header-cell-cushion,
+html[data-theme="dark"] .fc .fc-timegrid-slot-label-cushion,
+html[data-theme="dark"] .fc .fc-timegrid-axis-cushion,
+html[data-theme="dark"] .fc .fc-list-day-text,
+html[data-theme="dark"] .fc .fc-list-day-side-text {
+  color: #e5e8f5 !important;
+}
+html[data-theme="dark"] .fc .fc-day-other .fc-daygrid-day-number {
+  color: #8893b1 !important;
+}
+html[data-theme="dark"] .fc .fc-toolbar-title {
+  color: #f4f5ff !important;
+}
+html[data-theme="dark"] .fc .fc-button-primary,
+html[data-theme="dark"] .fc .fc-button-group .fc-button {
+  background: #393f56 !important;
+  border: 1px solid #656d8c !important;
+  color: #f4f5fc !important;
+  box-shadow: none !important;
+  opacity: 1;
+}
+html[data-theme="dark"] .fc .fc-button-primary:not(:disabled):hover,
+html[data-theme="dark"] .fc .fc-button-group .fc-button:not(:disabled):hover {
+  background: #4a506c !important;
+  border-color: #8993b4 !important;
+  color: white !important;
+}
+html[data-theme="dark"] .fc .fc-button-primary:not(:disabled).fc-button-active,
+html[data-theme="dark"] .fc .fc-button-group .fc-button.fc-button-active,
+html[data-theme="dark"] .fc .fc-button-primary:not(:disabled):active {
+  background: var(--dm-header-maroon) !important;
+  border-color: #ad8080 !important;
+  color: #ffffff !important;
+}
+html[data-theme="dark"] .fc .fc-button-primary:disabled {
+  background: #303549 !important;
+  border-color: #4e566e !important;
+  color: #b0b8cf !important;
+  opacity: 0.65 !important;
+}
+html[data-theme="dark"] .fc .fc-button-primary:focus-visible {
+  outline: 2px solid #a7b2d6;
+  outline-offset: 2px;
+}
+html[data-theme="dark"] .fc .fc-popover,
+html[data-theme="dark"] .fc .fc-popover-body,
+html[data-theme="dark"] .fc .fc-list {
+  background: var(--dm-surface) !important;
+  color: var(--dm-text) !important;
+}
+html[data-theme="dark"] .fc .fc-popover-header,
+html[data-theme="dark"] .fc .fc-list-day-cushion {
+  background: #3e445e !important;
+  color: var(--dm-text) !important;
+}
+html[data-theme="dark"] .fc .fc-popover-close,
+html[data-theme="dark"] .fc .fc-daygrid-more-link,
+html[data-theme="dark"] .fc .fc-list-event-title a,
+html[data-theme="dark"] .fc .fc-list-event-time {
+  color: #e4e8f5 !important;
+}
+html[data-theme="dark"] .fc .fc-list-event td {
+  background-color: var(--dm-surface);
+}
+html[data-theme="dark"] .fc .fc-highlight {
+  background: #535975 !important;
+}
+
+/* Tipos de actividad: cada uno mantiene una franja inequívoca sin
+   utilizar las superficies casi blancas del calendario claro. */
+html[data-theme="dark"] .fc .fc-event[class*="mc325-evt-"] {
+  border: 0 !important;
+  border-left: 4px solid var(--mc325-evt-border, #aeb6cb) !important;
+  background: var(--mc325-evt-bg, #41465d) !important;
+  color: var(--mc325-evt-ink, #ffffff) !important;
+  box-shadow: none;
+}
+html[data-theme="dark"] .fc .mc325-evt-examen {
+  --mc325-evt-border: #e17f89;
+  --mc325-evt-bg: #56323f;
+  --mc325-evt-ink: #fff0f2;
+}
+html[data-theme="dark"] .fc .mc325-evt-tarea {
+  --mc325-evt-border: #e5c05d;
+  --mc325-evt-bg: #4a412f;
+  --mc325-evt-ink: #ffedbf;
+}
+html[data-theme="dark"] .fc .mc325-evt-clase {
+  --mc325-evt-border: #85c9aa;
+  --mc325-evt-bg: #2b483e;
+  --mc325-evt-ink: #defbe8;
+}
+html[data-theme="dark"] .fc .mc325-evt-feriado {
+  --mc325-evt-border: #8ebcf2;
+  --mc325-evt-bg: #30465e;
+  --mc325-evt-ink: #dfedff;
+}
+html[data-theme="dark"] .fc .fc-event[class*="mc325-evt-"] .fc-event-main,
+html[data-theme="dark"] .fc .fc-event[class*="mc325-evt-"] .fc-event-main > div {
+  color: var(--mc325-evt-ink, white) !important;
+}
+html[data-theme="dark"] .fc .fc-event.evento-vencimiento {
+  border-left: 4px solid #e5c05d !important;
+}
+
+/* El calendario propio (si se reutiliza en widgets), mismos criterios. */
+html[data-theme="dark"] .calendar-toolbar,
+html[data-theme="dark"] .calendar-grid { background: var(--dm-surface) !important; }
+html[data-theme="dark"] .cal-header { background: #373c54 !important; color: #e5e8f5 !important; }
+html[data-theme="dark"] .cal-day { background: var(--dm-calendar-grid); color: var(--dm-text); }
+html[data-theme="dark"] .cal-day.today { background: var(--dm-calendar-today) !important; }
+html[data-theme="dark"] .cal-day.faded { background: var(--dm-calendar-outside); }
+html[data-theme="dark"] .cal-day.faded span { color: #929cbb !important; }
+html[data-theme="dark"] .cal-day.today .day-num { color: white !important; background: var(--dm-header-maroon); }
+html[data-theme="dark"] .btn-icon,
+html[data-theme="dark"] .cal-views button { background: #393f56 !important; border-color: #656d8c; color: white !important; }
+html[data-theme="dark"] .cal-views button.active { background: var(--dm-header-maroon) !important; }
+
+@media (max-width: 900px) {
+  html[data-theme="dark"] #vista-calendario #calendario-web {
+    flex: 1 1 100% !important;
+    min-width: 0 !important;
+    width: 100%;
+    padding: 12px !important;
+  }
+  html[data-theme="dark"] #vista-calendario > div:last-child {
+    flex: 1 1 100% !important;
+    min-width: 0 !important;
+  }
+  html[data-theme="dark"] #calendario-web .fc .fc-toolbar,
+  html[data-theme="dark"] #calendario-web.fc .fc-toolbar {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  html[data-theme="dark"] #calendario-web .fc-toolbar-title,
+  html[data-theme="dark"] #calendario-web.fc .fc-toolbar-title {
+    font-size: 1.25rem !important;
+  }
+}
+
+
+/* ===========================================================================
+   V6 · Insignias de archivos completamente blancas y filtro activo visible.
+   Aplicacion EXCLUSIVA al modo oscuro: no modifica el modo claro ni los datos.
+   =========================================================================== */
+
+/* Materiales (WEB, PDF, DOCX, PPTX y XLSX): simbolo y siglas blancas
+   independientemente de la paleta por formato o estilos anteriores. */
+html[data-theme="dark"] body[data-mc325-page="materiales"] .file-icon-box.mc325-format-icon,
+html[data-theme="dark"] body[data-mc325-page="materiales"] .file-icon-box.mc325-format-icon i,
+html[data-theme="dark"] body[data-mc325-page="materiales"] .file-icon-box.mc325-format-icon span,
+html[data-theme="dark"] body[data-mc325-page="materiales"] .file-icon-box.mc325-format-icon svg {
+  color: #ffffff !important;
+}
+
+/* Ejercicios y Examenes: WEB y PDF (incluidos los registros heredados). */
+html[data-theme="dark"] body[data-mc325-page="ejercicios"] .ex-fileicon,
+html[data-theme="dark"] body[data-mc325-page="ejercicios"] .ex-fileicon i,
+html[data-theme="dark"] body[data-mc325-page="ejercicios"] .ex-fileicon span,
+html[data-theme="dark"] body[data-mc325-page="ejercicios"] .ex-fileicon svg,
+html[data-theme="dark"] body[data-mc325-page="examenes"] .ex-fileicon,
+html[data-theme="dark"] body[data-mc325-page="examenes"] .ex-fileicon i,
+html[data-theme="dark"] body[data-mc325-page="examenes"] .ex-fileicon span,
+html[data-theme="dark"] body[data-mc325-page="examenes"] .ex-fileicon svg,
+html[data-theme="dark"] body[data-mc325-page="examenes"] .em-icon-box,
+html[data-theme="dark"] body[data-mc325-page="examenes"] .em-icon-box i,
+html[data-theme="dark"] body[data-mc325-page="examenes"] .em-icon-box span,
+html[data-theme="dark"] body[data-mc325-page="examenes"] .em-icon-box svg {
+  color: #ffffff !important;
+}
+
+/* Font Awesome puede dibujar el pictograma mediante ::before.
+   En SVG los trazos que heredan currentColor siguen siendo blancos. */
+html[data-theme="dark"] body[data-mc325-page="materiales"] .mc325-format-icon i::before,
+html[data-theme="dark"] body[data-mc325-page="ejercicios"] .ex-fileicon i::before,
+html[data-theme="dark"] body[data-mc325-page="examenes"] .ex-fileicon i::before,
+html[data-theme="dark"] body[data-mc325-page="examenes"] .em-icon-box i::before {
+  color: #ffffff !important;
+}
+
+/* Selector de ciclo en Examenes: la regla global de los filtros oscurecia
+   incluso el boton .active; con aria-pressed el estado sigue siendo accesible. */
+html[data-theme="dark"] body[data-mc325-page="examenes"] #em-ciclos button.active,
+html[data-theme="dark"] body[data-mc325-page="examenes"] #em-ciclos button[aria-pressed="true"] {
+  background: #813034 !important;
+  border-color: #a45a5f !important;
+  color: #ffffff !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.13);
+}
+html[data-theme="dark"] body[data-mc325-page="examenes"] #em-ciclos button:not(.active):not([aria-pressed="true"]):hover {
+  background: var(--dm-surface-hover);
+  color: #ffffff;
+}
+html[data-theme="dark"] body[data-mc325-page="examenes"] #em-ciclos button:focus-visible {
+  outline: 2px solid #d7dbed;
+  outline-offset: 2px;
+}
+
+/* ============================================================================
+   MC325 V7 · Ajuste final de filtros e insignias, EXCLUSIVO modo oscuro.
+   La cascada anterior daba el mismo fondo a .filter-buttons button y a
+   .filter-buttons button.active. Esta regla deja inequívoco el seleccionado.
+   ============================================================================ */
+html[data-theme="dark"] body[data-mc325-page="materiales"] .filter-buttons button.active,
+html[data-theme="dark"] body[data-mc325-page="materiales"] .filter-buttons button.active:hover,
+html[data-theme="dark"] body[data-mc325-page="materiales"] .filter-buttons button.active:focus-visible {
+  background-color: #813034 !important;
+  border-color: #aa6568 !important;
+  color: #ffffff !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.10);
+}
+html[data-theme="dark"] body[data-mc325-page="materiales"] .filter-buttons button:not(.active):hover {
+  background-color: var(--dm-surface-hover) !important;
+  color: #ffffff !important;
+}
+html[data-theme="dark"] body[data-mc325-page="materiales"] .filter-buttons button:focus-visible {
+  outline: 2px solid #d7dbed;
+  outline-offset: 2px;
+}
+
+/* Todos los formatos de archivos: icono, siglas y pseudoiconos blancos.
+   :is agrupa WEB, PDF, DOCX, PPTX, XLSX y formatos futuros, sin modificar
+   fondos/etiquetas ni ninguna regla de modo claro. */
+html[data-theme="dark"] body:is([data-mc325-page="materiales"], [data-mc325-page="ejercicios"], [data-mc325-page="examenes"])
+  :is(.file-icon-box, .mc325-format-icon, .ex-fileicon, .em-icon-box, .pdf-icon),
+html[data-theme="dark"] body:is([data-mc325-page="materiales"], [data-mc325-page="ejercicios"], [data-mc325-page="examenes"])
+  :is(.file-icon-box, .mc325-format-icon, .ex-fileicon, .em-icon-box, .pdf-icon) *,
+html[data-theme="dark"] body:is([data-mc325-page="materiales"], [data-mc325-page="ejercicios"], [data-mc325-page="examenes"])
+  :is(.file-icon-box, .mc325-format-icon, .ex-fileicon, .em-icon-box, .pdf-icon) *::before,
+html[data-theme="dark"] body:is([data-mc325-page="materiales"], [data-mc325-page="ejercicios"], [data-mc325-page="examenes"])
+  :is(.file-icon-box, .mc325-format-icon, .ex-fileicon, .em-icon-box, .pdf-icon) *::after {
+  color: #ffffff !important;
+}
+/* Iconos SVG que definan fill o stroke explícitos. */
+html[data-theme="dark"] body:is([data-mc325-page="materiales"], [data-mc325-page="ejercicios"], [data-mc325-page="examenes"])
+  :is(.file-icon-box, .mc325-format-icon, .ex-fileicon, .em-icon-box, .pdf-icon) svg:not([fill="none"]),
+html[data-theme="dark"] body:is([data-mc325-page="materiales"], [data-mc325-page="ejercicios"], [data-mc325-page="examenes"])
+  :is(.file-icon-box, .mc325-format-icon, .ex-fileicon, .em-icon-box, .pdf-icon) svg [fill]:not([fill="none"]) {
+  fill: #ffffff !important;
+}
+html[data-theme="dark"] body:is([data-mc325-page="materiales"], [data-mc325-page="ejercicios"], [data-mc325-page="examenes"])
+  :is(.file-icon-box, .mc325-format-icon, .ex-fileicon, .em-icon-box, .pdf-icon) svg [stroke]:not([stroke="none"]) {
+  stroke: #ffffff !important;
+}
+
+/* ===========================================================================
+   MC325 V8 · Todos los formatos usan el estilo de la insignia WEB de referencia:
+   fondo gris violáceo #41465d, borde #565d79, dibujo y siglas blancos.
+   Afecta ÚNICAMENTE al modo oscuro en Materiales, Ejercicios y Exámenes.
+   No se alteran los tamaños ni el comportamiento de los filtros (V7).
+   =========================================================================== */
+html[data-theme="dark"] body:is([data-mc325-page="materiales"], [data-mc325-page="ejercicios"], [data-mc325-page="examenes"])
+  :is(.file-icon-box.mc325-format-icon, .file-icon-box[class*="mc325-icon-"], .ex-fileicon, .em-icon-box, .pdf-icon) {
+  background: #41465d !important;
+  background-color: #41465d !important;
+  border: 1px solid #565d79 !important;
+  color: #ffffff !important;
+}
+/* Incluye símbolos Font Awesome, etiquetas PDF/WEB/DOCX/PPTX/XLSX y pseudoelementos. */
+html[data-theme="dark"] body:is([data-mc325-page="materiales"], [data-mc325-page="ejercicios"], [data-mc325-page="examenes"])
+  :is(.file-icon-box.mc325-format-icon, .file-icon-box[class*="mc325-icon-"], .ex-fileicon, .em-icon-box, .pdf-icon)
+  :is(i, span, svg) {
+  color: #ffffff !important;
+}
+html[data-theme="dark"] body:is([data-mc325-page="materiales"], [data-mc325-page="ejercicios"], [data-mc325-page="examenes"])
+  :is(.file-icon-box.mc325-format-icon, .file-icon-box[class*="mc325-icon-"], .ex-fileicon, .em-icon-box, .pdf-icon) i::before,
+html[data-theme="dark"] body:is([data-mc325-page="materiales"], [data-mc325-page="ejercicios"], [data-mc325-page="examenes"])
+  :is(.file-icon-box.mc325-format-icon, .file-icon-box[class*="mc325-icon-"], .ex-fileicon, .em-icon-box, .pdf-icon) i::after {
+  color: #ffffff !important;
+}
+html[data-theme="dark"] body:is([data-mc325-page="materiales"], [data-mc325-page="ejercicios"], [data-mc325-page="examenes"])
+  :is(.file-icon-box.mc325-format-icon, .file-icon-box[class*="mc325-icon-"], .ex-fileicon, .em-icon-box, .pdf-icon)
+  svg:not([fill="none"]),
+html[data-theme="dark"] body:is([data-mc325-page="materiales"], [data-mc325-page="ejercicios"], [data-mc325-page="examenes"])
+  :is(.file-icon-box.mc325-format-icon, .file-icon-box[class*="mc325-icon-"], .ex-fileicon, .em-icon-box, .pdf-icon)
+  svg [fill]:not([fill="none"]) { fill: #ffffff !important; }
+
+
+/* ============================================================================
+   MC325 V9 · UNIFICACION DE ROJO INSTITUCIONAL EN MODO OSCURO
+   La barra superior es la referencia EXACTA: #592524.
+   Solo encabezados institucionales, botones principales y estados seleccionados.
+   Se preservan los botones secundarios, iconos de archivos V8, colores de eventos,
+   etiquetas de estado, fondos azulados y el tema claro por completo.
+   ============================================================================ */
+
+/* Encabezados de tarjetas y secciones en todas las páginas, incluidos
+   apartados de contacto, ejercicios, exámenes y publicadores auxiliares. */
+html[data-theme="dark"] :is(
+  .navbar,
+  .section-header,
+  .group-header,
+  .widget-header,
+  .ex-section-header,
+  .contact-header,
+  .mc325-publicador .cabecera,
+  .publicador-mc325 > header
+) {
+  background: #592524 !important;
+  background-color: #592524 !important;
+  color: #ffffff;
+}
+
+/* Acción principal / CTA: mismos granate y texto blanco en estado normal,
+   hover y activado. No se incluyen botones neutrales o de peligro. */
+html[data-theme="dark"] :is(
+  .btn-download,
+  .btn-download-dark,
+  .btn-descargar,
+  .btn-full-width,
+  .btn-solid,
+  .em-primary,
+  .pe-btn:not(.pe-btn-secondary),
+  .ex-btn:not(.ex-btn-outline):not(.ex-btn-subtle):not(.ex-btn-danger):not(.ex-btn-preview),
+  .publicacion .btn-publicar,
+  .view-all-link,
+  #em-proximo a[href*="calendario.html"],
+  .recursos-abrir
+):not(:disabled):not([aria-disabled="true"]) {
+  background: #592524 !important;
+  background-color: #592524 !important;
+  border-color: #592524 !important;
+  color: #ffffff !important;
+}
+html[data-theme="dark"] :is(
+  .btn-download,
+  .btn-download-dark,
+  .btn-descargar,
+  .btn-full-width,
+  .btn-solid,
+  .em-primary,
+  .pe-btn:not(.pe-btn-secondary),
+  .ex-btn:not(.ex-btn-outline):not(.ex-btn-subtle):not(.ex-btn-danger):not(.ex-btn-preview),
+  .publicacion .btn-publicar,
+  .view-all-link,
+  #em-proximo a[href*="calendario.html"],
+  .recursos-abrir
+):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible, :active) {
+  background: #592524 !important;
+  background-color: #592524 !important;
+  border-color: #592524 !important;
+  color: #ffffff !important;
+}
+
+/* Navegación lateral: activo y hover con el mismo granate del encabezado. */
+html[data-theme="dark"] .side-menu a:is(.active, .active-dark, :hover) {
+  background: #592524 !important;
+  background-color: #592524 !important;
+  color: white !important;
+}
+
+/* Filtros de unidades, ciclos y foro: SOLO el botón seleccionado en granate;
+   los filtros inactivos permanecen grises para distinguir la elección. */
+html[data-theme="dark"] .filter-buttons button.active,
+html[data-theme="dark"] .filter-buttons button[aria-pressed="true"],
+html[data-theme="dark"] #em-ciclos button:is(.active, [aria-pressed="true"]),
+html[data-theme="dark"] .foro-filtro-botones button.active {
+  background: #592524 !important;
+  background-color: #592524 !important;
+  border-color: #885253 !important;
+  color: #ffffff !important;
+}
+html[data-theme="dark"] .filter-buttons button.active:is(:hover, :focus-visible),
+html[data-theme="dark"] #em-ciclos button:is(.active, [aria-pressed="true"]):is(:hover, :focus-visible) {
+  background: #592524 !important;
+  background-color: #592524 !important;
+}
+
+/* V7 y V6 usan selectores con identificador de página de mayor especificidad.
+   Esta regla los supera explícitamente y conserva el rojo al navegar o pasar
+   el cursor. */
+html[data-theme="dark"] body[data-mc325-page="materiales"] .filter-buttons button.active,
+html[data-theme="dark"] body[data-mc325-page="materiales"] .filter-buttons button.active:hover,
+html[data-theme="dark"] body[data-mc325-page="materiales"] .filter-buttons button.active:focus-visible,
+html[data-theme="dark"] body[data-mc325-page="examenes"] #em-ciclos button.active,
+html[data-theme="dark"] body[data-mc325-page="examenes"] #em-ciclos button[aria-pressed="true"] {
+  background: #592524 !important;
+  background-color: #592524 !important;
+  border-color: #885253 !important;
+  color: #ffffff !important;
+}
+
+/* Vista 'Mes/Semana': se deja intacta la botonera neutral de navegación,
+   y se uniforma exclusivamente la vista activa. */
+html[data-theme="dark"] .cal-views button.active,
+html[data-theme="dark"] .fc .fc-button-group .fc-button.fc-button-active,
+html[data-theme="dark"] .fc .fc-button-group .fc-button[aria-pressed="true"] {
+  background: #592524 !important;
+  background-color: #592524 !important;
+  border-color: #885253 !important;
+  color: #ffffff !important;
+}
+
+/* Los números de sección y el día actual también utilizan el granate de marca.
+   NO se tocan las fechas de los eventos ni sus colores semánticos. */
+html[data-theme="dark"] :is(.circle-num, .circle-num-dark),
+html[data-theme="dark"] .cal-day.today .day-num {
+  background-color: #592524 !important;
+  color: #ffffff !important;
+}
+
+/* Botones principales en las páginas de publicación con estilos incrustados.
+   Nunca afecta sus botones de cancelar, edición o navegación secundarios. */
+html[data-theme="dark"] body[data-mc325-page="publicar-cambios"] .publicacion .btn-publicar,
+html[data-theme="dark"] body[data-mc325-page="publicar-ejercicios"] .pe-btn:not(.pe-btn-secondary) {
+  background: #592524 !important;
+  border-color: #592524 !important;
+  color: #ffffff !important;
+}
