@@ -11,6 +11,7 @@
     <script>
         window.MathJax = {
             output: { font: 'mathjax-termes' },
+            options: { enableExplorerHelp: false },
             tex: {
                 inlineMath: [['$', '$'], ['\\(', '\\)']],
                 displayMath: [['$$', '$$'], ['\\[', '\\]']],
@@ -22,7 +23,7 @@
     </script>
     
     <!-- LIBRERÍAS EXTERNAS -->
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-svg-nofont.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.1.3/tex-svg-nofont.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="js/datos-mc325.js?v=20261114-orden-materiales"></script>
 <!-- MOTOR TIKZJAX (Agregado para leer los gráficos vectoriales) -->
@@ -426,6 +427,20 @@
     <!-- Modo oscuro persistente: se aplica antes de pintar la pagina. -->
     <script src="js/tema-mc325.js?v=20261115-02"></script>
     <link rel="stylesheet" href="modo-oscuro.css?v=20261115-05">
+
+    <!-- Corrección del desplazamiento al usar el menú contextual de MathJax.
+         El contenido y el menú lateral siguen desplazándose de forma independiente. -->
+    <style id="mc325-mathjax-scroll-lock">
+        html { height: 100%; overflow: clip; }
+        body {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: clip;
+        }
+        .sidebar, .content-area { overscroll-behavior: contain; }
+    </style>
 </head>
 <body data-mc325-page="materiales">
     <!-- BARRA SUPERIOR -->
