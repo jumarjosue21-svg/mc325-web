@@ -19,10 +19,10 @@
     var button = document.getElementById('mc325-theme-toggle');
     if (!button) return;
     button.setAttribute('aria-pressed', String(dark));
-    button.setAttribute('aria-label', dark ? 'Desactivar modo oscuro' : 'Activar modo oscuro');
-    button.title = dark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
+    button.setAttribute('aria-label', dark ? 'Modo oscuro activado; cambiar a modo claro' : 'Modo claro activado; cambiar a modo oscuro');
+    button.title = dark ? 'Modo oscuro activo · Cambiar a claro' : 'Modo claro activo · Cambiar a oscuro';
     var icon = button.querySelector('.mc325-theme-icon');
-    if (icon) icon.outerHTML = dark ? ICON_SUN : ICON_MOON;
+    if (icon) icon.outerHTML = dark ? ICON_MOON : ICON_SUN;
   }
 
   // Ejecutado en <head>, antes de que se dibuje el contenido.
@@ -41,7 +41,7 @@
     button.type = 'button';
     button.id = 'mc325-theme-toggle';
     button.className = 'mc325-theme-toggle';
-    button.innerHTML = ICON_MOON;
+    button.innerHTML = ICON_SUN;
     button.addEventListener('click', toggle);
 
     var navbar = document.querySelector('.navbar');

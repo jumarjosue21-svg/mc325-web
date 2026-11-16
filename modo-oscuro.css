@@ -1365,3 +1365,17 @@ html[data-theme="dark"] body[data-mc325-page="publicar-ejercicios"] .pe-btn:not(
   border-color: #592524 !important;
   color: #ffffff !important;
 }
+
+/* ===========================================================================
+   MC325 V10 · ENCABEZADOS LATERALES DE CALENDARIO EN MODO OSCURO
+   Los títulos de "Próximas actividades" y "Tipos de fecha" se pintaban con
+   un estilo inline que usa --uni-red-dark (#813034), por lo que V9 no los
+   alcanzaba. Ahora coinciden EXACTAMENTE con .navbar (#592524).
+   No se cambian colores de eventos/leyenda, ni modo claro ni HTML.
+   =========================================================================== */
+html[data-theme="dark"] body[data-mc325-page="calendario"]
+#vista-calendario div[style*="background: var(--uni-red-dark)"] {
+    background: #592524 !important;
+    background-color: #592524 !important;
+    color: #ffffff !important;
+}

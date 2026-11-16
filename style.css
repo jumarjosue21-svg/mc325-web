@@ -1784,3 +1784,105 @@ body *:not(:is(
 )) {
   font-family: "Times New Roman", Times, serif !important;
 }
+
+/* ============================================================
+   FIX FULLCALENDAR + TIMES NEW ROMAN
+   Las flechas anterior/siguiente usan iconos de la fuente interna
+   fcicons. No sustituirlos por Times New Roman.
+   Se aplica en modo claro y oscuro, sin alterar el texto.
+   ============================================================ */
+.fc .fc-icon,
+.fc .fc-icon::before {
+    font-family: "fcicons" !important;
+}
+
+/* ===========================================================================
+   MC325 V11 · ROJO ORIGINAL EN MODO CLARO (SOLO TEMA CLARO)
+   Restablece el rojo del banner anterior: #7B241C.
+   El modo oscuro conserva el granate #592524 de modo-oscuro.css.
+   No modificar el diseño de los eventos, alertas ni controles neutros.
+   =========================================================================== */
+html:not([data-theme="dark"]) {
+    --uni-red: #7b241c;
+    --uni-red-dark: #7b241c;
+    --color-uni: #7b241c;
+    --color-hover: #7b241c;
+}
+
+/* Encabezado institucional: uniforme en todas las páginas. */
+html:not([data-theme="dark"]) .navbar {
+    background: #7b241c !important;
+    background-color: #7b241c !important;
+}
+
+/* Encabezados, botones y filtros que usan las variables anteriores
+   adoptan automáticamente #7b241c, incluidos los títulos inyectados
+   por JavaScript en Materiales, Exámenes y Calendario. */
+
+/* Elementos con un rojo escrito literalmente, fuera de las variables. */
+html:not([data-theme="dark"]) .pdf-icon,
+html:not([data-theme="dark"]) .tag-fijado {
+    background: #7b241c !important;
+    background-color: #7b241c !important;
+    color: #ffffff !important;
+}
+html:not([data-theme="dark"]) .border-red {
+    color: #7b241c;
+    border-color: #7b241c;
+}
+
+/* Letras e insignias en rojo de las fichas de documentos. Se mantienen
+   los colores particulares de formatos no rojos (Word, Excel, etc.). */
+html:not([data-theme="dark"]) :is(
+    .em-icon-box,
+    .em-badge,
+    .em-small-btn:not(.em-delete),
+    .ex-format-pdf,
+    .file-icon-box.mc325-icon-pdf,
+    .file-icon-box.mc325-icon-web
+) {
+    color: #7b241c !important;
+}
+
+/* Encabezados con clases propias de los apartados, también en el mismo
+   tono; se dejan fuera los encabezados neutros o los eventos del calendario. */
+html:not([data-theme="dark"]) :is(
+    .section-header,
+    .group-header,
+    .widget-header,
+    .ex-section-header
+) {
+    background: #7b241c !important;
+    background-color: #7b241c !important;
+    color: white !important;
+}
+
+/* Páginas auxiliares y formularios con rojo oscuro literal en su CSS
+   interno. Se cambia solo el color institucional, no el resto del estilo. */
+html:not([data-theme="dark"]) :is(
+    .publicacion h1,
+    .publicacion h2,
+    .publicacion .dato strong,
+    .mc325-publicador a.volver,
+    .mc325-publicador h2[style],
+    .publicador-mc325 a,
+    .publicador-mc325 h2[style],
+    .recursos-editor > summary,
+    .recursos-btn-secondary,
+    .recursos-icon-action,
+    .admin-unit-row button
+) {
+    color: #7b241c !important;
+}
+html:not([data-theme="dark"]) :is(
+    .mc325-publicador .cabecera,
+    .publicador-mc325 header,
+    .publicacion .btn-publicar
+) {
+    background: #7b241c !important;
+    background-color: #7b241c !important;
+    color: #ffffff !important;
+}
+
+/* El resto de los botones principales continúa usando --uni-red y
+   --uni-red-dark. Los botones secundarios y de error no se alteran. */
