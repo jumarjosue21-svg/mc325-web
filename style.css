@@ -1765,3 +1765,22 @@ body {
 .fc .fc-timegrid-event.evento-vencimiento {
     min-height: 20px;
 }
+
+/* ============================================================
+   TIMES NEW ROMAN — Interfaz y contenido Markdown / LaTeX
+   Activo en modos claro y oscuro. No sobreescribir los glifos
+   de iconos, los SVG ni el motor matemático de MathJax.
+   Las ecuaciones se renderizan con MathJax 4 + Gyre Termes.
+   ============================================================ */
+html, body,
+body *:not(:is(
+  .fa, .fas, .far, .fab, .fal, .fad,
+  .fa-solid, .fa-regular, .fa-brands, .fa-light,
+  .fa-duotone, .fa-thin, .fa-sharp,
+  .fa-stack, .fa-stack-1x, .fa-stack-2x, .fa-layers,
+  svg, svg *,
+  mjx-container, mjx-container *,
+  .MathJax, .MathJax *, .katex, .katex *
+)) {
+  font-family: "Times New Roman", Times, serif !important;
+}
