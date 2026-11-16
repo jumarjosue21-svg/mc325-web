@@ -17,7 +17,7 @@
     <script defer src="lib/jszip.min.js"></script>
     <script defer src="js/datos-mc325.js"></script>
     <script defer src="js/examenes-datos.js?v=20261115-opcional-v6"></script>
-    <script defer src="js/examenes-mc325.js?v=20261115-opcional-v6"></script>
+    <script defer src="js/examenes-mc325.js?v=20261116-navegacion-secciones-v1"></script>
 <style id="em-tikz-tamano-v4">
 
 /* Ajuste final TikZJax: el SVG ocupa el ancho disponible SIN scroll interno. */
@@ -61,6 +61,44 @@
     <!-- Modo oscuro persistente: se aplica antes de pintar la página. -->
     <script src="js/tema-mc325.js?v=20261115-02"></script>
     <link rel="stylesheet" href="modo-oscuro.css?v=20261115-05">
+
+
+    <!-- Navegación entre exámenes WEB de una misma categoría: PC1/PC2/PC3/PC4,
+         parciales, finales y sustitutorios tienen secuencias independientes. -->
+    <style id="em-nav-web-estilos">
+      /* Tarjeta de navegación equivalente a «Seguir resolviendo ejercicios». */
+      #em-nav-web {
+        display:block;
+        margin-top:24px;
+        padding:17px 19px 19px;
+        border:1px solid var(--border-color,#e4e5e8);
+        border-radius:9px;
+        background:#f7f8fa;
+      }
+      #em-nav-web[hidden], #em-nav-web button[hidden] {display:none!important;}
+      #em-nav-web .em-nav-presentacion {display:flex;gap:12px;align-items:flex-start;margin-bottom:15px;}
+      #em-nav-web .em-nav-icono {
+        flex:0 0 38px;display:flex;align-items:center;justify-content:center;
+        width:38px;height:38px;border-radius:7px;
+        color:#355575;background:#e5edf5;font-size:1rem;
+      }
+      #em-nav-web .em-nav-titulo {margin:0 0 4px;font-size:1.02rem;font-weight:700;color:#293440;line-height:1.3;}
+      #em-nav-web .em-nav-descripcion {margin:0;font-size:.84rem;color:#5c6775;line-height:1.5;}
+      #em-nav-web .em-nav-acciones {display:flex;align-items:stretch;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+      #em-nav-web .em-nav-acciones button {display:flex;flex-direction:column;gap:3px;min-width:150px;max-width:100%;text-align:left;align-items:flex-start;white-space:normal;line-height:1.35;}
+      #em-nav-web .em-nav-acciones button:last-child {margin-left:auto;text-align:right;align-items:flex-end;}
+      #em-nav-web .em-nav-boton-texto {display:flex;align-items:center;gap:9px;font-weight:600;}
+      #em-nav-web .em-nav-destino {font-size:.78rem;font-weight:400;opacity:.88;overflow-wrap:anywhere;}
+      html[data-theme="dark"] #em-nav-web {background:#292e42;border-color:#464c65;}
+      html[data-theme="dark"] #em-nav-web .em-nav-icono {background:#41465f;color:#fff;}
+      html[data-theme="dark"] #em-nav-web .em-nav-titulo {color:#f0f2fa;}
+      html[data-theme="dark"] #em-nav-web .em-nav-descripcion {color:#b3bcd6;}
+      @media(max-width:600px){
+        #em-nav-web {padding:14px 13px 16px;}
+        #em-nav-web .em-nav-acciones button {width:100%;flex:1 1 100%;}
+        #em-nav-web .em-nav-acciones button:last-child {margin-left:0;}
+      }
+    </style>
 
     <!-- Corrección del desplazamiento al usar el menú contextual de MathJax.
          El contenido y el menú lateral siguen desplazándose de forma independiente. -->
@@ -228,7 +266,25 @@ Desarrollo en Markdown + LaTeX..."></textarea></label>
           <section id="em-lector" hidden class="em-reader" aria-label="Lectura del examen">
             <div class="ex-reader-bar"><button id="em-volver" type="button" class="ex-btn"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Volver a exámenes</button></div>
             <div class="ex-reader-layout">
-              <article class="ex-paper"><h1 id="em-lector-titulo"></h1><div id="em-lector-meta" class="ex-reader-meta"></div><div id="em-lector-contenido" class="ex-markdown em-markdown"></div></article>
+              <article class="ex-paper"><h1 id="em-lector-titulo"></h1><div id="em-lector-meta" class="ex-reader-meta"></div><div id="em-lector-contenido" class="ex-markdown em-markdown"></div>
+                <nav id="em-nav-web" hidden aria-label="Navegación entre exámenes de la misma categoría">
+                  <div class="em-nav-presentacion">
+                    <span class="em-nav-icono"><i class="fa-solid fa-file-circle-check" aria-hidden="true"></i></span>
+                    <div><h2 class="em-nav-titulo">Seguir repasando exámenes</h2>
+                      <p class="em-nav-descripcion" id="em-nav-descripcion">Continúa repasando soluciones de exámenes de otros ciclos.</p></div>
+                  </div>
+                  <div class="em-nav-acciones">
+                    <button type="button" class="ex-btn ex-btn-outline" id="em-nav-anterior" hidden>
+                      <span class="em-nav-boton-texto"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Examen anterior</span>
+                      <span id="em-nav-anterior-destino" class="em-nav-destino"></span>
+                    </button>
+                    <button type="button" class="ex-btn" id="em-nav-siguiente" hidden>
+                      <span class="em-nav-boton-texto">Siguiente examen <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+                      <span id="em-nav-siguiente-destino" class="em-nav-destino"></span>
+                    </button>
+                  </div>
+                </nav>
+              </article>
               <aside id="em-lector-indice" class="ex-toc" hidden><h3><i class="fa-solid fa-list" aria-hidden="true"></i> En este examen</h3><nav id="em-indice-links" aria-label="Secciones y subapartados del examen"></nav><button type="button" id="em-indice-inicio" class="toc-top"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i> Volver al inicio</button></aside>
             </div>
           </section>

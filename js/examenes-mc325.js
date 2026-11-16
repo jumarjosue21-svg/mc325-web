@@ -435,21 +435,69 @@
     destino.appendChild(lista);
     activarIndice(titulosIndice[0].id);
   }
+  // Secuencias de lectura independientes por tipo. PC1, PC2, PC3 y PC4
+  // se tratan como categorías distintas; PDF nunca entra en el recorrido.
+  // Se conservan todos los ciclos de la misma categoría, aunque el catálogo
+  // esté filtrado a uno, para facilitar el repaso histórico de evaluaciones.
+  function claveNavegacionWeb(e){
+    if(!e||!validTipo(e.tipo))return null;
+    if(e.tipo==='pc'){
+      const practica=Number(e.pc);
+      return [1,2,3,4].includes(practica)?`pc-${practica}`:null;
+    }
+    return e.tipo;
+  }
+  function vecinosNavegacionWeb(e){
+    const clave=claveNavegacionWeb(e);
+    if(!clave||e.formato!=='web')return {anterior:null,siguiente:null,clave:null};
+    const lista=S.items.filter(item=>item.formato==='web'&&claveNavegacionWeb(item)===clave).sort(ordenar);
+    const index=lista.findIndex(item=>String(item.id)===String(e.id));
+    if(index<0)return {anterior:null,siguiente:null,clave};
+    return {anterior:lista[index-1]||null,siguiente:lista[index+1]||null,clave};
+  }
+  let vecinoWebAnterior=null,vecinoWebSiguiente=null,solicitudLecturaWeb=0;
+  function actualizarNavegacionWeb(e){
+    const panel=$('em-nav-web');
+    const {anterior,siguiente,clave}=vecinosNavegacionWeb(e);
+    vecinoWebAnterior=anterior;vecinoWebSiguiente=siguiente;
+    panel.hidden=!anterior&&!siguiente;
+    $('em-nav-anterior').hidden=!anterior;
+    $('em-nav-siguiente').hidden=!siguiente;
+    if(panel.hidden)return;
+    $('em-nav-descripcion').textContent='Continúa repasando soluciones de exámenes de otros ciclos.';
+    if(anterior){
+      $('em-nav-anterior-destino').textContent=`${anterior.ciclo} · ${anterior.titulo}`;
+      $('em-nav-anterior').title=`Abrir: ${anterior.titulo}`;
+    }
+    if(siguiente){
+      $('em-nav-siguiente-destino').textContent=`${siguiente.ciclo} · ${siguiente.titulo}`;
+      $('em-nav-siguiente').title=`Abrir: ${siguiente.titulo}`;
+    }
+  }
   async function abrirSolucionWeb(e){
+    const solicitud=++solicitudLecturaWeb;
     cambiarVista('lector');
     $('em-lector-titulo').textContent=e.titulo;
     $('em-lector-meta').textContent=`${e.ciclo} · ${e.tipo==='pc'?'PC'+e.pc:NOMBRES[e.tipo]} · ${e.autor||'Sin autor'} · ${fechaBonita(e.fecha)}`;
     const out=$('em-lector-contenido');out.textContent='Cargando desarrollo...';
     $('em-lector-indice').hidden=true;
+    $('em-nav-web').hidden=true;
+    vecinoWebAnterior=null;vecinoWebSiguiente=null;
     try{
-      renderMarkdown(await D.markdown(e),out);
+      const markdown=await D.markdown(e);
+      // Evita que una respuesta antigua reemplace un examen abierto después.
+      if(solicitud!==solicitudLecturaWeb)return;
+      renderMarkdown(markdown,out);
       crearIndice();
+      actualizarNavegacionWeb(e);
       if(window.MathJax?.typesetPromise && !$('em-lector-indice').hidden){
         window.MathJax.typesetPromise([$('em-indice-links')]).catch(console.warn);
       }
-    }catch(err){out.textContent='No se pudo abrir: '+err.message;}
+    }catch(err){
+      if(solicitud===solicitudLecturaWeb){out.textContent='No se pudo abrir: '+err.message;$('em-nav-web').hidden=true;}
+    }
   }
-  function volver(){cambiarVista('lista');}
+  function volver(){solicitudLecturaWeb++;$('em-nav-web').hidden=true;cambiarVista('lista');}
   async function exportarAporte(){
     const e=S.items.find(x=>x.id===S.aporteId);if(!e)return mensaje('No se ha encontrado el aporte local.',true);
     if(!window.JSZip)return mensaje('Falta la biblioteca ZIP (lib/jszip.min.js).',true);
@@ -556,6 +604,8 @@
     $('em-formato').addEventListener('change',formato);$('em-tipo').addEventListener('change',tipoForm);
     $('em-form').addEventListener('submit',guardarForm);$('em-buscar').addEventListener('input',render);
     $('em-volver').addEventListener('click',volver);$('em-modal-cerrar').addEventListener('click',cerrarModal);
+    $('em-nav-anterior').addEventListener('click',()=>{if(vecinoWebAnterior)abrirSolucionWeb(vecinoWebAnterior);});
+    $('em-nav-siguiente').addEventListener('click',()=>{if(vecinoWebSiguiente)abrirSolucionWeb(vecinoWebSiguiente);});
     $('em-indice-inicio').addEventListener('click',()=>navegarIndice($('em-lector-titulo')));
     document.querySelector('.content-area').addEventListener('scroll',()=>{
       if(!scrollIndicePendiente){

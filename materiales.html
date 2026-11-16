@@ -426,15 +426,64 @@
         #mc325-campo-ejercicio label {font-size:.88rem;font-weight:650;}
         #mc325-art-ejercicio {width:100%;padding:10px 12px;border:1px solid var(--border-color);border-radius:5px;background:var(--color-blanco);color:var(--text-main);font:inherit;}
         #mc325-ayuda-ejercicio {font-size:.82rem;line-height:1.5;color:var(--text-light);}
-        .mc325-ejercicios-del-capitulo {margin-top:35px;display:flex;justify-content:center;}
-        .mc325-ejercicios-del-capitulo a {display:inline-flex;align-items:center;justify-content:center;gap:9px;text-decoration:none;border-radius:5px;padding:11px 19px;font-weight:650;}
-        #mc325-nav-capitulos {display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:30px;padding-top:24px;border-top:1px solid var(--border-color);}
-        #mc325-nav-capitulos button {display:inline-flex;gap:9px;align-items:center;justify-content:center;max-width:100%;padding:11px 17px;border:0;border-radius:5px;cursor:pointer;font:inherit;font-weight:650;}
-        #mc325-cap-siguiente {margin-left:auto;}
-        #mc325-nav-capitulos[hidden],#mc325-nav-capitulos button[hidden],#mc325-ejercicio-vinculo[hidden] {display:none !important;}
+        /* Paneles de navegación del lector WEB: mismo sistema visual de Ejercicios. */
+        #mc325-ejercicios-panel, #mc325-nav-capitulos {
+            display:block; margin-top:24px; padding:17px 19px 19px;
+            background:#f7f8fa; border:1px solid var(--border-color);
+            border-radius:9px;
+        }
+        #mc325-ejercicios-panel {
+            background:#fcf8f7; border-left:4px solid #7b241c;
+        }
+        #mc325-ejercicios-panel[hidden], #mc325-nav-capitulos[hidden],
+        #mc325-nav-capitulos button[hidden], #mc325-ejercicio-vinculo[hidden] {display:none !important;}
+        .mc325-material-route-heading {display:flex;align-items:flex-start;gap:12px;margin-bottom:15px;}
+        .mc325-material-route-icon {
+            display:flex;align-items:center;justify-content:center;
+            flex:0 0 38px;width:38px;height:38px;border-radius:7px;
+            background:#e5edf5;color:#355575;
+        }
+        #mc325-ejercicios-panel .mc325-material-route-icon {background:#f1e6e3;color:#7b241c;}
+        .mc325-material-route-heading h3 {margin:0 0 4px;font-size:1.02rem;line-height:1.3;color:#293440;}
+        .mc325-material-route-heading p {margin:0;font-size:.84rem;line-height:1.5;color:#5c6775;}
+        .mc325-material-route-actions {
+            display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+        }
+        .mc325-material-route-actions button, .mc325-material-route-actions a {
+            display:inline-flex;align-items:center;justify-content:center;gap:9px;
+            max-width:100%;min-height:40px;padding:10px 15px;
+            border-radius:5px;cursor:pointer;font:inherit;font-size:.88rem;
+            font-weight:400;text-align:center;text-decoration:none;white-space:normal;
+        }
+        #mc325-cap-anterior {
+            background:transparent;border:1px solid #d5a9a2;
+            color:#7b241c;
+        }
+        #mc325-cap-anterior:hover, #mc325-cap-anterior:focus-visible {background:#f1e6e3;}
+        #mc325-cap-siguiente, #mc325-ejercicio-vinculo {margin-left:auto;}
+        html[data-theme="dark"] #mc325-ejercicios-panel,
+        html[data-theme="dark"] #mc325-nav-capitulos {background:#292e42;border-color:#464c65;}
+        html[data-theme="dark"] #mc325-ejercicios-panel {
+            background:#302d41;border-left:4px solid #8f5553;
+        }
+        html[data-theme="dark"] .mc325-material-route-icon {background:#41465f;color:#fff;}
+        html[data-theme="dark"] #mc325-ejercicios-panel .mc325-material-route-icon {background:#592524;color:#fff;}
+        html[data-theme="dark"] .mc325-material-route-heading h3 {color:#f0f2fa;}
+        html[data-theme="dark"] .mc325-material-route-heading p {color:#b3bcd6;}
+        html[data-theme="dark"] #mc325-cap-anterior {
+            color:#f0f2fa;background:#2f3349;border-color:#464c65;
+        }
+        html[data-theme="dark"] #mc325-cap-anterior:hover,
+        html[data-theme="dark"] #mc325-cap-anterior:focus-visible {background:#41465f;}
+        html[data-theme="dark"] #mc325-cap-siguiente,
+        html[data-theme="dark"] #mc325-ejercicio-vinculo {background:#592524;color:#fff;}
         html[data-theme="dark"] #mc325-art-ejercicio {background:var(--dm-surface,#2f3349);border-color:var(--dm-border,#464c65);color:var(--dm-text,#d7dbed);}
         html[data-theme="dark"] #mc325-ayuda-ejercicio {color:var(--dm-muted,#b3bcd6);}
-        @media(max-width:650px){#mc325-nav-capitulos button{flex:1 1 auto;} .mc325-ejercicios-del-capitulo a{width:100%;}}
+        @media(max-width:650px){
+            #mc325-ejercicios-panel,#mc325-nav-capitulos {padding:14px 13px 16px;}
+            .mc325-material-route-actions button,.mc325-material-route-actions a {flex:1 1 100%;}
+            #mc325-cap-siguiente,#mc325-ejercicio-vinculo {margin-left:0;}
+        }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -691,14 +740,32 @@
 
                         <!-- Contenido transformado de Markdown y LaTeX -->
                         <article id="lectura-contenido" class="latex-content" aria-label="Contenido del artículo"></article>
-                        <div class="mc325-ejercicios-del-capitulo">
-                            <a id="mc325-ejercicio-vinculo" class="btn-download-dark" href="ejercicios.html" hidden>
-                                <i class="fa-solid fa-clipboard-check" aria-hidden="true"></i> Ejercicios del capítulo
-                            </a>
-                        </div>
-                        <nav id="mc325-nav-capitulos" aria-label="Navegación entre capítulos del curso">
-                            <button type="button" id="mc325-cap-anterior" class="btn-download-dark" hidden><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> <span>Capítulo anterior</span></button>
-                            <button type="button" id="mc325-cap-siguiente" class="btn-download-dark" hidden><span>Siguiente capítulo</span> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+                        <section id="mc325-ejercicios-panel" aria-label="Practicar con ejercicios del capítulo" hidden>
+                            <div class="mc325-material-route-heading">
+                                <span class="mc325-material-route-icon"><i class="fa-solid fa-clipboard-check" aria-hidden="true"></i></span>
+                                <div>
+                                    <h3>Practicar con ejercicios del capítulo</h3>
+                                    <p>Refuerza lo aprendido repasando la solución del ejercicio vinculado a este capítulo.</p>
+                                </div>
+                            </div>
+                            <div class="mc325-material-route-actions">
+                                <a id="mc325-ejercicio-vinculo" class="btn-download-dark" href="ejercicios.html" hidden>
+                                    Ejercicios del capítulo <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </section>
+                        <nav id="mc325-nav-capitulos" aria-label="Navegación entre capítulos del curso" hidden>
+                            <div class="mc325-material-route-heading">
+                                <span class="mc325-material-route-icon"><i class="fa-solid fa-book-open" aria-hidden="true"></i></span>
+                                <div>
+                                    <h3>Continuar en Desarrollo del Curso</h3>
+                                    <p>Continúa estudiando los capítulos de este u otros temas del curso.</p>
+                                </div>
+                            </div>
+                            <div class="mc325-material-route-actions">
+                                <button type="button" id="mc325-cap-anterior" hidden><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> <span>Capítulo anterior</span></button>
+                                <button type="button" id="mc325-cap-siguiente" class="btn-download-dark" hidden><span>Siguiente capítulo</span> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+                            </div>
                         </nav>
 
                     </div>
@@ -1115,6 +1182,7 @@
 
             const vinculo = document.getElementById('mc325-ejercicio-vinculo');
             const ejercicioId = String(articulo.ejercicioId || '').trim();
+            document.getElementById('mc325-ejercicios-panel').hidden = !ejercicioId;
             vinculo.hidden = !ejercicioId;
             if (ejercicioId) {
                 // Contexto de lectura: permite volver al capítulo o continuar
