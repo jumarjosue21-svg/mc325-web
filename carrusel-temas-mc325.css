@@ -1,0 +1,101 @@
+/* MC325 · Carrusel estilo banner: fotografías como fondos CSS a todo el ancho. */
+.mc325-carousel{
+ --mc325-wine:#75231d;
+ position:relative;isolation:isolate;min-width:0;height:440px;overflow:hidden;
+ border-radius:14px;border:1px solid #dce1e7;background:#121c27;
+ box-shadow:0 8px 25px #1b263a1c;outline-offset:5px;color:#fff;
+}
+.mc325-carousel-photo{
+ position:absolute;inset:0;z-index:-3;overflow:hidden;
+ /* Source is inherited by both layers, without rendering the cropped parent itself. */
+ background-color:#1b2735;background-size:0 0;
+ background-repeat:no-repeat;opacity:0;transition:opacity .6s ease;
+}
+/* Blurred wide background fills all remaining space; a sharp layer keeps the entire
+   photograph visible without cutting away its central engineering subject. */
+.mc325-carousel-photo::before,.mc325-carousel-photo::after{
+ content:"";position:absolute;inset:0;pointer-events:none;
+ background-image:inherit;background-repeat:no-repeat;
+}
+.mc325-carousel-photo::before{
+ background-size:cover;background-position:center center;
+ filter:blur(13px) saturate(.78) brightness(.68);transform:scale(1.045);
+}
+/* La imagen nítida ocupa la zona derecha completa y comienza con alfa cero.
+   Así no aparece la línea de corte en el borde de la fotografía, y el
+   sujeto principal mantiene casi toda su altura visible. */
+.mc325-carousel-photo::after{
+ inset:0 0 0 36%;
+ background-size:cover;
+ background-position:center center;
+ -webkit-mask-image:linear-gradient(to right,
+   transparent 0%,rgba(0,0,0,.05) 10%,rgba(0,0,0,.23) 24%,
+   rgba(0,0,0,.60) 43%,rgba(0,0,0,.94) 68%,#000 83%);
+ mask-image:linear-gradient(to right,
+   transparent 0%,rgba(0,0,0,.05) 10%,rgba(0,0,0,.23) 24%,
+   rgba(0,0,0,.60) 43%,rgba(0,0,0,.94) 68%,#000 83%);
+}
+.mc325-carousel-photo.is-visible{opacity:1}
+.mc325-carousel-overlay{
+ position:absolute;inset:0;z-index:-1;pointer-events:none;
+ background:linear-gradient(90deg,rgba(64,16,16,.97) 0%,rgba(72,19,19,.93) 27%,rgba(77,24,24,.76) 41%,rgba(47,21,22,.37) 57%,rgba(12,18,26,.05) 84%),linear-gradient(0deg,rgba(8,14,23,.65),transparent 27%);
+}
+.mc325-carousel-copy{
+ position:absolute;left:clamp(78px,7.25vw,126px);top:50%;transform:translateY(-50%);
+ width:min(46%,570px);max-height:calc(100% - 72px);color:#fff;
+}
+.mc325-carousel-kicker{display:block;color:#f1e7e7;font:800 11px/1.45 'Segoe UI',Arial,sans-serif;letter-spacing:2.2px;margin-bottom:13px}
+.mc325-carousel-title{font:700 clamp(27px,3.1vw,48px)/1.08 Georgia,'Times New Roman',serif;color:white;margin:0 0 15px;text-shadow:0 2px 10px #0003}
+.mc325-carousel-description{max-width:510px;color:#f1f2f3;font:400 clamp(13px,1.13vw,16px)/1.62 'Segoe UI',Arial,sans-serif;margin:0 0 24px}
+.mc325-carousel-link{display:inline-flex;align-items:center;justify-content:center;gap:13px;min-height:41px;border-radius:8px;padding:11px 17px;background:#fff;border:1px solid #fff;color:#76241e;text-decoration:none;font:750 13px/1.2 'Segoe UI',Arial,sans-serif;transition:background .16s,transform .16s}
+.mc325-carousel-link:hover{background:#f4efed;color:#601a15;transform:translateY(-2px)}
+.mc325-carousel-nav{position:absolute;inset:0;z-index:3;pointer-events:none}
+.mc325-carousel-prev,.mc325-carousel-next{position:absolute;top:50%;transform:translateY(-50%);pointer-events:auto}
+.mc325-carousel-prev{left:clamp(14px,1.5vw,28px)}
+.mc325-carousel-next{right:clamp(14px,1.5vw,28px)}
+.mc325-carousel-arrow{width:41px;height:41px;border-radius:50%;background:#ffffffef;border:1px solid #fff;color:#65231d;display:grid;place-items:center;font:800 17px Georgia,serif;box-shadow:0 3px 14px #0004;cursor:pointer;transition:transform .2s,background .2s}
+.mc325-carousel-arrow:hover{background:#fff;transform:translateY(calc(-50% - 2px))}
+.mc325-carousel-bottom{position:absolute;left:clamp(78px,7.25vw,126px);right:25px;bottom:19px;z-index:2;display:flex;align-items:center;gap:17px;color:#e8edf3}
+.mc325-carousel-dots{display:flex;gap:8px;align-items:center;flex:0 0 auto}
+.mc325-carousel-dot{width:9px;height:9px;border:0;padding:0;border-radius:50%;background:#ffffff86;cursor:pointer;transition:background .2s,width .2s}
+.mc325-carousel-dot.is-current{width:27px;border-radius:8px;background:white}
+.mc325-carousel-sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* Modo oscuro: gradiente azul marino neutro, sin acentos rojo claro. */
+html[data-theme="dark"] .mc325-carousel{border-color:#4c5670;box-shadow:0 10px 25px #0004}
+html[data-theme="dark"] .mc325-carousel-overlay{background:linear-gradient(90deg,rgba(23,30,51,.98) 0%,rgba(29,37,60,.94) 30%,rgba(28,35,56,.81) 45%,rgba(16,25,39,.4) 63%,rgba(7,15,25,.1) 88%),linear-gradient(0deg,rgba(7,12,24,.7),transparent 30%)}
+html[data-theme="dark"] .mc325-carousel-kicker,html[data-theme="dark"] .mc325-carousel-description,html[data-theme="dark"] .mc325-carousel-title{color:#fff}
+html[data-theme="dark"] .mc325-carousel-link{background:#f5f8fc;border-color:#f5f8fc;color:#22364c}
+html[data-theme="dark"] .mc325-carousel-link:hover{background:white;color:#1c2b40}
+html[data-theme="dark"] .mc325-carousel-arrow{color:#273b50;background:#f6f8fb}
+@media(max-width:1050px){.mc325-carousel-copy{width:min(57%,580px)}.mc325-carousel-overlay{background:linear-gradient(90deg,rgba(55,18,17,.97) 0%,rgba(63,18,18,.88) 37%,rgba(42,17,19,.46) 68%,rgba(13,19,29,.06) 95%),linear-gradient(0deg,#080e1d9e,transparent 27%)}}
+@media(max-width:750px){.mc325-carousel{height:410px}.mc325-carousel-photo::before{background-position:center center}
+.mc325-carousel-photo::after{
+ inset:0;
+ background-size:100% auto;background-position:center top;
+ -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 38%,transparent 73%);
+ mask-image:linear-gradient(to bottom,#000 0%,#000 38%,transparent 73%);
+}.mc325-carousel-overlay{background:linear-gradient(90deg,rgba(44,18,21,.89),rgba(49,20,22,.37)),linear-gradient(0deg,rgba(25,17,25,.94) 0%,rgba(25,17,25,.7) 32%,transparent 95%)}html[data-theme="dark"] .mc325-carousel-overlay{background:linear-gradient(90deg,rgba(18,27,46,.78),rgba(19,25,42,.35)),linear-gradient(0deg,rgba(12,20,35,.96) 0%,rgba(15,24,39,.71) 37%,transparent 95%)}.mc325-carousel-copy{left:24px;top:auto;bottom:64px;transform:none;width:calc(100% - 48px);max-height:calc(100% - 100px)}.mc325-carousel-title{font-size:clamp(25px,6vw,34px)}.mc325-carousel-description{font-size:13px;line-height:1.5;margin-bottom:17px}.mc325-carousel-kicker{font-size:10px}.mc325-carousel-bottom{left:24px;right:24px;bottom:17px;gap:10px}.mc325-carousel-prev,.mc325-carousel-next{top:18px;transform:none}.mc325-carousel-prev{left:16px}.mc325-carousel-next{right:16px}.mc325-carousel-arrow{width:35px;height:35px;font-size:15px}.mc325-carousel-arrow:hover{transform:translateY(-2px)}}
+@media(max-width:400px){.mc325-carousel{height:420px}.mc325-carousel-copy{bottom:64px}.mc325-carousel-title{font-size:26px}.mc325-carousel-description{font-size:12px}.mc325-carousel-kicker{letter-spacing:1.2px}.mc325-carousel-bottom{gap:9px}}
+@media(prefers-reduced-motion:reduce){.mc325-carousel-photo,.mc325-carousel-link,.mc325-carousel-dot,.mc325-carousel-arrow{transition:none}}
+
+/* Unidad 01: encuadre completo de la barra central y de sus dos anclajes.
+   Se mantiene la imagen original como fondo; sin recorte adicional ni efecto de zoom.
+   El resto de diapositivas conserva su presentación actual. */
+.mc325-carousel-photo.mc325-carousel-unit1::after{
+  inset:0 0 0 41%;
+  background-size:100% auto;
+  background-position:center center;
+  -webkit-mask-image:linear-gradient(to right,
+    transparent 0%,rgba(0,0,0,.18) 5%,rgba(0,0,0,.70) 12%,#000 21%);
+  mask-image:linear-gradient(to right,
+    transparent 0%,rgba(0,0,0,.18) 5%,rgba(0,0,0,.70) 12%,#000 21%);
+}
+@media(max-width:750px){
+  .mc325-carousel-photo.mc325-carousel-unit1::after{
+    inset:0;
+    background-size:100% auto;
+    background-position:center top;
+    -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 42%,transparent 78%);
+    mask-image:linear-gradient(to bottom,#000 0%,#000 42%,transparent 78%);
+  }
+}

@@ -1,0 +1,43 @@
+MC325 — PRIMERA INTEGRACIÓN DEL REDISEÑO (2026-11-16)
+
+Esta entrega ES UNA COPIA INDEPENDIENTE de los archivos recibidos en mc325-web(8).zip.
+No cambia el repositorio de GitHub ni reemplaza archivos en tu computadora.
+
+QUÉ SE HA HECHO
+- index.html ahora es la única portada/inicio; portada y encabezados apuntan a ella.
+- Las páginas originales conservan sus lectores, JSON, PDF, archivos Markdown, JS y exportadores.
+- El menú lateral prioriza Artículos (antes Desarrollo del Curso), Ejercicios,
+  Recursos, Foro y Sobre el proyecto. La lista de unidades usa IDs originales.
+- Espacio UNI aparece en el menú solo para perfiles de muestra estudiante/admin.
+- Los botones de aporte aparecen dentro de cada página. Los botones existentes
+  de ejercicios/exámenes conservan sus formularios originales.
+- admin de muestra accede al panel de revisión local y editores antiguos.
+- Acerca del proyecto es una nueva página con créditos pendientes de confirmar.
+
+IMPORTANTE SOBRE SEGURIDAD Y DATOS
+NO HAY INICIO DE SESIÓN REAL. El botón de Acceso UNI solo cambia la presentación
+usando sessionStorage del navegador. NO es seguridad ni permisos de servidor.
+En un sitio estático, las URL y archivos de exámenes, apuntes y PDFs siguen siendo
+potencialmente accesibles a quien conozca la dirección. No publicar datos o
+material restringido hasta implementar autenticación/servidor y reglas de acceso.
+El panel de revisión local NO comparte aportes entre dispositivos/usuarios.
+Los archivos elegidos en la propuesta genérica solo guardan su nombre, no sus bytes.
+Las páginas originales continúan usando almacenamiento local, exportación e
+importación como antes. Los formularios nuevos no reemplazan esas rutinas.
+La aprobación en el panel local no publica automáticamente en data/*.json ni GitHub.
+
+PARA PROBAR
+1. Descomprimir el ZIP completo manteniendo la estructura.
+2. Abrir la carpeta en VS Code y servir con Live Server (no usar file://; fetch falla).
+3. Entrar a index.html y recorrer los accesos públicos.
+4. Abrir Acceso UNI y probar estudiante/admin en la MISMA pestaña.
+5. Revisar materiales, ejercicios, exámenes, foro, recursos y calendario.
+6. Probar también el botón de modo oscuro, artículos Markdown/LaTeX y PDFs.
+
+ANTES DE PUBLICAR EN PRODUCCIÓN
+- Integrar SSO institucional y autorizaciones de backend: visitante, estudiante,
+  profesor/delegado/admin. Confirmar dominio y proveedor con la UNI.
+- Base de datos y almacenamiento de archivos, aprobación real y permisos por rol.
+- Confirmar licencias y permisos de publicación de cada material y datos personales.
+- Sustituir nombres de ejemplo en Sobre el proyecto.
+- Revisar material de prueba y funcionalidad en móviles.

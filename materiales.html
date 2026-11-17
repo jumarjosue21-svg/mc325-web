@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Material del Curso - Resistencia de Materiales II</title>
+    <title>Artículos - Resistencia de Materiales II</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css?v=mc325-times-math-v1">
     
@@ -506,70 +506,27 @@
         }
         .sidebar, .content-area { overscroll-behavior: contain; }
     </style>
-</head>
+<link rel="stylesheet" href="acceso-mc325.css?v=integracion1"><script src="js/acceso-mc325.js?v=integracion1" defer></script></head>
 <body data-mc325-page="materiales">
     <!-- BARRA SUPERIOR -->
-    <header class="navbar">
-        <div class="nav-left">
-            <div class="logo-uni"><img class="logo-uni-img" src="assets/logo-uni-blanco.png?v=mc325-header-20261112-v2" alt="Universidad Nacional de Ingeniería" width="122" height="58" decoding="async"></div>
-            <div class="nav-title">
-                <h1>Resistencia de Materiales II</h1>
-                <p>MC325 - Facultad de Ingeniería Mecánica</p>
-            </div>
-        </div>
-        <div class="nav-right">
-            <div class="search-bar">
-                <i class="fa-solid fa-search"></i>
-                <input type="text" placeholder="Buscar en el curso...">
-            </div>
-            <div class="user-profile">
-                <i class="fa-solid fa-user-circle"></i>
-                <i class="fa-solid fa-chevron-down"></i>
-            </div>
-        </div>
-    </header>
+    <header class="navbar mc325-topbar">
+  <div class="nav-left"><a class="logo-uni mc325-logo-home" href="index.html" aria-label="Ir a la portada"><img class="logo-uni-img" src="assets/logo-uni-blanco.png" alt="Universidad Nacional de Ingeniería" width="122" height="58"></a><div class="nav-title"><h1>Resistencia de Materiales II</h1><p>MC325 · Facultad de Ingeniería Mecánica</p></div></div>
+  <nav class="mc325-toplinks" aria-label="Navegación superior"><a href="index.html">Inicio</a><a href="materiales.html">Artículos</a><a href="ejercicios.html">Ejercicios</a><a href="acerca.html">Acerca del proyecto</a></nav>
+  <div class="nav-right"><div class="search-bar"><i class="fa-solid fa-search" aria-hidden="true"></i><input id="mc325-site-search" type="search" placeholder="Buscar en el sitio…" aria-label="Buscar en el sitio"></div><div class="mc325-profile"><button type="button" id="mc325-account" class="mc325-account-btn" aria-expanded="false" aria-controls="mc325-account-menu"><i class="fa-solid fa-circle-user" aria-hidden="true"></i><span class="mc325-profile-label">Acceso UNI</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button><div id="mc325-account-menu" class="mc325-account-menu" hidden></div></div></div>
+  <button type="button" class="mc325-mobile-nav-toggle" id="mc325-mobile-nav-toggle" aria-label="Abrir el menú" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
+ </header>
 
     <!-- CONTENEDOR PRINCIPAL -->
     <div class="main-container">
         
         <!-- BARRA LATERAL -->
-        <aside class="sidebar">
-            <nav class="side-menu">
-                <a href="index.html"><i class="fa-solid fa-home"></i> Inicio</a>
-                <a href="materiales.html" class="active-dark"><i class="fa-solid fa-book-open"></i> Desarrollo del Curso</a>
-                <a href="apuntes.html"><i class="fa-regular fa-file-lines"></i> Apuntes y Cuadernos</a>
-                <a href="ejercicios.html"><i class="fa-solid fa-table-list"></i> Ejercicios Resueltos</a>
-                <a href="examenes.html"><i class="fa-regular fa-file-pdf"></i> Exámenes Pasados</a>
-                <a href="recursos.html"><i class="fa-regular fa-folder-open"></i> Recursos Adicionales</a>
-                <a href="foro.html"><i class="fa-regular fa-comments"></i> Foro de Consultas</a>
-                <a href="calendario.html"><i class="fa-regular fa-calendar"></i> Calendario</a>
-                <a href="contacto.html"><i class="fa-regular fa-envelope"></i> Contacto</a>
-            </nav>
-
-            <div class="course-info">
-                <h4>Información del Curso</h4>
-                <div class="info-item">
-                    <i class="fa-solid fa-chalkboard-user"></i>
-                    <div>
-                        <strong>Docente:</strong>
-                        <p>Ing. Capcha Molina, Eden</p>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <i class="fa-regular fa-calendar-check"></i>
-                    <div>
-                        <strong>Ciclo Académico:</strong>
-                        <p>2026</p>
-                    </div>
-                </div>
-            </div>
-        </aside>
+        <aside class="sidebar mc325-side" aria-label="Navegación de la plataforma"><nav class="side-menu mc325-side-nav"><p class="mc325-menu-heading">CONTENIDO PÚBLICO</p><details class="mc325-side-group" open><summary><i class="fa-solid fa-book-open" aria-hidden="true"></i>Artículos <i class="fa-solid fa-chevron-down mc325-chevron" aria-hidden="true"></i></summary><div class="mc325-side-submenu"><a class="mc325-sub-link is-current" href="materiales.html">Todos los artículos</a><a href="materiales.html?unidad=unidad1" class="mc325-sub-link">Unidad 1. Esfuerzos</a><a href="materiales.html?unidad=unidad3" class="mc325-sub-link">Unidad 2. Falla y Fatiga</a><a href="materiales.html?unidad=unidad4" class="mc325-sub-link">Unidad 3. Elementos Curvos</a><a href="materiales.html?unidad=unidad5" class="mc325-sub-link">Unidad 4. Placas Planas</a><a href="materiales.html?unidad=unidad6" class="mc325-sub-link">Unidad 5. Cilindros y Volantes</a><a href="materiales.html?unidad=unidad7" class="mc325-sub-link">Unidad 6. Vigas Variables</a></div></details><a class="mc325-menu-link  " href="ejercicios.html"><i class="fa-solid fa-list-check" aria-hidden="true"></i><span>Ejercicios Resueltos</span></a><a class="mc325-menu-link  " href="recursos.html"><i class="fa-solid fa-layer-group" aria-hidden="true"></i><span>Recursos Adicionales</span></a><a class="mc325-menu-link  " href="foro.html"><i class="fa-regular fa-comments" aria-hidden="true"></i><span>Foro de Consultas</span></a><a class="mc325-menu-link  " href="acerca.html"><i class="fa-regular fa-circle-question" aria-hidden="true"></i><span>Sobre el Proyecto</span></a><div class="mc325-private-menu" data-mc325-min="student"><p class="mc325-menu-heading">ESPACIO ACADÉMICO UNI</p><details class="mc325-side-group mc325-group-uni" ><summary><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>Curso MC325 <i class="fa-solid fa-chevron-down mc325-chevron" aria-hidden="true"></i></summary><div class="mc325-side-submenu"><a class="mc325-menu-link  mc325-sub-link" href="examenes.html"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>Exámenes Pasados</span></a><a class="mc325-menu-link  mc325-sub-link" href="apuntes.html"><i class="fa-regular fa-file-lines" aria-hidden="true"></i><span>Apuntes y Cuadernos</span></a><a class="mc325-menu-link  mc325-sub-link" href="calendario.html"><i class="fa-regular fa-calendar" aria-hidden="true"></i><span>Calendario</span></a><a class="mc325-menu-link  mc325-sub-link" href="contacto.html"><i class="fa-regular fa-envelope" aria-hidden="true"></i><span>Contacto del Curso</span></a></div></details></div><div class="mc325-private-menu" data-mc325-min="admin"><p class="mc325-menu-heading">ADMINISTRACIÓN</p><a class="mc325-menu-link  " href="revision.html"><i class="fa-solid fa-clipboard-check" aria-hidden="true"></i><span>Revisar aportes</span></a><a class="mc325-menu-link  " href="publicar-cambios.html"><i class="fa-solid fa-box-archive" aria-hidden="true"></i><span>Preparar publicación</span></a></div></nav><div class="mc325-side-help" data-mc325-public><h4><i class="fa-solid fa-graduation-cap"></i> ¿Eres estudiante UNI?</h4><p>Prueba la vista del espacio académico, sin introducir credenciales reales.</p><a href="acceso.html" class="mc325-side-access">Acceso UNI <i class="fa-solid fa-arrow-right"></i></a></div><div class="course-info"><h4>Información del Curso</h4><div class="info-item"><i class="fa-solid fa-chalkboard-user"></i><div><strong>Docente</strong><p>Ing. Capcha Molina, Eden</p></div></div><div class="info-item"><i class="fa-regular fa-calendar"></i><div><strong>Ciclo académico</strong><p>2026</p></div></div></div></aside>
 
         <!-- ÁREA DE CONTENIDO: MATERIAL DEL CURSO -->
         <main class="content-area">
             
             <div class="breadcrumb">
-                Inicio / <strong>Material del Curso</strong>
+                Inicio / <strong>Artículos</strong>
             </div>
 
             <!-- VISTA 1: LISTA DE MATERIALES -->
@@ -577,10 +534,10 @@
                 <!-- CABECERA CON BOTÓN DOCENTE -->
                 <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <div>
-                        <h2>Material del Curso</h2>
-                        <p>Apuntes, artículos teóricos y guías del profesor, organizados por unidad.</p>
+                        <h2>Artículos del Curso</h2>
+                        <p>Material teórico, explicaciones y guías organizadas por unidad.</p>
                     </div>
-                    <button class="btn-download-dark" onclick="toggleAdminMateriales()">
+                    <button type="button" class="mc325-context-action mc325-student" data-mc325-propose="articulos"><i class="fa-solid fa-plus"></i> Proponer artículo</button><button type="button" class="mc325-context-action mc325-admin" data-mc325-native="articulos"><i class="fa-solid fa-plus"></i> Añadir artículo</button><button class="btn-download-dark mc325-admin-only" onclick="toggleAdminMateriales()">
                         <i class="fa-solid fa-lock"></i> Modo Docente
                     </button>
                 </div>
