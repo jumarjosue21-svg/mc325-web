@@ -262,9 +262,43 @@ html[data-theme="dark"] .mc325-about-shortcuts a:focus-visible {
   }
 }
 
-/* Inicio: barra institucional visible durante el desplazamiento, igual que en Artículos. */
-body.mc325-new-landing > .mc325-topbar {
-  position:sticky;
-  top:0;
-  z-index:1000;
+
+/* MC325 V7 · Navegación entre páginas sin parpadeo en las barras.
+   Chrome/Edge/Safari compatibles: el DOM sigue cargando de forma convencional
+   para proteger los lectores antiguos; solo el CUERPO cambia visualmente.
+   En navegadores sin transiciones multipágina se usa la navegación normal. */
+@view-transition { navigation: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .mc325-topbar { view-transition-name: mc325-barra-superior; }
+  .mc325-side { view-transition-name: mc325-barra-lateral; }
+  .main-container > .content-area,
+  .mc325-landing,
+  .mc325-auth-wrap {
+    view-transition-name: mc325-contenido;
+  }
+  ::view-transition-old(mc325-barra-superior),
+  ::view-transition-new(mc325-barra-superior),
+  ::view-transition-old(mc325-barra-lateral),
+  ::view-transition-new(mc325-barra-lateral) {
+    animation-duration: 0.01ms !important;
+  }
+  ::view-transition-group(mc325-barra-superior),
+  ::view-transition-group(mc325-barra-lateral) {
+    animation-duration: 0.01ms !important;
+  }
+  @keyframes mc325-v7-out { from { opacity:1; } to { opacity:0; } }
+  @keyframes mc325-v7-in { from { opacity:0; } to { opacity:1; } }
+  ::view-transition-old(mc325-contenido) {
+    animation: 100ms ease-in both mc325-v7-out;
+  }
+  ::view-transition-new(mc325-contenido) {
+    animation: 190ms ease-out both mc325-v7-in;
+  }
+  /* Evitar que toda la ventana tenga un segundo fundido visual encima.
+     El header y el lateral tienen instantáneas independientes. */
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation-duration:0.01ms !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*), ::view-transition-new(*) { animation-duration: 0.01ms !important; }
 }

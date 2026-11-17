@@ -1,0 +1,63 @@
+/* MC325 — Menú híbrido V8 · sólo la sección actual muestra su árbol.
+   Se mantienen las reglas generales de acceso-mc325.css para el resto. */
+.mc325-side-nav .mc325-hybrid-section{min-width:0;width:100%;display:block}
+.mc325-side-nav .mc325-hybrid-head{min-height:43px;display:flex;align-items:center;gap:11px;width:100%;border-radius:8px;padding:11px 13px;text-decoration:none;font-size:.87rem;line-height:1.38;font-weight:650;color:#34404c}
+.mc325-side-nav .mc325-hybrid-head i{width:18px;flex:0 0 18px;text-align:center;color:#697785}
+.mc325-side-nav .mc325-hybrid-head:hover,
+.mc325-side-nav .mc325-hybrid-head:focus-visible{background:#75241e!important;color:#fff!important;outline-offset:2px}
+.mc325-side-nav .mc325-hybrid-head:hover i,
+.mc325-side-nav .mc325-hybrid-head:focus-visible i{color:#fff!important}
+.mc325-side-nav .mc325-hybrid-section.is-active>.mc325-hybrid-head{background:#75241e!important;color:white!important}
+.mc325-side-nav .mc325-hybrid-section.is-active>.mc325-hybrid-head i{color:#fff!important}
+.mc325-side-nav .mc325-hybrid-section.is-active>.mc325-hybrid-head:hover{background:#631e18!important}
+.mc325-side-nav .mc325-hybrid-subtree{border-left:1px solid #d8dfe4;min-width:0;margin:6px 0 9px 27px;padding-left:10px;display:flex;flex-direction:column;gap:2px}
+.mc325-side-nav .mc325-hybrid-entry{display:flex;align-items:flex-start;gap:8px;width:100%;padding:8px 9px;min-width:0;border:0;border-radius:7px;background:transparent;color:#4c5866;text-decoration:none;text-align:left;overflow-wrap:anywhere;white-space:normal;font:400 .79rem/1.4 Georgia,'Times New Roman',serif;cursor:pointer}
+.mc325-side-nav .mc325-hybrid-entry>i{flex:0 0 14px;width:14px;text-align:center;font-size:.74rem;line-height:1.45;color:inherit}
+.mc325-side-nav .mc325-hybrid-entry>span{min-width:0;flex:1}
+.mc325-side-nav .mc325-hybrid-entry:hover,
+.mc325-side-nav .mc325-hybrid-entry:focus-visible{background:#f0e4e2;color:#712019;outline-offset:2px}
+.mc325-side-nav .mc325-hybrid-entry.is-current{background:#f0deda;color:#6a1e17;font-weight:400;box-shadow:inset 3px 0 0 #792720}
+.mc325-side-nav .mc325-hybrid-leaves{margin:0 0 5px 13px;padding:2px 0 3px 9px;border-left:1px solid #d9dfe5;display:flex;flex-direction:column;gap:2px;min-width:0}
+.mc325-side-nav .mc325-hybrid-leaves .mc325-hybrid-entry{font-size:.75rem;padding:7px 8px}
+.mc325-side-nav .mc325-hybrid-empty{font-style:italic;font-size:.72rem;color:#929aa4;padding:5px 8px}
+.mc325-side-nav .mc325-hybrid-uni{width:100%;margin:3px 0}
+.mc325-side-nav .mc325-hybrid-uni-heading{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:8px;font-weight:650;font-size:.87rem;line-height:1.4;color:#34404c}
+.mc325-side-nav .mc325-hybrid-uni-heading i{width:18px;flex:0 0 18px;text-align:center}
+.mc325-side-nav .mc325-hybrid-uni-links{display:flex;flex-direction:column;gap:2px;border-left:1px solid #d8dfe4;margin:4px 0 9px 27px;padding-left:10px}
+.mc325-side-nav .mc325-hybrid-uni-links>.mc325-menu-link{padding:9px 10px;font-size:.79rem;margin:0;border-radius:7px;font-weight:500}
+.mc325-side-nav .mc325-hybrid-uni-links>.mc325-menu-link:hover{background:#f0e4e2;color:#712019}
+.mc325-side-nav .mc325-hybrid-uni-links>.mc325-menu-link.is-current,
+.mc325-side-nav .mc325-hybrid-uni-links>.mc325-menu-link.is-current:hover{background:#75241e;color:white}
+.mc325-side-nav .mc325-hybrid-uni-links>.mc325-menu-link.is-current i,
+.mc325-side-nav .mc325-hybrid-uni-links>.mc325-menu-link.is-current:hover i{color:#fff!important}
+.mc325-side-nav .mc325-hybrid-uni-links>.mc325-hybrid-section>.mc325-hybrid-head{padding:9px 10px;font-size:.79rem;font-weight:500}
+.mc325-side-nav .mc325-hybrid-uni-links .mc325-hybrid-subtree{margin-left:22px;padding-left:8px}
+.mc325-side-nav .mc325-hybrid-uni-links>.mc325-hybrid-section.is-active>.mc325-hybrid-head{font-weight:600}
+/* El grupo UNI sigue visible para estudiantes, pero ya no gira una flecha. */
+.mc325-side-nav .mc325-hybrid-uni-heading{background:#f0f2f5}
+html[data-mc325-role="student"] .mc325-side-nav .mc325-hybrid-uni-heading,
+html[data-mc325-role="admin"] .mc325-side-nav .mc325-hybrid-uni-heading{background:#75241e;color:white}
+html[data-mc325-role="student"] .mc325-side-nav .mc325-hybrid-uni-heading i,
+html[data-mc325-role="admin"] .mc325-side-nav .mc325-hybrid-uni-heading i{color:white}
+/* Modo oscuro: mantener texto visible, rojo UNI para las secciones seleccionadas. */
+html[data-theme="dark"] .mc325-side-nav .mc325-hybrid-head{color:#e2e8f3;background:transparent}
+html[data-theme="dark"] .mc325-side-nav .mc325-hybrid-head i{color:#b5c9e5}
+html[data-theme="dark"] .mc325-side-nav .mc325-hybrid-entry{color:#e1e7f5}
+html[data-theme="dark"] .mc325-side-nav .mc325-hybrid-empty{color:#aab8d0}
+html[data-theme="dark"] .mc325-side-nav .mc325-hybrid-entry:hover,
+html[data-theme="dark"] .mc325-side-nav .mc325-hybrid-entry:focus-visible{background:#7a2821;color:white}
+html[data-theme="dark"] .mc325-side-nav .mc325-hybrid-entry.is-current{background:#485674;color:white;box-shadow:inset 3px 0 0 #e1e9f8}
+html[data-theme="dark"] .mc325-side-nav .mc325-hybrid-subtree,
+html[data-theme="dark"] .mc325-side-nav .mc325-hybrid-leaves,
+html[data-theme="dark"] .mc325-side-nav .mc325-hybrid-uni-links{border-left-color:#54627b}
+html[data-theme="dark"] .mc325-side-nav .mc325-hybrid-uni-heading{background:#31394e;color:#f3f6ff}
+html[data-theme="dark"][data-mc325-role="student"] .mc325-side-nav .mc325-hybrid-uni-heading,
+html[data-theme="dark"][data-mc325-role="admin"] .mc325-side-nav .mc325-hybrid-uni-heading{background:#75241e;color:white}
+html[data-theme="dark"] .mc325-side-nav .mc325-hybrid-uni-links>.mc325-menu-link{color:#e6ebf7}
+html[data-theme="dark"] .mc325-side-nav .mc325-hybrid-uni-links>.mc325-menu-link:hover{background:#7a2821;color:white}
+html[data-theme="dark"] .mc325-side-nav .mc325-hybrid-uni-links>.mc325-menu-link:hover i{color:white}
+html[data-theme="dark"] .mc325-side-nav .mc325-hybrid-uni-links>.mc325-menu-link.is-current{background:#75241e;color:#fff}
+@media(max-width:750px){
+  .mc325-side-nav .mc325-hybrid-entry{font-size:.78rem}
+  .mc325-side-nav .mc325-hybrid-leaves .mc325-hybrid-entry{font-size:.74rem}
+}
