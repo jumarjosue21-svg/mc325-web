@@ -1,134 +1,85 @@
 <!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Resistencia de Materiales II | FIM · UNI</title><meta name="description" content="Plataforma académica abierta de Resistencia de Materiales II: artículos teóricos, ejercicios, bibliografía y recursos de apoyo."><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><link rel="stylesheet" href="style.css"><script src="js/tema-mc325.js"></script><link rel="stylesheet" href="modo-oscuro.css"><link rel="stylesheet" href="acceso-mc325.css"><script src="js/acceso-mc325.js" defer></script><link rel="stylesheet" href="carrusel-temas-mc325.css?v=6.1"><script src="js/carrusel-temas-mc325.js?v=6.1" defer></script><style id="mc325-purpose-styles">
-/* MC325 · Sección informativa nueva (únicamente en la portada). */
+/* MC325 · Presentación del curso. Única introducción antes del carrusel. */
 .mc325-course-purpose {
   display: grid;
-  grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
-  margin: 24px 0 23px;
-  border: 1px solid #dce2e9;
+  grid-template-columns: minmax(240px, 0.34fr) minmax(0, 0.66fr);
+  align-items: stretch;
+  margin: 24px 0 25px;
+  border: 1px solid #dfe4ea;
   border-radius: 13px;
+  background: #fff;
+  box-shadow: 0 5px 17px rgba(32,46,62,.045);
   overflow: hidden;
-  background: #ffffff;
-  box-shadow: 0 5px 17px rgba(32, 46, 62, .045);
 }
-.mc325-course-purpose .mc325-purpose-main {
+.mc325-course-purpose .mc325-presentation-heading {
   min-width: 0;
-  padding: 23px 30px 24px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-.mc325-course-purpose .mc325-purpose-heading {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 0 0 10px;
-}
-.mc325-course-purpose .mc325-purpose-heading > i {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: 0 0 38px;
-  width: 38px;
-  height: 38px;
-  background: #f5eae8;
-  color: #79271f;
-  border-radius: 9px;
-  font-size: 1.05rem;
-}
-.mc325-course-purpose h2,
-.mc325-course-purpose h3 {
-  font-family: Georgia, 'Times New Roman', serif;
-  color: #512019;
-  margin: 0;
-  line-height: 1.2;
-}
-.mc325-course-purpose h2 { font-size: clamp(1.23rem, 1.8vw, 1.55rem); }
-.mc325-course-purpose h3 { font-size: 1.08rem; margin-bottom: 12px; }
-.mc325-course-purpose .mc325-purpose-main p {
-  font-size: .89rem;
-  line-height: 1.62;
-  color: #556170;
-  margin: 0;
-  max-width: 740px;
-}
-.mc325-course-purpose .mc325-purpose-practice {
-  min-width: 0;
+  padding: 23px 28px;
+  border-right: 1px solid #e4e9ee;
+  border-left: 5px solid #79271f;
   background: #f7f9fb;
-  border-left: 1px solid #e2e6eb;
-  padding: 22px 26px;
+}
+.mc325-course-purpose .mc325-presentation-kicker {
+  display: block;
+  font-size: .67rem;
+  line-height: 1.4;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #7c3d37;
+  margin-bottom: 8px;
+}
+.mc325-course-purpose h2 {
+  font: 700 clamp(1.32rem, 1.9vw, 1.7rem)/1.21 Georgia, 'Times New Roman', serif;
+  margin: 0;
+  color: #512019;
+}
+.mc325-course-purpose .mc325-presentation-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 10px;
+  padding: 22px 32px;
+  min-width: 0;
 }
-.mc325-course-purpose .mc325-purpose-applications {
-  list-style: none;
+.mc325-course-purpose p {
+  font-size: .89rem;
+  line-height: 1.6;
+  color: #4a5764;
   margin: 0;
-  padding: 0;
+  max-width: 960px;
 }
-.mc325-course-purpose .mc325-purpose-applications li {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: #404b58;
-  font-size: .87rem;
-  line-height: 1.4;
-  padding: 7px 0;
-}
-.mc325-course-purpose .mc325-purpose-applications li + li {
-  border-top: 1px solid #e4e8ee;
-}
-.mc325-course-purpose .mc325-purpose-applications i {
-  width: 21px;
-  color: #802e26;
-  font-size: .95rem;
-  text-align: center;
-  flex-shrink: 0;
-}
-/* Evitar rosados brillantes en el tema oscuro. */
+/* Contraste sobrio en modo oscuro, sin rosa ni rojo claro. */
 html[data-theme="dark"] .mc325-course-purpose {
-  border-color: #475169;
   background: #2b3148;
+  border-color: #475169;
   box-shadow: none;
 }
-html[data-theme="dark"] .mc325-course-purpose .mc325-purpose-practice {
-  background: #303951;
-  border-left-color: #48536c;
+html[data-theme="dark"] .mc325-course-purpose .mc325-presentation-heading {
+  background: #303950;
+  border-right-color: #4c5670;
+  border-left-color: #8994aa;
 }
-html[data-theme="dark"] .mc325-course-purpose h2,
-html[data-theme="dark"] .mc325-course-purpose h3 {
-  color: #f5f7ff;
+html[data-theme="dark"] .mc325-course-purpose .mc325-presentation-kicker {color: #c8d1e3;}
+html[data-theme="dark"] .mc325-course-purpose h2 {color: #f6f8ff;}
+html[data-theme="dark"] .mc325-course-purpose p {color: #d9e2f0;}
+@media(max-width: 920px) {
+  .mc325-course-purpose {grid-template-columns: minmax(210px,.38fr) minmax(0,.62fr);}
+  .mc325-course-purpose .mc325-presentation-heading {padding: 20px 20px;}
+  .mc325-course-purpose .mc325-presentation-content {padding: 20px 22px;}
 }
-html[data-theme="dark"] .mc325-course-purpose .mc325-purpose-main p,
-html[data-theme="dark"] .mc325-course-purpose .mc325-purpose-applications li {
-  color: #d9e2f0;
-}
-html[data-theme="dark"] .mc325-course-purpose .mc325-purpose-heading > i {
-  background: #3e4e68;
-  color: #ffffff;
-}
-html[data-theme="dark"] .mc325-course-purpose .mc325-purpose-applications i {
-  color: #f4f6fc;
-}
-html[data-theme="dark"] .mc325-course-purpose .mc325-purpose-applications li + li {
-  border-top-color: #4a566f;
-}
-@media (max-width: 850px) {
-  .mc325-course-purpose {grid-template-columns: 1fr; margin: 19px 0 20px;}
-  .mc325-course-purpose .mc325-purpose-main {padding: 22px 23px;}
-  .mc325-course-purpose .mc325-purpose-practice {
-    border-left: 0;
-    border-top: 1px solid #e2e6eb;
-    padding: 17px 23px;
+@media(max-width: 700px) {
+  .mc325-course-purpose {grid-template-columns: 1fr; margin: 19px 0 21px;}
+  .mc325-course-purpose .mc325-presentation-heading {
+    padding: 17px 20px;
+    border-right: 0;
+    border-bottom: 1px solid #e4e9ee;
   }
-  html[data-theme="dark"] .mc325-course-purpose .mc325-purpose-practice {
-    border-top-color: #48536c;
-  }
-}
-@media (max-width: 480px) {
-  .mc325-course-purpose .mc325-purpose-main {padding: 20px 18px;}
-  .mc325-course-purpose .mc325-purpose-practice {padding: 17px 18px;}
-  .mc325-course-purpose .mc325-purpose-main p {font-size: .85rem;}
-  .mc325-course-purpose .mc325-purpose-applications li {font-size: .83rem;}
+  html[data-theme="dark"] .mc325-course-purpose .mc325-presentation-heading {border-bottom-color: #4c5670;}
+  .mc325-course-purpose .mc325-presentation-content {padding: 18px 20px;gap: 10px;}
+  .mc325-course-purpose p {font-size:.85rem;}
 }
 </style></head><body data-mc325-page="index" class="mc325-new-landing"><header class="navbar mc325-topbar">
   <div class="nav-left"><a class="logo-uni mc325-logo-home" href="index.html" aria-label="Ir a la portada"><img class="logo-uni-img" src="assets/logo-uni-blanco.png" alt="Universidad Nacional de Ingeniería" width="122" height="58"></a><div class="nav-title"><h1>Resistencia de Materiales II</h1><p>MC325 · Facultad de Ingeniería Mecánica</p></div></div>
@@ -157,21 +108,14 @@ html[data-theme="dark"] .mc325-course-purpose .mc325-purpose-applications li + l
   </div>
 </section>
 <section class="mc325-course-purpose" aria-labelledby="mc325-purpose-title">
-  <div class="mc325-purpose-main">
-    <div class="mc325-purpose-heading">
-      <i class="fa-solid fa-bullseye" aria-hidden="true"></i>
-      <h2 id="mc325-purpose-title">Objetivo del curso</h2>
-    </div>
-    <p>Profundizar en el análisis de esfuerzos, deformaciones y condiciones de falla de elementos mecánicos y estructurales, aplicando métodos que permitan evaluar su resistencia y comportamiento frente a distintas cargas.</p>
+  <div class="mc325-presentation-heading">
+    <span class="mc325-presentation-kicker">MC325 · Formación académica</span>
+    <h2 id="mc325-purpose-title">Bienvenidos</h2>
   </div>
-  <div class="mc325-purpose-practice">
-    <h3>Aplicaciones en ingeniería</h3>
-    <ul class="mc325-purpose-applications">
-      <li><i class="fa-solid fa-bridge" aria-hidden="true"></i><span>Análisis de vigas y estructuras</span></li>
-      <li><i class="fa-solid fa-gears" aria-hidden="true"></i><span>Resistencia y fatiga de componentes</span></li>
-      <li><i class="fa-solid fa-layer-group" aria-hidden="true"></i><span>Estudio de placas y cilindros</span></li>
-    </ul>
+  <div class="mc325-presentation-content">
+    <p>En esta página se amplía el estudio del comportamiento de los sólidos deformables para comprender cómo responden los elementos mecánicos y estructurales cuando se someten a distintas condiciones. A lo largo del curso se relacionan los modelos teóricos con el análisis de esfuerzos, deformaciones y resistencia.</p>
+    <p>Más allá de obtener resultados numéricos, se busca interpretar su significado físico, reconocer las hipótesis de cálculo y desarrollar un criterio técnico para evaluar componentes y estructuras.</p>
   </div>
 </section>
-<section class="mc325-landing-section" aria-labelledby="mc325-heading-topics"><div class="mc325-landing-heading"><h2 id="mc325-heading-topics">Principales temas del curso</h2><p>Explora las seis unidades académicas y consulta el material ya existente.</p></div><div class="mc325-topics"><a class="mc325-topic" href="materiales.html?unidad=unidad1"><div class="mc325-topic-visual"><img src="assets/mc325-beam.svg" alt="Diagrama de Esfuerzos" loading="lazy"></div><div class="mc325-topic-text"><span class="mc325-topic-index">01</span><h3>Esfuerzos</h3><p>Bases del comportamiento elástico y deformaciones.</p><span class="mc325-topic-cta">Explorar unidad <i class="fa-solid fa-arrow-right"></i></span></div></a><a class="mc325-topic" href="materiales.html?unidad=unidad3"><div class="mc325-topic-visual"><img src="assets/mc325-fatigue.svg" alt="Diagrama de Criterios de Falla y Fatiga" loading="lazy"></div><div class="mc325-topic-text"><span class="mc325-topic-index">02</span><h3>Criterios de Falla y Fatiga</h3><p>Criterios de resistencia y cargas cíclicas.</p><span class="mc325-topic-cta">Explorar unidad <i class="fa-solid fa-arrow-right"></i></span></div></a><a class="mc325-topic" href="materiales.html?unidad=unidad4"><div class="mc325-topic-visual"><img src="assets/mc325-arch.svg" alt="Diagrama de Elementos Curvos" loading="lazy"></div><div class="mc325-topic-text"><span class="mc325-topic-index">03</span><h3>Elementos Curvos</h3><p>Esfuerzos y deformaciones en miembros curvos.</p><span class="mc325-topic-cta">Explorar unidad <i class="fa-solid fa-arrow-right"></i></span></div></a><a class="mc325-topic" href="materiales.html?unidad=unidad5"><div class="mc325-topic-visual"><img src="assets/mc325-plate.svg" alt="Diagrama de Placas Planas" loading="lazy"></div><div class="mc325-topic-text"><span class="mc325-topic-index">04</span><h3>Placas Planas</h3><p>Flexión de placas rectangulares y circulares.</p><span class="mc325-topic-cta">Explorar unidad <i class="fa-solid fa-arrow-right"></i></span></div></a><a class="mc325-topic" href="materiales.html?unidad=unidad6"><div class="mc325-topic-visual"><img src="assets/mc325-cylinder.svg" alt="Diagrama de Cilindros de Pared Gruesa y Volantes" loading="lazy"></div><div class="mc325-topic-text"><span class="mc325-topic-index">05</span><h3>Cilindros de Pared Gruesa y Volantes</h3><p>Cilindros gruesos y elementos en rotación.</p><span class="mc325-topic-cta">Explorar unidad <i class="fa-solid fa-arrow-right"></i></span></div></a><a class="mc325-topic" href="materiales.html?unidad=unidad7"><div class="mc325-topic-visual"><img src="assets/mc325-variable.svg" alt="Diagrama de Vigas de Sección Variable" loading="lazy"></div><div class="mc325-topic-text"><span class="mc325-topic-index">06</span><h3>Vigas de Sección Variable</h3><p>Análisis de vigas con geometría variable.</p><span class="mc325-topic-cta">Explorar unidad <i class="fa-solid fa-arrow-right"></i></span></div></a></div></section>
+<section class="mc325-landing-section" aria-labelledby="mc325-heading-topics"><div class="mc325-landing-heading"><h2 id="mc325-heading-topics">Principales temas tratados</h2><p>Explora las seis unidades académicas y consulta el material ya existente.</p></div><div class="mc325-topics"><a class="mc325-topic" href="materiales.html?unidad=unidad1"><div class="mc325-topic-visual"><img src="assets/mc325-beam.svg" alt="Diagrama de Esfuerzos" loading="lazy"></div><div class="mc325-topic-text"><span class="mc325-topic-index">01</span><h3>Esfuerzos</h3><p>Bases del comportamiento elástico y deformaciones.</p><span class="mc325-topic-cta">Explorar unidad <i class="fa-solid fa-arrow-right"></i></span></div></a><a class="mc325-topic" href="materiales.html?unidad=unidad3"><div class="mc325-topic-visual"><img src="assets/mc325-fatigue.svg" alt="Diagrama de Criterios de Falla y Fatiga" loading="lazy"></div><div class="mc325-topic-text"><span class="mc325-topic-index">02</span><h3>Criterios de Falla y Fatiga</h3><p>Criterios de resistencia y cargas cíclicas.</p><span class="mc325-topic-cta">Explorar unidad <i class="fa-solid fa-arrow-right"></i></span></div></a><a class="mc325-topic" href="materiales.html?unidad=unidad4"><div class="mc325-topic-visual"><img src="assets/mc325-arch.svg" alt="Diagrama de Elementos Curvos" loading="lazy"></div><div class="mc325-topic-text"><span class="mc325-topic-index">03</span><h3>Elementos Curvos</h3><p>Esfuerzos y deformaciones en miembros curvos.</p><span class="mc325-topic-cta">Explorar unidad <i class="fa-solid fa-arrow-right"></i></span></div></a><a class="mc325-topic" href="materiales.html?unidad=unidad5"><div class="mc325-topic-visual"><img src="assets/mc325-plate.svg" alt="Diagrama de Placas Planas" loading="lazy"></div><div class="mc325-topic-text"><span class="mc325-topic-index">04</span><h3>Placas Planas</h3><p>Flexión de placas rectangulares y circulares.</p><span class="mc325-topic-cta">Explorar unidad <i class="fa-solid fa-arrow-right"></i></span></div></a><a class="mc325-topic" href="materiales.html?unidad=unidad6"><div class="mc325-topic-visual"><img src="assets/mc325-cylinder.svg" alt="Diagrama de Cilindros de Pared Gruesa y Volantes" loading="lazy"></div><div class="mc325-topic-text"><span class="mc325-topic-index">05</span><h3>Cilindros de Pared Gruesa y Volantes</h3><p>Cilindros gruesos y elementos en rotación.</p><span class="mc325-topic-cta">Explorar unidad <i class="fa-solid fa-arrow-right"></i></span></div></a><a class="mc325-topic" href="materiales.html?unidad=unidad7"><div class="mc325-topic-visual"><img src="assets/mc325-variable.svg" alt="Diagrama de Vigas de Sección Variable" loading="lazy"></div><div class="mc325-topic-text"><span class="mc325-topic-index">06</span><h3>Vigas de Sección Variable</h3><p>Análisis de vigas con geometría variable.</p><span class="mc325-topic-cta">Explorar unidad <i class="fa-solid fa-arrow-right"></i></span></div></a></div></section>
 <section class="mc325-landing-lower"><div class="mc325-about-card"><h2>Acerca de la plataforma</h2><p>Este sitio académico fue desarrollado como un recurso de consulta para estudiantes de ingeniería y personas interesadas en Resistencia de Materiales. Organiza artículos, ejercicios resueltos y referencias para facilitar el estudio autónomo.</p><a href="acerca.html">Conoce el proyecto <i class="fa-solid fa-arrow-right"></i></a></div><div class="mc325-about-card"><h2>Recursos para aprender</h2><div class="mc325-about-shortcuts"><a href="ejercicios.html"><i class="fa-solid fa-list-check"></i> Ejercicios resueltos <i class="fa-solid fa-chevron-right"></i></a><a href="recursos.html"><i class="fa-solid fa-book"></i> Bibliografía recomendada <i class="fa-solid fa-chevron-right"></i></a><a href="foro.html"><i class="fa-solid fa-comments"></i> Foro de consultas <i class="fa-solid fa-chevron-right"></i></a></div></div></section></main><footer class="mc325-main-footer"><strong>Universidad Nacional de Ingeniería · Facultad de Ingeniería Mecánica</strong><span>MC325 · 2026</span></footer></body></html>
