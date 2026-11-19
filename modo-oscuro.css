@@ -510,6 +510,7 @@ html[data-theme="dark"] .foro-page mjx-container { color: var(--dm-text); }
 html[data-theme="dark"] .latex-content img,
 html[data-theme="dark"] .ex-markdown img,
 html[data-theme="dark"] .em-markdown img { filter:none; }
+html[data-theme="dark"] .latex-content .article-figure img { background:#fff; }
 html[data-theme="dark"] .em-modal-body iframe,
 html[data-theme="dark"] .ex-modal iframe,
 html[data-theme="dark"] #pdf-frame { background: white; }
