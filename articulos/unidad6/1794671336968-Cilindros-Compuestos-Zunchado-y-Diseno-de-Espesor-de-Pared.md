@@ -274,3 +274,26 @@ En el caso de un cilindro de pared gruesa sometido a presión interna $p$, el es
 $$ t = a\left[\sqrt{\frac{\sigma_t + (1 - \mu)p}{\sigma_t - (1 + \mu)p}} - 1\right] $$
 
 Es posible considerar en esta ecuación que $\sigma_t$ es igual a $0.8$ veces $\sigma_y$.
+
+---
+
+## 3. Formulario Resumen
+
+**Presión de zunchado**
+
+| Magnitud / Caso | Expresión |
+| :--- | :--- |
+| Presión de zunchado ($p$) | $\displaystyle p = \frac{E\delta}{b}\cdot\frac{(b^2 - a^2)(c^2 - b^2)}{2b^2(c^2 - a^2)}$ |
+| Esfuerzos máximos en cilindro exterior | $\displaystyle \sigma_t = \frac{p(b^2 + c^2)}{c^2 - b^2}, \qquad \sigma_r = -p$ |
+| Cortante máximo en cilindro exterior | $\displaystyle \tau_{\max} = \frac{p c^2}{c^2 - b^2} = \frac{E\delta c^2(b^2 - a^2)}{2b^3(c^2 - a^2)}$ |
+| Eje macizo y volante ($a = 0$) | $\displaystyle p = \frac{E\delta}{2bc^2}(c^2 - b^2), \qquad \tau_{\max} = \frac{E\delta}{2b}$ |
+
+**Diseño del espesor de pared ($t$)**
+
+| Criterio | Espesor requerido ($t$) |
+| :--- | :--- |
+| **Materiales frágiles** ($\sigma_t = 0.125\,\sigma_u$) | $\displaystyle t = a\left(\sqrt{\frac{\sigma_t + p}{\sigma_t - p}} - 1\right)$ |
+| **Materiales dúctiles** ($\tau = \sigma_t / 2$) | $\displaystyle t = a\left(\sqrt{\frac{\tau}{\tau - p}} - 1\right) = a\left(\sqrt{\frac{\sigma_t}{\sigma_t - 2p}} - 1\right)$ |
+| **Clavarino** (con tapa, $\sigma_t = 0.8\,\sigma_y$) | $\displaystyle t = a\left[\sqrt{\frac{\sigma_t + (1 - 2\mu)p}{\sigma_t - (1 + \mu)p}} - 1\right]$ |
+| **Birnie** (sin tapas, $\sigma_t = 0.8\,\sigma_y$) | $\displaystyle t = a\left[\sqrt{\frac{\sigma_t + (1 - \mu)p}{\sigma_t - (1 + \mu)p}} - 1\right]$ |
+

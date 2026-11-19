@@ -215,3 +215,18 @@ Figura 2: Variación de los esfuerzos radiales y transversales producto de la ve
 </script>
 
 Figura 3: Variación de los esfuerzos radiales y transversales producto de la velocidad angular en un disco sólido.
+
+---
+
+## 4. Formulario Resumen
+
+| Tipo / Magnitud | Expresión |
+| :--- | :--- |
+| **Disco anular** — $\sigma_r$ | $\displaystyle \sigma_r = \frac{3 + \nu}{8}\rho\omega^2\left(a^2 + b^2 - r^2 - \frac{a^2 b^2}{r^2}\right)$ |
+| **Disco anular** — $\sigma_\theta$ | $\displaystyle \sigma_\theta = \frac{3 + \nu}{8}\rho\omega^2\left(a^2 + b^2 - \frac{1 + 3\nu}{3 + \nu}r^2 + \frac{a^2 b^2}{r^2}\right)$ |
+| **Disco anular** — $u$ | $\displaystyle u = \frac{(3 + \nu)(1 - \nu)}{8E}\rho\omega^2\left(a^2 + b^2 - \frac{1 + \nu}{3 + \nu}r^2 + \frac{1 + \nu}{1 - \nu}\frac{a^2 b^2}{r^2}\right)r$ |
+| **Disco anular** — $\sigma_{r,\max}$ (en $r = \sqrt{ab}$) | $\displaystyle \sigma_{r,\max} = \frac{3 + \nu}{8}(b - a)^2\rho\omega^2$ |
+| **Disco macizo** — $\sigma_r$ | $\displaystyle \sigma_r = \frac{3 + \nu}{8}(b^2 - r^2)\rho\omega^2$ |
+| **Disco macizo** — $\sigma_\theta$ | $\displaystyle \sigma_\theta = \frac{3 + \nu}{8}\left(b^2 - \frac{1 + 3\nu}{3 + \nu}r^2\right)\rho\omega^2$ |
+| **Disco macizo** — $u$ | $\displaystyle u = \frac{1 - \nu}{8E}\left[(3 + \nu)b^2 - (1 + \nu)r^2\right]\rho\omega^2 r$ |
+

@@ -332,3 +332,18 @@ $$ (u_r)_{r=a} = \frac{a p_i}{E}\left(\frac{a^2 + b^2}{b^2 - a^2} + \mu\right) $
 ### 3.2. Cuando la presión interior es nula
 
 $$ (u_r)_{r=b} = -\frac{b p_0}{E}\left(\frac{a^2 + b^2}{b^2 - a^2} - \mu\right) $$
+
+---
+
+## 4. Formulario Resumen
+
+| Caso / Magnitud | Expresión |
+| :--- | :--- |
+| Esfuerzo radial general ($\sigma_r$) | $\displaystyle \sigma_r = \frac{a^2 p_i - b^2 p_0}{b^2 - a^2} - \frac{(p_i - p_0)a^2 b^2}{r^2(b^2 - a^2)}$ |
+| Esfuerzo tangencial general ($\sigma_t$) | $\displaystyle \sigma_t = \frac{a^2 p_i - b^2 p_0}{b^2 - a^2} + \frac{(p_i - p_0)a^2 b^2}{r^2(b^2 - a^2)}$ |
+| Deformación radial general ($u$) | $\displaystyle u = \frac{1 - \mu}{E}\cdot\frac{a^2 p_i - b^2 p_0}{b^2 - a^2}\cdot r + \frac{1 + \mu}{E}\cdot\frac{a^2 b^2(p_i - p_0)}{(b^2 - a^2)r}$ |
+| Solo presión interna ($p_0 = 0$) — máximos | $\displaystyle (\sigma_t)_{\text{máx}} = \frac{p_i(a^2 + b^2)}{b^2 - a^2}, \qquad \tau_{\text{máx}} = \frac{p_i b^2}{b^2 - a^2}$ |
+| Solo presión interna ($p_0 = 0$) — en $r = a$ | $\displaystyle (u_r)_{r=a} = \frac{a p_i}{E}\left(\frac{a^2 + b^2}{b^2 - a^2} + \mu\right)$ |
+| Solo presión externa ($p_i = 0$) — en $r = a$ | $\displaystyle (\sigma_\theta)_{r=a} = -\frac{2 p_0 b^2}{b^2 - a^2}$ |
+| Solo presión externa ($p_i = 0$) — en $r = b$ | $\displaystyle (u_r)_{r=b} = -\frac{b p_0}{E}\left(\frac{a^2 + b^2}{b^2 - a^2} - \mu\right)$ |
+
