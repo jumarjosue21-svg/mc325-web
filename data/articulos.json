@@ -1,5 +1,12 @@
 [
   {
+    "id": "1795193200001",
+    "unidad": "unidad1",
+    "titulo": "Esfuerzos: Tensor de Esfuerzos, Direcciones Principales y Circunferencia de Mohr",
+    "revision": "esf01a01",
+    "ruta": "articulos/unidad1/esfuerzos.md"
+  },
+  {
     "id": "179444678901",
     "unidad": "unidad3",
     "titulo": "Fatiga en Elementos Mecánicos",
