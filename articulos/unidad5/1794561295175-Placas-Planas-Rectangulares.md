@@ -36,7 +36,7 @@ En una aeronave se distinguen los paneles exteriores, que pueden ser curvos, y l
 
 ![Chasis de automóvil y paneles que trabajan como placas](pag_04_img_02_Image158.png)
 
-Figura 5: Sección transversal típica de una embarcación y las placas planas usadas para la construcción de cubierta y el casco.
+Figura 5: Chasis de automóvil y paneles que trabajan como placas.
 
 En la figura también aparecen paneles de una carrocería y su relación con los miembros de soporte. La forma del panel y sus conexiones determinan qué partes se pueden estudiar mediante una idealización de placa. Conviene reconocer primero el elemento real y después elegir el modelo mecánico que represente su comportamiento.
 
@@ -227,9 +227,6 @@ $$
   \fill[white] (2.85, 1.90) circle (0.13);
   \draw[line width=1.05pt, blue!55!black] (2.85, 1.90) circle (0.13);
 
-  % Etiqueta superior de la funcion deflexion
-  \node[anchor=south] at (3.55, 4.82) {$\omega = \omega(x,y)$};
-
 \end{tikzpicture}
 </script>
 
@@ -265,15 +262,16 @@ Además de medir el cambio de la deflexión en una dirección dada, es de inter�
 
 $$ \begin{aligned}
 \frac{\partial}{\partial n}\left(\frac{\partial\omega}{\partial n}\right)
-={}&\cos\theta\left[\frac{\partial}{\partial x}\left(\frac{\partial\omega}{\partial n}\right)\frac{\partial x}{\partial n}+\frac{\partial}{\partial y}\left(\frac{\partial\omega}{\partial n}\right)\frac{\partial y}{\partial n}\right]\\
-&+\operatorname{sen}\theta\left[\frac{\partial}{\partial x}\left(\frac{\partial\omega}{\partial n}\right)\frac{\partial x}{\partial n}+\frac{\partial}{\partial y}\left(\frac{\partial\omega}{\partial n}\right)\frac{\partial y}{\partial n}\right]
+&= \cos\theta\left[\frac{\partial}{\partial x}\left(\frac{\partial\omega}{\partial n}\right)\frac{\partial x}{\partial n} + \frac{\partial}{\partial y}\left(\frac{\partial\omega}{\partial n}\right)\frac{\partial y}{\partial n}\right] \\[8pt]
+&\quad + \operatorname{sen}\theta\left[\frac{\partial}{\partial x}\left(\frac{\partial\omega}{\partial n}\right)\frac{\partial x}{\partial n} + \frac{\partial}{\partial y}\left(\frac{\partial\omega}{\partial n}\right)\frac{\partial y}{\partial n}\right]
 \end{aligned} $$
 
 Finalmente:
 
 $$ \begin{aligned}
-\frac{\partial^2\omega}{\partial n^2} ={}& \cos\theta\left(\cos\theta\frac{\partial^2\omega}{\partial x^2}+\operatorname{sen}\theta\frac{\partial^2\omega}{\partial x\partial y}\right)\\
-&+\operatorname{sen}\theta\left(\cos\theta\frac{\partial^2\omega}{\partial y\partial x}+\operatorname{sen}\theta\frac{\partial^2\omega}{\partial y^2}\right)
+\frac{\partial^2\omega}{\partial n^2}
+&= \cos\theta\left(\cos\theta\frac{\partial^2\omega}{\partial x^2} + \operatorname{sen}\theta\frac{\partial^2\omega}{\partial x\partial y}\right) \\[8pt]
+&\quad + \operatorname{sen}\theta\left(\cos\theta\frac{\partial^2\omega}{\partial y\partial x} + \operatorname{sen}\theta\frac{\partial^2\omega}{\partial y^2}\right)
 \end{aligned} $$
 
 Recordando las siguientes identidades trigonométricas de ángulo doble:
@@ -283,19 +281,21 @@ $$ \cos^2\theta = \frac{1+\cos(2\theta)}{2}, \qquad \operatorname{sen}^2\theta =
 Sustituyendo en la expresión de la curvatura en dirección $n$, se tiene lo siguiente:
 
 $$ \begin{aligned}
-\frac{\partial^2\omega}{\partial n^2} ={}& \left(\frac{1+\cos(2\theta)}{2}\right)\frac{\partial^2\omega}{\partial x^2} + \left(\frac{1-\cos(2\theta)}{2}\right)\frac{\partial^2\omega}{\partial y^2}\\
-&+ \operatorname{sen}(2\theta)\frac{\partial^2\omega}{\partial y\partial x}
+\frac{\partial^2\omega}{\partial n^2}
+&= \left(\frac{1+\cos(2\theta)}{2}\right)\frac{\partial^2\omega}{\partial x^2} + \left(\frac{1-\cos(2\theta)}{2}\right)\frac{\partial^2\omega}{\partial y^2} \\[8pt]
+&\quad + \operatorname{sen}(2\theta)\frac{\partial^2\omega}{\partial y\partial x}
 \end{aligned} $$
 
 $$ \begin{aligned}
-\frac{\partial^2\omega}{\partial n^2} ={}& \frac{1}{2}\left(\frac{\partial^2\omega}{\partial x^2}+\frac{\partial^2\omega}{\partial y^2}\right) + \frac{1}{2}\left(\frac{\partial^2\omega}{\partial x^2}-\frac{\partial^2\omega}{\partial y^2}\right)\cos(2\theta)\\
-&+ \frac{\partial^2\omega}{\partial y\partial x}\operatorname{sen}(2\theta)
+\frac{\partial^2\omega}{\partial n^2}
+&= \frac{1}{2}\left(\frac{\partial^2\omega}{\partial x^2} + \frac{\partial^2\omega}{\partial y^2}\right) + \frac{1}{2}\left(\frac{\partial^2\omega}{\partial x^2} - \frac{\partial^2\omega}{\partial y^2}\right)\cos(2\theta) \\[8pt]
+&\quad + \frac{\partial^2\omega}{\partial y\partial x}\operatorname{sen}(2\theta)
 \end{aligned} $$
 
 Definiendo las curvaturas en direcciones $x$, $y$, $n$ y la curvatura torsional:
 
 $$ \begin{aligned}
-K_x &= \frac{\partial^2\omega}{\partial x^2}, \qquad K_y = \frac{\partial^2\omega}{\partial y^2},\\
+K_x &= \frac{\partial^2\omega}{\partial x^2}, \qquad K_y = \frac{\partial^2\omega}{\partial y^2}, \\[8pt]
 K_{xy} &= \frac{\partial^2\omega}{\partial x\partial y} = \frac{\partial^2\omega}{\partial y\partial x}, \qquad K_n = \frac{\partial^2\omega}{\partial n^2}
 \end{aligned} $$
 
@@ -310,13 +310,15 @@ Para comprender esta afirmación, fijémonos en que $K_x$, $K_y$ y $K_{xy}$ desc
 $$ \frac{\partial}{\partial t}\left(\frac{\partial w}{\partial n}\right) = -\cos\theta\frac{\partial}{\partial t}\left(\frac{\partial w}{\partial x}\right) + \operatorname{sen}\theta\frac{\partial}{\partial t}\left(\frac{\partial w}{\partial y}\right) $$
 
 $$ \begin{aligned}
-\frac{\partial^2 w}{\partial t\partial n}={}&\cos\theta\left[\frac{\partial}{\partial x}\left(\frac{\partial w}{\partial x}\right)\frac{\partial x}{\partial t}+\frac{\partial}{\partial y}\left(\frac{\partial w}{\partial x}\right)\frac{\partial y}{\partial t}\right]\\
-&+\operatorname{sen}\theta\left[\frac{\partial}{\partial x}\left(\frac{\partial w}{\partial y}\right)\frac{\partial x}{\partial t}+\frac{\partial}{\partial y}\left(\frac{\partial w}{\partial y}\right)\frac{\partial y}{\partial t}\right]
+\frac{\partial^2 w}{\partial t\partial n}
+&= \cos\theta\left[\frac{\partial}{\partial x}\left(\frac{\partial w}{\partial x}\right)\frac{\partial x}{\partial t} + \frac{\partial}{\partial y}\left(\frac{\partial w}{\partial x}\right)\frac{\partial y}{\partial t}\right] \\[8pt]
+&\quad + \operatorname{sen}\theta\left[\frac{\partial}{\partial x}\left(\frac{\partial w}{\partial y}\right)\frac{\partial x}{\partial t} + \frac{\partial}{\partial y}\left(\frac{\partial w}{\partial y}\right)\frac{\partial y}{\partial t}\right]
 \end{aligned} $$
 
 $$ \begin{aligned}
-\frac{\partial^2 w}{\partial t\partial n}={}&\cos\theta\left[\frac{\partial x}{\partial t}\frac{\partial^2 w}{\partial x^2}+\frac{\partial y}{\partial t}\frac{\partial^2 w}{\partial y\partial x}\right]\\
-&+\operatorname{sen}\theta\left[\frac{\partial x}{\partial t}\frac{\partial^2 w}{\partial x\partial y}+\frac{\partial y}{\partial t}\frac{\partial^2 w}{\partial y^2}\right]
+\frac{\partial^2 w}{\partial t\partial n}
+&= \cos\theta\left[\frac{\partial x}{\partial t}\frac{\partial^2 w}{\partial x^2} + \frac{\partial y}{\partial t}\frac{\partial^2 w}{\partial y\partial x}\right] \\[8pt]
+&\quad + \operatorname{sen}\theta\left[\frac{\partial x}{\partial t}\frac{\partial^2 w}{\partial x\partial y} + \frac{\partial y}{\partial t}\frac{\partial^2 w}{\partial y^2}\right]
 \end{aligned} $$
 
 $$ x = t\operatorname{sen}\theta, \qquad y = -t\cos\theta $$
@@ -324,13 +326,12 @@ $$ x = t\operatorname{sen}\theta, \qquad y = -t\cos\theta $$
 $$ \frac{\partial x}{\partial t} = \operatorname{sen}\theta, \qquad \frac{\partial y}{\partial t} = -\cos\theta $$
 
 $$ \begin{aligned}
-\frac{\partial^2 w}{\partial t\partial n} ={}& \cos\theta\left(\operatorname{sen}\theta\frac{\partial^2 w}{\partial x^2}-\cos\theta\frac{\partial^2 w}{\partial y\partial t}\right)\\
-&+ \operatorname{sen}\theta\left(\operatorname{sen}\theta\frac{\partial^2 w}{\partial x\partial y}+\cos\theta\frac{\partial^2 w}{\partial y^2}\right)
+\frac{\partial^2 w}{\partial t\partial n}
+&= \cos\theta\left(\operatorname{sen}\theta\frac{\partial^2 w}{\partial x^2} - \cos\theta\frac{\partial^2 w}{\partial y\partial t}\right) \\[8pt]
+&\quad + \operatorname{sen}\theta\left(\operatorname{sen}\theta\frac{\partial^2 w}{\partial x\partial y} + \cos\theta\frac{\partial^2 w}{\partial y^2}\right)
 \end{aligned} $$
 
 $$ \frac{\partial^2 w}{\partial t\partial n} = \frac{1}{2}\frac{\partial^2 w}{\partial x^2}\operatorname{sen}(2\theta) - \frac{1}{2}\frac{\partial^2 w}{\partial y^2}\operatorname{sen}(2\theta) = \left(\frac{k_x-k_y}{2}\right)\operatorname{sen}(2\theta) $$
-
-$$ \frac{\partial^2 w}{\partial t\partial n} = \left(\frac{k_x-k_y}{2}\right)\operatorname{sen}(2\theta) $$
 
 Aquí se están relacionando los cambios de pendiente medidos en dos direcciones distintas, $n$ y $t$. La derivada mixta indica cuánto varía la pendiente en una dirección cuando avanzamos en la otra. Al elegir una orientación diferente, las curvaturas que intervienen también cambian. Las operaciones se basan nuevamente en la regla de la cadena y en las relaciones trigonométricas del ángulo $\theta$.
 
@@ -558,10 +559,7 @@ $$ M_x = \frac{E}{1-\nu^2}\left(\frac{\partial^2 w}{\partial x^2} + \nu\frac{\pa
 
 $$ M_x = \frac{Eh^3}{12(1-\nu^2)}\left(\frac{\partial^2 w}{\partial x^2} + \nu\frac{\partial^2 w}{\partial y^2}\right) = D\left(\frac{\partial^2 w}{\partial x^2} + \nu\frac{\partial^2 w}{\partial y^2}\right) $$
 
-$$ \begin{aligned}
-M_y &= \int_{-h/2}^{h/2}\sigma_y z\,dz\\
-&= \frac{E}{1-\nu^2}\left(\frac{\partial^2 w}{\partial y^2} + \nu\frac{\partial^2 w}{\partial x^2}\right)\int_{-h/2}^{h/2} z^2\,dz
-\end{aligned} $$
+$$ M_y = \int_{-h/2}^{h/2}\sigma_y z\,dz = \frac{E}{1-\nu^2}\left(\frac{\partial^2 w}{\partial y^2} + \nu\frac{\partial^2 w}{\partial x^2}\right)\int_{-h/2}^{h/2} z^2\,dz $$
 
 $$ M_y = \frac{Eh^3}{12(1-\nu^2)}\left(\frac{\partial^2 w}{\partial y^2} + \nu\frac{\partial^2 w}{\partial x^2}\right) = D\left(\frac{\partial^2 w}{\partial y^2} + \nu\frac{\partial^2 w}{\partial x^2}\right) $$
 
@@ -1593,7 +1591,7 @@ $$ \left.\frac{\partial\omega}{\partial x}\right|_{x=a} = 0 $$
 \end{tikzpicture}
 </script>
 
-Figura 19: Placa con empotramiento perfecto, simplemente apoyada en su extremo y libre.
+Figura 19: Placa con borde empotrado.
 
 En el empotramiento se imponen dos condiciones diferentes. La primera evita que la placa suba o baje en el borde; la segunda impide que allí cambie su inclinación normal. La restricción del giro es lo que diferencia este apoyo del simple.
 
@@ -1654,7 +1652,7 @@ $$ \left.\left(\frac{\partial^2 w}{\partial x^2} + \nu\frac{\partial^2 w}{\parti
 \end{tikzpicture}
 </script>
 
-Figura 20: Placa con empotramiento perfecto, simplemente apoyada en su extremo y libre.
+Figura 20: Placa con apoyo simple.
 
 Aquí la deflexión sigue siendo nula sobre el apoyo, pero la pendiente puede ser distinta de cero. La segunda ecuación corresponde al momento de flexión asociado al borde. De esta manera, la placa puede girar localmente sin que el apoyo aplique un momento resistente idealizado.
 
@@ -1684,7 +1682,7 @@ $$ \left.Q_x\right|_{x=a} = 0 $$
 \end{tikzpicture}
 </script>
 
-Figura 21: Placa con empotramiento perfecto, simplemente apoyada en su extremo y libre.
+Figura 21: Placa con borde libre.
 
 Un borde libre puede desplazarse y girar sin una restricción directa impuesta por un apoyo. Las condiciones se expresan entonces mediante las acciones que actúan sobre él. Al estudiar un borde libre en la formulación de Kirchhoff también debe tenerse presente la cortante equivalente $V_x$ desarrollada en la sección 8, que reúne la cortante y la contribución del momento torsor.
 
@@ -1743,11 +1741,7 @@ El proceso consta de dos integraciones: una recorre la longitud de la placa y la
 
 El problema puede reducirse a resolver infinitas ecuaciones diferenciales de segundo orden, de la siguiente forma:
 
-$$ \begin{aligned}
-\frac{\partial^4 w}{\partial x^4} + 2\frac{\partial^4 w}{\partial x^2\partial y^2} + \frac{\partial^4 w}{\partial y^4}
-&= \frac{q_0}{D}\sin\left(\frac{m\pi x}{a}\right)\sin\left(\frac{n\pi y}{b}\right),\\
-&\qquad \forall m,n \in \mathbb{N}
-\end{aligned} $$
+$$ \frac{\partial^4 w}{\partial x^4} + 2\frac{\partial^4 w}{\partial x^2\partial y^2} + \frac{\partial^4 w}{\partial y^4} = \frac{q_0}{D}\sin\!\left(\tfrac{m\pi x}{a}\right)\sin\!\left(\tfrac{n\pi y}{b}\right), \qquad \forall m,n \in \mathbb{N} $$
 
 Y debido a la linealidad de la ecuación diferencial analizada, la solución del problema será la sumatoria de las soluciones parciales de cada una de las ecuaciones diferenciales. Sea $w_{m,n}$ la solución asociada a la ecuación diferencial correspondiente a estos enteros; entonces, la solución general será la sumatoria de estas, es decir:
 
@@ -1803,25 +1797,21 @@ $$ \omega = \frac{16q_0}{\pi^6 D}\sum_{m=1}^{\infty}\sum_{n=1}^{\infty}\frac{1}{
 
 Las dos últimas expresiones corresponden a evaluar la serie en el centro geométrico de la placa. En ese punto se reemplazan $x$ por $a/2$ e $y$ por $b/2$; por eso los argumentos de los senos pasan a ser múltiplos de $\pi/2$.
 
-**Cálculo de los momentos flectores en dirección $x$**
+#### Cálculo de los momentos flectores en dirección X
 
-$$ \frac{\partial^2\omega}{\partial x^2} = \frac{16q_0}{\pi^6 D}\sum_m\sum_n \left(\frac{m\pi}{a}\right)^2\frac{1}{mn\left(\frac{m^2}{a^2}+\frac{n^2}{b^2}\right)^2}\sin\left(\frac{m\pi x}{a}\right)\sin\left(\frac{n\pi y}{b}\right) $$
+$$ \frac{\partial^2\omega}{\partial x^2} = \frac{16q_0}{\pi^6 D}\sum_m\sum_n \left(\frac{m\pi}{a}\right)^2\frac{1}{mn\left(\frac{m^2}{a^2}+\frac{n^2}{b^2}\right)^2}\sin\!\left(\tfrac{m\pi x}{a}\right)\sin\!\left(\tfrac{n\pi y}{b}\right) $$
 
-$$ \frac{\partial^2\omega}{\partial y^2} = \frac{16q_0}{\pi^6 D}\sum_m\sum_n \left(\frac{n\pi}{b}\right)^2\frac{1}{mn\left(\frac{m^2}{a^2}+\frac{n^2}{b^2}\right)^2}\sin\left(\frac{m\pi x}{a}\right)\sin\left(\frac{n\pi y}{b}\right) $$
+$$ \frac{\partial^2\omega}{\partial y^2} = \frac{16q_0}{\pi^6 D}\sum_m\sum_n \left(\frac{n\pi}{b}\right)^2\frac{1}{mn\left(\frac{m^2}{a^2}+\frac{n^2}{b^2}\right)^2}\sin\!\left(\tfrac{m\pi x}{a}\right)\sin\!\left(\tfrac{n\pi y}{b}\right) $$
 
-$$ \begin{aligned}
-\frac{\partial^2\omega}{\partial x^2} + \nu\frac{\partial^2\omega}{\partial y^2}
-&= \frac{16q_0}{\pi^6 D}\sum_m\sum_n \frac{\pi^2}{mn}\frac{\left(\frac{m^2}{a^2}+\nu\frac{n^2}{b^2}\right)}{\left(\frac{m^2}{a^2}+\frac{n^2}{b^2}\right)^2}\\
-&\quad\cdot\sin\left(\frac{m\pi x}{a}\right)\sin\left(\frac{n\pi y}{b}\right)
-\end{aligned} $$
+$$ \frac{\partial^2\omega}{\partial x^2} + \nu\frac{\partial^2\omega}{\partial y^2} = \frac{16q_0}{\pi^6 D}\sum_m\sum_n \frac{\pi^2}{mn}\frac{\left(\frac{m^2}{a^2}+\nu\frac{n^2}{b^2}\right)}{\left(\frac{m^2}{a^2}+\frac{n^2}{b^2}\right)^2}\sin\!\left(\tfrac{m\pi x}{a}\right)\sin\!\left(\tfrac{n\pi y}{b}\right) $$
 
-$$ M_x = -\frac{16q_0}{\pi^4}\sum_m\sum_n \frac{\left(\frac{m^2}{a^2}+\nu\frac{n^2}{b^2}\right)}{mn\left(\frac{m^2}{a^2}+\frac{n^2}{b^2}\right)^2}\sin\left(\frac{m\pi x}{a}\right)\sin\left(\frac{n\pi y}{b}\right) $$
+$$ M_x = -\frac{16q_0}{\pi^4}\sum_m\sum_n \frac{\left(\frac{m^2}{a^2}+\nu\frac{n^2}{b^2}\right)}{mn\left(\frac{m^2}{a^2}+\frac{n^2}{b^2}\right)^2}\sin\!\left(\tfrac{m\pi x}{a}\right)\sin\!\left(\tfrac{n\pi y}{b}\right) $$
 
 $$ x = \frac{a}{2}, \qquad y = \frac{b}{2} $$
 
-$$ (M_x)_{\max} = -\frac{16q_0}{\pi^4}\sum_m\sum_n \frac{\left(\frac{m^2}{a^2}+\nu\frac{n^2}{b^2}\right)}{mn\left(\frac{m^2}{a^2}+\frac{n^2}{b^2}\right)^2}\sin\left(\frac{m\pi}{2}\right)\sin\left(\frac{n\pi}{2}\right) $$
+$$ (M_x)_{\max} = -\frac{16q_0}{\pi^4}\sum_m\sum_n \frac{\left(\frac{m^2}{a^2}+\nu\frac{n^2}{b^2}\right)}{mn\left(\frac{m^2}{a^2}+\frac{n^2}{b^2}\right)^2}\sin\!\left(\tfrac{m\pi}{2}\right)\sin\!\left(\tfrac{n\pi}{2}\right) $$
 
-**Cálculo de los momentos flectores en dirección $y$**
+#### Cálculo de los momentos flectores en dirección Y
 
 $$ M_y = D\left(\frac{\partial^2\omega}{\partial y^2} + \nu\frac{\partial^2\omega}{\partial x^2}\right) $$
 
@@ -1876,8 +1866,10 @@ La ecuación de la placa se convierte así en una ecuación diferencial para cad
 La solución general de esta ecuación se obtiene como una combinación lineal de funciones seno y coseno, además del producto de funciones lineales por el seno y el coseno, tal como se muestra a continuación:
 
 $$ \begin{aligned}
-Y_m = \frac{qa^4}{D}\Bigg(&A_m\cosh\left(\frac{m\pi y}{a}\right) + B_m\frac{m\pi y}{a}\sinh\left(\frac{m\pi y}{a}\right)\\
-&+ C_m\sinh\left(\frac{m\pi y}{a}\right) + D_m\frac{m\pi y}{a}\cosh\left(\frac{m\pi y}{a}\right)\Bigg)
+Y_m = \frac{qa^4}{D}\Bigl[
+&\phantom{+\;} A_m\cosh\!\left(\tfrac{m\pi y}{a}\right) + B_m\tfrac{m\pi y}{a}\sinh\!\left(\tfrac{m\pi y}{a}\right) \\[8pt]
+&+\; C_m\sinh\!\left(\tfrac{m\pi y}{a}\right) + D_m\tfrac{m\pi y}{a}\cosh\!\left(\tfrac{m\pi y}{a}\right)
+\Bigr]
 \end{aligned} $$
 
 Las funciones $\cosh$ y $\sinh$ se llaman coseno hiperbólico y seno hiperbólico. Aparecen al resolver la ecuación diferencial correspondiente a $Y_m$; su forma es distinta de la de los senos que se utilizaron para satisfacer los apoyos en la dirección $x$. Los coeficientes $A_m$, $B_m$, $C_m$ y $D_m$ deben determinarse con las condiciones del problema.
@@ -1885,8 +1877,8 @@ Las funciones $\cosh$ y $\sinh$ se llaman coseno hiperbólico y seno hiperbólic
 Debido a que el problema analizado es simétrico con respecto al eje $y$, y a que se está estudiando una losa simplemente apoyada, los términos impares de la solución deben desaparecer, es decir, $C_m = 0$ y $D_m = 0$. Así, la solución general del problema es:
 
 $$ \begin{aligned}
-w ={}& \frac{q}{24D}(x^4 - 2ax^3 + a^3 x)\\
-&+ \frac{qa^4}{D}\sum_{m=1}^{\infty}\left(A_m\cosh\left(\frac{m\pi y}{a}\right) + B_m\frac{m\pi y}{a}\sinh\left(\frac{m\pi y}{a}\right)\right)\sin\left(\frac{m\pi x}{a}\right)
+w &= \frac{q}{24D}(x^4 - 2ax^3 + a^3 x) \\[8pt]
+&\quad + \frac{qa^4}{D}\sum_{m=1}^{\infty}\left[A_m\cosh\!\left(\tfrac{m\pi y}{a}\right) + B_m\tfrac{m\pi y}{a}\sinh\!\left(\tfrac{m\pi y}{a}\right)\right]\sin\!\left(\tfrac{m\pi x}{a}\right)
 \end{aligned} $$
 
 Las otras dos constantes de integración se pueden obtener aplicando las condiciones de contorno para los extremos siguientes, es decir:
@@ -1901,10 +1893,7 @@ $$ \frac{q}{24D}(x^4 - 2ax^3 + a^3 x) = \frac{4qa^4}{\pi^5 D}\sum_{m=1}^{\infty}
 
 Sustituyendo esta expresión en la deflexión se tiene:
 
-$$ \begin{aligned}
-w = \frac{qa^4}{D}\sum_{m=1}^{\infty}\Bigg(&\frac{4}{\pi^5 m^5} + A_m\cosh\left(\frac{m\pi y}{a}\right)\\
-&+ B_m\frac{m\pi y}{a}\sinh\left(\frac{m\pi y}{a}\right)\Bigg)\sin\left(\frac{m\pi x}{a}\right)
-\end{aligned} $$
+$$ w = \frac{qa^4}{D}\sum_{m=1}^{\infty}\left[\frac{4}{\pi^5 m^5} + A_m\cosh\!\left(\tfrac{m\pi y}{a}\right) + B_m\tfrac{m\pi y}{a}\sinh\!\left(\tfrac{m\pi y}{a}\right)\right]\sin\!\left(\tfrac{m\pi x}{a}\right) $$
 
 Expresar todos los términos mediante los mismos senos permite aplicar una condición de borde a cada modo por separado. Es la misma idea de ortogonalidad utilizada antes, ahora para calcular las constantes que aparecen en la solución complementaria.
 
@@ -1929,8 +1918,10 @@ $$ B_m = \frac{2}{\pi^5 m^5\cosh\alpha_m} $$
 Sustituyendo estos resultados en la serie se obtiene lo siguiente:
 
 $$ \begin{aligned}
-w = \frac{4qa^4}{\pi^5 D}\sum_{m=1,3,5,\ldots}^{\infty}\frac{1}{m^5}\Bigg[&\left(1 - \frac{\alpha_m\tanh\alpha_m + 2}{2\cosh\alpha_m}\cosh\left(\frac{2\alpha_m y}{b}\right)\right)\\
-&+ \frac{\alpha_m}{2\cosh\alpha_m}\frac{2y}{b}\sinh\left(\frac{2\alpha_m y}{b}\right)\Bigg]\sin\left(\frac{m\pi x}{a}\right)
+w = \frac{4qa^4}{\pi^5 D}\sum_{m=1,3,5,\ldots}^{\infty}\frac{1}{m^5}\Biggl[
+&\phantom{+\;} 1 - \frac{\alpha_m\tanh\alpha_m + 2}{2\cosh\alpha_m}\cosh\!\left(\tfrac{2\alpha_m y}{b}\right) \\[8pt]
+&+\; \frac{\alpha_m}{2\cosh\alpha_m}\frac{2y}{b}\sinh\!\left(\tfrac{2\alpha_m y}{b}\right)
+\Biggr]\sin\!\left(\tfrac{m\pi x}{a}\right)
 \end{aligned} $$
 
 La deflexión máxima se da en el centro de la placa, es decir cuando $x = a/2$ y $y = 0$:
@@ -1941,10 +1932,7 @@ Para evaluar la serie en el centro se sustituye $x = a/2$ e $y = 0$. En particul
 
 Separando el segundo término de la expresión obtenemos una serie que nos da la deflexión máxima en el centro de la placa:
 
-$$ \begin{aligned}
-w_{\max} ={}& \frac{5}{384}\frac{qa^4}{D}\\
-&- \frac{4qa^4}{\pi^5 D}\sum_{m=1,3,5,\ldots}^{\infty}\frac{(-1)^{(m-1)/2}}{m^5}\cdot\frac{\alpha_m\tanh\alpha_m + 2}{2\cosh\alpha_m}
-\end{aligned} $$
+$$ w_{\max} = \frac{5}{384}\frac{qa^4}{D} - \frac{4qa^4}{\pi^5 D}\sum_{m=1,3,5,\ldots}^{\infty}\frac{(-1)^{(m-1)/2}}{m^5}\cdot\frac{\alpha_m\tanh\alpha_m + 2}{2\cosh\alpha_m} $$
 
 La primera parte de esta expresión depende de $qa^4/D$. La segunda contiene una serie que modifica esa contribución de acuerdo con las dimensiones de la placa y la forma en que se satisfacen sus condiciones de borde.
 
