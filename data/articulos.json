@@ -10,8 +10,10 @@
     "id": "179444678901",
     "unidad": "unidad3",
     "titulo": "Fatiga en Elementos Mecánicos",
-    "revision": "3b2c1d4e",
-    "ruta": "articulos/unidad3/fatiga.md"
+    "revision": "2ddcbe84",
+    "ruta": "articulos/unidad3/fatiga.md",
+    "modoLectura": "capitulos",
+    "numeroCapitulos": 10
   },
   {
     "id": "1794561295175",
