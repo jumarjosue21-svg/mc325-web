@@ -41,7 +41,6 @@ Se adopta tracción positiva y compresión negativa. Los esfuerzos y resistencia
 | $2N$ | Número de reversiones; aparece en las relaciones deformación--vida. |
 | $n_i$ | Ciclos aplicados al nivel de carga $i$. |
 | $N_i$ | Vida estimada al nivel de carga $i$. |
-| $D$ | Daño acumulado estimado por la regla lineal de Miner. |
 | $a,b$ | Constantes empíricas de la curva esfuerzo--vida $S_f=aN^b$. En la correlación superficial, $a$ y $b$ son constantes distintas, propias de esa ecuación. |
 | $f$ | Factor que define el punto de resistencia a $10^3$ ciclos como $fS_{ut}$. |
 | $\varepsilon$ | Deformación unitaria. |
@@ -1237,15 +1236,7 @@ $$
 </div>
 
 <a id="cargas-de-amplitud-variable"></a>
-### Cargas de amplitud variable
 
-Una curva $S$--$N$ de amplitud constante no describe por sí sola una historia de carga variable. Una aproximación de daño acumulado lineal es la regla de Miner:
-
-$$
-D=\sum_i\frac{n_i}{N_i}.
-$$
-
-Aquí $n_i$ es el número de ciclos realmente aplicado al nivel $i$ y $N_i$ es la vida estimada si se aplicara ese nivel de manera constante. El valor $D\approx1$ se usa como indicador empírico de falla. No es una ley exacta: el orden de aplicación, las interacciones entre cargas y otros mecanismos pueden cambiar la vida observada.
 
 <a id="correccion-para-componentes-reales"></a>
 ## Corrección para componentes reales
