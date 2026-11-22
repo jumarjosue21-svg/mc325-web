@@ -33,31 +33,83 @@
     <script src="js/tikz-precompilado.js?v=3"></script>
     <!-- ESTILOS DE LECTURA: afectan únicamente a los artículos, no al resto del sitio -->
     <style>
-        /* Lector de doble columna: artículo + índice contextual (solo esta página). */
+        /* Lector adaptativo: índice superior al entrar y transición suave a índice lateral derecho al scrollear. */
         #vista-lectura-articulo .reading-layout {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 252px;
+            grid-template-columns: minmax(0, 1fr) 0px;
             align-items: start;
-            gap: 25px;
+            column-gap: 0px;
+            row-gap: 24px;
             max-width: 1480px;
             margin: 0 auto;
+            overflow-x: clip;
+            transition:
+                grid-template-columns 380ms cubic-bezier(0.22, 1, 0.36, 1),
+                column-gap 380ms cubic-bezier(0.22, 1, 0.36, 1);
         }
         #vista-lectura-articulo .reading-layout .reading-paper {
             min-width: 0;
-            max-width: none;
-            margin: 0;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
         }
         #vista-lectura-articulo .reading-toc {
-            position: sticky;
-            top: 20px;
-            align-self: start;
-            max-height: calc(100vh - 126px);
-            overflow-y: auto;
             background: #fff;
             border: 1px solid #e2e5e9;
             border-radius: 9px;
             padding: 19px 12px 18px;
             scrollbar-width: thin;
+        }
+        #vista-lectura-articulo .reading-toc-top {
+            position: static;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto 22px;
+            max-height: 310px;
+            overflow-y: auto;
+            padding: 15px 16px;
+            transition: opacity 280ms ease;
+        }
+        #vista-lectura-articulo .reading-toc-top.is-faded {
+            opacity: 0.2;
+        }
+        #vista-lectura-articulo .reading-toc-side {
+            position: sticky;
+            top: 16px;
+            align-self: start;
+            width: 252px;
+            max-height: calc(100vh - 110px);
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateX(18px) scale(0.985);
+            will-change: opacity, transform;
+            transition:
+                opacity 240ms ease,
+                transform 340ms cubic-bezier(0.22, 1, 0.36, 1),
+                visibility 0s linear 240ms;
+        }
+        #vista-lectura-articulo .reading-layout.toc-docked {
+            grid-template-columns: minmax(0, 1fr) 252px;
+            column-gap: 24px;
+        }
+        #vista-lectura-articulo .reading-layout.toc-docked .reading-toc-side {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateX(0) scale(1);
+            transition:
+                opacity 320ms ease 90ms,
+                transform 380ms cubic-bezier(0.22, 1, 0.36, 1) 60ms,
+                visibility 0s linear 0s;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            #vista-lectura-articulo .reading-layout,
+            #vista-lectura-articulo .reading-toc-top,
+            #vista-lectura-articulo .reading-toc-side {
+                transition: none;
+            }
         }
         #vista-lectura-articulo .toc-heading {
             display: flex;
@@ -133,14 +185,35 @@
         }
         #vista-lectura-articulo .toc-top:hover { color: var(--uni-red-dark); border-color: #cba29c; }
         @media (max-width: 1350px) {
-            #vista-lectura-articulo .reading-layout { grid-template-columns: minmax(0, 1fr); }
-            #vista-lectura-articulo .reading-toc {
-                order: -1;
-                position: static;
-                max-height: 310px;
-                padding: 14px 15px;
+            #vista-lectura-articulo .reading-layout .reading-paper {
+                padding: clamp(22px, 3vw, 46px);
             }
-            #vista-lectura-articulo .reading-layout .reading-paper { max-width: 1100px; margin: 0 auto; width: 100%; }
+            #vista-lectura-articulo .reading-toc-side {
+                width: 232px;
+            }
+            #vista-lectura-articulo .reading-layout.toc-docked {
+                grid-template-columns: minmax(0, 1fr) 232px;
+                column-gap: 18px;
+            }
+        }
+        @media (max-width: 1120px) {
+            #vista-lectura-articulo .reading-toc-side {
+                width: 210px;
+                padding: 15px 10px 14px;
+            }
+            #vista-lectura-articulo .reading-layout.toc-docked {
+                grid-template-columns: minmax(0, 1fr) 210px;
+                column-gap: 14px;
+            }
+        }
+        @media (max-width: 960px) {
+            #vista-lectura-articulo .reading-layout,
+            #vista-lectura-articulo .reading-layout.toc-docked {
+                grid-template-columns: minmax(0, 1fr);
+                column-gap: 0px;
+            }
+            #vista-lectura-articulo .reading-toc-side { display: none; }
+            #vista-lectura-articulo .reading-toc-top.is-faded { opacity: 1; }
         }
         /* Columna de lectura cómoda y elegante, estilo manual universitario */
         #vista-lectura-articulo .reading-paper {
@@ -419,7 +492,8 @@
 
         /* Lectura por capítulos: portada interna y navegación, solo en Materiales. */
         #vista-lectura-articulo [hidden] { display:none !important; }
-        #vista-lectura-articulo .reading-layout.sin-indice { grid-template-columns:minmax(0,1fr); }
+        #vista-lectura-articulo .reading-layout.sin-indice { grid-template-columns:minmax(0,1fr); column-gap:0; }
+        #vista-lectura-articulo .reading-layout.sin-indice .reading-toc-side { display:none; }
         #vista-lectura-articulo .reading-layout.sin-indice .reading-paper { width:100%; max-width:1100px; margin:0 auto; }
         #lectura-portada, #lectura-capitulo-barra { max-width:880px; margin:0 auto; color:var(--text-main); }
         #lectura-portada > p { color:var(--text-light); line-height:1.55; margin:0 0 22px; }
@@ -816,6 +890,12 @@
                     <div id="lectura-meta" style="color: var(--text-light); font-size: 0.95rem; font-weight: bold;"></div>
                 </div>
                 
+                <!-- Índice superior inicial: visible al entrar al artículo -->
+                <aside id="lectura-indice-superior" class="reading-toc reading-toc-top" aria-label="Índice del artículo">
+                    <h2 class="toc-heading"><i class="fa-solid fa-list-ul" aria-hidden="true"></i> En este artículo</h2>
+                    <nav id="lectura-indice-superior-enlaces" aria-label="Secciones y subapartados"></nav>
+                </aside>
+
                 <div class="reading-layout">
                     <div class="reading-paper">
                         <h1 id="lectura-titulo"></h1>
@@ -856,8 +936,8 @@
                         </nav>
 
                     </div>
-                    <!-- Índice automático: no requiere editarlo al publicar nuevos artículos. -->
-                    <aside id="lectura-indice" class="reading-toc" aria-label="Índice del artículo">
+                    <!-- Índice lateral automático: aparece a la derecha al scrollear cuando el índice superior sale de pantalla. -->
+                    <aside id="lectura-indice" class="reading-toc reading-toc-side" aria-label="Índice lateral del artículo">
                         <h2 class="toc-heading"><i class="fa-solid fa-list-ul" aria-hidden="true"></i> En este artículo</h2>
                         <nav id="lectura-indice-enlaces" aria-label="Secciones y subapartados"></nav>
                         <button type="button" id="lectura-ir-inicio" class="toc-top">
@@ -1668,25 +1748,77 @@
         });
 
         // ÍNDICE DINÁMICO: utiliza los h2/h3 reales generados a partir del Markdown.
-        // Así cada artículo tiene su propio menú, sin mantener enlaces manuales.
+        // Muestra el índice en la parte superior al entrar y transiciona a la derecha al scrollear.
         let titulosDeLectura = [];
         const enlacesDelIndice = new Map();
         let frameIndicePendiente = false;
 
+        function registrarEnlaceIndice(id, enlace) {
+            let lista = enlacesDelIndice.get(id);
+            if (!lista) {
+                lista = [];
+                enlacesDelIndice.set(id, lista);
+            }
+            lista.push(enlace);
+        }
+
         function activarEnlaceIndice(id) {
-            enlacesDelIndice.forEach((enlace, clave) => {
+            enlacesDelIndice.forEach((lista, clave) => {
                 const activo = clave === id;
-                enlace.classList.toggle('is-active', activo);
-                if (activo) enlace.setAttribute('aria-current', 'location');
-                else enlace.removeAttribute('aria-current');
+                lista.forEach(enlace => {
+                    enlace.classList.toggle('is-active', activo);
+                    if (activo) enlace.setAttribute('aria-current', 'location');
+                    else enlace.removeAttribute('aria-current');
+                });
             });
+            const lateral = document.getElementById('lectura-indice');
+            const layout = document.querySelector('#vista-lectura-articulo .reading-layout');
+            if (lateral && layout && layout.classList.contains('toc-docked')) {
+                const enlaceLateral = (enlacesDelIndice.get(id) || []).find(el => lateral.contains(el));
+                if (enlaceLateral) {
+                    const cont = lateral.getBoundingClientRect();
+                    const item = enlaceLateral.getBoundingClientRect();
+                    if (item.top < cont.top + 48 || item.bottom > cont.bottom - 52) {
+                        lateral.scrollTop += (item.top - cont.top) - Math.round(cont.height * 0.35);
+                    }
+                }
+            }
+        }
+
+        function actualizarEstadoIndiceLateral(forzarInicio = false) {
+            const vista = document.getElementById('vista-lectura-articulo');
+            const layout = document.querySelector('#vista-lectura-articulo .reading-layout');
+            const superior = document.getElementById('lectura-indice-superior');
+            const zona = document.querySelector('.content-area');
+            if (!vista || !layout || !superior || !zona) return;
+
+            if (forzarInicio || vista.style.display === 'none' || superior.hidden ||
+                layout.classList.contains('sin-indice') || window.innerWidth <= 960) {
+                layout.classList.remove('toc-docked');
+                superior.classList.remove('is-faded');
+                return;
+            }
+
+            const yaAcoplado = layout.classList.contains('toc-docked');
+            const zonaTop = zona.getBoundingClientRect().top;
+            const supBottom = superior.getBoundingClientRect().bottom;
+            const debeAcoplar = yaAcoplado
+                ? (supBottom < zonaTop + 32)
+                : (supBottom <= zonaTop + 4);
+
+            if (debeAcoplar === yaAcoplado) return;
+
+            layout.classList.toggle('toc-docked', debeAcoplar);
+            superior.classList.toggle('is-faded', debeAcoplar);
         }
 
         function actualizarIndicePorScroll() {
             frameIndicePendiente = false;
-            if (!titulosDeLectura.length ||
-                document.getElementById('vista-lectura-articulo').style.display === 'none') return;
+            if (document.getElementById('vista-lectura-articulo').style.display === 'none') return;
 
+            actualizarEstadoIndiceLateral();
+
+            if (!titulosDeLectura.length) return;
             const zona = document.querySelector('.content-area');
             const umbral = zona.getBoundingClientRect().top + 115;
             let actual = titulosDeLectura[0].id;
@@ -1704,6 +1836,12 @@
             }
         }, { passive: true });
 
+        window.addEventListener('resize', () => {
+            if (document.getElementById('vista-lectura-articulo').style.display !== 'none') {
+                actualizarEstadoIndiceLateral();
+            }
+        }, { passive: true });
+
         function navegarAlTitulo(elemento) {
             if (!elemento) return;
             elemento.scrollIntoView({
@@ -1713,82 +1851,94 @@
         }
 
         document.getElementById('lectura-ir-inicio').addEventListener('click', () => {
-            navegarAlTitulo(document.getElementById('lectura-titulo'));
+            const zona = document.querySelector('.content-area');
+            if (!zona) return;
+            zona.scrollTo({
+                top: 0,
+                behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+            });
         });
 
         function construirIndiceArticulo(lector) {
-            const destino = document.getElementById('lectura-indice-enlaces');
-            destino.replaceChildren();
+            const destinos = [
+                document.getElementById('lectura-indice-superior-enlaces'),
+                document.getElementById('lectura-indice-enlaces')
+            ].filter(Boolean);
+            destinos.forEach(d => d.replaceChildren());
             enlacesDelIndice.clear();
             titulosDeLectura = Array.from(lector.querySelectorAll('h2, h3'));
             const contieneH2 = titulosDeLectura.some(t => t.tagName === 'H2');
-            const lista = document.createElement('ul');
-            lista.className = 'toc-sections';
-            let grupoActual = null;
-            let contador = 0;
-
-            titulosDeLectura.forEach(titulo => {
+            titulosDeLectura.forEach((titulo, idx) => {
                 // Identificadores únicos por vista, incluso para títulos repetidos.
-                titulo.id = 'lectura-apartado-' + contador++;
-                const esPrincipal = titulo.tagName === 'H2' || !contieneH2 || !grupoActual;
-                const enlace = document.createElement('a');
-                enlace.className = 'toc-link';
-                enlace.href = '#' + titulo.id;
-                enlace.textContent = titulo.textContent.trim();
-                enlace.addEventListener('click', event => {
-                    event.preventDefault();
-                    activarEnlaceIndice(titulo.id);
-                    navegarAlTitulo(titulo);
-                });
-                enlacesDelIndice.set(titulo.id, enlace);
-
-                if (esPrincipal) {
-                    grupoActual = document.createElement('li');
-                    grupoActual.className = 'toc-section';
-                    const fila = document.createElement('div');
-                    fila.className = 'toc-section-row';
-                    fila.appendChild(enlace);
-                    grupoActual.appendChild(fila);
-                    lista.appendChild(grupoActual);
-                } else {
-                    let sublista = grupoActual.querySelector('.toc-children');
-                    if (!sublista) {
-                        sublista = document.createElement('ul');
-                        sublista.className = 'toc-children';
-                        const boton = document.createElement('button');
-                        boton.type = 'button';
-                        boton.className = 'toc-expand';
-                        boton.setAttribute('aria-label', 'Mostrar u ocultar subapartados');
-                        boton.setAttribute('aria-expanded', 'false');
-                        const icono = document.createElement('i');
-                        icono.className = 'fa-solid fa-chevron-right';
-                        icono.setAttribute('aria-hidden', 'true');
-                        boton.appendChild(icono);
-                        boton.addEventListener('click', () => {
-                            const abierto = grupoActualLocal.classList.toggle('toc-expanded');
-                            boton.setAttribute('aria-expanded', String(abierto));
-                        });
-                        // Capturar el grupo correcto: cada botón controla solo su apartado.
-                        const grupoActualLocal = grupoActual;
-                        grupoActual.querySelector('.toc-section-row').appendChild(boton);
-                        grupoActual.appendChild(sublista);
-                    }
-                    const elemento = document.createElement('li');
-                    enlace.classList.add('toc-sub-link');
-                    elemento.appendChild(enlace);
-                    sublista.appendChild(elemento);
-                }
+                titulo.id = 'lectura-apartado-' + idx;
             });
 
-            if (titulosDeLectura.length) {
+            destinos.forEach(destino => {
+                if (!titulosDeLectura.length) {
+                    const aviso = document.createElement('p');
+                    aviso.style.cssText = 'font-size: 0.8rem; line-height: 1.5; color: #667; padding: 8px;';
+                    aviso.textContent = 'Este artículo no tiene apartados definidos.';
+                    destino.appendChild(aviso);
+                    return;
+                }
+                const lista = document.createElement('ul');
+                lista.className = 'toc-sections';
+                let grupoActual = null;
+
+                titulosDeLectura.forEach(titulo => {
+                    const esPrincipal = titulo.tagName === 'H2' || !contieneH2 || !grupoActual;
+                    const enlace = document.createElement('a');
+                    enlace.className = 'toc-link';
+                    enlace.href = '#' + titulo.id;
+                    enlace.textContent = titulo.textContent.trim();
+                    enlace.addEventListener('click', event => {
+                        event.preventDefault();
+                        activarEnlaceIndice(titulo.id);
+                        navegarAlTitulo(titulo);
+                    });
+                    registrarEnlaceIndice(titulo.id, enlace);
+
+                    if (esPrincipal) {
+                        grupoActual = document.createElement('li');
+                        grupoActual.className = 'toc-section';
+                        const fila = document.createElement('div');
+                        fila.className = 'toc-section-row';
+                        fila.appendChild(enlace);
+                        grupoActual.appendChild(fila);
+                        lista.appendChild(grupoActual);
+                    } else {
+                        let sublista = grupoActual.querySelector('.toc-children');
+                        if (!sublista) {
+                            sublista = document.createElement('ul');
+                            sublista.className = 'toc-children';
+                            const boton = document.createElement('button');
+                            boton.type = 'button';
+                            boton.className = 'toc-expand';
+                            boton.setAttribute('aria-label', 'Mostrar u ocultar subapartados');
+                            boton.setAttribute('aria-expanded', 'false');
+                            const icono = document.createElement('i');
+                            icono.className = 'fa-solid fa-chevron-right';
+                            icono.setAttribute('aria-hidden', 'true');
+                            boton.appendChild(icono);
+                            // Capturar el grupo correcto: cada botón controla solo su apartado.
+                            const grupoActualLocal = grupoActual;
+                            boton.addEventListener('click', () => {
+                                const abierto = grupoActualLocal.classList.toggle('toc-expanded');
+                                boton.setAttribute('aria-expanded', String(abierto));
+                            });
+                            grupoActual.querySelector('.toc-section-row').appendChild(boton);
+                            grupoActual.appendChild(sublista);
+                        }
+                        const elemento = document.createElement('li');
+                        enlace.classList.add('toc-sub-link');
+                        elemento.appendChild(enlace);
+                        sublista.appendChild(elemento);
+                    }
+                });
                 destino.appendChild(lista);
-                activarEnlaceIndice(titulosDeLectura[0].id);
-            } else {
-                const aviso = document.createElement('p');
-                aviso.style.cssText = 'font-size: 0.8rem; line-height: 1.5; color: #667; padding: 8px;';
-                aviso.textContent = 'Este artículo no tiene apartados definidos.';
-                destino.appendChild(aviso);
-            }
+            });
+
+            if (titulosDeLectura.length) activarEnlaceIndice(titulosDeLectura[0].id);
         }
 
        // LECTOR DE ARTÍCULOS: preserva TikZ, Markdown y separa las fórmulas de bloque.
@@ -1845,6 +1995,7 @@
             document.getElementById('vista-lista-materiales').style.display = 'none';
             document.getElementById('vista-lectura-articulo').style.display = 'block';
             document.querySelector('.content-area').scrollTop = 0;
+            actualizarEstadoIndiceLateral(true);
         }
         function limpiarContenidoLectura() {
             const lector = document.getElementById('lectura-contenido');
@@ -1855,8 +2006,11 @@
             document.getElementById('lectura-portada').hidden = !esPortada;
             document.getElementById('lectura-contenido').hidden = esPortada;
             document.getElementById('lectura-capitulo-barra').hidden = !dividido || esPortada;
+            document.getElementById('lectura-indice-superior').hidden = esPortada;
             document.getElementById('lectura-indice').hidden = esPortada;
-            document.querySelector('#vista-lectura-articulo .reading-layout').classList.toggle('sin-indice', esPortada);
+            const layout = document.querySelector('#vista-lectura-articulo .reading-layout');
+            layout.classList.toggle('sin-indice', esPortada);
+            if (esPortada) layout.classList.remove('toc-docked');
         }
         function pintarPortadaCapitulos(articulo, capitulos) {
             limpiarContenidoLectura(); configurarMarcoCapitulos(true, true);
@@ -1882,34 +2036,42 @@
             });
             document.getElementById('mc325-nav-capitulos').hidden=true;
             document.getElementById('mc325-ejercicios-panel').hidden=true;
+            document.getElementById('lectura-indice-superior-enlaces').replaceChildren();
             document.getElementById('lectura-indice-enlaces').replaceChildren();
             mostrarMarcoLectura();
         }
         function construirIndiceCapitulos(lector, articulo, capitulos, actual) {
-            const destino=document.getElementById('lectura-indice-enlaces'); destino.replaceChildren(); enlacesDelIndice.clear();
+            const destinos = [
+                document.getElementById('lectura-indice-superior-enlaces'),
+                document.getElementById('lectura-indice-enlaces')
+            ].filter(Boolean);
+            destinos.forEach(d => d.replaceChildren());
+            enlacesDelIndice.clear();
             titulosDeLectura=Array.from(lector.querySelectorAll('h2,h3,h4'));
             titulosDeLectura.forEach((h,i)=>h.id='lectura-apartado-'+i);
-            const lista=document.createElement('ul'); lista.className='toc-sections';
-            capitulos.forEach((c,i)=>{
-                const li=document.createElement('li'); li.className='toc-section';
-                const fila=document.createElement('div'); fila.className='toc-section-row';
-                const a=enlaceCapitulo(articulo.id,i,null,'toc-link',c.titulo);
-                if (i===actual) { a.classList.add('capitulo-actual'); if(titulosDeLectura[0]) enlacesDelIndice.set(titulosDeLectura[0].id,a); }
-                fila.append(a); li.append(fila); lista.append(li);
-                if (!c.sub.length) return;
-                const sub=document.createElement('ul'); sub.className='toc-children';
-                const boton=document.createElement('button'); boton.type='button'; boton.className='toc-expand'; boton.setAttribute('aria-label','Mostrar u ocultar subapartados de '+c.titulo);
-                boton.innerHTML='<i class="fa-solid fa-chevron-right" aria-hidden="true"></i>';
-                const abierto=i===actual; li.classList.toggle('toc-expanded',abierto); boton.setAttribute('aria-expanded',String(abierto));
-                boton.addEventListener('click',()=>boton.setAttribute('aria-expanded',String(li.classList.toggle('toc-expanded'))));
-                fila.append(boton); li.append(sub);
-                c.sub.forEach((h,j)=>{
-                    const item=document.createElement('li'); const aSub=enlaceCapitulo(articulo.id,i,j+1,'toc-link toc-sub-link'+(h.nivel===4?' toc-sub-nivel4':''),h.titulo);
-                    item.append(aSub); sub.append(item);
-                    if (i===actual && titulosDeLectura[j+1]) enlacesDelIndice.set(titulosDeLectura[j+1].id,aSub);
+            destinos.forEach(destino => {
+                const lista=document.createElement('ul'); lista.className='toc-sections';
+                capitulos.forEach((c,i)=>{
+                    const li=document.createElement('li'); li.className='toc-section';
+                    const fila=document.createElement('div'); fila.className='toc-section-row';
+                    const a=enlaceCapitulo(articulo.id,i,null,'toc-link',c.titulo);
+                    if (i===actual) { a.classList.add('capitulo-actual'); if(titulosDeLectura[0]) registrarEnlaceIndice(titulosDeLectura[0].id,a); }
+                    fila.append(a); li.append(fila); lista.append(li);
+                    if (!c.sub.length) return;
+                    const sub=document.createElement('ul'); sub.className='toc-children';
+                    const boton=document.createElement('button'); boton.type='button'; boton.className='toc-expand'; boton.setAttribute('aria-label','Mostrar u ocultar subapartados de '+c.titulo);
+                    boton.innerHTML='<i class="fa-solid fa-chevron-right" aria-hidden="true"></i>';
+                    const abierto=i===actual; li.classList.toggle('toc-expanded',abierto); boton.setAttribute('aria-expanded',String(abierto));
+                    boton.addEventListener('click',()=>boton.setAttribute('aria-expanded',String(li.classList.toggle('toc-expanded'))));
+                    fila.append(boton); li.append(sub);
+                    c.sub.forEach((h,j)=>{
+                        const item=document.createElement('li'); const aSub=enlaceCapitulo(articulo.id,i,j+1,'toc-link toc-sub-link'+(h.nivel===4?' toc-sub-nivel4':''),h.titulo);
+                        item.append(aSub); sub.append(item);
+                        if (i===actual && titulosDeLectura[j+1]) registrarEnlaceIndice(titulosDeLectura[j+1].id,aSub);
+                    });
                 });
+                destino.append(lista);
             });
-            destino.append(lista);
             if(titulosDeLectura[0]) activarEnlaceIndice(titulosDeLectura[0].id);
         }
         function pintarNavegacionInterna(articulo, capitulos, actual) {
@@ -2147,7 +2309,9 @@
                 MathJax.typesetClear([document.getElementById('lectura-contenido')]);
             }
             document.getElementById('lectura-contenido').innerHTML = '';
+            document.getElementById('lectura-indice-superior-enlaces').replaceChildren();
             document.getElementById('lectura-indice-enlaces').replaceChildren();
+            actualizarEstadoIndiceLateral(true);
             titulosDeLectura = [];
             enlacesDelIndice.clear();
             document.querySelector('.content-area').scrollTop = 0;
