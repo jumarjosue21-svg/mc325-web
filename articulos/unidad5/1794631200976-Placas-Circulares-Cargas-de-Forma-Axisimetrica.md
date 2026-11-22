@@ -1,6 +1,6 @@
 ## 1. Placas Circulares con Carga Axisimétrica
 
-![Placa circular sometida a una carga axisimétrica representada mediante elementos finitos](placas_circulares_figura_01.png)
+![Figura 1: Placa circular con carga axisimétrica modelada calculada usando el método del elemento finito.](placas_circulares_figura_01_png.png)
 
 Figura 1: Placa circular con carga axisimétrica modelada calculada usando el método del elemento finito.
 
@@ -14,7 +14,64 @@ $$ \frac{1}{r_n} = -\frac{d^2 w}{dr^2} = \frac{d\varphi}{dr} $$
 
 $$ \frac{1}{r_t} = -\frac{1}{r}\frac{dw}{dr} = \frac{\varphi}{r} $$
 
-![Esquema de la deformación y del giro de una sección radial de placa circular](placas_circulares_figura_02.png)
+<script type="text/tikz">
+\begin{tikzpicture}[x=0.0195cm,y=-0.0195cm,>=latex,line cap=round,line join=round]
+  % Figura 2. Perfil radial de una placa circular deformada.
+  % Geometria trazada directamente sobre las coordenadas de la imagen original (506 x 525).
+  \path[use as bounding box] (0,0) rectangle (506,525);
+  \tikzset{
+    eje/.style={draw=black,line width=0.86pt},
+    perfil/.style={draw=black,line width=1.40pt},
+    guia/.style={draw=black,line width=0.88pt},
+    cota/.style={draw=black,line width=0.72pt,dash pattern=on 3pt off 2pt},
+    marca/.style={draw=black,line width=0.83pt}
+  }
+
+  % Eje horizontal de la placa sin deformar; eje vertical por O-B-z.
+  \draw[eje] (27,357) -- (476,357);
+  \draw[eje] (273,25) -- (273,511);
+
+  % Placa deformada: perfil concavo, con flecha maxima junto al eje de simetria.
+  \draw[perfil] (70,357)
+    .. controls (113,388) and (160,416) .. (196,421)
+    .. controls (226,426) and (255,430) .. (275,430)
+    .. controls (355,430) and (424,391) .. (474,357);
+
+  % Apoyos esquematicos en los bordes de la seccion radial.
+  \draw[marca] (51,382) -- (70,357) -- (86,381);
+  \draw[marca] (460,380) -- (474,357) -- (491,381);
+
+  % Dos rectas auxiliares convergentes en B, trazadas hasta el perfil deformado.
+  \draw[guia] (136,403) -- (273,68);
+  \draw[guia] (196,421) -- (273,27);
+
+  % Proyecciones verticales de los puntos que delimitan dr y r.
+  \draw[guia] (136,404) -- (136,490);
+  \draw[guia] (196,422) -- (196,489);
+
+  % Cotas radiales inferiores (con flechas opuestas en sus extremos).
+  \draw[cota,<->] (136,485) -- (195,485);
+  \draw[cota,<->] (198,485) -- (271,485);
+
+  % Flecha transversal de la placa entre eje sin deformar y perfil deformado.
+  \draw[cota,<->] (242,365) -- (242,421);
+
+  % Indicaciones graficas del giro phi entre el eje y las rectas auxiliares.
+  \draw[guia,->] (204,274) -- (228,281);
+  \draw[guia,->] (297,283) -- (274,291);
+
+  % Letras de la imagen: ubicacion y nomenclatura original.
+  \node[font=\Large,anchor=west,inner sep=0pt] at (283,23) {$B$};
+  \node[font=\Large,anchor=west,inner sep=0pt] at (282,340) {$O$};
+  \node[font=\large,anchor=east,inner sep=0pt] at (263,289) {$\varphi$};
+  \node[font=\Large,anchor=west,inner sep=0pt] at (279,385) {$w$};
+  \node[font=\Large,anchor=east,inner sep=0pt] at (189,451) {$A$};
+  \node[font=\Large,anchor=west,inner sep=0pt] at (3,363) {$r$};
+  \node[font=\Large,anchor=north,inner sep=0pt] at (165,494) {$dr$};
+  \node[font=\Large,anchor=north,inner sep=0pt] at (235,494) {$r$};
+  \node[font=\Large,anchor=north,inner sep=0pt] at (282,497) {$z$};
+\end{tikzpicture}
+</script>
 
 Figura 2: Esquema de la deflexión y del giro de una sección radial de la placa circular.
 
@@ -38,11 +95,164 @@ La letra $D$ representa la rigidez flexional de la placa y $\nu$ es el coeficien
 
 Obsérvese que las fórmulas ofrecen dos formas de trabajar: mediante derivadas de la deflexión $w$ o mediante el giro $\varphi$. Más adelante se utilizarán ambas expresiones para llegar a la ecuación de equilibrio.
 
-![Equilibrio de momentos y fuerza cortante en un elemento radial diferencial](placas_circulares_figura_03.png)
+<script type="text/tikz">
+\begin{tikzpicture}[x=0.014cm,y=-0.014cm,line cap=rect,line join=miter]
+  \path[use as bounding box] (0,0) rectangle (972,340);
+  \definecolor{azulMom}{RGB}{13,15,242}
+  \definecolor{rojoQ}{RGB}{239,0,0}
+  \definecolor{azulRay}{RGB}{105,179,233}
+  \definecolor{grisEje}{RGB}{85,85,85}
+
+  % Seccion radial de la placa; el elemento diferencial ocupa 450 <= x <= 618.
+  \draw[black,line width=0.7pt] (308,159) -- (928,159) -- (928,227) -- (308,227) -- cycle;
+  \begin{scope}
+    \clip (450,159) rectangle (618,227);
+    \foreach \k in {380,389,...,650}{
+      \draw[azulRay,line width=0.36pt] (\k,230) -- ({\k+72},158);
+    }
+  \end{scope}
+  \draw[black,line width=1.15pt] (450,159) -- (450,227);
+  \draw[black,line width=1.15pt] (618,159) -- (618,227);
+  % Eje radial de referencia, mostrado discontinuo como en la figura original.
+  \draw[grisEje,line width=0.65pt,dash pattern=on 8pt off 7pt] (158,193) -- (930,193);
+
+  % Par de momentos radiales, flechas curvas en azul con extremos abiertos.
+  \draw[azulMom,line width=2.1pt] (444,222)
+    .. controls (405,224) and (394,205) .. (395,184)
+    .. controls (396,164) and (415,150) .. (442,150);
+  \draw[azulMom,line width=2.0pt] (420,141) -- (443,150) -- (422,155);
+  \draw[azulMom,line width=2.1pt] (626,222)
+    .. controls (664,224) and (672,205) .. (672,184)
+    .. controls (671,165) and (657,152) .. (626,150);
+  \draw[azulMom,line width=2.0pt] (648,141) -- (625,150) -- (648,156);
+
+  % Fuerzas cortantes: al inicio del elemento y al final del elemento.
+  \draw[rojoQ,line width=2.25pt] (450,226) -- (450,60);
+  \draw[rojoQ,line width=1.8pt] (450,60) -- (440,108) -- (450,99) -- (460,108) -- cycle;
+  \draw[rojoQ,line width=2.25pt] (618,160) -- (618,324);
+  \draw[rojoQ,line width=1.8pt] (607,278) -- (618,325) -- (629,278);
+
+  % Cotas radiales. Las proyecciones y las puntas son rectilineas.
+  \draw[black,line width=0.75pt] (450,230) -- (450,280);
+  \draw[black,line width=0.75pt] (618,230) -- (618,282);
+  \draw[black,line width=0.75pt] (928,230) -- (928,282);
+  \draw[black,line width=0.8pt] (450,267) -- (618,267);
+  \fill[black] (450,267) -- (469,262) -- (469,272) -- cycle;
+  \fill[black] (618,267) -- (599,262) -- (599,272) -- cycle;
+  \draw[black,line width=0.8pt] (618,267) -- (928,267);
+  \fill[black] (618,267) -- (637,262) -- (637,272) -- cycle;
+  \fill[black] (928,267) -- (909,262) -- (909,272) -- cycle;
+
+  % Rotulos originales: M_r, Q y longitudes r, dr.
+  \node[text=azulMom,anchor=west,inner sep=0pt,font=\fontsize{22}{25}\selectfont] at (16,119)
+    {$M_r+(\partial M_r/\partial r)\,dr$};
+  \node[text=azulMom,anchor=west,inner sep=0pt,font=\fontsize{21}{24}\selectfont] at (655,128) {$M_r$};
+  \node[text=rojoQ,anchor=north,inner sep=0pt,font=\fontsize{23}{26}\selectfont] at (469,0)
+    {$Q+(\partial Q/\partial r)\,dr$};
+  \node[text=rojoQ,anchor=west,inner sep=0pt,font=\fontsize{24}{26}\selectfont] at (630,310) {$Q$};
+  \node[text=rojoQ,anchor=west,inner sep=0pt,font=\fontsize{24}{26}\selectfont] at (128,213) {$r$};
+  \node[text=black,anchor=base,inner sep=0pt,font=\fontsize{19}{22}\selectfont] at (503,258) {$dr$};
+  \node[text=black,anchor=base,inner sep=0pt,font=\fontsize{19}{22}\selectfont] at (759,258) {$r$};
+\end{tikzpicture}
+</script>
 
 Figura 3: Equilibrio entre momentos radiales y fuerza cortante en un elemento diferencial de la placa circular.
 
-![Sector anular diferencial de una placa circular usado para establecer el equilibrio](placas_circulares_figura_04.png)
+<script type="text/tikz">
+\begin{tikzpicture}[x=0.015cm,y=-0.015cm,line join=round,line cap=round]
+  % Figura 4. Sector anular diferencial; coordenadas tomadas del esquema.
+  \path[use as bounding box] (0,0) rectangle (852,335);
+  \definecolor{hatchBlue}{RGB}{86,163,237}
+  \definecolor{markRed}{RGB}{230,0,0}
+  \definecolor{edgeBlack}{RGB}{18,18,18}
+  \definecolor{axisGray}{RGB}{85,85,85}
+
+  % Fondo blanco y contorno del sector completo.
+  \fill[white] (0,0) rectangle (852,335);
+  \draw[edgeBlack,line width=0.68pt]
+    (228,21) -- (828,175) -- (228,328);
+  \draw[edgeBlack,line width=0.75pt]
+    (228,21) .. controls (201,110) and (202,239) .. (228,328);
+
+  % Rayado azul recortado matematicamente al sector abcd.
+  % Cada raya se dibuja como segmento y NO usa \clip:
+  % el renderizador TikZ de la web no respeta ese recorte.
+  \draw[hatchBlue,line width=0.48pt] (364.95,58.05) -- (366.55,56.45);
+  \draw[hatchBlue,line width=0.48pt] (360.70,71.30) -- (373.67,58.33);
+  \draw[hatchBlue,line width=0.48pt] (357.52,83.48) -- (380.78,60.22);
+  \draw[hatchBlue,line width=0.48pt] (355.06,94.94) -- (387.89,62.11);
+  \draw[hatchBlue,line width=0.48pt] (353.11,105.89) -- (395.00,64.00);
+  \draw[hatchBlue,line width=0.48pt] (351.58,116.42) -- (402.11,65.89);
+  \draw[hatchBlue,line width=0.48pt] (350.37,126.63) -- (409.23,67.77);
+  \draw[hatchBlue,line width=0.48pt] (349.45,136.55) -- (416.34,69.66);
+  \draw[hatchBlue,line width=0.48pt] (348.77,146.23) -- (423.45,71.55);
+  \draw[hatchBlue,line width=0.48pt] (348.32,155.68) -- (430.56,73.44);
+  \draw[hatchBlue,line width=0.48pt] (348.07,164.93) -- (437.68,75.32);
+  \draw[hatchBlue,line width=0.48pt] (348.00,174.00) -- (444.79,77.21);
+  \draw[hatchBlue,line width=0.48pt] (348.11,182.89) -- (451.90,79.10);
+  \draw[hatchBlue,line width=0.48pt] (348.38,191.62) -- (459.01,80.99);
+  \draw[hatchBlue,line width=0.48pt] (348.81,200.19) -- (466.12,82.88);
+  \draw[hatchBlue,line width=0.48pt] (349.39,208.61) -- (473.24,84.76);
+  \draw[hatchBlue,line width=0.48pt] (350.12,216.88) -- (480.35,86.65);
+  \draw[hatchBlue,line width=0.48pt] (350.99,225.01) -- (487.46,88.54);
+  \draw[hatchBlue,line width=0.48pt] (352.01,232.99) -- (494.57,90.43);
+  \draw[hatchBlue,line width=0.48pt] (353.17,240.83) -- (501.68,92.32);
+  \draw[hatchBlue,line width=0.48pt] (354.47,248.53) -- (508.80,94.20);
+  \draw[hatchBlue,line width=0.48pt] (355.92,256.08) -- (515.91,96.09);
+  \draw[hatchBlue,line width=0.48pt] (357.53,263.47) -- (523.02,97.98);
+  \draw[hatchBlue,line width=0.48pt] (359.28,270.72) -- (523.86,106.14);
+  \draw[hatchBlue,line width=0.48pt] (361.19,277.81) -- (521.45,117.55);
+  \draw[hatchBlue,line width=0.48pt] (363.27,284.73) -- (519.67,128.33);
+  \draw[hatchBlue,line width=0.48pt] (365.52,291.48) -- (518.34,138.66);
+  \draw[hatchBlue,line width=0.48pt] (376.89,289.11) -- (517.39,148.61);
+  \draw[hatchBlue,line width=0.48pt] (388.74,286.26) -- (516.75,158.25);
+  \draw[hatchBlue,line width=0.48pt] (400.60,283.40) -- (516.38,167.62);
+  \draw[hatchBlue,line width=0.48pt] (412.45,280.55) -- (516.25,176.75);
+  \draw[hatchBlue,line width=0.48pt] (424.31,277.69) -- (516.35,185.65);
+  \draw[hatchBlue,line width=0.48pt] (436.16,274.84) -- (516.67,194.33);
+  \draw[hatchBlue,line width=0.48pt] (448.01,271.99) -- (517.19,202.81);
+  \draw[hatchBlue,line width=0.48pt] (459.87,269.13) -- (517.91,211.09);
+  \draw[hatchBlue,line width=0.48pt] (471.72,266.28) -- (518.83,219.17);
+  \draw[hatchBlue,line width=0.48pt] (483.57,263.43) -- (519.96,227.04);
+  \draw[hatchBlue,line width=0.48pt] (495.43,260.57) -- (521.30,234.70);
+  \draw[hatchBlue,line width=0.48pt] (507.28,257.72) -- (522.85,242.15);
+  \draw[hatchBlue,line width=0.48pt] (519.14,254.86) -- (524.64,249.36);
+
+  % Límites gruesos a,b,c,d (dibujados sobre el rayado).
+  \draw[edgeBlack,line width=2.15pt]
+    (365,55) .. controls (341,119) and (341,226) .. (365,293);
+  \draw[edgeBlack,line width=2.15pt]
+    (365,55) -- (527,98);
+  \draw[edgeBlack,line width=2.15pt]
+    (365,293) -- (527,254);
+  \draw[edgeBlack,line width=2.10pt]
+    (527,98) .. controls (514,144) and (514,211) .. (527,254);
+
+  % Eje radial punteado; pasa por el centro del elemento.
+  \draw[axisGray,line width=0.82pt,dash pattern=on 44pt off 11pt on 2pt off 10pt]
+    (27,175) -- (828,175);
+
+  % Apertura angular \Theta, con las flechas hacia los bordes radiales.
+  \draw[edgeBlack,line width=0.82pt]
+    (670,134) -- (663,175) -- (670,215);
+  \fill[edgeBlack] (670,134) -- (664,147) -- (673,146) -- cycle;
+  \fill[edgeBlack] (670,215) -- (665,201) -- (674,204) -- cycle;
+
+  % Letras y símbolos del esquema original.
+  \node[text=markRed,font=\fontsize{37}{42}\selectfont,
+        anchor=base,inner sep=0pt] at (359,42) {$b$};
+  \node[text=markRed,font=\fontsize{37}{42}\selectfont,
+        anchor=base,inner sep=0pt] at (530,92) {$c$};
+  \node[text=markRed,font=\fontsize{37}{42}\selectfont,
+        anchor=base,inner sep=0pt] at (359,325) {$a$};
+  \node[text=markRed,font=\fontsize{37}{42}\selectfont,
+        anchor=base,inner sep=0pt] at (533,294) {$d$};
+  \node[text=markRed,font=\fontsize{39}{43}\selectfont,
+        anchor=base,inner sep=0pt] at (43,207) {$r$};
+  \node[text=edgeBlack,font=\fontsize{27}{32}\selectfont,
+        anchor=center,fill=white,inner sep=0.5pt] at (642,174) {$\Theta$};
+\end{tikzpicture}
+</script>
 
 Figura 4: Sector anular diferencial utilizado para establecer el equilibrio de una placa circular.
 
@@ -216,7 +426,67 @@ En esta relación, $h$ es el espesor de la placa. El esfuerzo de flexión se rel
 
 Finalmente, se muestra la variación del esfuerzo radial y tangencial:
 
-![Variación del esfuerzo radial y tangencial con la posición radial en una placa circular empotrada](placas_circulares_figura_05.png)
+<script type="text/tikz">
+\begin{tikzpicture}[x=0.018cm,y=-0.018cm,>=latex,line cap=round,line join=round,font=\normalsize]
+  % Figura 5: esfuerzos radial y tangencial a lo largo de la placa.
+  % Coordenadas tomadas de los contornos originales (761 x 486 px).
+  \path[use as bounding box] (-10,-18) rectangle (766,483);
+
+  % Ejes: centro O (127,235), borde r=a (599,235).
+  \draw[black,line width=0.95pt] (127,45) -- (127,466);
+  \draw[black,line width=1.05pt] (127,466) -- (599,466);
+  \draw[black,line width=1.05pt] (599,121) -- (599,467);
+  \draw[black,line width=0.88pt] (55,235) -- (738,235);
+  \foreach \x in {174,221,269,316,363,410,457,504,551}{
+    \draw[black,line width=0.70pt] (\x,228) -- (\x,244);
+  }
+
+  % Las dos curvas originales se trazan con sendas curvas de Bezier.
+  % Ambas parten de (127,80), y llegan a (599,466) y (599,286).
+  % Cruces aproximados con el eje: r/a=0.628 y r/a=0.827.
+  \draw[black,line width=1.45pt]
+    (127,80) .. controls (284,80) and (442,214) .. (599,466);
+  \draw[black,line width=1.30pt]
+    (127,80) .. controls (284,80) and (442,183) .. (599,286);
+
+  % Origen, coordenadas e identificacion de curvas.
+  \node[anchor=south,inner sep=1pt,scale=1.12] at (127,38) {$\sigma_r;\ \sigma_t$};
+  \node[anchor=north east,inner sep=1pt] at (124,238) {$O$};
+  \node[anchor=south east,inner sep=1pt] at (120,482) {$O_1$};
+  \node[anchor=north,inner sep=2pt,scale=1.05] at (362,250) {$0.5$};
+  \node[anchor=north,inner sep=1pt,scale=1.00] at (591,250) {$1$};
+  \node[anchor=south,inner sep=2pt,scale=1.03] at (435,224) {$0.628$};
+  \node[anchor=south,inner sep=2pt,scale=1.03] at (531,224) {$0.827$};
+  \node[anchor=west,inner sep=2pt,scale=1.04] at (379,187) {$\sigma_r$};
+  \node[anchor=west,inner sep=2pt,scale=1.04] at (410,154) {$\sigma_t$};
+
+  % Relacion r/a, con flecha de sentido positivo.
+  \node[anchor=south,inner sep=0pt,scale=1.15] at (256,298) {$\frac{r}{a}$};
+  \draw[-latex,line width=0.85pt] (281,304) -- (345,304);
+
+  % Cota de ordenada positiva en el origen.
+  \draw[dashed,line width=0.84pt] (68,80) -- (68,235);
+  \draw[-latex,line width=0.80pt] (68,99) -- (68,82);
+  \draw[-latex,line width=0.80pt] (68,215) -- (68,234);
+  \draw[line width=0.75pt] (56,80) -- (125,80);
+  \draw[line width=0.75pt] (56,235) -- (125,235);
+  \fill[white] (0,119) rectangle (125,194);
+  \node[anchor=east,inner sep=3pt,scale=1.23] at (121,157) {$\frac{3(1+\nu)qa^2}{8h^2}$};
+
+  % Cotas negativas del lado derecho de la grafica.
+  \draw[line width=0.75pt] (600,286) -- (655,286);
+  \draw[line width=0.70pt] (601,466) -- (739,466);
+  \draw[dashed,line width=0.86pt] (724,237) -- (724,466);
+  \draw[-latex,line width=0.80pt] (724,253) -- (724,236);
+  \draw[-latex,line width=0.80pt] (724,449) -- (724,466);
+  \draw[dashed,line width=0.85pt] (647,237) -- (647,286);
+  \draw[-latex,line width=0.75pt] (647,253) -- (647,238);
+  \draw[-latex,line width=0.75pt] (647,271) -- (647,285);
+  \draw[dashed,line width=0.85pt] (615,238) .. controls (617,267) and (627,283) .. (647,285);
+  \node[anchor=center,scale=1.17,inner sep=1pt] at (654,195) {$-\frac{3}{4}\nu\frac{qa^2}{h^2}$};
+  \node[anchor=center,scale=1.17,inner sep=1pt] at (683,352) {$-\frac{3}{4}\frac{qa^2}{h^2}$};
+\end{tikzpicture}
+</script>
 
 Figura 5: Variación de los esfuerzos radial y tangencial a lo largo del radio de una placa circular empotrada.
 

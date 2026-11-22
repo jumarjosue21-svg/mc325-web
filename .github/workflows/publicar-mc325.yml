@@ -1,0 +1,57 @@
+name: MC325 - Compilar TikZ y publicar
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mc325-pages
+  cancel-in-progress: false
+
+jobs:
+  compilar:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - name: Obtener repositorio
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Instalar compilador LaTeX y conversor vectorial
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends texlive-latex-extra texlive-pictures poppler-utils
+      - name: Preparar sitio estático
+        run: |
+          mkdir -p "$RUNNER_TEMP/mc325-site"
+          git archive HEAD | tar -x -C "$RUNNER_TEMP/mc325-site"
+      - name: Compilar gráficos complejos
+        run: python3 scripts/compilar-tikz.py --root "$RUNNER_TEMP/mc325-site" --force
+      - name: Empaquetar sitio
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ runner.temp }}/mc325-site
+  publicar:
+    if: github.ref == 'refs/heads/main'
+    needs: compilar
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
