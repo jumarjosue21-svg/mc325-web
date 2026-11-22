@@ -30,6 +30,7 @@
 <!-- MOTOR TIKZJAX (Agregado para leer los gráficos vectoriales) -->
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
     <script src="https://tikzjax.com/v1/tikzjax.js"></script>
+    <script src="js/tikz-precompilado.js?v=3"></script>
     <!-- ESTILOS DE LECTURA: afectan únicamente a los artículos, no al resto del sitio -->
     <style>
         /* Lector de doble columna: artículo + índice contextual (solo esta página). */
@@ -37,7 +38,7 @@
             display: grid;
             grid-template-columns: minmax(0, 1fr) 252px;
             align-items: start;
-            gap: 24px;
+            gap: 25px;
             max-width: 1480px;
             margin: 0 auto;
         }
@@ -48,9 +49,9 @@
         }
         #vista-lectura-articulo .reading-toc {
             position: sticky;
-            top: 16px;
+            top: 20px;
             align-self: start;
-            max-height: calc(100vh - 110px);
+            max-height: calc(100vh - 126px);
             overflow-y: auto;
             background: #fff;
             border: 1px solid #e2e5e9;
@@ -132,24 +133,6 @@
         }
         #vista-lectura-articulo .toc-top:hover { color: var(--uni-red-dark); border-color: #cba29c; }
         @media (max-width: 1350px) {
-            #vista-lectura-articulo .reading-layout {
-                grid-template-columns: minmax(0, 1fr) 232px;
-                gap: 18px;
-            }
-            #vista-lectura-articulo .reading-layout .reading-paper {
-                padding: clamp(22px, 3vw, 44px);
-            }
-        }
-        @media (max-width: 1120px) {
-            #vista-lectura-articulo .reading-layout {
-                grid-template-columns: minmax(0, 1fr) 210px;
-                gap: 14px;
-            }
-            #vista-lectura-articulo .reading-toc {
-                padding: 15px 10px 14px;
-            }
-        }
-        @media (max-width: 960px) {
             #vista-lectura-articulo .reading-layout { grid-template-columns: minmax(0, 1fr); }
             #vista-lectura-articulo .reading-toc {
                 order: -1;
@@ -335,6 +318,76 @@
             max-width: 100%;
             height: auto;
             box-sizing: border-box;
+        }
+        /* SVG integrado en el documento desde TikZ precompilado: no es una etiqueta img. */
+        .latex-content .tikz-figure .tikz-precompilado {
+            display: block; width: min(100%, 620px); max-width: 100%; height: auto;
+            margin: 0 auto; box-sizing: border-box;
+            pointer-events: none; /* El gráfico es estático; el menú contextual corresponde al documento. */
+        }
+        html[data-theme="dark"] .latex-content .tikz-figure .tikz-precompilado {
+            background: white; border-radius: 5px; padding: 8px;
+        }
+        .latex-content .tikz-aviso { font-size: 0.88em; text-align: center; opacity: 0.8; }
+
+        /* Subfiguras explícitas: un gráfico y su leyenda (a), (b), etc. */
+        #vista-lectura-articulo .latex-content { container-type: inline-size; }
+        .latex-content .multi-figure-row {
+            display: grid;
+            grid-template-columns: repeat(var(--subfigure-count, 2), minmax(0, 1fr));
+            align-items: stretch;
+            gap: 18px;
+            margin: 2em auto 0.65em;
+            width: 100%;
+            max-width: 100%;
+        }
+        .latex-content .multi-figure-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 0;
+        }
+        .latex-content .multi-figure-item > .tikz-figure,
+        .latex-content .multi-figure-item > .article-figure {
+            display: flex;
+            flex: 1 1 auto;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            min-width: 0;
+            margin: 0;
+        }
+        .latex-content .multi-figure-item > .tikz-figure svg,
+        .latex-content .multi-figure-item > .article-figure img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto;
+        }
+        .latex-content .multi-figure-item > .tikz-figure .tikz-precompilado { width: 100%; }
+        /* Figura 1 de placas: misma altura de lienzo, sin deformar los dibujos. */
+        .latex-content .multi-figure-row.plataformas-petroleras .tikz-precompilado {
+            width: 100%;
+            height: min(430px, calc((100cqw - 18px) * 0.418));
+        }
+        @container (max-width: 560px) {
+            .latex-content .multi-figure-row.plataformas-petroleras .tikz-precompilado {
+                height: auto;
+                max-height: 430px;
+            }
+        }
+
+        .latex-content .multi-figure-item > .subfigure-label {
+            width: 100%;
+            margin: 0.6em 0 0;
+            text-align: center;
+            font-size: 0.88em;
+            line-height: 1.5;
+            color: inherit;
+        }
+        @container (max-width: 480px) {
+            .latex-content .multi-figure-row { grid-template-columns: minmax(0, 1fr); gap: 20px; }
         }
         .latex-content pre, .latex-content code {
             font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace;
@@ -1924,6 +1977,13 @@
            // 1. Extraer bloques TikZ ANTES de procesar LaTeX y Markdown,
             // eliminando comentarios (%) y forzando fuente normal (cmr10) para '.' y '/'.
             contenidoCrudo = contenidoCrudo.replace(/<script\s+type=["']text\/tikz["'][^>]*>([\s\S]*?)<\/script>/gi, function (_, codigoTikz) {
+                // Identificar los bloques pesados antes de limpiar el código,
+                // para que el hash coincida con el texto fuente del Markdown.
+                const pesado = window.MC325Tikz.esPesado(codigoTikz);
+                if (pesado) {
+                    const indice = bloquesTikz.push({pesado:true, codigo:codigoTikz}) - 1;
+                    return '\n\n<div class="tikz-figure" data-tikz-block="' + indice + '"></div>\n\n';
+                }
                 const codigoLimpio = codigoTikz
                     .replace(/^[ \t]*%.*$/gm, '')
                     .replace(/([^\\])%.*$/gm, '$1')
@@ -1936,7 +1996,7 @@
                             .replace(/\//g, '\\mbox{/}') + '$';
                     })
                     .trim();
-                const indice = bloquesTikz.push(codigoLimpio) - 1;
+                const indice = bloquesTikz.push({pesado:false, codigo:codigoLimpio}) - 1;
                 return '\n\n<div class="tikz-figure" data-tikz-block="' + indice + '"></div>\n\n';
             });
 
@@ -1997,6 +2057,43 @@
                 img.loading = 'lazy';
             });
 
+            // Agrupar gráfico + leyenda explícita (a), gráfico + leyenda (b), ...
+            // antes de montar TikZ. No modificar los bloques fuente ni sus hashes.
+            function agruparSubfiguras(contenedor) {
+                const hijos = Array.from(contenedor.children);
+                const esFigura = nodo => nodo && (nodo.classList.contains('article-figure') || nodo.classList.contains('tikz-figure'));
+                const letra = nodo => {
+                    if (!nodo || nodo.tagName !== 'P' || esFigura(nodo) || nodo.classList.contains('article-caption')) return null;
+                    const m = /^\(([a-z])\)(?:\s|$)/i.exec(nodo.textContent.trim());
+                    return m ? m[1].toLowerCase() : null;
+                };
+                for (let i = 0; i < hijos.length; i++) {
+                    if (!esFigura(hijos[i]) || letra(hijos[i+1]) !== 'a') continue;
+                    const grupo = [];
+                    let j = i;
+                    while (esFigura(hijos[j]) && letra(hijos[j+1]) === String.fromCharCode(97 + grupo.length)) {
+                        grupo.push({figura: hijos[j], leyenda: hijos[j+1]});
+                        j += 2;
+                    }
+                    if (grupo.length < 2 || !hijos[j] || !hijos[j].classList.contains('article-caption')) continue;
+                    const fila = document.createElement('div');
+                    fila.className = 'multi-figure-row';
+                    if (grupo.length === 2 && /^Figura\s+1\s*:\s*Uso de placas planas en la fabricaci[oó]n de plataformas petroleras marinas/i.test(hijos[j].textContent.trim())) fila.classList.add('plataformas-petroleras');
+                    fila.style.setProperty('--subfigure-count', String(grupo.length));
+                    // Insertar ANTES de mover el nodo de referencia.
+                    contenedor.insertBefore(fila, grupo[0].figura);
+                    grupo.forEach(({figura, leyenda}) => {
+                        const item = document.createElement('div');
+                        item.className = 'multi-figure-item';
+                        leyenda.classList.add('subfigure-label');
+                        item.append(figura, leyenda);
+                        fila.appendChild(item);
+                    });
+                    i = j - 1;
+                }
+            }
+            agruparSubfiguras(lector);
+
             // 7. Construir el índice lateral de capítulos y subapartados.
             if (actual >= 0) {
                 construirIndiceCapitulos(lector,articulo,capitulos,actual);
@@ -2021,15 +2118,19 @@
             lector.querySelectorAll('[data-tikz-block]').forEach(function (contenedorTikz) {
                 const indice = Number(contenedorTikz.dataset.tikzBlock);
                 contenedorTikz.removeAttribute('data-tikz-block');
-                const codigo = bloquesTikz[indice];
-                if (!codigo) return;
+                const bloque = bloquesTikz[indice];
+                if (!bloque || !bloque.codigo) return;
+                if (bloque.pesado) {
+                    window.MC325Tikz.mostrar(contenedorTikz, bloque.codigo);
+                    return; // Nunca recompilar un gráfico pesado con TikZJax.
+                }
                 const scriptTikz = document.createElement('script');
                 scriptTikz.type = 'text/tikz';
-                scriptTikz.textContent = codigo;
+                scriptTikz.textContent = bloque.codigo;
                 contenedorTikz.appendChild(scriptTikz);
             });
 
-            if (bloquesTikz.length > 0 && typeof window.onload === 'function') {
+            if (bloquesTikz.some(bloque => !bloque.pesado && bloque.codigo) && typeof window.onload === 'function') {
                 setTimeout(() => { if (versionActual === versionLectura) window.onload(); }, 60);
             }
         }
