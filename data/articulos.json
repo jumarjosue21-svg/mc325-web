@@ -26,6 +26,16 @@
     "numeroCapitulos": 12
   },
   {
+    "id": "tabla-placas-rectangulares",
+    "unidad": "unidad5",
+    "titulo": "Tablas de Placas Rectangulares",
+    "revision": "pcr-restaurado-20261122-v2",
+    "ruta": "articulos/unidad5/Tablas-de-Placas-Rectangulares.md",
+    "orden": 1,
+    "modoLectura": "capitulos",
+    "numeroCapitulos": 2
+  },
+  {
     "id": "1794631200976",
     "unidad": "unidad5",
     "titulo": "Placas Circulares: Cargas de Forma Axisimétrica",
