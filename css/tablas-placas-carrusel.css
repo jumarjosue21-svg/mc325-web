@@ -1,0 +1,111 @@
+/* Tarjetas para las tablas de placas. Se limita el alcance al artículo que las use. */
+#lectura-contenido .pcr-widget {
+    --pcr-red: var(--color-uni, #7b241c);
+    --pcr-border: #dae0e8;
+    --pcr-bg: #fff;
+    --pcr-muted: #f4f6f9;
+    --pcr-text: #273246;
+    --pcr-secondary: #56657a;
+    max-width: 100%;
+    margin: 18px 0 30px;
+    padding: 20px;
+    background: var(--pcr-bg);
+    color: var(--pcr-text);
+    border: 1px solid var(--pcr-border);
+    border-radius: 13px;
+    box-shadow: 0 5px 22px rgba(25, 37, 57, .06);
+    box-sizing: border-box;
+    scroll-margin-top: 18px;
+}
+#lectura-contenido .pcr-widget-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 13px; }
+#lectura-contenido .pcr-kicker {font-size: .73rem; font-weight: 750; letter-spacing: .055em; color: var(--pcr-red);}
+#lectura-contenido .pcr-widget-help {color: var(--pcr-secondary);font-size: .78rem;}
+#lectura-contenido .pcr-tabs {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #c8ced9 transparent;
+    padding: 2px 2px 11px;
+    margin: 0 0 10px;
+    scroll-snap-type: x proximity;
+}
+#lectura-contenido .pcr-tab {
+    flex: 0 0 auto;
+    min-width: 88px;
+    text-align: center;
+    border: 1px solid var(--pcr-border);
+    border-radius: 7px;
+    background: var(--pcr-muted);
+    color: var(--pcr-secondary);
+    font-size: .8rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 12px 13px;
+    transition: background .17s ease, color .17s ease, border-color .17s ease;
+    scroll-snap-align: nearest;
+}
+#lectura-contenido .pcr-tab:hover {border-color: var(--pcr-red);color: var(--pcr-red);}
+#lectura-contenido .pcr-tab.is-active {color: var(--pcr-red); background: #fff2f0; border-color: #c45a50; box-shadow: 0 1px 5px rgba(123,36,28,.09);}
+#lectura-contenido .pcr-tab:focus-visible,
+#lectura-contenido .pcr-arrow:focus-visible {outline: 3px solid #cf7d75;outline-offset: 2px;}
+#lectura-contenido .pcr-viewport {
+    position: relative;
+    min-width: 0;
+    background: var(--pcr-muted);
+    border: 1px solid var(--pcr-border);
+    border-radius: 10px;
+    padding: 20px 22px;
+}
+/* No se utiliza display:none para permitir que MathJax mida fórmulas de casos no activos. */
+#lectura-contenido .pcr-panel:not(.is-active) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    pointer-events: none;
+}
+#lectura-contenido .pcr-panel.is-active {position: relative; min-width: 0; animation: pcr-fade .18s ease-out;}
+@keyframes pcr-fade {from {opacity: .45;transform: translateY(3px);}to {opacity: 1;transform: translateY(0);}}
+#lectura-contenido .pcr-panel-heading {font-weight: 700; font-size: 1rem; line-height: 1.45; color: var(--pcr-red);margin-bottom: 16px;}
+#lectura-contenido .pcr-figure {text-align: center; margin: 0 auto 20px;max-width: 680px;}
+#lectura-contenido .pcr-figure img {display: block; width: auto;max-width: 100%; height: auto;max-height: 280px;object-fit: contain; margin: 0 auto 8px; background:#fff;border-radius: 3px;}
+#lectura-contenido .pcr-figure figcaption {font-size: .79rem; color: var(--pcr-secondary);line-height: 1.5;}
+#lectura-contenido .pcr-panel-body {min-width: 0;font-size: .92rem;line-height: 1.62;overflow-wrap: anywhere;}
+#lectura-contenido .pcr-panel-body > p {margin: 10px 0;}
+#lectura-contenido .pcr-panel-body .pcr-math {border: 1px solid var(--pcr-border);background: var(--pcr-bg);border-radius: 8px;padding: 9px 7px;margin: 12px 0;max-width: 100%;overflow-x: auto;}
+#lectura-contenido .pcr-math .math-equation {margin: 0 !important; padding: 4px 0;max-width: 100%;overflow-x: auto;}
+#lectura-contenido .pcr-panel-body mjx-container[display="true"] {max-width: 100%; overflow-x: auto;overflow-y: hidden;}
+#lectura-contenido .pcr-controls {display:flex;align-items:center;justify-content:space-between;gap: 9px;margin-top: 14px;}
+#lectura-contenido .pcr-arrow {display:inline-flex;align-items:center;justify-content:center;gap:9px;min-width:105px;padding:10px 14px;border:1px solid var(--pcr-border);border-radius:7px;background:var(--pcr-bg);color:var(--pcr-text);font-size:.8rem;font-weight:600;cursor:pointer;transition: border-color .2s,background .2s;}
+#lectura-contenido .pcr-arrow:not(:disabled):hover {border-color:var(--pcr-red);color:var(--pcr-red);background:var(--pcr-muted);}
+#lectura-contenido .pcr-arrow:disabled {opacity:.35;cursor:default;}
+#lectura-contenido .pcr-position {font-size: .78rem;color: var(--pcr-secondary);white-space:nowrap;font-weight:600;}
+html[data-theme="dark"] #lectura-contenido .pcr-widget {
+    --pcr-red: #f0aaa4;
+    --pcr-bg: #242a3c;
+    --pcr-muted: #1b2232;
+    --pcr-border: #485269;
+    --pcr-text: #e6eaf2;
+    --pcr-secondary: #b7c2d3;
+    box-shadow: none;
+}
+html[data-theme="dark"] #lectura-contenido .pcr-tab.is-active {background:#3e2b34;border-color:#a45e62;}
+html[data-theme="dark"] #lectura-contenido .pcr-tab:hover {background:#333244;}
+@media (max-width: 700px) {
+    #lectura-contenido .pcr-widget {padding: 12px;margin:15px 0 25px;}
+    #lectura-contenido .pcr-viewport {padding: 16px 11px;}
+    #lectura-contenido .pcr-figure img {max-height: 220px;}
+    #lectura-contenido .pcr-tab {min-width: 74px;padding:10px 11px;}
+    #lectura-contenido .pcr-arrow {min-width: 82px;padding:9px;font-size: .77rem;}
+    #lectura-contenido .pcr-widget-help {display: none;}
+    #lectura-contenido .pcr-panel-body {font-size: .85rem;}
+}
+@media (prefers-reduced-motion: reduce) {
+    #lectura-contenido .pcr-panel.is-active {animation: none;}
+    #lectura-contenido .pcr-tab {transition:none;}
+}

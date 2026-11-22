@@ -26,6 +26,16 @@
     "numeroCapitulos": 12
   },
   {
+    "id": "tabla-placas-rectangulares",
+    "unidad": "unidad5",
+    "titulo": "Tablas de Placas Rectangulares",
+    "revision": "pcr-restaurado-20261122-v2",
+    "ruta": "articulos/unidad5/Tablas-de-Placas-Rectangulares.md",
+    "orden": 1,
+    "modoLectura": "capitulos",
+    "numeroCapitulos": 2
+  },
+  {
     "id": "1794631200976",
     "unidad": "unidad5",
     "titulo": "Placas Circulares: Cargas de Forma Axisimétrica",
@@ -67,18 +77,18 @@
     "ruta": "articulos/unidad4/1794771812128-Elementos-curvos.md"
   },
   {
-    "id": "1794773940000",
-    "unidad": "unidad7",
-    "titulo": "Vigas de Sección Variable",
-    "revision": "vigas07",
-    "ruta": "articulos/unidad7/vigas-de-seccion-variable.md",
-    "orden": 1
-  },
-  {
     "id": "1794849214786",
     "unidad": "unidad4",
     "titulo": "Elementos curvos 2.0",
     "revision": "f0061963",
     "ruta": "articulos/unidad4/1794849214786-Elementos-curvos-2-0.md"
+  },
+  {
+    "id": "1794773940001",
+    "unidad": "unidad7",
+    "titulo": "Vigas de Sección Variable",
+    "revision": "vigas08",
+    "ruta": "articulos/unidad7/vigas-de-seccion-variable.md",
+    "orden": 1
   }
 ]
