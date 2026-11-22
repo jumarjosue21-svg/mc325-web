@@ -35,18 +35,5 @@
     "revisionArchivo": "1794641114513-i7leumqm6f",
     "orden": 3,
     "ruta": "pdfs/unidad5/9b57d27a-d9bf-4af2-bef2-b7f0dcb5c966-Tablas-Placas-Circulares-pdf.pdf"
-  },
-  {
-    "id": "7a8b9c0d-1e2f-4a3b-8c9d-0e1f2a3b4c5d",
-    "ubicacion": "unidad7",
-    "titulo": "Vigas de Sección Variable",
-    "descripcion": "",
-    "fechaRegistro": 1794773940000,
-    "nombreArchivo": "vigas-seccion-variable.pdf",
-    "tamano": 2369676,
-    "tipo": "pdf",
-    "revisionArchivo": "1794773940000-vigas07",
-    "orden": 1,
-    "ruta": "pdfs/unidad7/vigas-seccion-variable.pdf"
   }
 ]
