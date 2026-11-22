@@ -1770,7 +1770,7 @@ body {
    TIMES NEW ROMAN — Interfaz y contenido Markdown / LaTeX
    Activo en modos claro y oscuro. No sobreescribir los glifos
    de iconos, los SVG ni el motor matemático de MathJax.
-   Las ecuaciones se renderizan con MathJax 4 + Gyre Termes.
+   Las ecuaciones se renderizan con MathJax 4 + New Computer Modern.
    ============================================================ */
 html, body,
 body *:not(:is(
