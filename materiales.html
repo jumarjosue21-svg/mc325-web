@@ -25,7 +25,7 @@
     <!-- LIBRERÍAS EXTERNAS -->
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4.1.3/tex-svg-nofont.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="js/datos-mc325.js?v=20261114-orden-materiales"></script>
+    <script src="js/datos-mc325.js?v=20261122-capitulos"></script>
     <script src="js/ejercicios-datos.js"></script>
 <!-- MOTOR TIKZJAX (Agregado para leer los gráficos vectoriales) -->
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
@@ -346,6 +346,40 @@
             .latex-content .math-equation { padding: 1em 0.35em; }
         }
 
+        /* Lectura por capítulos: portada interna y navegación, solo en Materiales. */
+        #vista-lectura-articulo [hidden] { display:none !important; }
+        #vista-lectura-articulo .reading-layout.sin-indice { grid-template-columns:minmax(0,1fr); }
+        #vista-lectura-articulo .reading-layout.sin-indice .reading-paper { width:100%; max-width:1100px; margin:0 auto; }
+        #lectura-portada, #lectura-capitulo-barra { max-width:880px; margin:0 auto; color:var(--text-main); }
+        #lectura-portada > p { color:var(--text-light); line-height:1.55; margin:0 0 22px; }
+        #lectura-portada h2 { font-size:1.25rem; margin:0 0 14px; color:var(--uni-red-dark); }
+        .capitulos-grupo-titulo { color:var(--text-light); font-size:.9rem; font-weight:600; margin:22px 0 9px; }
+        .capitulos-lista { list-style:none; padding:0; margin:0 0 14px; border:1px solid var(--border-color); border-radius:8px; overflow:hidden; }
+        .capitulos-lista li + li { border-top:1px solid var(--border-color); }
+        .capitulo-portada-enlace { display:flex; align-items:center; gap:14px; padding:15px 16px; text-decoration:none; color:var(--text-main); line-height:1.45; }
+        .capitulo-portada-enlace:hover, .capitulo-portada-enlace:focus-visible { background:#f9f1f0; color:var(--uni-red-dark); }
+        .capitulo-portada-numero { flex:0 0 27px; color:var(--text-light); font-size:.85rem; font-variant-numeric:tabular-nums; }
+        .capitulo-portada-nombre { flex:1; min-width:0; overflow-wrap:anywhere; }
+        .capitulo-portada-enlace > i { color:var(--text-light); font-size:.8rem; }
+        #lectura-capitulo-barra { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:22px; }
+        #lectura-capitulo-barra button { font:inherit; font-size:.88rem; }
+        #lectura-capitulo-posicion { color:var(--text-light); font-size:.86rem; }
+        #vista-lectura-articulo .toc-sub-nivel4 { padding-left:17px; }
+        #vista-lectura-articulo .toc-section .toc-link.capitulo-actual { border-left-color:var(--uni-red); font-weight:600; }
+        #art-modo-lectura { width:100%; padding:8px; border:1px solid #ccc; border-radius:4px; font:inherit; }
+        html[data-theme="dark"] #vista-lectura-articulo .capitulos-lista,
+        html[data-theme="dark"] #vista-lectura-articulo .capitulos-lista li + li { border-color:var(--dm-border); }
+        html[data-theme="dark"] #vista-lectura-articulo .capitulo-portada-enlace { color:var(--dm-text); }
+        html[data-theme="dark"] #vista-lectura-articulo .capitulo-portada-enlace:hover,
+        html[data-theme="dark"] #vista-lectura-articulo .capitulo-portada-enlace:focus-visible { background:var(--dm-tint-red); color:var(--dm-blue-text); }
+        html[data-theme="dark"] #vista-lectura-articulo #lectura-portada h2 { color:var(--dm-blue-text); }
+        html[data-theme="dark"] #vista-lectura-articulo #lectura-portada > p,
+        html[data-theme="dark"] #vista-lectura-articulo .capitulos-grupo-titulo,
+        html[data-theme="dark"] #vista-lectura-articulo .capitulo-portada-numero,
+        html[data-theme="dark"] #vista-lectura-articulo .capitulo-portada-enlace > i,
+        html[data-theme="dark"] #vista-lectura-articulo #lectura-capitulo-posicion { color:var(--dm-muted); }
+        html[data-theme="dark"] #art-modo-lectura { background:var(--dm-surface); color:var(--dm-text); border-color:var(--dm-border); }
+
         /* Botón de regreso: mismo rojo institucional que el resto de acciones. */
         #vista-lectura-articulo .btn-volver-materiales { background: var(--uni-red-dark); transition: background-color .18s ease, transform .18s ease; }
         #vista-lectura-articulo .btn-volver-materiales:hover,
@@ -585,6 +619,14 @@
                             <label style="font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; display:block;">Contenido del artículo (Markdown para texto, $$ para fórmulas):</label>
                             <textarea id="art-contenido" rows="8" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; line-height: 1.5; resize: vertical;" placeholder="Ejemplo:&#10;### Esfuerzo Normal&#10;El esfuerzo normal promedio está dado por:&#10;$$ \sigma = \frac{P}{A} $$"></textarea>
                         </div>
+                        <div>
+                            <label for="art-modo-lectura" style="font-size:.85rem;font-weight:bold;display:block;margin-bottom:5px;">Modo de lectura:</label>
+                            <select id="art-modo-lectura" aria-describedby="art-ayuda-modo">
+                                <option value="continua">Lectura continua (documento completo)</option>
+                                <option value="capitulos">Lectura dividida por capítulos</option>
+                            </select>
+                            <p id="art-ayuda-modo" class="admin-muted">Los encabezados ## delimitan los capítulos; ### y #### se mantienen como subapartados. No es necesario separar el Markdown.</p>
+                        </div>
                         <div id="mc325-campo-ejercicio">
                             <label for="mc325-art-ejercicio">Ejercicios del capítulo (opcional)</label>
                             <select id="mc325-art-ejercicio" aria-describedby="mc325-ayuda-ejercicio">
@@ -707,6 +749,11 @@
                     <div class="reading-paper">
                         <h1 id="lectura-titulo"></h1>
 
+                        <section id="lectura-portada" aria-label="Contenido del artículo" hidden></section>
+                        <div id="lectura-capitulo-barra" hidden>
+                            <button type="button" class="btn-mc325-inline" id="lectura-ver-contenido"><i class="fa-solid fa-list-ul" aria-hidden="true"></i> Índice del artículo</button>
+                            <span id="lectura-capitulo-posicion"></span>
+                        </div>
                         <!-- Contenido transformado de Markdown y LaTeX -->
                         <article id="lectura-contenido" class="latex-content" aria-label="Contenido del artículo"></article>
                         <section id="mc325-ejercicios-panel" aria-label="Practicar con ejercicios del capítulo" hidden>
@@ -824,7 +871,7 @@
                 // artículos realmente presentes; no modifica el orden editorial.
                 const articuloSolicitado = new URLSearchParams(window.location.search).get('articulo');
                 if (articuloSolicitado && articulosGuardados.some(a => String(a.id) === articuloSolicitado)) {
-                    await abrirVistaLectura(articuloSolicitado);
+                    await abrirVistaLectura(articuloSolicitado, new URLSearchParams(location.search).get('capitulo'), new URLSearchParams(location.search).get('apartado'), false);
                 }
             } catch (error) {
                 console.error('No se pudieron cargar los materiales publicados:',error);
@@ -1105,7 +1152,7 @@
                 const titulo=document.createElement('h4'); titulo.className='clickable-title'; titulo.textContent=art.titulo;
                 titulo.style.cssText='cursor:pointer;color:var(--uni-red-dark)';
                 titulo.addEventListener('click',()=>abrirVistaLectura(art.id));
-                const descripcion=document.createElement('p'); descripcion.textContent='Artículo interactivo (Teoría)';
+                const descripcion=document.createElement('p'); descripcion.textContent = art.modoLectura === 'capitulos' ? 'Artículo interactivo · ' + (art.numeroCapitulos ? art.numeroCapitulos + (art.numeroCapitulos === 1 ? ' capítulo' : ' capítulos') : 'Lectura por capítulos') : 'Artículo interactivo (Teoría)';
                 detalle.append(titulo,descripcion);
                 const acciones=document.createElement('div'); acciones.className='btn-article-actions';
                 if(esModoDocenteActivo()){
@@ -1134,6 +1181,7 @@
             const btnAnterior = document.getElementById('mc325-cap-anterior');
             const btnSiguiente = document.getElementById('mc325-cap-siguiente');
             document.getElementById('mc325-nav-capitulos').hidden = !anterior && !siguiente;
+            delete btnAnterior.dataset.capituloInterno; delete btnSiguiente.dataset.capituloInterno;
             btnAnterior.hidden = !anterior;
             btnSiguiente.hidden = !siguiente;
             if (anterior) {
@@ -1219,7 +1267,8 @@
         window.addEventListener('DOMContentLoaded', cargarEjerciciosParaArticulos);
         document.querySelectorAll('#mc325-nav-capitulos button').forEach(boton => {
             boton.addEventListener('click', () => {
-                if (boton.dataset.articuloId) abrirVistaLectura(boton.dataset.articuloId);
+                if (boton.dataset.capituloInterno !== undefined && estadoCapitulos) abrirVistaLectura(estadoCapitulos.id, boton.dataset.capituloInterno);
+                else if (boton.dataset.articuloId) abrirVistaLectura(boton.dataset.articuloId);
             });
         });
 
@@ -1249,6 +1298,7 @@
                 document.getElementById('art-unidad').value=art.unidad;
                 document.getElementById('art-titulo').value=art.titulo;
                 document.getElementById('art-contenido').value=contenido;
+                document.getElementById('art-modo-lectura').value=art.modoLectura === 'capitulos' ? 'capitulos' : 'continua';
                 rellenarSelectorEjercicios(art.ejercicioId);
                 document.getElementById('art-form-titulo').innerHTML='<i class="fa-solid fa-pen"></i> Editar artículo existente';
                 document.getElementById('art-guardar').textContent='Guardar cambios del artículo';
@@ -1270,11 +1320,20 @@
             const titulo=document.getElementById('art-titulo').value.trim();
             const ejercicioId=document.getElementById('mc325-art-ejercicio').value;
             if(!titulo||!contenido.trim())return;
+            const modoLectura = document.getElementById('art-modo-lectura').value;
+            const capitulos = modoLectura === 'capitulos' ? dividirArticuloEnCapitulos(contenido) : [];
+            if (modoLectura === 'capitulos' && !capitulos.length) { alert('Añade al menos un encabezado ## para utilizar la lectura por capítulos.'); return; }
+            const numeroCapitulos = capitulos.filter(c => !c.referencia).length;
+            const configurarLectura = art => {
+                if (modoLectura === 'capitulos') { art.modoLectura = modoLectura; art.numeroCapitulos = numeroCapitulos; }
+                else { delete art.modoLectura; delete art.numeroCapitulos; }
+            };
             if(idArticuloEnEdicion!==null){
                 const art=articulosGuardados.find(x=>String(x.id)===String(idArticuloEnEdicion));
                 if(!art)return;
                 if(art.unidad !== unidad) delete art.orden; // Al cambiar de unidad, añadir al final.
                 art.titulo=titulo;art.unidad=unidad;
+                configurarLectura(art); cacheLectura=null;
                 if(ejercicioId) art.ejercicioId=ejercicioId;
                 else delete art.ejercicioId;
                 if(contenido!==contenidoArticuloBase){
@@ -1282,7 +1341,8 @@
                     art.revision=hashContenido(contenido);
                 }
             } else {
-                articulosGuardados.push({id:Date.now().toString(),unidad,titulo,contenido,revision:hashContenido(contenido),...(ejercicioId ? {ejercicioId} : {})});
+                const nuevo = {id:Date.now().toString(),unidad,titulo,contenido,revision:hashContenido(contenido),...(ejercicioId ? {ejercicioId} : {})};
+                configurarLectura(nuevo); articulosGuardados.push(nuevo);
             }
             MC325Datos.guardar('articulos',articulosGuardados);
             reiniciarEditorArticulo();renderizarArticulos();renderizarPDFs();
@@ -1662,7 +1722,149 @@
 
        // LECTOR DE ARTÍCULOS: preserva TikZ, Markdown y separa las fórmulas de bloque.
         let versionLectura = 0;
-        async function abrirVistaLectura(idArticulo) {
+        let estadoCapitulos = null;
+        let cacheLectura = null;
+
+        // Detecta encabezados reales, ignorando TeX, TikZ, HTML script y código cercado.
+        // Las posiciones se conservan para recortar el Markdown original sin alterarlo.
+        function dividirArticuloEnCapitulos(markdown) {
+            const ocultar = texto => texto.replace(/[^\r\n]/g, ' ');
+            const limpio = markdown
+                .replace(/^[ \t]{0,3}(`{3,}|~{3,})[^\n]*\n[\s\S]*?(?:^[ \t]{0,3}\1[ \t]*\r?$|(?![\s\S]))/gm, ocultar)
+                .replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi, ocultar)
+                .replace(/<!--[^]*?-->/g, ocultar)
+                .replace(/\$\$[\s\S]*?\$\$/g, ocultar);
+            const encabezados = Array.from(limpio.matchAll(/^ {0,3}(#{2,4})[ \t]+(.+?)\s*$/gm), m => ({
+                nivel:m[1].length, titulo:m[2].trim().replace(/[ \t]+#+$/, '').replace(/\*\*|`/g, ''), inicio:m.index
+            }));
+            const principales = encabezados.filter(h => h.nivel === 2);
+            return principales.map((h,i) => {
+                const fin = principales[i+1]?.inicio ?? markdown.length;
+                return {titulo:h.titulo, referencia:/^(?:\d+[.)]\s*)?(?:referencias|bibliograf[ií]a)$/i.test(h.titulo),
+                    markdown:markdown.slice(i === 0 ? 0 : h.inicio, fin),
+                    sub:encabezados.filter(t => t.nivel > 2 && t.inicio > h.inicio && t.inicio < fin)};
+            });
+        }
+        function urlArticulo(id, capitulo = null, apartado = null) {
+            const url = new URL(location.href);
+            url.searchParams.set('articulo', id);
+            url.searchParams.delete('capitulo'); url.searchParams.delete('apartado'); url.hash = '';
+            if (capitulo !== null) url.searchParams.set('capitulo', capitulo);
+            if (apartado !== null) url.searchParams.set('apartado', apartado);
+            return url;
+        }
+        function actualizarURLLectura(url, registrar) {
+            if (registrar && url.href !== location.href) history.pushState(null, '', url);
+        }
+        function enlaceCapitulo(id, indice, apartado, clase, texto) {
+            const a = document.createElement('a'); a.className = clase;
+            a.href = urlArticulo(id, indice+1, apartado).href; a.textContent = texto;
+            a.addEventListener('click', e => {
+                if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button !== 0) return;
+                e.preventDefault();
+                if (estadoCapitulos?.id === String(id) && estadoCapitulos.actual === indice && apartado !== null) {
+                    actualizarURLLectura(urlArticulo(id, indice+1, apartado), true);
+                    const titulo = titulosDeLectura[Number(apartado)];
+                    if (titulo) { activarEnlaceIndice(titulo.id); navegarAlTitulo(titulo); }
+                } else abrirVistaLectura(id, indice+1, apartado);
+            });
+            return a;
+        }
+        function mostrarMarcoLectura() {
+            document.getElementById('vista-lista-materiales').style.display = 'none';
+            document.getElementById('vista-lectura-articulo').style.display = 'block';
+            document.querySelector('.content-area').scrollTop = 0;
+        }
+        function limpiarContenidoLectura() {
+            const lector = document.getElementById('lectura-contenido');
+            if (window.MathJax && typeof MathJax.typesetClear === 'function') MathJax.typesetClear([lector]);
+            lector.replaceChildren(); titulosDeLectura = []; enlacesDelIndice.clear();
+        }
+        function configurarMarcoCapitulos(esPortada, dividido) {
+            document.getElementById('lectura-portada').hidden = !esPortada;
+            document.getElementById('lectura-contenido').hidden = esPortada;
+            document.getElementById('lectura-capitulo-barra').hidden = !dividido || esPortada;
+            document.getElementById('lectura-indice').hidden = esPortada;
+            document.querySelector('#vista-lectura-articulo .reading-layout').classList.toggle('sin-indice', esPortada);
+        }
+        function pintarPortadaCapitulos(articulo, capitulos) {
+            limpiarContenidoLectura(); configurarMarcoCapitulos(true, true);
+            const portada = document.getElementById('lectura-portada'); portada.replaceChildren();
+            const total = capitulos.filter(c => !c.referencia).length;
+            const intro = document.createElement('p'); intro.textContent = total + (total === 1 ? ' capítulo' : ' capítulos') + ' · Desarrollo teórico. Selecciona un capítulo para comenzar la lectura.';
+            const h = document.createElement('h2'); h.textContent = 'Contenido del artículo'; portada.append(intro,h);
+            let lista;
+            const esRectangular = String(articulo.id) === '1794561295175' && capitulos.length === 12 && /^11\. Solución de Navier/.test(capitulos[10].titulo);
+            let numero = 0;
+            capitulos.forEach((c,i) => {
+                const etiqueta = c.referencia ? 'Material complementario' : (esRectangular ? ({0:'Fundamentos',3:'Desarrollo de la teoría',10:'Métodos de solución'})[i] : null);
+                if (!lista || etiqueta) {
+                    if (etiqueta) { const grupo = document.createElement('h3'); grupo.className='capitulos-grupo-titulo'; grupo.textContent=etiqueta; portada.append(grupo); }
+                    lista=document.createElement('ul'); lista.className='capitulos-lista'; portada.append(lista);
+                }
+                const li = document.createElement('li');
+                const a = enlaceCapitulo(articulo.id,i,null,'capitulo-portada-enlace','');
+                const n = document.createElement('span'); n.className='capitulo-portada-numero'; n.textContent=c.referencia ? '—' : String(++numero).padStart(2,'0'); n.setAttribute('aria-hidden','true');
+                const titulo=document.createElement('span'); titulo.className='capitulo-portada-nombre'; titulo.textContent=c.titulo.replace(/^\d+\.\s*/, '');
+                const icono=document.createElement('i'); icono.className='fa-solid fa-chevron-right'; icono.setAttribute('aria-hidden','true');
+                a.append(n,titulo,icono); li.append(a); lista.append(li);
+            });
+            document.getElementById('mc325-nav-capitulos').hidden=true;
+            document.getElementById('mc325-ejercicios-panel').hidden=true;
+            document.getElementById('lectura-indice-enlaces').replaceChildren();
+            mostrarMarcoLectura();
+        }
+        function construirIndiceCapitulos(lector, articulo, capitulos, actual) {
+            const destino=document.getElementById('lectura-indice-enlaces'); destino.replaceChildren(); enlacesDelIndice.clear();
+            titulosDeLectura=Array.from(lector.querySelectorAll('h2,h3,h4'));
+            titulosDeLectura.forEach((h,i)=>h.id='lectura-apartado-'+i);
+            const lista=document.createElement('ul'); lista.className='toc-sections';
+            capitulos.forEach((c,i)=>{
+                const li=document.createElement('li'); li.className='toc-section';
+                const fila=document.createElement('div'); fila.className='toc-section-row';
+                const a=enlaceCapitulo(articulo.id,i,null,'toc-link',c.titulo);
+                if (i===actual) { a.classList.add('capitulo-actual'); if(titulosDeLectura[0]) enlacesDelIndice.set(titulosDeLectura[0].id,a); }
+                fila.append(a); li.append(fila); lista.append(li);
+                if (!c.sub.length) return;
+                const sub=document.createElement('ul'); sub.className='toc-children';
+                const boton=document.createElement('button'); boton.type='button'; boton.className='toc-expand'; boton.setAttribute('aria-label','Mostrar u ocultar subapartados de '+c.titulo);
+                boton.innerHTML='<i class="fa-solid fa-chevron-right" aria-hidden="true"></i>';
+                const abierto=i===actual; li.classList.toggle('toc-expanded',abierto); boton.setAttribute('aria-expanded',String(abierto));
+                boton.addEventListener('click',()=>boton.setAttribute('aria-expanded',String(li.classList.toggle('toc-expanded'))));
+                fila.append(boton); li.append(sub);
+                c.sub.forEach((h,j)=>{
+                    const item=document.createElement('li'); const aSub=enlaceCapitulo(articulo.id,i,j+1,'toc-link toc-sub-link'+(h.nivel===4?' toc-sub-nivel4':''),h.titulo);
+                    item.append(aSub); sub.append(item);
+                    if (i===actual && titulosDeLectura[j+1]) enlacesDelIndice.set(titulosDeLectura[j+1].id,aSub);
+                });
+            });
+            destino.append(lista);
+            if(titulosDeLectura[0]) activarEnlaceIndice(titulosDeLectura[0].id);
+        }
+        function pintarNavegacionInterna(articulo, capitulos, actual) {
+            pintarNavegacionCapitulos(articulo);
+            const anterior=document.getElementById('mc325-cap-anterior'), siguiente=document.getElementById('mc325-cap-siguiente');
+            const preparar=(boton, indice, texto)=>{
+                if (!capitulos[indice]) return;
+                boton.hidden=false; delete boton.dataset.articuloId; boton.dataset.capituloInterno=String(indice+1);
+                boton.querySelector('span').textContent=texto; boton.title=capitulos[indice].titulo;
+            };
+            preparar(anterior,actual-1,'Capítulo anterior'); preparar(siguiente,actual+1,capitulos[actual+1]?.referencia?'Referencias':'Siguiente capítulo');
+            document.getElementById('mc325-nav-capitulos').hidden=anterior.hidden && siguiente.hidden;
+            const ultimoTeorico=capitulos.reduce((n,c,i)=>c.referencia?n:i,-1);
+            if(actual!==ultimoTeorico) document.getElementById('mc325-ejercicios-panel').hidden=true;
+            const c=capitulos[actual];
+            const numero=capitulos.slice(0,actual+1).filter(k=>!k.referencia).length;
+            document.getElementById('lectura-capitulo-posicion').textContent=c.referencia?'Material complementario':`Capítulo ${numero} de ${capitulos.filter(k=>!k.referencia).length}`;
+        }
+        document.getElementById('lectura-ver-contenido').addEventListener('click',()=>{if(estadoCapitulos) abrirVistaLectura(estadoCapitulos.id);});
+        window.addEventListener('popstate',()=>{
+            if(!materialesListos) return;
+            const params=new URLSearchParams(location.search);
+            if(params.has('articulo')) abrirVistaLectura(params.get('articulo'),params.get('capitulo'),params.get('apartado'),false);
+            else cerrarVistaLectura(false);
+        });
+        async function abrirVistaLectura(idArticulo, capitulo = null, apartado = null, registrar = true) {
             const versionActual = ++versionLectura;
             const articulo = articulosGuardados.find(a => String(a.id) === String(idArticulo));
             if (!articulo) return;
@@ -1670,9 +1872,9 @@
             document.getElementById('lectura-titulo').innerText = articulo.titulo;
             const lecturaMeta = document.getElementById('lectura-meta');
             lecturaMeta.innerHTML = '<i class="fa-solid fa-folder-open"></i> ';
-            lecturaMeta.appendChild(document.createTextNode(articulo.unidad.replace('unidad', 'Unidad ')));
+            lecturaMeta.appendChild(document.createTextNode(nombreUnidad(articulo.unidad)));
 
-            let contenidoCrudo = articulo.contenido;
+            let contenidoCrudo = cacheLectura?.articulo === articulo ? cacheLectura.contenido : articulo.contenido;
             if (contenidoCrudo === undefined && articulo.ruta) {
                 try {
                     const respuesta = await fetch(articulo.ruta, {cache:'no-store'});
@@ -1688,6 +1890,15 @@
                 alert('Este artículo no tiene contenido disponible.'); return;
             }
 
+            cacheLectura = {articulo, contenido:contenidoCrudo};
+            const capitulos = articulo.modoLectura === 'capitulos' ? dividirArticuloEnCapitulos(contenidoCrudo) : [];
+            const indice = capitulo !== null && /^\d+$/.test(String(capitulo)) ? Number(capitulo)-1 : -1;
+            const actual = capitulos[indice] ? indice : -1;
+            estadoCapitulos = capitulos.length ? {id:String(articulo.id),actual} : null;
+            actualizarURLLectura(urlArticulo(articulo.id, actual>=0?actual+1:null, actual>=0?apartado:null), registrar);
+            if (capitulos.length && actual < 0) { pintarPortadaCapitulos(articulo,capitulos); return; }
+            configurarMarcoCapitulos(false, Boolean(capitulos.length));
+            if (actual >= 0) contenidoCrudo = capitulos[actual].markdown;
             const bloquesTikz = [];
             const bloquesMatematicos = [];
             const formulasEnLinea = [];
@@ -1769,19 +1980,22 @@
             });
 
             // 7. Construir el índice lateral de capítulos y subapartados.
-            construirIndiceArticulo(lector);
-            pintarNavegacionCapitulos(articulo);
-
-            document.getElementById('vista-lista-materiales').style.display = 'none';
-            document.getElementById('vista-lectura-articulo').style.display = 'block';
-            document.querySelector('.content-area').scrollTop = 0;
+            if (actual >= 0) {
+                construirIndiceCapitulos(lector,articulo,capitulos,actual);
+                pintarNavegacionInterna(articulo,capitulos,actual);
+            } else { construirIndiceArticulo(lector); pintarNavegacionCapitulos(articulo); }
+            mostrarMarcoLectura();
+            if (actual >= 0 && apartado !== null && /^\d+$/.test(String(apartado))) {
+                const destino = titulosDeLectura[Number(apartado)];
+                if(destino) requestAnimationFrame(()=>{if(versionActual===versionLectura) navegarAlTitulo(destino);});
+            }
 
             // 8. Renderizar ecuaciones con MathJax.
             if (window.MathJax && typeof MathJax.typesetPromise === 'function') {
                 MathJax.typesetPromise([lector]).catch(error => console.error('Error al mostrar las fórmulas:', error));
             } else if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
                 MathJax.startup.promise.then(function () {
-                    if (typeof MathJax.typesetPromise === 'function') return MathJax.typesetPromise([lector]);
+                    if (versionActual === versionLectura && typeof MathJax.typesetPromise === 'function') return MathJax.typesetPromise([lector]);
                 }).catch(error => console.error('Error al mostrar las fórmulas:', error));
             }
 
@@ -1798,12 +2012,16 @@
             });
 
             if (bloquesTikz.length > 0 && typeof window.onload === 'function') {
-                setTimeout(() => { window.onload(); }, 60);
+                setTimeout(() => { if (versionActual === versionLectura) window.onload(); }, 60);
             }
         }
 
-        function cerrarVistaLectura() {
-            ++versionLectura;
+        function cerrarVistaLectura(registrar = true) {
+            ++versionLectura; estadoCapitulos=null; cacheLectura=null;
+            const url=new URL(location.href); url.searchParams.delete('articulo'); url.searchParams.delete('capitulo'); url.searchParams.delete('apartado'); url.hash='';
+            actualizarURLLectura(url,registrar);
+            document.getElementById('lectura-portada').replaceChildren();
+            configurarMarcoCapitulos(false,false);
             document.getElementById('vista-lectura-articulo').style.display = 'none';
             document.getElementById('vista-lista-materiales').style.display = 'block';
             if (window.MathJax && typeof MathJax.typesetClear === 'function') {

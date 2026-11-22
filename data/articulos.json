@@ -19,7 +19,9 @@
     "titulo": "Placas Planas Rectangulares",
     "revision": "8cbfe1d0",
     "ruta": "articulos/unidad5/1794561295175-Placas-Planas-Rectangulares.md",
-    "orden": 0
+    "orden": 0,
+    "modoLectura": "capitulos",
+    "numeroCapitulos": 12
   },
   {
     "id": "1794631200976",
@@ -27,7 +29,9 @@
     "titulo": "Placas Circulares: Cargas de Forma Axisimétrica",
     "revision": "66c2f669",
     "ruta": "articulos/unidad5/1794631200976-Placas-Circulares-Cargas-de-Forma-Axisimetrica.md",
-    "orden": 2
+    "orden": 2,
+    "modoLectura": "capitulos",
+    "numeroCapitulos": 2
   },
   {
     "id": "1794671307819",

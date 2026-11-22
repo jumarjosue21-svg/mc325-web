@@ -23,7 +23,7 @@
   const clonar = (items) => items.map(item => ({...item}));
   const props = {
     eventos: ['id','start','end','allDay','title','tipo','horaLimite','desc'],
-    articulos: ['id','unidad','titulo','orden','ejercicioId'],
+    articulos: ['id','unidad','titulo','orden','ejercicioId','modoLectura','numeroCapitulos'],
     documentos: ['id','ubicacion','titulo','descripcion','nombreArchivo','tamano','fechaRegistro','revisionArchivo','tipo','orden'],
     unidades: ['id','nombre']
   };
