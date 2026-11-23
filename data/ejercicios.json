@@ -9,7 +9,8 @@
     "formato": "web",
     "fecha": "2026-11-14T22:07:49.238Z",
     "ruta": "ejercicios/articulos/a0ddf3b6-86ea-4a99-873e-da72d67bc377.md",
-    "enunciadoRuta": null
+    "enunciadoRuta": null,
+    "orden": 0
   },
   {
     "id": "1c61f3dd-8758-4874-83ff-c562b17ab839",
@@ -21,7 +22,8 @@
     "formato": "web",
     "fecha": "2026-11-14T22:18:48.052Z",
     "ruta": "ejercicios/articulos/1c61f3dd-8758-4874-83ff-c562b17ab839.md",
-    "enunciadoRuta": null
+    "enunciadoRuta": null,
+    "orden": 1
   },
   {
     "id": "eaf8699d-bdc4-4406-83f7-d7cd856804f9",
@@ -33,7 +35,8 @@
     "formato": "web",
     "fecha": "2026-11-14T22:45:20.985Z",
     "ruta": "ejercicios/articulos/eaf8699d-bdc4-4406-83f7-d7cd856804f9.md",
-    "enunciadoRuta": null
+    "enunciadoRuta": null,
+    "orden": 2
   },
   {
     "id": "3da43c18-ba3e-47a0-aeb9-f45692ae3820",
@@ -69,7 +72,8 @@
     "formato": "web",
     "fecha": "2026-11-23T01:05:46.534Z",
     "ruta": "ejercicios/articulos/3e78073c-b562-4701-8f8b-fc919d58e766.md",
-    "enunciadoRuta": null
+    "enunciadoRuta": null,
+    "orden": 0
   },
   {
     "id": "57b51b5a-59dc-4308-92d5-b47a13301208",
@@ -81,7 +85,8 @@
     "formato": "web",
     "fecha": "2026-11-23T01:06:08.790Z",
     "ruta": "ejercicios/articulos/57b51b5a-59dc-4308-92d5-b47a13301208.md",
-    "enunciadoRuta": "ejercicios/enunciados/57b51b5a-59dc-4308-92d5-b47a13301208.png"
+    "enunciadoRuta": "ejercicios/enunciados/57b51b5a-59dc-4308-92d5-b47a13301208.png",
+    "orden": 1
   },
   {
     "id": "6e80bfc0-4fd2-4083-98fb-3d1754a94761",
@@ -93,7 +98,8 @@
     "formato": "web",
     "fecha": "2026-11-23T01:07:05.075Z",
     "ruta": "ejercicios/articulos/6e80bfc0-4fd2-4083-98fb-3d1754a94761.md",
-    "enunciadoRuta": "ejercicios/enunciados/6e80bfc0-4fd2-4083-98fb-3d1754a94761.png"
+    "enunciadoRuta": "ejercicios/enunciados/6e80bfc0-4fd2-4083-98fb-3d1754a94761.png",
+    "orden": 2
   },
   {
     "id": "eee8430e-0a65-4b51-befc-f24f5e9db16e",
@@ -105,6 +111,7 @@
     "formato": "web",
     "fecha": "2026-11-23T01:08:17.042Z",
     "ruta": "ejercicios/articulos/eee8430e-0a65-4b51-befc-f24f5e9db16e.md",
-    "enunciadoRuta": "ejercicios/enunciados/eee8430e-0a65-4b51-befc-f24f5e9db16e.png"
+    "enunciadoRuta": "ejercicios/enunciados/eee8430e-0a65-4b51-befc-f24f5e9db16e.png",
+    "orden": 3
   }
 ]

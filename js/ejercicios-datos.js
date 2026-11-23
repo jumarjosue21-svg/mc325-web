@@ -109,7 +109,7 @@
   // Cuando su contenido YA aparece en el repositorio, se debe reconciliar
   // automáticamente la base, sin borrar ningún aporte aún no publicado.
   const CLAVE_EXPORTACIONES = 'mc325_ejercicios_exportaciones_v2';
-  const camposComparables = ['id','origen','unidad','titulo','descripcion','autor','formato','fecha'];
+  const camposComparables = ['id','origen','unidad','titulo','descripcion','autor','formato','fecha','orden'];
   const normalizar = v => {
     if (Array.isArray(v)) return v.map(normalizar);
     if (v && typeof v === 'object') return Object.fromEntries(Object.keys(v).sort().map(k=>[k,normalizar(v[k])]));

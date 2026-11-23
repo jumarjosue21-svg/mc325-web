@@ -59,7 +59,7 @@
     document.querySelector('.content-area').scrollTo?.({top:0,behavior:'smooth'});
   }
   function actualizar() { estado.ejercicios=D.combinar(estado.publicados); renderizar(); }
-  function crearCard(e) {
+  function crearCard(e, indiceUnidad, totalUnidad, bloqueadoPorBusqueda=false) {
     const esWeb=e.formato==='web';
     const icono=esWeb?'fa-book-open':'fa-file-pdf';
     const etiqueta=esWeb?'WEB':'PDF';
@@ -75,20 +75,78 @@
         <div class="ex-meta">${escapar(e.autor||'Sin autor')} · ${formatoFecha(e.fecha)}</div>
       </div>
       <div class="ex-card-actions">
-        ${estado.admin?`<button class="ex-btn ex-btn-subtle ex-btn-mini" type="button" data-accion="editar" data-id="${escapar(e.id)}" title="Editar ejercicio"><i class="fa-solid fa-pen"></i> Editar</button><button class="ex-btn ex-btn-danger ex-btn-mini" type="button" data-accion="borrar" data-id="${escapar(e.id)}" title="Eliminar ejercicio"><i class="fa-solid fa-trash"></i></button>`:''}
+        ${estado.admin?`<div class="ex-mover-ejercicio" role="group" aria-label="Cambiar el orden de ${titulo}">
+          <button class="ex-mover-btn" type="button" data-accion="subir" data-id="${escapar(e.id)}" aria-label="Subir ${titulo}" title="Subir este ejercicio" ${indiceUnidad<=0 || bloqueadoPorBusqueda?'disabled':''}><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
+          <button class="ex-mover-btn" type="button" data-accion="bajar" data-id="${escapar(e.id)}" aria-label="Bajar ${titulo}" title="Bajar este ejercicio" ${indiceUnidad>=totalUnidad-1 || bloqueadoPorBusqueda?'disabled':''}><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></button>
+        </div><button class="ex-btn ex-btn-subtle ex-btn-mini" type="button" data-accion="editar" data-id="${escapar(e.id)}" title="Editar ejercicio"><i class="fa-solid fa-pen"></i> Editar</button><button class="ex-btn ex-btn-danger ex-btn-mini" type="button" data-accion="borrar" data-id="${escapar(e.id)}" title="Eliminar ejercicio"><i class="fa-solid fa-trash"></i></button>`:''}
         ${esWeb?`<button class="ex-btn ex-btn-mini ex-btn-preview" type="button" data-accion="enunciado" data-id="${escapar(e.id)}" ${tieneEnunciado(e)?'':'disabled title="Este ejercicio no tiene imagen del enunciado"'}><i class="fa-regular fa-image" aria-hidden="true"></i> Enunciado</button>`:''}
         <button class="ex-btn ex-btn-mini" type="button" data-accion="leer" data-id="${escapar(e.id)}">${esWeb?'Leer solución':'Ver PDF'}</button>
       </div>
     </article>`;
   }
-  // Mantiene el orden elegido para el listado y para la navegación WEB.
+  // El orden editorial se guarda por unidad (WEB y PDF juntos).
+  // Los ejercicios antiguos sin "orden" conservan inicialmente el criterio
+  // previo de fecha más reciente; los nuevos se añaden al final de la unidad
+  // cuando ya existe un orden manual.
+  const fechaEjercicio = e => Date.parse(e.fecha||0)||0;
+  const posicionEditorial = e => Number.isSafeInteger(e.orden) && e.orden>=0 ? e.orden : Number.MAX_SAFE_INTEGER;
+  function compararOrdenEditorial(a,b) {
+    return posicionEditorial(a)-posicionEditorial(b)
+      || fechaEjercicio(b)-fechaEjercicio(a)
+      || String(a.id).localeCompare(String(b.id));
+  }
   function ordenarEjercicios(arr) {
     const orden=$('ex-orden').value;
     return arr.sort((a,b)=>orden==='titulo'
       ? String(a.titulo).localeCompare(String(b.titulo),'es')
       : orden==='antiguos'
-        ? (Date.parse(a.fecha||0)||0)-(Date.parse(b.fecha||0)||0)
-        : (Date.parse(b.fecha||0)||0)-(Date.parse(a.fecha||0)||0));
+        ? fechaEjercicio(a)-fechaEjercicio(b)
+        : orden==='recientes'
+          ? fechaEjercicio(b)-fechaEjercicio(a)
+          : compararOrdenEditorial(a,b));
+  }
+  // Las flechas funcionan exclusivamente dentro de la misma unidad.
+  // Guardar solo los registros cuya posición cambió evita alterar ejercicios
+  // de otras unidades y conserva Markdown/PDF/enunciados sin reescribirlos.
+  function moverEjercicio(id, desplazamiento) {
+    if(!estado.admin || ![-1,1].includes(desplazamiento))return;
+    const ejercicio=estado.ejercicios.find(e=>String(e.id)===String(id));
+    if(!ejercicio)return;
+    if($('ex-buscar').value.trim()) {
+      setEstado('Limpia la búsqueda antes de cambiar el orden de los ejercicios.',true);
+      return;
+    }
+    const grupo=estado.ejercicios.filter(e=>e.unidad===ejercicio.unidad).sort(compararOrdenEditorial);
+    const actual=grupo.findIndex(e=>String(e.id)===String(id));
+    const destino=actual+desplazamiento;
+    if(actual<0 || destino<0 || destino>=grupo.length)return;
+    [grupo[actual],grupo[destino]]=[grupo[destino],grupo[actual]];
+    // Si el resto no tenía orden explícito, basta numerar el tramo hasta
+    // el elemento movido. Así se evitan borradores y conflictos innecesarios
+    // sobre los demás ejercicios de la unidad.
+    const limite=Math.max(actual,destino);
+    const hayColisiones=grupo.some((e,i)=>i>limite && posicionEditorial(e)<=limite);
+    const fin=hayColisiones?grupo.length-1:limite;
+    try {
+      // Una sola escritura en localStorage: evita guardar parcialmente
+      // una reordenación y resulta más rápido con artículos largos.
+      const local=D.obtenerLocales();
+      if(!local.base)local.base=JSON.stringify(estado.publicados);
+      for(let i=0;i<=fin;i++) {
+        if(posicionEditorial(grupo[i])!==i) {
+          const idCambio=String(grupo[i].id);
+          local.cambios[idCambio]=D.clonar({...grupo[i],orden:i});
+          local.eliminados=local.eliminados.filter(x=>String(x)!==idCambio);
+        }
+      }
+      D.guardarLocales(local);
+    } catch(err) {
+      setEstado('No se pudo guardar el orden: '+err.message,true);
+      return;
+    }
+    $('ex-orden').value='personalizado';
+    actualizar();
+    setEstado(`Orden actualizado en ${nombreUnidad(ejercicio.unidad)}. Es un borrador local: publícalo desde «Preparar cambios para GitHub».`);
   }
   function unidadesEnOrden(arr) {
     const ordenUnidad=new Map(estado.unidades.map((u,i)=>[u.id,i]));
@@ -148,9 +206,13 @@
       return 0;
     }
     const ids=unidadesEnOrden(arr);
-    contenedor.innerHTML=ids.map(id=>
-      `<div class="ex-unit-head">${escapar(nombreUnidad(id))}</div>${arr.filter(e=>e.unidad===id).map(crearCard).join('')}`
-    ).join('');
+    const buscando=Boolean($('ex-buscar').value.trim()) || $('ex-orden').value!=='personalizado';
+    contenedor.innerHTML=ids.map(id=>{
+      const grupoCompleto=estado.ejercicios.filter(e=>e.unidad===id).sort(compararOrdenEditorial);
+      const posiciones=new Map(grupoCompleto.map((e,i)=>[String(e.id),i]));
+      return `<div class="ex-unit-head">${escapar(nombreUnidad(id))}</div>${arr.filter(e=>e.unidad===id)
+        .map(e=>crearCard(e,posiciones.get(String(e.id)),grupoCompleto.length,buscando)).join('')}`;
+    }).join('');
     return arr.length;
   }
   function renderizar() {
@@ -176,6 +238,7 @@
   }
   function alternarAdmin() {
     estado.admin=!estado.admin;
+    if(estado.admin) $('ex-orden').value='personalizado';
     $('ex-admin').hidden=!estado.admin;
     $('ex-btn-docente').innerHTML=estado.admin?'<i class="fa-solid fa-lock-open"></i> Cerrar Modo Docente':'<i class="fa-solid fa-lock"></i> Modo Docente';
     if (!estado.admin && estado.editorRol==='clase') cerrarEditor();
@@ -258,6 +321,7 @@
       unidad:$('ex-unidad').value, titulo, descripcion:$('ex-descripcion').value.trim(),
       autor, formato,
       fecha:anterior?.fecha || new Date().toISOString(),
+      ...(anterior?.unidad===$('ex-unidad').value && posicionEditorial(anterior)!==Number.MAX_SAFE_INTEGER ? {orden:anterior.orden} : {}),
       ruta:anterior?.ruta||null,
       archivoLocalId: formato==='pdf'?(anterior?.formato==='pdf'?anterior.archivoLocalId||null:null):null,
       enunciadoRuta: formato==='web' && anterior?.formato==='web' ? anterior.enunciadoRuta||null : null,
@@ -422,6 +486,7 @@
     }
     else if(accion==='editar')editar(id);
     else if(accion==='borrar')borrar(id);
+    else if(accion==='subir'||accion==='bajar')moverEjercicio(id,accion==='subir'?-1:1);
   }
   async function iniciar(){
     $('ex-btn-docente').addEventListener('click',alternarAdmin);

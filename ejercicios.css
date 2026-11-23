@@ -133,3 +133,20 @@
   .ex-modal .ex-modal-head h3 {overflow-wrap:anywhere;}
   .ex-card-actions .ex-btn {min-height:33px;}
 }
+
+/* Flechas de orden editorial, disponibles solo en Modo Docente.
+   Mismo patrón visual que los controles de Materiales. */
+.ex-mover-ejercicio{display:inline-flex;flex-direction:column;gap:3px;flex:none;margin-right:3px;}
+.ex-mover-ejercicio .ex-mover-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:31px;height:25px;min-width:31px;padding:0;
+  border:1px solid #d6bcb9;border-radius:4px;
+  background:#fff;color:var(--uni-red-dark);cursor:pointer;
+}
+.ex-mover-ejercicio .ex-mover-btn:hover:not(:disabled){background:#f9eeee;color:var(--uni-red-dark);}
+.ex-mover-ejercicio .ex-mover-btn:disabled{opacity:.32;cursor:not-allowed;}
+.ex-mover-ejercicio .ex-mover-btn:focus-visible{outline:3px solid #e2b7ae;outline-offset:2px;}
+html[data-theme="dark"] .ex-mover-ejercicio .ex-mover-btn{
+  background:var(--dm-surface);border-color:var(--dm-border);color:var(--dm-accent-text);
+}
+html[data-theme="dark"] .ex-mover-ejercicio .ex-mover-btn:hover:not(:disabled){background:var(--dm-tint-red);}
