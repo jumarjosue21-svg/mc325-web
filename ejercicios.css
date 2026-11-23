@@ -78,9 +78,10 @@
 .ex-markdown img{display:block;max-width:100%;height:auto;margin:1.5em auto;border-radius:6px;}
 .ex-markdown .ex-mathblock{text-align:center;margin:1.8em auto 2em;overflow-x:auto;padding:8px 0;}
 .ex-markdown mjx-container[display="true"]{margin:0 auto!important;text-align:center!important;}
-.ex-markdown table{width:100%;border-collapse:collapse;margin:1.5em 0;}
-.ex-markdown th,.ex-markdown td{padding:10px 12px;border:1px solid #dce1e7;}
-.ex-markdown th{background:#f3f6f8;}
+.ex-markdown table{width:100%;border-collapse:collapse;margin:1.6em 0;font-size:.93rem;line-height:1.55;}
+.ex-markdown th,.ex-markdown td{padding:11px 14px;border:1px solid #dce1e7;vertical-align:middle;overflow-wrap:normal;word-break:normal;}
+.ex-markdown th{background:#f3f6f8;font-weight:700;white-space:nowrap;}
+.ex-markdown td mjx-container{margin:0.15em 0!important;}
 .ex-markdown pre{overflow-x:auto;background:#f4f6f8;padding:15px;border-radius:5px;margin:1.5em 0;}
 .ex-toc{position:sticky;top:15px;border:1px solid #e2e5e9;border-radius:8px;background:#fff;max-height:calc(100vh - 100px);overflow:auto;padding:16px;}
 .ex-toc h3{color:var(--uni-red-dark);font-size:.91rem;margin:0 0 12px;padding:0 0 12px;border-bottom:1px solid #ebedf0;}

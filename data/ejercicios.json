@@ -1,5 +1,70 @@
 [
   {
+    "id": "0082f558-c93b-47c6-886c-64e6078bcc13",
+    "origen": "clase",
+    "unidad": "unidad1",
+    "titulo": "Ejercicio N°1",
+    "descripcion": "Cálculo del vector de esfuerzo, esfuerzo normal, esfuerzo cortante en una dirección arbitraria y direcciones principales de un tensor 3D",
+    "autor": "Docente",
+    "formato": "web",
+    "fecha": null,
+    "ruta": "ejercicios/articulos/0082f558-c93b-47c6-886c-64e6078bcc13.md",
+    "enunciadoRuta": null,
+    "orden": 0
+  },
+  {
+    "id": "fecd8963-c321-46d4-a20f-d7e1c9dabcf3",
+    "origen": "clase",
+    "unidad": "unidad1",
+    "titulo": "Ejercicio N°2",
+    "descripcion": "Campo uniforme de esfuerzos, vector normal al plano inclinado ABCD, esfuerzos normal y cortante y direcciones principales",
+    "autor": "Docente",
+    "formato": "web",
+    "fecha": null,
+    "ruta": "ejercicios/articulos/fecd8963-c321-46d4-a20f-d7e1c9dabcf3.md",
+    "enunciadoRuta": null,
+    "orden": 1
+  },
+  {
+    "id": "169544a7-f3a1-42b2-90bb-36211b210155",
+    "origen": "clase",
+    "unidad": "unidad1",
+    "titulo": "Ejercicio N°3",
+    "descripcion": "Transformación plana de esfuerzos en una placa rectangular de polímero con unión diagonal pegada",
+    "autor": "Docente",
+    "formato": "web",
+    "fecha": null,
+    "ruta": "ejercicios/articulos/169544a7-f3a1-42b2-90bb-36211b210155.md",
+    "enunciadoRuta": null,
+    "orden": 2
+  },
+  {
+    "id": "a8cb70cd-39a0-4e20-bc7a-fee65c496554",
+    "origen": "clase",
+    "unidad": "unidad1",
+    "titulo": "Ejercicio N°4",
+    "descripcion": "Tensiones principales, cortante máximo en el plano y elemento de esfuerzos en un eje bajo carga axial y flexión",
+    "autor": "Docente",
+    "formato": "web",
+    "fecha": null,
+    "ruta": "ejercicios/articulos/a8cb70cd-39a0-4e20-bc7a-fee65c496554.md",
+    "enunciadoRuta": null,
+    "orden": 3
+  },
+  {
+    "id": "89bf9ea4-963e-4a51-9fe2-e707cf464592",
+    "origen": "clase",
+    "unidad": "unidad1",
+    "titulo": "Ejercicio N°5",
+    "descripcion": "Determinación de la carga axial máxima admisible en un eje macizo sometido a torsión y tracción combinadas",
+    "autor": "Docente",
+    "formato": "web",
+    "fecha": null,
+    "ruta": "ejercicios/articulos/89bf9ea4-963e-4a51-9fe2-e707cf464592.md",
+    "enunciadoRuta": null,
+    "orden": 4
+  },
+  {
     "id": "a0ddf3b6-86ea-4a99-873e-da72d67bc377",
     "origen": "estudiante",
     "unidad": "unidad6",
@@ -7,7 +72,7 @@
     "descripcion": "Determinación de la velocidad angular máxima mediante el criterio de corte máximo",
     "autor": "Docente",
     "formato": "web",
-    "fecha": "2026-11-14T22:07:49.238Z",
+    "fecha": null,
     "ruta": "ejercicios/articulos/a0ddf3b6-86ea-4a99-873e-da72d67bc377.md",
     "enunciadoRuta": null,
     "orden": 0
@@ -20,7 +85,7 @@
     "descripcion": "Análisis comparativo de la velocidad límite en el borde interior y en la sección de esfuerzo radial máximo",
     "autor": "Docente",
     "formato": "web",
-    "fecha": "2026-11-14T22:18:48.052Z",
+    "fecha": null,
     "ruta": "ejercicios/articulos/1c61f3dd-8758-4874-83ff-c562b17ab839.md",
     "enunciadoRuta": null,
     "orden": 1
@@ -33,7 +98,7 @@
     "descripcion": "Cálculo de la presión de contacto y distribución de esfuerzos circunferenciales por interferencia radial",
     "autor": "Docente",
     "formato": "web",
-    "fecha": "2026-11-14T22:45:20.985Z",
+    "fecha": null,
     "ruta": "ejercicios/articulos/eaf8699d-bdc4-4406-83f7-d7cd856804f9.md",
     "enunciadoRuta": null,
     "orden": 2

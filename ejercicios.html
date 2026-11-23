@@ -12,12 +12,13 @@
     <script src="https://tikzjax.com/v1/tikzjax.js"></script>
     <style>
         .ex-markdown .tikz-figure {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            display: block;
+            text-align: center;
             margin: 1.8em auto 1em;
-            overflow-x: auto;
+            max-width: 100%;
+            overflow: visible;
+        }
+        .ex-markdown .tikz-figure > div {
             max-width: 100%;
         }
         .ex-markdown .tikz-figure svg {
@@ -25,6 +26,7 @@
             margin: 0 auto;
             max-width: 100%;
             height: auto;
+            box-sizing: border-box;
         }
         .ex-markdown mjx-container[display="true"] {
             display: block !important;

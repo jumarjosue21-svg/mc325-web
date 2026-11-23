@@ -46,7 +46,7 @@
   const tieneEnunciado = e => e.formato === 'web' && Boolean(e.enunciadoLocalId || rutaImagenValida(e.enunciadoRuta));
   function setEstado(t, error=false) { $('ex-estado').textContent = t; $('ex-estado').classList.toggle('ex-error',error); }
   function nombreUnidad(id) { const idx=estado.unidades.findIndex(u=>u.id === id); return idx<0?'Unidad sin clasificar':`Unidad ${idx+1}: ${estado.unidades[idx].nombre}`; }
-  function formatoFecha(valor) { if(!valor) return 'Fecha no indicada'; const fecha=new Date(valor); return Number.isNaN(fecha.getTime())?'Fecha no indicada':fecha.toLocaleDateString('es-PE',{day:'2-digit',month:'short',year:'numeric'}); }
+  function formatoFecha(valor) { if(!valor) return ''; const fecha=new Date(valor); return Number.isNaN(fecha.getTime())?'':fecha.toLocaleDateString('es-PE',{day:'2-digit',month:'short',year:'numeric'}); }
   function cambiarVista(vista) {
     $('ex-lista').hidden=vista!=='lista'; $('ex-lector').hidden=vista!=='lector';
     if (vista!=='lector') {
@@ -72,7 +72,7 @@
         <div class="ex-tags"><span class="ex-tag ${e.origen==='clase'?'ex-tag-clase':'ex-tag-aporte'}">${e.origen==='clase'?'Hecho en clase':'Aporte estudiantil'}</span></div>
         <h4 class="ex-card-title" data-accion="leer" data-id="${escapar(e.id)}" role="button" tabindex="0">${titulo}</h4>
         <p class="ex-card-desc">${detalles}</p>
-        <div class="ex-meta">${escapar(e.autor||'Sin autor')} · ${formatoFecha(e.fecha)}</div>
+        <div class="ex-meta">${escapar(e.autor||'Sin autor')}${formatoFecha(e.fecha)?` · ${formatoFecha(e.fecha)}`:''}</div>
       </div>
       <div class="ex-card-actions">
         ${estado.admin?`<div class="ex-mover-ejercicio" role="group" aria-label="Cambiar el orden de ${titulo}">
@@ -480,7 +480,8 @@
     configurarNavegacionEjercicios(e);
     configurarRecorrido('lector', e.id);
     $('ex-lector-titulo').textContent=e.titulo;
-    $('ex-lector-meta').textContent=`${nombreUnidad(e.unidad)} · ${e.origen==='clase'?'Hecho en clase':'Aporte de estudiante'} · ${e.autor||'Sin autor'} · ${formatoFecha(e.fecha)}`;
+    const fechaTexto=formatoFecha(e.fecha);
+    $('ex-lector-meta').textContent=`${nombreUnidad(e.unidad)} · ${e.origen==='clase'?'Hecho en clase':'Aporte de estudiante'} · ${e.autor||'Sin autor'}${fechaTexto?` · ${fechaTexto}`:''}`;
     const out=$('ex-lector-contenido');out.replaceChildren();out.textContent='Cargando ejercicio...';$('ex-lector-indice').hidden=true;
     try {
       const markdown=await D.obtenerMarkdown(e);

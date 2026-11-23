@@ -4,7 +4,8 @@
     "unidad": "unidad1",
     "titulo": "Esfuerzos: Tensor de Esfuerzos, Direcciones Principales y Circunferencia de Mohr",
     "revision": "esf01a01",
-    "ruta": "articulos/unidad1/esfuerzos.md"
+    "ruta": "articulos/unidad1/esfuerzos.md",
+    "ejercicioId": "0082f558-c93b-47c6-886c-64e6078bcc13"
   },
   {
     "id": "179444678901",
