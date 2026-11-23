@@ -69,44 +69,35 @@
     "ruta": "articulos/unidad6/1794671371373-Discos-Rotativos-de-Espesor-Uniforme-y-Volantes-de-Inercia.md",
     "ejercicioId": "1c61f3dd-8758-4874-83ff-c562b17ab839"
   },
-  {
-<<<<<<< HEAD
-    "id": "1794773940000",
-    "unidad": "unidad7",
-    "titulo": "Vigas de Sección Variable",
-    "revision": "vigas07",
-    "ruta": "articulos/unidad7/vigas-de-seccion-variable.md",
-    "orden": 1
-  },
-  {
-    "id": "1795373852011",
-    "unidad": "unidad4",
-    "titulo": "Elementos curvos",
-    "revision": "330f94ea",
-    "ruta": "articulos/unidad4/1795373852011-Elementos-curvos.md"
-=======
-    "id": "1794771812128",
-    "unidad": "unidad4",
-    "titulo": "Elementos curvos",
-    "revision": "4d97d34d",
-    "ruta": "articulos/unidad4/1794771812128-Elementos-curvos.md"
-  },
-  {
-    "id": "1794849214786",
-    "unidad": "unidad4",
-    "titulo": "Elementos curvos 2.0",
-    "revision": "f0061963",
-    "ruta": "articulos/unidad4/1794849214786-Elementos-curvos-2-0.md"
-  },
+ {
+  "id": "1795373852011",
+  "unidad": "unidad4",
+  "titulo": "Elementos curvos",
+  "revision": "330f94ea",
+  "ruta": "articulos/unidad4/1795373852011-Elementos-curvos.md"
+},
 {
-    "id": "1794773940001",
-    "unidad": "unidad7",
-    "titulo": "Vigas de Sección Variable",
-    "revision": "vigas09",
-    "ruta": "articulos/unidad7/vigas-de-seccion-variable.md",
-    "orden": 1,
-    "modoLectura": "capitulos",
-    "numeroCapitulos": 7
->>>>>>> b399d144f6a342ab801695aabc03b701cca40b6d
-  }
+  "id": "1794771812128",
+  "unidad": "unidad4",
+  "titulo": "Elementos curvos",
+  "revision": "4d97d34d",
+  "ruta": "articulos/unidad4/1794771812128-Elementos-curvos.md"
+},
+{
+  "id": "1794849214786",
+  "unidad": "unidad4",
+  "titulo": "Elementos curvos 2.0",
+  "revision": "f0061963",
+  "ruta": "articulos/unidad4/1794849214786-Elementos-curvos-2-0.md"
+},
+{
+  "id": "1794773940001",
+  "unidad": "unidad7",
+  "titulo": "Vigas de Sección Variable",
+  "revision": "vigas09",
+  "ruta": "articulos/unidad7/vigas-de-seccion-variable.md",
+  "orden": 1,
+  "modoLectura": "capitulos",
+  "numeroCapitulos": 7
+}
 ]
