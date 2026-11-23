@@ -1,29 +1,5 @@
 [
   {
-    "id": "3023c9d8-a54e-4d55-945c-b0bdec508294",
-    "origen": "estudiante",
-    "unidad": "unidad3",
-    "titulo": "Ejercicio N°4",
-    "descripcion": "",
-    "autor": "Juan Lopez",
-    "formato": "pdf",
-    "fecha": "2026-11-12T11:07:22.168Z",
-    "ruta": "ejercicios/pdfs/3023c9d8-a54e-4d55-945c-b0bdec508294-Ejercicio-04-1-.pdf",
-    "enunciadoRuta": null
-  },
-  {
-    "id": "749dd942-59a0-4278-af5e-dbcdf38c8c51",
-    "origen": "clase",
-    "unidad": "unidad3",
-    "titulo": "Ejercicio N°3",
-    "descripcion": "",
-    "autor": "Docente",
-    "formato": "web",
-    "fecha": "2026-11-12T11:11:25.752Z",
-    "ruta": "ejercicios/articulos/749dd942-59a0-4278-af5e-dbcdf38c8c51.md",
-    "enunciadoRuta": "ejercicios/enunciados/749dd942-59a0-4278-af5e-dbcdf38c8c51.jpg"
-  },
-  {
     "id": "a0ddf3b6-86ea-4a99-873e-da72d67bc377",
     "origen": "estudiante",
     "unidad": "unidad6",
@@ -82,5 +58,53 @@
     "fecha": "2026-11-22T23:49:57.569Z",
     "ruta": "ejercicios/articulos/1dc81492-884c-4c7e-8d65-68b2825da3c3.md",
     "enunciadoRuta": null
+  },
+  {
+    "id": "3e78073c-b562-4701-8f8b-fc919d58e766",
+    "origen": "estudiante",
+    "unidad": "unidad3",
+    "titulo": "Ejercicio Nº1",
+    "descripcion": "Problemas de Fatiga Estática",
+    "autor": "IanCE",
+    "formato": "web",
+    "fecha": "2026-11-23T01:05:46.534Z",
+    "ruta": "ejercicios/articulos/3e78073c-b562-4701-8f8b-fc919d58e766.md",
+    "enunciadoRuta": null
+  },
+  {
+    "id": "57b51b5a-59dc-4308-92d5-b47a13301208",
+    "origen": "estudiante",
+    "unidad": "unidad1",
+    "titulo": "Ejercicio Nº2",
+    "descripcion": "Problemas de Fatiga Estática",
+    "autor": "IanCE",
+    "formato": "web",
+    "fecha": "2026-11-23T01:06:08.790Z",
+    "ruta": "ejercicios/articulos/57b51b5a-59dc-4308-92d5-b47a13301208.md",
+    "enunciadoRuta": "ejercicios/enunciados/57b51b5a-59dc-4308-92d5-b47a13301208.png"
+  },
+  {
+    "id": "6e80bfc0-4fd2-4083-98fb-3d1754a94761",
+    "origen": "estudiante",
+    "unidad": "unidad1",
+    "titulo": "Ejercicio Nº3",
+    "descripcion": "Problemas de Fatiga Estática",
+    "autor": "IanCE",
+    "formato": "web",
+    "fecha": "2026-11-23T01:07:05.075Z",
+    "ruta": "ejercicios/articulos/6e80bfc0-4fd2-4083-98fb-3d1754a94761.md",
+    "enunciadoRuta": "ejercicios/enunciados/6e80bfc0-4fd2-4083-98fb-3d1754a94761.png"
+  },
+  {
+    "id": "eee8430e-0a65-4b51-befc-f24f5e9db16e",
+    "origen": "estudiante",
+    "unidad": "unidad1",
+    "titulo": "Ejercicio Nº4",
+    "descripcion": "Problemas de Fatiga Estática",
+    "autor": "IanCE",
+    "formato": "web",
+    "fecha": "2026-11-23T01:08:17.042Z",
+    "ruta": "ejercicios/articulos/eee8430e-0a65-4b51-befc-f24f5e9db16e.md",
+    "enunciadoRuta": "ejercicios/enunciados/eee8430e-0a65-4b51-befc-f24f5e9db16e.png"
   }
 ]
