@@ -1,0 +1,112 @@
+[
+  {
+    "id": "1795193200001",
+    "unidad": "unidad1",
+    "titulo": "Esfuerzos: Tensor de Esfuerzos, Direcciones Principales y Circunferencia de Mohr",
+    "revision": "esf01a01",
+    "ruta": "articulos/unidad1/esfuerzos.md"
+  },
+  {
+    "id": "179444678901",
+    "unidad": "unidad3",
+    "titulo": "Fatiga en Elementos Mecánicos",
+    "revision": "2ddcbe84",
+    "ruta": "articulos/unidad3/fatiga.md",
+    "modoLectura": "capitulos",
+    "numeroCapitulos": 10
+  },
+  {
+    "id": "1794561295175",
+    "unidad": "unidad5",
+    "titulo": "Placas Planas Rectangulares",
+    "revision": "8cbfe1d0",
+    "ruta": "articulos/unidad5/1794561295175-Placas-Planas-Rectangulares.md",
+    "orden": 0,
+    "modoLectura": "capitulos",
+    "numeroCapitulos": 12
+  },
+  {
+    "id": "tabla-placas-rectangulares",
+    "unidad": "unidad5",
+    "titulo": "Tablas de Placas Rectangulares",
+    "revision": "pcr-restaurado-20261122-v2",
+    "ruta": "articulos/unidad5/Tablas-de-Placas-Rectangulares.md",
+    "orden": 1,
+    "modoLectura": "capitulos",
+    "numeroCapitulos": 2
+  },
+  {
+    "id": "1794631200976",
+    "unidad": "unidad5",
+    "titulo": "Placas Circulares: Cargas de Forma Axisimétrica",
+    "revision": "66c2f669",
+    "ruta": "articulos/unidad5/1794631200976-Placas-Circulares-Cargas-de-Forma-Axisimetrica.md",
+    "orden": 2,
+    "modoLectura": "capitulos",
+    "numeroCapitulos": 2
+  },
+  {
+    "id": "1794671307819",
+    "unidad": "unidad6",
+    "titulo": "Tubos de Paredes Gruesas, Casos Especiales y Deformación Radial",
+    "revision": "f1a2b3c6",
+    "ruta": "articulos/unidad6/1794671307819-Tubos-de-Pared-Gruesa-Ecuaciones-de-Lame-y-Casos-Especiales.md",
+    "ejercicioId": "eaf8699d-bdc4-4406-83f7-d7cd856804f9"
+  },
+  {
+    "id": "1794671336968",
+    "unidad": "unidad6",
+    "titulo": "Presión de Zunchado y Resistencia y Diseño de Cilindros de Pared Gruesa",
+    "revision": "d5e6f7b1",
+    "ruta": "articulos/unidad6/1794671336968-Cilindros-Compuestos-Zunchado-y-Diseno-de-Espesor-de-Pared.md",
+    "ejercicioId": "eaf8699d-bdc4-4406-83f7-d7cd856804f9"
+  },
+  {
+    "id": "1794671371373",
+    "unidad": "unidad6",
+    "titulo": "Discos Rotativos",
+    "revision": "b9c0d1e5",
+    "ruta": "articulos/unidad6/1794671371373-Discos-Rotativos-de-Espesor-Uniforme-y-Volantes-de-Inercia.md",
+    "ejercicioId": "1c61f3dd-8758-4874-83ff-c562b17ab839"
+  },
+  {
+<<<<<<< HEAD
+    "id": "1794773940000",
+    "unidad": "unidad7",
+    "titulo": "Vigas de Sección Variable",
+    "revision": "vigas07",
+    "ruta": "articulos/unidad7/vigas-de-seccion-variable.md",
+    "orden": 1
+  },
+  {
+    "id": "1795373852011",
+    "unidad": "unidad4",
+    "titulo": "Elementos curvos",
+    "revision": "330f94ea",
+    "ruta": "articulos/unidad4/1795373852011-Elementos-curvos.md"
+=======
+    "id": "1794771812128",
+    "unidad": "unidad4",
+    "titulo": "Elementos curvos",
+    "revision": "4d97d34d",
+    "ruta": "articulos/unidad4/1794771812128-Elementos-curvos.md"
+  },
+  {
+    "id": "1794849214786",
+    "unidad": "unidad4",
+    "titulo": "Elementos curvos 2.0",
+    "revision": "f0061963",
+    "ruta": "articulos/unidad4/1794849214786-Elementos-curvos-2-0.md"
+  },
+{
+    "id": "1794773940001",
+    "unidad": "unidad7",
+    "titulo": "Vigas de Sección Variable",
+    "revision": "vigas09",
+    "ruta": "articulos/unidad7/vigas-de-seccion-variable.md",
+    "orden": 1,
+    "modoLectura": "capitulos",
+    "numeroCapitulos": 7
+>>>>>>> b399d144f6a342ab801695aabc03b701cca40b6d
+  }
+]
