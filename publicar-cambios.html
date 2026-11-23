@@ -18,6 +18,12 @@
     .publicacion .dato {padding:16px;border-radius:8px;border:1px solid #e0e4e8;text-align:center;background:#f9fafc}
     .publicacion .dato strong {display:block;font-size:1.8rem;color:#5a1a14}
     .publicacion .dato span {font-size:.83rem;color:#54616d}
+    .publicacion .dato small {display:block;font-size:.72rem;color:#556578;margin-top:5px;min-height:1.1em}
+    .publicacion .dato small.pendiente {color:#7b241c;font-weight:700}
+    .publicacion .dato small.error {color:#aa2424;font-weight:700}
+    .publicacion .nota-compacta {font-size:.88rem;color:#556578;margin-top:8px}
+    .publicacion .enlaces {display:flex;flex-wrap:wrap;gap:10px 15px}
+    .publicacion .enlaces a{font-size:.9rem}
     .publicacion .fila {display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:20px}
     .publicacion .btn-publicar {border:0;background:#5a1a14;color:white;padding:11px 18px;border-radius:6px;font-size:.9rem;cursor:pointer}
     .publicacion .btn-publicar:hover {background:#7b241c}
@@ -26,7 +32,8 @@
     .publicacion .estado {padding:13px 16px;border-left:3px solid #7b241c;background:#faf6f5;color:#654843;border-radius:5px;line-height:1.55;margin-top:15px;overflow-wrap:anywhere}
     .publicacion .estado.error {background:#fff0ee;border-left-color:#b83030;color:#8f2222}
     .publicacion code {background:#f0f2f4;padding:2px 5px;border-radius:4px}
-    @media(max-width:550px){.publicacion .datos {grid-template-columns:1fr 1fr}}
+    @media(max-width:770px){.publicacion .datos {grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:420px){.publicacion .datos {gap:8px}.publicacion .dato{padding:10px 5px}}
   </style>
   <script src="js/datos-mc325.js?v=20261122-capitulos"></script>
   <script src="lib/jszip.min.js"></script>
@@ -37,31 +44,48 @@
 <body data-mc325-page="publicar-cambios">
   <main class="publicacion">
     <h1>Preparar cambios para GitHub</h1>
-    <p class="intro">Esta herramienta convierte los borradores locales del Calendario, unidades y Materiales en archivos de publicación. No hace <em>Push</em>, no modifica el repositorio y no borra tus borradores.</p>
-    <div class="datos" aria-label="Contenido del proyecto">
-      <div class="dato"><strong id="cuenta-eventos">—</strong><span>Eventos</span></div>
-      <div class="dato"><strong id="cuenta-articulos">—</strong><span>Artículos web</span></div>
-      <div class="dato"><strong id="cuenta-documentos">—</strong><span>Archivos</span></div>
-      <div class="dato"><strong id="cuenta-unidades">—</strong><span>Secciones</span></div>
+    <p class="intro">Desde <strong>un solo lugar</strong> puedes preparar para GitHub los borradores de Calendario, Materiales, Ejercicios Resueltos, Exámenes Pasados, Recursos Adicionales y Contacto. Se descargará <strong>un único ZIP con solo las secciones modificadas</strong>. No hace <em>Commit</em> ni <em>Push</em>, no modifica el repositorio y no elimina tus borradores.</p>
+    <div class="datos" aria-label="Contenido y cambios pendientes del proyecto">
+      <div class="dato"><strong id="cuenta-eventos">—</strong><span>Eventos</span><small id="pendiente-eventos"></small></div>
+      <div class="dato"><strong id="cuenta-articulos">—</strong><span>Artículos web</span><small id="pendiente-articulos"></small></div>
+      <div class="dato"><strong id="cuenta-documentos">—</strong><span>Archivos</span><small id="pendiente-documentos"></small></div>
+      <div class="dato"><strong id="cuenta-unidades">—</strong><span>Secciones</span><small id="pendiente-unidades"></small></div>
+      <div class="dato"><strong id="cuenta-ejercicios">—</strong><span>Ejercicios pendientes</span><small id="pendiente-ejercicios"></small></div>
+      <div class="dato"><strong id="cuenta-examenes">—</strong><span>Exámenes pendientes</span><small id="pendiente-examenes"></small></div>
+      <div class="dato"><strong id="cuenta-recursos">—</strong><span>Recursos</span><small id="pendiente-recursos"></small></div>
+      <div class="dato"><strong id="cuenta-contacto">—</strong><span>Contacto</span><small id="pendiente-contacto"></small></div>
     </div>
     <p id="estado" class="estado" role="status" aria-live="polite">Cargando datos desde el proyecto…</p>
     <div class="fila">
-      <button class="btn-publicar" id="btn-exportar" disabled>Descargar paquete de cambios ZIP</button>
+      <button class="btn-publicar" id="btn-exportar" disabled>Preparar todo y descargar ZIP</button>
+    </div>
+    <div class="enlaces" style="margin-top:14px">
       <a href="calendario.html">Calendario</a>
       <a href="materiales.html">Materiales</a>
+      <a href="ejercicios.html">Ejercicios</a>
+      <a href="examenes.html">Exámenes</a>
+      <a href="recursos.html">Recursos</a>
+      <a href="contacto.html">Contacto</a>
     </div>
     <h2>Cómo publicar</h2>
     <ol>
       <li>Antes de editar, utiliza <strong>Fetch/Pull origin</strong> en GitHub Desktop, para partir de la versión más reciente del equipo.</li>
-      <li>Descarga el ZIP y <strong>extrae su contenido en la raíz de tu copia local del repositorio</strong>, combinando las carpetas <code>data</code>, <code>articulos</code> y <code>pdfs</code>. Reemplaza los índices JSON y los archivos Markdown o PDF que hayas editado; conserva los demás archivos.</li>
+      <li>Abre esta pantalla desde el <strong>mismo navegador y dirección de Live Server</strong> en que guardaste los borradores. Revisa los contadores de cambios pendientes y pulsa <strong>Preparar todo y descargar ZIP</strong>.</li>
+      <li><strong>Extrae el ZIP en la raíz del repositorio</strong> desde GitHub Desktop → Repository → Show in Explorer. Fusiona sus carpetas <code>data</code>, <code>articulos</code>, <code>ejercicios</code>, <code>examenes</code> y las demás que aparezcan, conservando archivos ajenos al ZIP.</li>
       <li>Revisa <code>ARCHIVOS-A-RETIRAR.txt</code>, si aparece. Si eliminaste un artículo o PDF, borra también del repositorio los archivos allí indicados; quitar una entrada del índice no elimina el archivo físico.</li>
-      <li>Comprueba el calendario y los artículos con Live Server; revisa las figuras de los artículos si sus imágenes están disponibles.</li>
+      <li>Comprueba los cambios con Live Server: calendario, artículos, figuras, ejercicios, exámenes y demás contenido exportado.</li>
       <li>En GitHub Desktop, revisa los cambios, haz <strong>Commit</strong> y después <strong>Push origin</strong>. Comparte con los compañeros la versión publicada.</li>
     </ol>
-    <p><strong>Importante:</strong> los cambios hechos en este navegador no son públicos hasta que los archivos generados estén efectivamente en el repositorio y GitHub Pages haya desplegado la versión actualizada. No incluyas respaldos privados ni PDFs sin autorización.</p>
+    <p><strong>Importante:</strong> GitHub Desktop solo detectará los cambios después de extraer el ZIP en la carpeta correcta. Si no hay borradores pendientes, el botón permanecerá desactivado y no generará un paquete vacío. Un aporte creado en otro navegador u origen no aparece automáticamente aquí. No se limpian borradores al exportar; no incluyas documentos sin autorización.</p>
   </main>
+  <script src="js/ejercicios-datos.js?v=20261123-republicacion01"></script>
+  <script src="js/examenes-datos.js?v=20261122-unificado"></script>
+  <script src="js/recursos-mc325.js?v=20261122-unificado"></script>
+  <script src="js/contacto-mc325.js?v=20261122-unificado"></script>
+  <script src="js/publicacion-unificada-extras.js?v=20261123-republicacion01"></script>
   <script>
     let datosExportar = null;
+    let extrasEstado = null;
     const estado = document.getElementById('estado');
     function mensaje(texto, error=false) {
       estado.textContent = texto;
@@ -108,28 +132,67 @@
         };
       });
     }
+    function marcar(tipo, texto, pendiente=false, error=false) {
+      const el=document.getElementById('pendiente-'+tipo);
+      el.textContent=texto;
+      el.classList.toggle('pendiente',pendiente);
+      el.classList.toggle('error',error);
+    }
     async function cargar() {
+      const btn=document.getElementById('btn-exportar');
+      btn.disabled=true;
       try {
-        const [eventos,articulos,documentos,unidades] = await Promise.all([
+        const [eventos,articulos,documentos,unidades,extras] = await Promise.all([
           MC325Datos.leer('eventos'),MC325Datos.leer('articulos'),
-          MC325Datos.leer('documentos'),MC325Datos.leer('unidades')
+          MC325Datos.leer('documentos'),MC325Datos.leer('unidades'),
+          MC325PublicacionExtras.leerEstado()
         ]);
         datosExportar={eventos,articulos,documentos,unidades};
-        for (const tipo of ['eventos','articulos','documentos','unidades']) {
-          document.getElementById('cuenta-'+tipo).textContent = datosExportar[tipo].items.length;
+        extrasEstado=extras;
+        for(const tipo of ['eventos','articulos','documentos','unidades']) {
+          document.getElementById('cuenta-'+tipo).textContent=datosExportar[tipo].items.length;
+          marcar(tipo,datosExportar[tipo].esBorrador?'Cambios pendientes':'Sin cambios',datosExportar[tipo].esBorrador);
         }
-        const cambios = ['eventos','articulos','documentos','unidades'].filter(tipo => datosExportar[tipo].esBorrador);
-        mensaje(cambios.length ?
-          'Borradores detectados: '+cambios.join(', ')+'. El ZIP incluirá los índices actualizados y los artículos o archivos nuevos o reemplazados.' :
-          'Los datos coinciden con la versión publicada. No hay borradores pendientes; puedes generar el paquete si necesitas una copia de los índices.');
-        document.getElementById('btn-exportar').disabled=false;
+        for(const tipo of ['ejercicios','examenes']) {
+          const numero=extras.cantidades[tipo];
+          document.getElementById('cuenta-'+tipo).textContent=numero;
+          marcar(tipo,numero?'Por publicar':'Sin cambios',numero>0);
+        }
+        for(const tipo of ['recursos','contacto']) {
+          const hay=extras.cantidades[tipo]>0;
+          document.getElementById('cuenta-'+tipo).textContent=hay?'Sí':'No';
+          marcar(tipo,hay?'Borrador pendiente':'Sin cambios',hay);
+        }
+        if(extras.errores.length) {
+          for (const tipo of ['ejercicios','examenes','recursos','contacto']) {
+            if(extras.errores.some(e=>e.toLowerCase().includes(tipo==='examenes'?'exámenes':tipo==='ejercicios'?'ejercicios':tipo)))
+              marcar(tipo,'Revisar conflicto',false,true);
+          }
+          mensaje('No es seguro publicar: '+extras.errores.join('; ')+'. Conserva los borradores y concilia los cambios antes de exportar.',true);
+          return;
+        }
+        const cambiosBase=['eventos','articulos','documentos','unidades'].filter(tipo=>datosExportar[tipo].esBorrador);
+        const cambiosExtras=Object.entries(extras.cantidades).filter(([,n])=>n>0).map(([k])=>k);
+        const pendientes=[...cambiosBase,...cambiosExtras];
+        if(!pendientes.length) {
+          const confirmados=extras.revisionEjercicios?.confirmados||0;
+          mensaje(confirmados
+            ? `Se reconocieron automáticamente ${confirmados} ejercicio(s) ya publicado(s). Puedes agregar un ejercicio nuevo y volver a generar otro ZIP cuando quieras.`
+            : 'No hay borradores pendientes en este navegador. No se generará un ZIP sin cambios: GitHub Desktop no tendría nada que confirmar.');
+          return;
+        }
+        if(typeof JSZip==='undefined') throw new Error('No se cargó la biblioteca JSZip.');
+        const fusion = (extras.revisionEjercicios?.confirmados||0)>0
+          ? ` Se reconocieron ${extras.revisionEjercicios.confirmados} ejercicio(s) ya publicado(s); no se volverán a incluir como pendientes.` : '';
+        mensaje('Cambios detectados en: '+pendientes.join(', ')+'. Se incluirán únicamente esas secciones en un solo paquete, junto con sus archivos nuevos o modificados.'+fusion);
+        btn.disabled=false;
       } catch(error) {
         console.error(error);
-        mensaje('No es seguro generar una publicación: '+error.message+' Asegúrate de abrir la página mediante Live Server desde el mismo origen de tus borradores.',true);
+        mensaje('No es seguro generar una publicación: '+error.message+' Abre la página con Live Server desde el mismo origen que tus borradores.',true);
       }
     }
     document.getElementById('btn-exportar').addEventListener('click', async function () {
-      if (!datosExportar || typeof JSZip === 'undefined') {
+      if (!datosExportar || !extrasEstado || typeof JSZip === 'undefined') {
         mensaje('No se pudo cargar el generador ZIP (JSZip).',true); return;
       }
       this.disabled=true;
@@ -144,13 +207,12 @@
           documentos:datosDocumentosActuales,unidades:datosUnidadesActuales};
         mensaje('Preparando archivos y verificando los archivos locales…');
         const zip=new JSZip();
-        const publicados = {};
-        const retirados = [];
-        const eventos=datosExportar.eventos.items;
-        zip.file('data/eventos.json',JSON.stringify(eventos,null,2)+'\n');
-        // Las unidades y el título de la sección del sílabo se publican
-        // en su propio índice; los identificadores permanecen estables.
-        zip.file('data/unidades.json',JSON.stringify(datosExportar.unidades.items,null,2)+'\n');
+        const retirados = new Set();
+        if(datosExportar.eventos.esBorrador)
+          zip.file('data/eventos.json',JSON.stringify(datosExportar.eventos.items,null,2)+'\n');
+        if(datosExportar.unidades.esBorrador)
+          zip.file('data/unidades.json',JSON.stringify(datosExportar.unidades.items,null,2)+'\n');
+        if(datosExportar.articulos.esBorrador){
         const listaArticulos=[];
         for (const art of datosExportar.articulos.items) {
           const metadato={...art};
@@ -172,8 +234,10 @@
         }
         zip.file('data/articulos.json',JSON.stringify(listaArticulos,null,2)+'\n');
         for(const viejo of datosExportar.articulos.publicado){
-          if(!listaArticulos.some(a=>String(a.id)===String(viejo.id))&&viejo.ruta) retirados.push(viejo.ruta);
+          if(!listaArticulos.some(a=>String(a.id)===String(viejo.id))&&viejo.ruta) retirados.add(viejo.ruta);
         }
+        }
+        if(datosExportar.documentos.esBorrador){
         const listaDocumentos=[];
         for(const documento of datosExportar.documentos.items){
           const metadato={...documento};
@@ -201,28 +265,37 @@
         zip.file('data/documentos.json',JSON.stringify(listaDocumentos,null,2)+'\n');
         for(const viejo of datosExportar.documentos.publicado){
           const nuevo=listaDocumentos.find(p=>String(p.id)===String(viejo.id));
-          if(viejo.ruta && (!nuevo || nuevo.ruta!==viejo.ruta)) retirados.push(viejo.ruta);
+          if(viejo.ruta && (!nuevo || nuevo.ruta!==viejo.ruta)) retirados.add(viejo.ruta);
         }
-        if (retirados.length) zip.file('ARCHIVOS-A-RETIRAR.txt',retirados.join('\n')+'\n');
+        }
+        await MC325PublicacionExtras.adjuntarTodo(zip,extrasEstado,retirados);
+        if (!Object.keys(zip.files).some(nombre=>!zip.files[nombre].dir))
+          throw new Error('No hay cambios pendientes que descargar.');
+        if (retirados.size) zip.file('ARCHIVOS-A-RETIRAR.txt',[...retirados].sort().join('\n')+'\n');
         zip.file('INSTRUCCIONES-DE-PUBLICACION.txt',
-          'Paquete MC325 — Actualización del repositorio GitHub\n\n'+
-          '1. Extraer este ZIP en la RAÍZ del repositorio local. Fusionar carpetas; reemplazar los JSON.\n'+
-          '2. NO borrar las carpetas existentes: el ZIP incluye los artículos nuevos, los editados y los archivos nuevos o reemplazados.\n'+
-          '3. Fusionar data y actualizar unidades.json; si hay ARCHIVOS-A-RETIRAR.txt, revisar y retirar las rutas indicadas.\n'+
-          '4. Confirmar las imágenes a las que apunta cada artículo.\n'+
-          '5. Probar con Live Server y hacer Commit + Push en GitHub Desktop.\n'+
-          '6. Mantener el respaldo original en un lugar privado.\n');
+          'MC325 - Publicación unificada de borradores\n\n'+
+          '1. Haz Fetch/Pull origin en GitHub Desktop ANTES de extraer el paquete.\n'+
+          '2. Descomprime el ZIP EN LA RAÍZ de tu repositorio local, fusionando carpetas.\n'+
+          '3. Sólo se incluyen los catálogos con cambios pendientes y sus archivos nuevos o editados.\n'+
+          '4. Si aparece ARCHIVOS-A-RETIRAR.txt, verifica las rutas antes de borrar archivos.\n'+
+          '5. Comprueba con Live Server los artículos, PDFs, figuras, ejercicios y exámenes.\n'+
+          '6. Revisa Changes en GitHub Desktop, realiza Commit y Push origin.\n'+
+          '7. Al incorporar los archivos exportados, los aportes ya publicados se reconocerán automáticamente al abrir Live Server.\n\n'+
+          'AVISO: Este ZIP NO hace commit ni push y no incorpora aportes de otros navegadores.\n'+
+          'Si tus compañeros cambiaron los mismos JSON, fusiona el trabajo antes de sobrescribirlos.\n');
         const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});
         const enlace=document.createElement('a');
         const url=URL.createObjectURL(blob);
         enlace.href=url;
-        enlace.download='mc325-publicacion-'+new Date().toISOString().slice(0,10)+'.zip';
+        enlace.download='mc325-publicacion-unificada-'+new Date().toISOString().slice(0,10)+'.zip';
         document.body.append(enlace); enlace.click(); enlace.remove();
+        // Guardar referencia del ZIP solo después de que esté listo para descarga.
+        MC325PublicacionExtras.confirmarDescarga();
         setTimeout(() => URL.revokeObjectURL(url),15000);
-        mensaje('Paquete generado. Incorpóralo en la raíz de tu repositorio y publica los cambios desde GitHub Desktop. Los borradores permanecen intactos aquí.');
+        mensaje('ZIP unificado generado. Extráelo en la raíz del repositorio local, revisa los cambios y realiza Commit y Push desde GitHub Desktop. Tus borradores permanecen intactos.');
       } catch(error) {
         console.error(error); mensaje('No se generó el ZIP: '+error.message,true);
-      } finally { this.disabled=false; }
+      } finally { await cargar(); }
     });
     window.addEventListener('DOMContentLoaded',cargar);
   </script>
