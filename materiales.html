@@ -1473,6 +1473,17 @@
             const titulo=document.getElementById('art-titulo').value.trim();
             const ejercicioId=document.getElementById('mc325-art-ejercicio').value;
             if(!titulo||!contenido.trim())return;
+            if(ejercicioId){
+                const duplicado=articulosGuardados.find(a=>
+                    a.unidad===unidad &&
+                    String(a.ejercicioId||'').trim()===ejercicioId &&
+                    String(a.id)!==String(idArticuloEnEdicion)
+                );
+                if(duplicado){
+                    alert(`Este ejercicio ya está vinculado al subtema «${duplicado.titulo}» en la misma unidad. Elige otro ejercicio o desvincula el anterior primero.`);
+                    return;
+                }
+            }
             const modoLectura = document.getElementById('art-modo-lectura').value;
             const capitulos = modoLectura === 'capitulos' ? dividirArticuloEnCapitulos(contenido) : [];
             if (modoLectura === 'capitulos' && !capitulos.length) { alert('Añade al menos un encabezado ## para utilizar la lectura por capítulos.'); return; }
@@ -2269,12 +2280,17 @@
                 if(destino) requestAnimationFrame(()=>{if(versionActual===versionLectura) navegarAlTitulo(destino);});
             }
 
-            // 8. Renderizar ecuaciones con MathJax.
+            // 8. Renderizar ecuaciones con MathJax (contenido e índices).
+            const objetivosMath = [
+                lector,
+                document.getElementById('lectura-indice-superior-enlaces'),
+                document.getElementById('lectura-indice-enlaces')
+            ].filter(Boolean);
             if (window.MathJax && typeof MathJax.typesetPromise === 'function') {
-                MathJax.typesetPromise([lector]).catch(error => console.error('Error al mostrar las fórmulas:', error));
+                MathJax.typesetPromise(objetivosMath).catch(error => console.error('Error al mostrar las fórmulas:', error));
             } else if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
                 MathJax.startup.promise.then(function () {
-                    if (versionActual === versionLectura && typeof MathJax.typesetPromise === 'function') return MathJax.typesetPromise([lector]);
+                    if (versionActual === versionLectura && typeof MathJax.typesetPromise === 'function') return MathJax.typesetPromise(objetivosMath);
                 }).catch(error => console.error('Error al mostrar las fórmulas:', error));
             }
 

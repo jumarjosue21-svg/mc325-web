@@ -352,9 +352,9 @@
     if(!e || !confirm(`¿Retirar el ejercicio «${e.titulo}»? Se preparará su eliminación al exportar a GitHub.`))return;
     D.eliminarCambio(id,estado.publicados); actualizar();setEstado('El ejercicio se ha retirado del borrador local. Para retirar su versión pública, exporta los cambios.');
   }
-  function renderMarkdownSegura(md, contenedor) {
+  function renderMarkdownSegura(md, contenedor, alPrepararDom) {
     contenedor.replaceChildren();
-    if(!window.marked || !window.DOMPurify) {const pre=document.createElement('pre');pre.textContent=md;contenedor.appendChild(pre);return;}
+    if(!window.marked || !window.DOMPurify) {const pre=document.createElement('pre');pre.textContent=md;contenedor.appendChild(pre);if(typeof alPrepararDom==='function')alPrepararDom();return;}
     const bloquesTikz=[];const bloques=[];const lineas=[];
     let preparado=String(md).replace(/<script\s+type=["']text\/tikz["'][^>]*>([\s\S]*?)<\/script>/gi,(_match,codigoTikz)=>{
       const codigoLimpio=codigoTikz
@@ -383,7 +383,20 @@
     nodos.forEach(nodo=>{nodo.nodeValue=nodo.nodeValue.replace(/EXINLINEFORMULA(\d+)FIN/g,(match,i)=>lineas[Number(i)]===undefined?match:`$${lineas[Number(i)]}$`);});
     contenedor.querySelectorAll('a').forEach(a=>{if(a.href?.startsWith('javascript:'))a.removeAttribute('href');else if(a.href){a.target='_blank';a.rel='noopener noreferrer';}});
     contenedor.querySelectorAll('img').forEach(img=>{img.loading='lazy';img.alt=img.alt||'Ilustración del ejercicio';});
-    if(window.MathJax?.typesetPromise)window.MathJax.typesetPromise([contenedor]).catch(console.warn);
+    const objetivosMath=[contenedor];
+    if(typeof alPrepararDom==='function') {
+      const extra=alPrepararDom();
+      if(Array.isArray(extra)) extra.filter(Boolean).forEach(el=>objetivosMath.push(el));
+      else if(extra) objetivosMath.push(extra);
+    }
+    const versionActual=estado.lecturaVersion;
+    if(window.MathJax?.typesetClear) window.MathJax.typesetClear(objetivosMath);
+    if(window.MathJax?.typesetPromise) window.MathJax.typesetPromise(objetivosMath).catch(console.warn);
+    else if(window.MathJax?.startup?.promise) {
+      window.MathJax.startup.promise.then(()=>{
+        if(versionActual===estado.lecturaVersion && window.MathJax?.typesetPromise) return window.MathJax.typesetPromise(objetivosMath);
+      }).catch(console.warn);
+    }
     contenedor.querySelectorAll('[data-ex-tikz]').forEach(el=>{
       const idx=Number(el.dataset.exTikz);
       el.removeAttribute('data-ex-tikz');
@@ -400,9 +413,10 @@
   }
   function crearIndice() {
     const nodos=[...$('ex-lector-contenido').querySelectorAll('h2, h3')];const aside=$('ex-lector-indice');
-    if(!nodos.length){aside.hidden=true;return;}
+    if(!nodos.length){aside.hidden=true;return null;}
     aside.hidden=false;$('ex-indice-links').replaceChildren();
     nodos.forEach((n,i)=>{n.id=`ex-seccion-${i}`;const a=document.createElement('a');a.href=`#${n.id}`;a.textContent=n.textContent;a.style.paddingLeft=n.tagName==='H3'?'15px':'5px';a.onclick=(ev)=>{ev.preventDefault();n.scrollIntoView({behavior:'smooth',block:'start'});};$('ex-indice-links').appendChild(a);});
+    return $('ex-indice-links');
   }
   // Visor común: el PDF nunca desplaza la página de ejercicios, se abre en una ventana.
   function cerrarModal() {
@@ -471,7 +485,7 @@
     try {
       const markdown=await D.obtenerMarkdown(e);
       if (version!==estado.lecturaVersion || String(estado.seleccionadoId)!==String(e.id)) return;
-      renderMarkdownSegura(markdown,out);crearIndice();
+      renderMarkdownSegura(markdown,out,crearIndice);
     } catch(err) {
       if (version===estado.lecturaVersion) out.textContent='No se pudo abrir el ejercicio: '+err.message;
     }

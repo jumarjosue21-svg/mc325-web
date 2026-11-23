@@ -55,7 +55,7 @@ Un tubo de pared gruesa sujeto a la acción de presiones internas y externas pre
     \foreach \a in {0, 18, 36, 54, 72, 90, 108, 126, 144, 162, 180, 198, 216, 234, 252, 270, 288, 306, 324, 342} {
         \draw[-latex, very thick, green!55!black] (\a:4.55) -- (\a:\rb);
     }
-    \node[text=green!55!black] at (26:5.0) {\Large $p_o$};
+    \node[text=green!55!black] at (26:5.0) {\Large $p_0$};
 
     \draw[thin, black] (-\rb, 0) -- (-\rb, -4.95);
     \draw[thin, black] (-\ra, 0) -- (-\ra, -4.45);
@@ -108,7 +108,7 @@ Un tubo de pared gruesa sujeto a la acción de presiones internas y externas pre
         \node[below right, inner sep=2pt] at (\angEA:\rIn) {\Large $n$};
 
         \draw[-latex, very thick, blue] (\angEM:\rOut) -- (\angEM:6.75);
-        \node[right, text=blue, inner sep=3pt] at (\angEM:6.55) {\Large $\sigma_r + \frac{\partial \sigma}{\partial r}dr$};
+        \node[right, text=blue, inner sep=3pt] at (\angEM:6.55) {\Large $\sigma_r + \frac{\partial \sigma_r}{\partial r}dr$};
 
         \draw[-latex, very thick, blue] (\angEM:\rIn) -- (\angEM:3.05);
         \node[below, text=blue, inner sep=2pt] at (\angEM:3.1) {\Large $\sigma_r$};
@@ -120,7 +120,7 @@ Un tubo de pared gruesa sujeto a la acción de presiones internas y externas pre
         \node[right, text=blue, inner sep=2pt] at ([shift={(\angEA-90:0.8)}]\angEA:4.9) {\Large $\sigma_t$};
 
         \draw[latex-latex, thin, black] (\angEA:1.75) arc (\angEA:\angEB:1.75);
-        \node[rotate=-39] at (\angEM:2.02) {\Large $d\theta$};
+        \node[rotate=-39] at (\angEM:2.02) {\Large $d\varphi$};
 
         \draw[-latex, thin, black] (\angDim:1.65) -- (\angDim:\rIn);
         \draw[thin, black] (\angDim:1.65) ++(\angDim+90:0.07) -- ++(\angDim-90:0.14);
@@ -132,7 +132,7 @@ Un tubo de pared gruesa sujeto a la acción de presiones internas y externas pre
 \end{tikzpicture}
 </script>
 
-Figura 1: Tubo de pared gruesa sujeta a presión interna y presión externa.
+Figura 1: Tubo de pared gruesa sujeto a presión interna y presión externa.
 
 Aislando un elemento diferencial del tubo $mnmn$, se encuentra que este está sujeto a la acción de tensiones radiales y transversales, tal como se muestra en la figura anterior. Es evidente que las tensiones radiales están cambiando radialmente, mientras que las tensiones tangenciales se mantienen constantes.
 
@@ -249,7 +249,7 @@ $$ \sigma_t = \frac{a^2 p_i - b^2 p_0}{b^2 - a^2} + \frac{(p_i - p_0)a^2 b^2}{r^
 \end{tikzpicture}
 </script>
 
-Figura 2: Tubo de pared gruesa sujeta a presión interna.
+Figura 2: Tubo de pared gruesa sujeto a presión interna.
 
 Cuando la presión externa actuante sobre el tubo es nula o igual a cero, las expresiones para la variación de esfuerzos radiales y tangenciales tendrán una forma mucho más simplificada. Estas son:
 
@@ -294,7 +294,7 @@ $$ \begin{aligned}
     \foreach \k in {0, 1, ..., 24} {
         \draw[-latex, very thick, green!55!black] ({90 - \k*14.4}:4.35) -- ({90 - \k*14.4}:\rb);
     }
-    \node[text=green!55!black, fill=white, inner sep=1pt] at (125:4.42) {\Large $p_o$};
+    \node[text=green!55!black, fill=white, inner sep=1pt] at (125:4.42) {\Large $p_0$};
 
     % Lineas de proyeccion para acotacion
     \draw[thin, black] (0, \ra) -- (4.22, \ra);
@@ -311,7 +311,7 @@ $$ \begin{aligned}
 \end{tikzpicture}
 </script>
 
-Figura 3: Cilindro de pared gruesa sometida a presión exterior $p$.
+Figura 3: Cilindro de pared gruesa sometido a presión exterior $p_0$.
 
 $$ \sigma_r = -\frac{p_0 b^2}{b^2 - a^2}\left(1 - \frac{a^2}{r^2}\right) $$
 

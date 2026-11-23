@@ -4,12 +4,12 @@ Cuando un cilindro de radio exterior $b + \delta$ se acopla dentro de un cilindr
 
 <script type="text/tikz">
 \usetikzlibrary{patterns}
-\begin{tikzpicture}[>=latex, font=\small, scale=0.95]
+\begin{tikzpicture}[>=latex, font=\small, scale=0.90]
     \def\rc{3.10}
     \def\rb{1.25}
     \def\rbd{1.55}
     \def\ra{0.65}
-    \def\xSep{6.00}
+    \def\xSep{6.75}
 
     % 1. Cilindro izquierdo (exterior)
     \fill[blue!8] (0,0) circle (\rc);
@@ -28,10 +28,10 @@ Cuando un cilindro de radio exterior $b + \delta$ se acopla dentro de un cilindr
     \draw[thin, black] (0, -\rc) -- (-3.88, -\rc);
     \draw[thin, black] (-\rc, 0) -- (-4.05, 0);
 
-    \draw[latex-latex, thin, black] (-3.76, 0) -- (-3.76, \rc)
-        node[midway, fill=white, inner sep=1.5pt, rotate=90] {\Large $c$};
-    \draw[latex-latex, thin, black] (-3.76, -\rc) -- (-3.76, 0)
-        node[midway, fill=white, inner sep=1.5pt, rotate=90] {\Large $c$};
+    \draw[latex-latex, thin, black] (-3.72, 0) -- (-3.72, \rc)
+        node[midway, fill=white, inner sep=1.5pt] {\Large $c$};
+    \draw[latex-latex, thin, black] (-3.72, -\rc) -- (-3.72, 0)
+        node[midway, fill=white, inner sep=1.5pt] {\Large $c$};
 
     % 2. Cilindro derecho (interior)
     \begin{scope}[shift={(\xSep, 0)}]
@@ -43,31 +43,31 @@ Cuando un cilindro de radio exterior $b + \delta$ se acopla dentro de un cilindr
         \draw[very thick, black] (0,0) circle (\rbd);
 
         \foreach \ang in {0, 18, 36, 54, 72, 90, 108, 126, 144, 162, 180, 198, 216, 234, 252, 270, 288, 306, 324, 342} {
-            \draw[-latex, very thick, green!55!black] (\ang:2.28) -- (\ang:\rbd);
+            \draw[-latex, very thick, green!55!black] (\ang:2.18) -- (\ang:\rbd);
         }
-        \node[text=green!55!black] at (-0.38, -2.38) {\Large $p$};
+        \node[text=green!55!black] at (-0.42, -2.42) {\Large $p$};
 
-        \draw[thin, black] (0, \ra) -- (-2.68, \ra);
-        \draw[thin, black] (0, -\ra) -- (-2.68, -\ra);
-        \draw[latex-latex, thin, black] (-2.58, 0) -- (-2.58, \ra)
-            node[midway, above, inner sep=1.5pt, rotate=90] {\Large $a$};
-        \draw[latex-latex, thin, black] (-2.58, -\ra) -- (-2.58, 0)
-            node[midway, above, inner sep=1.5pt, rotate=90] {\Large $a$};
+        \draw[thin, black] (0, \ra) -- (-2.85, \ra);
+        \draw[thin, black] (0, -\ra) -- (-2.85, -\ra);
+        \draw[latex-latex, thin, black] (-2.72, 0) -- (-2.72, \ra)
+            node[midway, fill=white, inner sep=1.5pt] {\Large $a$};
+        \draw[latex-latex, thin, black] (-2.72, -\ra) -- (-2.72, 0)
+            node[midway, fill=white, inner sep=1.5pt] {\Large $a$};
 
-        \draw[thin, black] (0, \rb) -- (2.62, \rb);
-        \draw[thin, black] (0, -\rb) -- (2.62, -\rb);
-        \draw[thin, black] (0, \rbd) -- (2.98, \rbd);
-        \draw[thin, black] (0, -\rbd) -- (2.98, -\rbd);
-        \draw[thin, black] (\rbd, 0) -- (3.08, 0);
+        \draw[thin, black] (0, \rb) -- (2.78, \rb);
+        \draw[thin, black] (0, -\rb) -- (2.78, -\rb);
+        \draw[thin, black] (0, \rbd) -- (3.42, \rbd);
+        \draw[thin, black] (0, -\rbd) -- (3.42, -\rbd);
+        \draw[thin, black] (\rbd, 0) -- (3.52, 0);
 
-        \draw[latex-latex, thin, black] (2.54, 0) -- (2.54, \rb)
-            node[midway, above, inner sep=1pt, rotate=90] {\Large $b$};
-        \draw[latex-latex, thin, black] (2.54, -\rb) -- (2.54, 0)
-            node[midway, above, inner sep=1pt, rotate=90] {\Large $b$};
+        \draw[latex-latex, thin, black] (2.68, 0) -- (2.68, \rb)
+            node[midway, fill=white, inner sep=1.5pt] {\Large $b$};
+        \draw[latex-latex, thin, black] (2.68, -\rb) -- (2.68, 0)
+            node[midway, fill=white, inner sep=1.5pt] {\Large $b$};
 
-        \draw[latex-latex, thin, black] (2.88, 0) -- (2.88, \rbd)
+        \draw[latex-latex, thin, black] (3.30, 0) -- (3.30, \rbd)
             node[midway, right, inner sep=4pt] {\Large $b + \delta$};
-        \draw[latex-latex, thin, black] (2.88, -\rbd) -- (2.88, 0)
+        \draw[latex-latex, thin, black] (3.30, -\rbd) -- (3.30, 0)
             node[midway, right, inner sep=4pt] {\Large $b + \delta$};
     \end{scope}
 
@@ -75,9 +75,9 @@ Cuando un cilindro de radio exterior $b + \delta$ se acopla dentro de un cilindr
     \draw[dashed, thin, black!80] (-0.95, \rb) -- (\xSep, \rb);
     \draw[dashed, thin, black!80] (-0.95, -\rb) -- (\xSep, -\rb);
 
-    \draw[thin, black!80, dash pattern=on 14pt off 5pt on 5pt off 5pt] (-4.05, 0) -- (\xSep + 3.08, 0);
+    \draw[thin, black!80, dash pattern=on 14pt off 5pt on 5pt off 5pt] (-4.05, 0) -- (\xSep + 3.52, 0);
     \draw[thin, black!80, dash pattern=on 14pt off 5pt on 5pt off 5pt] (0, -3.65) -- (0, 3.65);
-    \draw[thin, black!80, dash pattern=on 14pt off 5pt on 5pt off 5pt] (\xSep, -2.35) -- (\xSep, 2.75);
+    \draw[thin, black!80, dash pattern=on 14pt off 5pt on 5pt off 5pt] (\xSep, -2.55) -- (\xSep, 2.75);
 \end{tikzpicture}
 </script>
 
@@ -128,8 +128,8 @@ Figura 4: Diagrama de cuerpo libre de cada uno de los cilindros sujetos a la pre
     \draw[-latex, thin, black] (3.85, 1.07) -- (3.85, \rbOne);
     \fill[black] (3.85, \rbMid) circle (1.1pt);
 
-    \node[right, inner sep=2pt] at (3.88, 1.92) {\Large $\delta_2$};
-    \node[right, inner sep=2pt] at (3.88, 1.18) {\Large $\delta_1$};
+    \node[right, inner sep=2pt] at (3.88, 1.92) {\Large $\delta_1$};
+    \node[right, inner sep=2pt] at (3.88, 1.18) {\Large $\delta_2$};
 
     \draw[latex-latex, thin, black] (4.38, \rbOne) -- (4.38, \rbTwo);
     \node[right, inner sep=3pt] at (4.42, \rbMid) {\Large $\delta$};
@@ -243,7 +243,7 @@ $$ t = a\left(\sqrt{\frac{\sigma_t}{\sigma_t - 2p}} - 1\right) $$
 
 ---
 
-### 2.3. Ecuaciones Clavarino
+### 2.3. Ecuaciones de Clavarino
 
 Este método está basado en el criterio de la máxima deformación de un material y específicamente para cilindros con tapa, por lo que es posible la aparición de una componente adicional de esfuerzos. Los esfuerzos para el diseño se obtienen a partir de las siguientes expresiones:
 

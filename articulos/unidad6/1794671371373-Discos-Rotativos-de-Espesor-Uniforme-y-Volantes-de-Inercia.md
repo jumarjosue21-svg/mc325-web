@@ -134,10 +134,10 @@ $$ u = \frac{1 - \nu}{8E}\left[(3 + \nu)b^2 - (1 + \nu)r^2\right]\rho\omega^2 r 
     \draw[thick, black, dash pattern=on 6pt off 3.5pt] (4, 0) -- (4, 2.65);
 
     \draw[thick, black] (0.90, 1.10) -- (1.10, 1.10);
-    \node[left, xshift=-2pt] at (0.92, 1.10) {\large $0.5$};
+    \node[left, xshift=-2pt, fill=white, inner sep=1pt] at (0.88, 1.10) {\large $0.5$};
 
     \draw[thick, black] (0.90, 2.20) -- (1.10, 2.20);
-    \node[left, xshift=-2pt] at (0.92, 2.20) {\large $1.0$};
+    \node[left, xshift=-2pt, fill=white, inner sep=1pt] at (0.88, 2.20) {\large $1.0$};
 
     \draw[thick, black] (3.90, 1.10) -- (4.10, 1.10);
     \draw[thick, black] (3.90, 2.20) -- (4.10, 2.20);
@@ -153,11 +153,11 @@ $$ u = \frac{1 - \nu}{8E}\left[(3 + \nu)b^2 - (1 + \nu)r^2\right]\rho\omega^2 r 
         (1, 0) .. controls (1.32, 0.62) and (1.75, 0.80) .. (2.15, 0.80)
                .. controls (2.75, 0.80) and (3.40, 0.42) .. (4, 0);
 
-    \draw[-latex, thick, black] (42:4.18) arc (42:55:4.18);
-    \node at (46:4.48) {\large $\omega$};
+    \draw[-latex, thick, black] (62:4.18) arc (62:76:4.18);
+    \node at (68:4.50) {\large $\omega$};
 
-    \node[right] at (2.28, 3.72) {\large $u/u_{\text{max}}$};
-    \draw[-latex, thick, black] (2.48, 3.48) .. controls (2.05, 3.05) and (1.92, 2.60) .. (1.85, 2.10);
+    \node[right] at (2.42, 3.68) {\large $u/u_{\mathrm{max}}$};
+    \draw[-latex, thick, black] (2.52, 3.44) .. controls (2.15, 3.00) and (1.98, 2.58) .. (1.88, 2.12);
 
     \node[right] at (4.35, 1.70) {\large $\sigma_\theta / \rho \omega^2 b^2$};
     \draw[-latex, thick, black] (4.32, 1.65) .. controls (3.80, 1.55) and (3.40, 1.25) .. (3.04, 0.83);
@@ -177,7 +177,7 @@ Figura 2: Variación de los esfuerzos radiales y transversales producto de la ve
 
     \draw[-latex, thick, black] (-0.25, 0) -- (5.25, 0) node[right] {\large $x$};
     \draw[-latex, thick, black] (0, -0.25) -- (0, 4.75) node[left, xshift=-1pt] {\large $y$};
-    \node[below left, inner sep=3pt] at (0,0) {\large $0$};
+    \node[below left, inner sep=2pt] at (-0.08, -0.08) {\large $0$};
 
     \foreach \x/\val in {0.8/0.2, 1.6/0.4, 2.4/0.6, 3.2/0.8, 4.0/1.0} {
         \draw[thick, black] (\x, -0.10) -- (\x, 0.10);
