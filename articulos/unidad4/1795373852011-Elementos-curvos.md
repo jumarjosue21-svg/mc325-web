@@ -1384,7 +1384,106 @@ Figura 12: Semiarco con carga puntual en la cúspide.
 
 Por la simetría del problema se deduce que las reacciones son fuerzas verticales e iguales a P/2.
 
-<!-- ESPACIO PARA INSERTAR LA FIGURA 13 -->
+<script type="text/tikz">
+\begin{tikzpicture}[>=stealth, font=\itshape\large, scale=0.95]
+
+  \colorlet{gr}{green!50!black}
+
+  \draw[dotted, thick, gray!70!black] (-5.7,0) -- (5.2,0);
+  \draw[dotted, thick, gray!70!black] (0,0) -- (0,6.0);
+  \draw[dotted, thick, gray!70!black] (0,0) -- (40:6.0);
+  \draw[dotted, thick, gray!70!black] (0,0) -- (150:6.4);
+
+  \draw[black, line width=9pt, line cap=butt] (40:5) arc (40:180:5);
+  \draw[magenta!60, line width=7pt, line cap=butt] (40:5) arc (40:180:5);
+  \draw[dotted, thick, black] (40:5) arc (40:180:5);
+
+  \draw[gr, ->, thick] (0,6.17) -- (0,5.32);
+  \node[gr] at (0.56,5.83) {$P$};
+  \node[gray!70!black] at (-0.5,4.24) {$B$};
+
+  \draw[thick, fill=white] (-5,0) -- ++(-0.3,-0.5) -- ++(0.6,0) -- cycle;
+  \draw[thick] (-5.5,-0.5) -- (-4.5,-0.5);
+  \fill[yellow!30] (-5.5,-0.5) rectangle (-4.5,-0.65);
+  \foreach \x in {-5.4,-5.2,-5.0,-4.8,-4.6}{
+    \draw[yellow!60!orange, thin] (\x,-0.5) -- ++(-0.1,-0.15);
+  }
+  \node[gray!70!black] at (-5.6,0.35) {$A$};
+  \draw[red, ->, thick] (-5,-1.75) -- (-5,-0.65);
+  \node[red] at (-4.0,-1.4) {$P/2$};
+
+  \node[gray!70!black] at (-2.6,0.3) {$R$};
+
+  \begin{scope}[shift={(3.83,3.21)}]
+    \draw[blue, ->, thick] (0,-0.04) -- (-0.8,0.79);
+    \draw[blue, ->, thick] (0,0) -- (0.85,0.7);
+    \draw[->, thick, red] (110:0.4) arc (110:340:0.4);
+    \node[blue] at (-0.22,1.2) {$N$};
+    \node[blue] at (1.14,0.38) {$v$};
+    \node[blue] at (-0.9,-0.6) {$M$};
+  \end{scope}
+
+  \draw[gr, ->, thick] (1.5,0) arc (0:150:1.5);
+  \node[blue] at (0.04,1.94) {$\Theta$};
+  \draw[gr, ->, thick] (1.1,0) arc (0:40:1.1);
+  \node[blue] at (1.93,0.59) {$\Theta$};
+
+  \begin{scope}[shift={(7.4,0)}]
+
+    \draw[dotted, thick, gray!70!black] (-0.3,0) -- (5.6,0);
+    \draw[dotted, thick, gray!70!black] (0,0) -- (40:5.9);
+    \draw[dotted, thick, gray!70!black] (3.83,-1.2) -- (3.83,4.2);
+
+    \draw[black, line width=9pt, line cap=butt] (5,0) arc (0:40:5);
+    \draw[magenta!60, line width=7pt, line cap=butt] (5,0) arc (0:40:5);
+    \draw[dotted, thick, black] (5,0) arc (0:40:5);
+
+    \fill[yellow!50] (0.17,2.18) -- (0.17,4.48) -- (1.3,3.12) -- cycle;
+    \draw[red, ->, thick] (0.17,2.18) -- (0.17,4.48);
+    \draw[blue, ->, thick] (0.2,4.48) -- (1.33,3.12);
+    \draw[blue, ->, thick] (1.3,3.08) -- (0.17,2.14);
+    \node[red] at (-0.67,3.09) {$P/2$};
+    \node[blue] at (1.11,4.17) {$N$};
+    \node[blue] at (1.11,2.41) {$v$};
+    \node[blue] at (0.53,3.5) {$\Theta$};
+
+    \draw[gr, ->, thick] (1.1,0) arc (0:40:1.1);
+    \node[blue] at (1.6,0.55) {$\Theta$};
+
+    \begin{scope}[shift={(3.83,3.21)}]
+      \draw[blue, ->, thick] (-0.71,0.84) -- (0,0);
+      \draw[blue, ->, thick] (0,0.04) -- (-0.77,-0.64);
+      \draw[<-, thick, red] (110:0.35) arc (110:340:0.35);
+      \node[blue] at (-0.7,1.2) {$N$};
+      \node[blue] at (-1.1,-0.5) {$v$};
+      \node[blue] at (0.87,0.38) {$M$};
+    \end{scope}
+
+    \draw[dotted, thick, gray!70!black] (0,0) -- (0,-1.8);
+    \draw[dotted, thick, gray!70!black] (5,-0.9) -- (5,-1.8);
+
+    \draw[<->, thick] (0,-1.2) -- (3.83,-1.2);
+    \node[fill=white, inner sep=1pt] at (1.9,-1.2) {$R\cos\Theta$};
+    \draw[<->, thick] (3.83,-1.2) -- (5,-1.2);
+    \node[fill=white, inner sep=1pt] at (4.4,-1.2) {$d$};
+    \draw[<->, thick] (0,-1.8) -- (5,-1.8);
+    \node[fill=white, inner sep=1pt] at (2.5,-1.8) {$R$};
+
+    \draw[thick, fill=white] (5,0) -- ++(-0.2,-0.45) -- ++(0.4,0) -- cycle;
+    \foreach \dx in {-0.2,0,0.2}{
+      \draw[thick, fill=white] (5+\dx,-0.55) circle (0.1);
+    }
+    \draw[thick] (4.6,-0.67) -- (5.4,-0.67);
+    \fill[yellow!30] (4.6,-0.67) rectangle (5.4,-0.8);
+    \node[gray!70!black] at (4.29,0.07) {$C$};
+
+    \draw[red, ->, thick] (5,-2.5) -- (5,-0.75);
+    \node[red] at (4.21,-2.45) {$P/2$};
+
+  \end{scope}
+
+\end{tikzpicture}
+</script>
 
 Figura 13: Diagrama de cuerpo libre de arco seccionado a un ángulo θ.
 
@@ -1402,7 +1501,89 @@ $$
 M = \frac{PR}{2}(1-\cos\theta)
 $$
 
-<!-- ESPACIO PARA INSERTAR LA FIGURA 14 -->
+<script type="text/tikz">
+\begin{tikzpicture}[>=stealth, font=\itshape\large, scale=0.95]
+
+  \colorlet{gr}{green!50!black}
+
+  \draw[thick, gray!70!black, dotted] (-0.8,0) -- (6.6,0);
+  \draw[thick, gray!70!black, dotted] (0.955,-1.3) -- (0.955,2.94);
+
+  \begin{scope}[shift={(5,0)}]
+    \draw[thick, gray!70!black, dotted] (0,0) -- (143.83:4.91);
+    \draw[black, line width=9pt, line cap=butt] (144:5) arc (144:180:5);
+    \draw[magenta!60, line width=7pt, line cap=butt] (144:5) arc (144:180:5);
+    \draw[dotted, thick, black] (144:5) arc (144:180:5);
+    \draw[gr, ->, thick] (1.3,0) arc (0:144:1.3);
+    \node[blue] at (0.83,1.59) {$\Theta$};
+  \end{scope}
+
+  \draw[thick, fill=white] (0,0) -- ++(-0.3,-0.5) -- ++(0.6,0) -- cycle;
+  \draw[thick] (-0.5,-0.5) -- (0.5,-0.5);
+  \fill[yellow!30] (-0.5,-0.5) rectangle (0.5,-0.65);
+  \foreach \x in {-0.45,-0.3,-0.15,0,0.15,0.3,0.45}{
+    \draw[yellow!60!orange, thin] (\x,-0.5) -- ++(-0.1,-0.15);
+  }
+  \node[gray!70!black] at (-0.6,0.3) {$A$};
+  \draw[red, ->, thick] (0,-2.3) -- (0,-0.7);
+  \node[red] at (-1.0,-1.8) {$P/2$};
+
+  \node[gray!70!black] at (2.5,0.3) {$R$};
+
+  \begin{scope}[shift={(0.955,2.94)}]
+    \draw[blue, ->, thick] (0,0) -- (54:0.9);
+    \draw[blue, ->, thick] (0,0) -- (324:0.9);
+    \draw[blue, ->, thick] (200:0.35) arc (200:490:0.35);
+    \node[blue] at (0.95,0.75) {$N$};
+    \node[blue] at (0.46,-0.82) {$v$};
+    \node[blue] at (-0.29,0.99) {$M$};
+  \end{scope}
+
+  \fill[yellow!50] (4.72,2.6) -- (4.72,5) -- (3.62,3.4) -- cycle;
+  \draw[red, ->, thick] (4.72,2.6) -- (4.72,5);
+  \draw[blue, ->, thick] (4.68,4.93) -- (3.58,3.33);
+  \draw[blue, ->, thick] (3.58,3.4) -- (4.68,2.6);
+  \draw[gr, ->, thick] (4.42,4.58) -- (4.72,4.36);
+  \node[blue] at (3.64,4.17) {$N$};
+  \node[blue] at (3.8,2.65) {$v$};
+  \node[blue,fill=white, inner sep=1pt] at (5.2,3.99) {$180-\Theta$};
+
+  \draw[<->, thick] (0.955,-1.2) -- (5,-1.2);
+  \node[fill=white, inner sep=1pt] at (2.8,-1.12) {$-R\cos\Theta$};
+  \draw[<->, thick] (0,-2) -- (5,-2);
+  \node[fill=white, inner sep=1pt] at (2.44,-1.96) {$R$};
+  \draw[dotted, thick, gray!70!black] (5,0) -- (5,-1.96);
+  \draw[dotted, thick, gray!70!black] (0,-0.7) -- (0,-1.7);
+
+  \begin{scope}[shift={(12.5,0)}]
+
+    \draw[thick, gray!70!black, dotted] (0,0) -- (5,0);
+    \draw[thick, gray!70!black, dotted] (0,0) -- (0,5.6);
+    \draw[thick, gray!70!black, dotted] (0,0) -- (145:5.6);
+
+    \draw[black, line width=9pt, line cap=butt] (5,0) arc (0:145:5);
+    \draw[magenta!60, line width=7pt, line cap=butt] (5,0) arc (0:145:5);
+    \draw[dotted, thick, black] (5,0) arc (0:145:5);
+
+    \draw[gr, ->, thick] (0,6.3) -- (0,5.4);
+    \node[gr] at (0.5,6.0) {$P$};
+    \node[gray!70!black] at (-0.5,5.9) {$B$};
+    \node[gray!70!black] at (-2.24,2.12) {$R$};
+
+    \draw[thick, fill=white] (5,0) -- ++(-0.2,-0.45) -- ++(0.4,0) -- cycle;
+    \foreach \dx in {-0.2,0,0.2}{
+      \draw[thick, fill=white] (5+\dx,-0.55) circle (0.1);
+    }
+    \draw[thick] (4.5,-0.67) -- (5.5,-0.67);
+    \fill[yellow!30] (4.5,-0.67) rectangle (5.5,-0.82);
+    \node[gray!70!black] at (4.23,0.42) {$C$};
+    \draw[red, ->, thick] (5,-2.07) -- (5,-0.67);
+    \node[red] at (5.79,-1.65) {$P/2$};
+
+  \end{scope}
+
+\end{tikzpicture}
+</script>
 
 Figura 14: Diagrama de cuerpo libre de arco seccionado a un ángulo θ en el segundo dominio.
 
@@ -1417,8 +1598,6 @@ $$
 $$
 M = \frac{PR}{2}(1-\cos\theta)
 $$
-
-
 
 
 
@@ -1474,7 +1653,76 @@ Figura 15: Diagrama de carga libre de arco con carga gravitacional distribuida.
 
 **Solución:**
 
-<!-- ESPACIO PARA INSERTAR LA FIGURA 16 -->
+<script type="text/tikz">
+\begin{tikzpicture}[>=stealth, font=\itshape\large, scale=0.95]
+
+  \colorlet{gr}{green!50!black}
+
+  \draw[thick, gray!70!black, dotted] (0,0) -- (5.3,0);
+  \draw[thick, gray!70!black, dotted] (0,0) -- (0,5.0);
+  \draw[thick, gray!70!black, dotted] (0,0) -- (50:5.0);
+  \draw[thick, gray!70!black, dotted] (3.214,0) -- (3.214,5.2);
+  \draw[thick, gray!70!black, dotted] (5,0) -- (5,5.2);
+  \draw[thick, gray!70!black, dotted] (0,5) arc (90:50:5);
+
+  \draw[black, line width=9pt, line cap=butt] (5,0) arc (0:50:5);
+  \draw[magenta!60, line width=7pt, line cap=butt] (5,0) arc (0:50:5);
+  \draw[dotted, thick, black] (5,0) arc (0:50:5);
+
+  \draw[gr, thick] (3.214,5.2) -- (5,5.2) -- (5,4.3) -- (3.214,4.3) -- cycle;
+  \foreach \x in {3.3,3.5,3.7,3.9,4.1,4.3,4.5,4.7,4.9}{
+    \draw[gr, ->, thick] (\x,5.2) -- (\x,4.3);
+  }
+  \draw[red, ->, thick] (4.1,5.7) -- (4.1,5.25);
+  \node[red, font=\itshape\Large] at (4.17,6.07) {$PR(1-\cos\Theta)$};
+
+  \draw[blue, ->, thick] (2.59,4.3) -- (3.21,3.83);
+  \draw[blue, ->, thick] (3.214,3.83) -- (2.7,3.2);
+  \begin{scope}[shift={(3.214,3.83)}]
+    \draw[blue, ->, thick] (110:0.4) arc (110:-150:0.4);
+  \end{scope}
+  \node[blue] at (2.28,4.54) {$N$};
+  \node[blue] at (2.41,3.41) {$v$};
+  \node[blue] at (4.03,3.8) {$M$};
+
+  \draw[gr, ->, thick] (1.2,0) arc (0:50:1.2);
+  \node[blue, fill=white, inner sep=1pt] at (0.6,0.25) {$\Theta$};
+
+  \node[gray!70!black] at (4.33,0.33) {$C$};
+
+  \draw[thick, fill=white] (5,0) -- (4.7,-0.5) -- (5.3,-0.5) -- cycle;
+  \foreach \dx in {-0.4,0,0.4}{
+    \draw[thick, fill=white] (5+\dx,-0.72) circle (0.2);
+  }
+  \draw[thick] (4.4,-0.95) -- (5.6,-0.95);
+  \fill[yellow!30] (4.4,-0.95) rectangle (5.6,-1.12);
+  \foreach \x in {4.5,4.7,4.9,5.1,5.3,5.5}{
+    \draw[yellow!60!orange, thin] (\x,-0.95) -- ++(-0.1,-0.17);
+  }
+  \draw[red, ->, thick] (5,-2.1) -- (5,-1.15);
+  \node[red, font=\itshape\Large] at (5.7,-1.8) {$PR$};
+
+  \draw[<->, thick] (0,-1.0) -- (3.214,-1.0);
+  \node at (1.66,-0.59) {$R\cos\Theta$};
+  \draw[<->, thick] (0,-1.8) -- (5,-1.8);
+  \node at (2.5,-1.43) {$R$};
+  \draw[dotted, thick, gray!70!black] (0,0) -- (0,-1.8);
+  \draw[dotted, thick, gray!70!black] (3.214,0) -- (3.214,-1.0);
+
+  \fill[yellow!50] (-1.04,5.1) -- (-1.04,0.55) -- (1.2,2.43) -- cycle;
+  \draw[red, ->, thick] (-1.04,0.55) -- (-1.04,5.1);
+  \draw[blue, ->, thick] (-1.04,5.1) -- (1.2,2.43);
+  \draw[blue, ->, thick] (1.2,2.43) -- (-1.04,0.55);
+  \begin{scope}[shift={(-1.04,5.1)}]
+    \draw[gr, ->, thick] (270:0.8) arc (270:310:0.8);
+  \end{scope}
+  \node[blue, inner sep=1pt] at (-0.58,3.83) {$\Theta$};
+  \node[blue] at (0.5,4.2) {$N$};
+  \node[blue] at (-0.1,1.82) {$v$};
+  \node[red, font=\itshape\Large, rotate=90] at (-1.5,2.9) {$PR\cos\Theta$};
+
+\end{tikzpicture}
+</script>
 
 Figura 16: Diagrama de carga libre de arco con carga gravitacional distribuida.
 
@@ -1627,7 +1875,7 @@ $$
 
 ### 13.2 Fuerzas internas por tramos
 
-#### 13.2.1 Tramo 1 — Voladizo OJ (0 ≤ x ≤ 5 m), cuerpo libre a la izquierda del corte
+#### 13.2.1 Tramo 1 — Voladizo OJ ($0 \le x \le 5$ m), cuerpo libre a la izquierda del corte
 
 **Fuerza normal:**
 
@@ -1649,9 +1897,9 @@ $$
 
 Donde:
 
-- V y M fueron dibujados en el sentido positivo de la convención. El sentido negativo que resulta al reemplazar valores indica que la dirección supuesta de ambos es incorrecta.
+- $V$ y $M$ fueron dibujados en el sentido positivo de la convención. El sentido negativo que resulta al reemplazar valores indica que la dirección supuesta de ambos es incorrecta.
 
-**En J (\(x=5\ \text{m}\)):**
+**En J ($x=5\ \text{m}$):**
 
 Fuerza cortante:
 
@@ -1675,7 +1923,7 @@ $$
 
 *(Tracción en la fibra superior).*
 
-#### 13.2.2 Tramo 2 — Viga JB (5 ≤ x ≤ 12 m), cuerpo libre a la derecha del corte (u = 12 − x)
+#### 13.2.2 Tramo 2 — Viga JB ($5 \le x \le 12$ m), cuerpo libre a la derecha del corte ($u = 12 - x$)
 
 **Fuerza normal:**
 
@@ -1697,9 +1945,9 @@ $$
 
 Donde:
 
-- V y M fueron dibujados en el sentido positivo de la convención.
+- $V$ y $M$ fueron dibujados en el sentido positivo de la convención.
 
-**En J (\(u=7\ \text{m}\)):**
+**En J ($u=7\ \text{m}$):**
 
 Fuerza cortante:
 
@@ -1721,7 +1969,7 @@ $$
 \boxed{M(7)=140\ \text{kN}\cdot\text{m}}
 $$
 
-**En B (\(u=0\ \text{m}\)):**
+**En B ($u=0\ \text{m}$):**
 
 $$
 V(0)=-65.5\ \text{kN}
@@ -1745,7 +1993,7 @@ $$
 u=\frac{65.5}{13}
 $$
 
-Como \(u=12-x\):
+Como $u=12-x$:
 
 $$
 x=12-\frac{65.5}{13}\approx6.96\ \text{m}
@@ -1761,15 +2009,15 @@ $$
 \boxed{M_{\max,\text{viga}}=165\ \text{kN}\cdot\text{m}}
 $$
 
-#### 13.2.3 Tramo 3 — Arco AJ (0 ≤ φ ≤ 90°)
+#### 13.2.3 Tramo 3 — Arco AJ ($0 \le \varphi \le 90°$)
 
-Un punto P del arco tiene coordenadas:
+Un punto $P$ del arco tiene coordenadas:
 
 $$
 P=(R\sin\varphi;\,-R\cos\varphi)
 $$
 
-Respecto de A, P está desplazado \(R\sin\varphi\) en horizontal y \(R(1-\cos\varphi)\) en vertical.
+Respecto de A, $P$ está desplazado $R\sin\varphi$ en horizontal y $R(1-\cos\varphi)$ en vertical.
 
 Sobre el tramo AP solo actúan las reacciones de A (el arco no lleva carga). Entonces:
 
@@ -1825,49 +2073,49 @@ En fuerzas: el arco entrega 110.5 kN vertical = 85 + 25.5 de los cortantes de la
 
 **Resumen de fuerzas internas:**
 
-**O (extremo libre), \(x=0\):**
+**O (extremo libre), $x=0$:**
 
 $$
 N=0,\qquad V=-20\ \text{kN},\qquad M=0
 $$
 
-**J (lado voladizo), \(x=5\ \text{m}\):**
+**J (lado voladizo), $x=5\ \text{m}$:**
 
 $$
 N=0,\qquad V=-85\ \text{kN},\qquad M=-262.5\ \text{kN}\cdot\text{m}
 $$
 
-**J (lado viga JB), \(x=5\ \text{m}\):**
+**J (lado viga JB), $x=5\ \text{m}$:**
 
 $$
 N=-30\ \text{kN},\qquad V=+25.5\ \text{kN},\qquad M=+140.0\ \text{kN}\cdot\text{m}
 $$
 
-**Máximo en viga, \(x=6.96\ \text{m}\):**
+**Máximo en viga, $x=6.96\ \text{m}$:**
 
 $$
 N=-30\ \text{kN},\qquad V=0,\qquad M=+165.0\ \text{kN}\cdot\text{m}
 $$
 
-**B, \(x=12\ \text{m}\):**
+**B, $x=12\ \text{m}$:**
 
 $$
 N=-30\ \text{kN},\qquad V=-65.5\ \text{kN},\qquad M=0
 $$
 
-**A (arco), \(\varphi=0^\circ\):**
+**A (arco), $\varphi=0^\circ$:**
 
 $$
 N=-30\ \text{kN},\qquad V=+110.5\ \text{kN},\qquad M=0
 $$
 
-**Máximo en arco, \(\varphi=74.81^\circ\):**
+**Máximo en arco, $\varphi=74.81^\circ$:**
 
 $$
 N=-114.5\ \text{kN},\qquad V=0,\qquad M=+422.5\ \text{kN}\cdot\text{m}
 $$
 
-**J (arco), \(\varphi=90^\circ\):**
+**J (arco), $\varphi=90^\circ$:**
 
 $$
 N=-110.5\ \text{kN},\qquad V=-30\ \text{kN},\qquad M=+402.5\ \text{kN}\cdot\text{m}
@@ -1891,7 +2139,7 @@ $$
 
 **Ubicación del momento flector máximo en el arco:**
 
-En el arco, \(dM/d\varphi=0\) (equivale a \(V=0\)):
+En el arco, $dM/d\varphi=0$ (equivale a $V=0$):
 
 $$
 \frac{dM}{d\varphi}
@@ -1926,11 +2174,11 @@ $$
 
 **Ubicación:**
 
-En el arco, a φ = 74.81° medidos desde la vertical OA; a 4.825 m a la derecha de A y 1.310 m por debajo del eje de la viga. Es mayor que los máximos de la viga (262.5 y 165.0 kN·m). En esa sección V = 0 y N = −114.5 kN (la resultante de las reacciones en A, de 114.5 kN, es tangente al arco). El momento tracciona la fibra exterior del arco.
+En el arco, a $\varphi = 74.81°$ medidos desde la vertical OA; a 4.825 m a la derecha de A y 1.310 m por debajo del eje de la viga. Es mayor que los máximos de la viga (262.5 y 165.0 kN·m). En esa sección $V = 0$ y $N = -114.5$ kN (la resultante de las reacciones en A, de 114.5 kN, es tangente al arco). El momento tracciona la fibra exterior del arco.
 
 ### 13.4 Esfuerzos de tracción y compresión en la sección crítica
 
-Sección rectangular del arco: b = 0.30 m, h = 0.50 m.
+Sección rectangular del arco: $b = 0.30$ m, $h = 0.50$ m.
 
 **Datos de la sección:**
 
@@ -1964,7 +2212,7 @@ $$
 =-0.763\ \text{MPa}
 $$
 
-**Fibra exterior (\(r=5.25\ \text{m}\)) — tracción por flexión:**
+**Fibra exterior ($r=5.25\ \text{m}$) — tracción por flexión:**
 
 $$
 \sigma_{\text{exterior}}
@@ -1979,7 +2227,7 @@ $$
 =+31.94\ \text{MPa}
 $$
 
-**Fibra interior (\(r=4.75\ \text{m}\)) — compresión por flexión:**
+**Fibra interior ($r=4.75\ \text{m}$) — compresión por flexión:**
 
 $$
 \sigma_{\text{interior}}
@@ -2016,11 +2264,11 @@ $$
 =34.39\ \text{MPa}
 $$
 
-Como \(N=0\), el eje neutro coincide con el centro de curvatura.
+Como $N=0$, el eje neutro coincide con el centro de curvatura.
 
 <!-- INSERTAR FIGURA 1.6: DISTRIBUCIÓN DE ESFUERZOS -->
 
-*Figura 1.6 — Distribución de esfuerzos en la sección φ = 74.81°.*
+*Figura 1.6 — Distribución de esfuerzos en la sección $\varphi = 74.81°$.*
 
 Los ejes centroidales de un arco circular de 50 cm de diámetro en equilibrio están sometidos a carga uniformemente distribuida.
 
@@ -2034,11 +2282,11 @@ Encuentre el esfuerzo de compresión y tracción en esta sección y dibuje la di
 
 ### 13.5 Datos
 
-Origen en el centro O del arco (r = 7 m). El arco TC abarca 90° (radios a 135° y 45°), así que T(−4.950; 4.950) y C(4.950; 4.950). El tramo recto AT es tangente al arco en T (inclinado 45°) y, según la figura, el apoyo fijo A está al nivel del centro O, por lo que A(−7√2; 0) = (−9.899; 0) y L(AT) = 7 m. La sección es circular de 50 cm de diámetro (c = 0.25 m).
+Origen en el centro $O$ del arco ($r = 7$ m). El arco TC abarca $90°$ (radios a $135°$ y $45°$), así que $T(-4.950;\ 4.950)$ y $C(4.950;\ 4.950)$. El tramo recto AT es tangente al arco en T (inclinado $45°$) y, según la figura, el apoyo fijo A está al nivel del centro O, por lo que $A(-7\sqrt{2};\ 0) = (-9.899;\ 0)$ y $L(AT) = 7$ m. La sección es circular de 50 cm de diámetro ($c = 0.25$ m).
 
 **Interpretación de la carga**
 
-En la figura las flechas de q = 15 kN/m siguen la forma del elemento, por lo que se toma como carga vertical por unidad de longitud del eje. Longitud de arco TC:
+En la figura las flechas de $q = 15$ kN/m siguen la forma del elemento, por lo que se toma como carga vertical por unidad de longitud del eje. Longitud de arco TC:
 
 **Longitud del tramo curvo TC:**
 
@@ -2054,7 +2302,7 @@ $$
 
 <!-- INSERTAR FIGURA 2.2: DIAGRAMA DE CUERPO LIBRE -->
 
-*Figura 2.2 — Diagrama de cuerpo libre; coordenadas s (tramo recto) y ψ (arco, medida desde T).*
+*Figura 2.2 — Diagrama de cuerpo libre; coordenadas $s$ (tramo recto) y $\psi$ (arco, medida desde T).*
 
 Resultantes de la carga: tramo recto:
 
@@ -2064,7 +2312,7 @@ $$
 W_1=15(7)=105\ \text{kN}
 $$
 
-Aplicada en \(x=-7.425\ \text{m}\).
+Aplicada en $x=-7.425\ \text{m}$.
 
 **Carga distribuida sobre el arco:**
 
@@ -2072,7 +2320,7 @@ $$
 W_2=15(10.996)=164.93\ \text{kN}
 $$
 
-Aplicada en x = 0 (por simetría del arco respecto al eje vertical).
+Aplicada en $x = 0$ (por simetría del arco respecto al eje vertical).
 
 **Equilibrio horizontal:**
 
@@ -2112,7 +2360,7 @@ $$
 \boxed{A_y=142.48\ \text{kN}}
 $$
 
-**Resultado en C (\(\theta=90^\circ\)):**
+**Resultado en C ($\theta=90^\circ$):**
 
 $$
 N=-45\ \text{kN}
@@ -2126,9 +2374,9 @@ $$
 M=239.17\ \text{kN}\cdot\text{m}
 $$
 
-#### 13.12.2 Tramo CB (\(-30^\circ\leq\theta\leq90^\circ\)), cuerpo libre PB
+#### 13.12.2 Tramo CB ($-30^\circ\leq\theta\leq90^\circ$), cuerpo libre PB
 
-A la derecha del corte solo actúa \(B_y=46.03\ \text{kN}\), con brazo horizontal \(5.196-6\cos\theta\).
+A la derecha del corte solo actúa $B_y=46.03\ \text{kN}$, con brazo horizontal $5.196-6\cos\theta$.
 
 **Fuerza normal:**
 
@@ -2154,7 +2402,7 @@ $$
 M(\theta)=239.17-276.17\cos\theta
 $$
 
-**En C (\(\theta=90^\circ+\)):**
+**En C ($\theta=90^\circ+$):**
 
 $$
 N=0
@@ -2168,7 +2416,7 @@ $$
 M=239.17\ \text{kN}\cdot\text{m}
 $$
 
-**En B (\(\theta=-30^\circ\)):**
+**En B ($\theta=-30^\circ$):**
 
 $$
 N=-39.86\ \text{kN}
@@ -2222,7 +2470,7 @@ $$
 
 **Resumen de resultados:**
 
-**En A (\(\theta=210^\circ\)):**
+**En A ($\theta=210^\circ$):**
 
 $$
 N=-84.86\ \text{kN}
@@ -2236,7 +2484,7 @@ $$
 M=0
 $$
 
-**Máximo valor absoluto del momento (\(\theta=160.05^\circ\)):**
+**Máximo valor absoluto del momento ($\theta=160.05^\circ$):**
 
 $$
 N=-131.89\ \text{kN}
@@ -2250,7 +2498,7 @@ $$
 M=-282.14\ \text{kN}\cdot\text{m}
 $$
 
-**En C, lado izquierdo (\(\theta=90^\circ-\)):**
+**En C, lado izquierdo ($\theta=90^\circ-$):**
 
 $$
 N=-45.00\ \text{kN}
@@ -2264,7 +2512,7 @@ $$
 M=+239.17\ \text{kN}\cdot\text{m}
 $$
 
-**En C, lado derecho (\(\theta=90^\circ+\)):**
+**En C, lado derecho ($\theta=90^\circ+$):**
 
 $$
 N=0
@@ -2278,7 +2526,7 @@ $$
 M=+239.17\ \text{kN}\cdot\text{m}
 $$
 
-**Mínimo en CB (\(\theta=0^\circ\)):**
+**Mínimo en CB ($\theta=0^\circ$):**
 
 $$
 N=-46.03\ \text{kN}
@@ -2292,7 +2540,7 @@ $$
 M=-37.00\ \text{kN}\cdot\text{m}
 $$
 
-**En B (\(\theta=-30^\circ\)):**
+**En B ($\theta=-30^\circ$):**
 
 $$
 N=-39.86\ \text{kN}
@@ -2411,7 +2659,7 @@ $$
 
 **Ubicación:**
 
-Sobre el arco, en el tramo AC, a θ = 160.05° (19.95° sobre la horizontal del centro, lado izquierdo): x = −5.640 m, y = 2.047 m respecto a O (5.047 m sobre los apoyos). Es mayor que los máximos de la viga (262.5 y 165.0 kN·m). En esa sección V = 0 y N = −131.89 kN (la resultante de las reacciones en A, √(45² + 123.97²) = 131.89 kN, es tangente al arco). El momento es negativo: tracciona la fibra exterior.
+Sobre el arco, en el tramo AC, a $\theta = 160.05°$ ($19.95°$ sobre la horizontal del centro, lado izquierdo): $x = -5.640$ m, $y = 2.047$ m respecto a O (5.047 m sobre los apoyos). Es mayor que los máximos de la viga (262.5 y 165.0 kN·m). En esa sección $V = 0$ y $N = -131.89$ kN (la resultante de las reacciones en A, $\sqrt{45^2 + 123.97^2} = 131.89$ kN, es tangente al arco). El momento es negativo: tracciona la fibra exterior.
 
 ### 13.14 Esfuerzos de tracción y compresión en la sección crítica
 
@@ -2446,7 +2694,7 @@ $$
 =-0.672\ \text{MPa}
 $$
 
-**Fibra exterior (\(r=6.25\ \text{m}\)) — tracción:**
+**Fibra exterior ($r=6.25\ \text{m}$) — tracción:**
 
 $$
 \sigma_{\text{exterior}}
@@ -2461,7 +2709,7 @@ $$
 =+21.62\ \text{MPa}
 $$
 
-**Fibra interior (\(r=5.75\ \text{m}\)) — compresión:**
+**Fibra interior ($r=5.75\ \text{m}$) — compresión:**
 
 $$
 \sigma_{\text{interior}}
@@ -2498,11 +2746,11 @@ $$
 =22.99\ \text{MPa}
 $$
 
-La compresión axial (\(N=-131.89\ \text{kN}\)) aumenta la compresión de la fibra interior y reduce la tracción de la fibra exterior.
+La compresión axial ($N=-131.89\ \text{kN}$) aumenta la compresión de la fibra interior y reduce la tracción de la fibra exterior.
 
 <!-- INSERTAR FIGURA 3.6: DISTRIBUCIÓN DE ESFUERZOS -->
 
-*Figura 3.6 — Distribución de esfuerzos en la sección θ = 160.05° (N = −131.89 kN).*
+*Figura 3.6 — Distribución de esfuerzos en la sección $\theta = 160.05°$ ($N = -131.89$ kN).*
 
 
 ## 14. Esfuerzos de flexión en elementos curvos
@@ -2951,11 +3199,28 @@ La energía de deformación es una medida de la cantidad de trabajo que desarrol
 
 La energía de deformación total de un elemento diferencial puede ser calculado de forma independiente para cada una de las fuerzas internas existentes dentro de la viga. A continuación, se muestra el cálculo realizado para cada uno de estos casos.
 
-### 15.1 ENERGÍA DE DEFORMACIÓN POR CARGA AXIAL
+### 15.1 Energía de deformación por carga axial
 
 Para un elemento de longitud dx de la viga mostrada anteriormente, se tiene que el trabajo que realiza la fuerza normal sobre este elemento diferencial viene dado como el semiproducto de la fuerza normal y la diferencial de deformación. Es decir, se tiene la siguiente expresión:
 
-<!-- ESPACIO PARA INSERTAR IMAGEN: ELEMENTO DIFERENCIAL SOMETIDO A FUERZA AXIAL -->
+<script type="text/tikz">
+\begin{tikzpicture}[>=stealth, font=\itshape\large, scale=0.95]
+
+  \fill[blue!15] (0,0) rectangle (2.5,2.5);
+  \draw[thick] (0,0) rectangle (2.5,2.5);
+  \draw[red, ->, thick] (0,1.25) -- (-2.4,1.25);
+  \node at (-1.77,1.68) {$N$};
+  \draw[red, ->, thick] (2.5,1.25) -- (4.9,1.25);
+  \node at (4.1,1.68) {$N$};
+  \begin{scope}[shift={(0,0.18)}]
+    \draw[<->, thick] (0,-0.5) -- (2.5,-0.5);
+    \draw[thick] (0,-0.25) -- (0,-0.75);
+    \draw[thick] (2.5,-0.25) -- (2.5,-0.75);
+    \node at (1.22,-0.93) {$dx$};
+  \end{scope}
+
+\end{tikzpicture}
+</script>
 
 $$
 dU_a=\frac{1}{2}N(d\delta)
@@ -2979,11 +3244,49 @@ U_a=\frac{1}{2}\int_0^L\frac{N^2}{EA}\,dx
 }
 $$
 
-### 15.2 ENERGÍA DE DEFORMACIÓN POR FLEXIÓN
+### 15.2 Energía de deformación por flexión
 
 A diferencia de las fuerzas axiales, los momentos flectores producen giro en la sección, tal como se muestra en el siguiente gráfico. Esta dupla, momento y giro de la sección también genera trabajo. Si se grafica la relación entre los momentos y los giros de la sección se encontrará que esta guarda una relación lineal, por lo que el trabajo neto será simplemente el semiproducto del momento y el diferencial de giro para un elemento diferencial como el mostrado. Es decir, se tendría la siguiente expresión.
 
-<!-- ESPACIO PARA INSERTAR IMAGEN: ELEMENTO CURVO SOMETIDO A MOMENTO FLECTOR -->
+<script type="text/tikz">
+\begin{tikzpicture}[>=stealth, font=\itshape\large, scale=1.2]
+
+  \begin{scope}[shift={(0,3.2)}]
+
+    \fill[blue!20] (270:1.8) -- (280:1.8) -- (290:1.8) -- (300:1.8) -- (310:1.8) -- (320:1.8) -- (327:1.8) -- (327:2.9) -- (320:2.9) -- (310:2.9) -- (300:2.9) -- (290:2.9) -- (280:2.9) -- (270:2.9) -- cycle;
+
+    \draw[thick] (270:1.8) arc (270:327:1.8);
+    \draw[thick] (270:2.9) arc (270:327:2.9);
+    \draw[thick] (270:1.8) -- (270:2.9);
+    \draw[thick] (327:1.8) -- (327:2.9);
+
+    \draw[thick, blue!60!black, densely dashed] (270:2.35) arc (270:327:2.35);
+
+    \draw[dashed, gray!70!black] (0,0) -- (0,-3.5);
+    \draw[dashed, gray!70!black] (0,0) -- (327:2.9);
+
+    \draw[<->, thick, gray!70!black] (270:0.9) arc (270:327:0.9);
+    \node at (298:1.25) {$\theta$};
+
+  \end{scope}
+
+  \draw[dashed, gray!70!black] (2.43,1.62) -- (2.43,-0.3);
+
+  \draw[<->, thick] (0,-0.1) -- (2.43,-0.1);
+  \node at (1.22,0.12) {$dx$};
+
+  \begin{scope}[shift={(-0.07,0.85)}]
+    \draw[red, ->, thick] (260:0.6) arc (260:100:0.6);
+  \end{scope}
+  \node at (-1.0,0.85) {$M$};
+
+  \begin{scope}[shift={(2.04,2.04)}]
+    \draw[red, ->, thick] (-33:0.55) arc (-33:147:0.55);
+  \end{scope}
+  \node at (2.68,2.62) {$M$};
+
+\end{tikzpicture}
+</script>
 
 $$
 dU_f=\frac{1}{2}M(d\theta)
@@ -3007,11 +3310,39 @@ U_f=\frac{1}{2}\int_0^L\frac{M^2}{EI}\,dx
 }
 $$
 
-### 15.3 ENERGÍA DE DEFORMACIÓN POR CORTE
+### 15.3 Energía de deformación por corte
 
 En un elemento diferencial de longitud dx, además de encontrar fuerzas axiales y momentos flectores, también encontramos fuerzas cortantes o de cizalla, que tienden a deformar angularmente el elemento, tal como se muestra en la figura mostrada.
 
-<!-- ESPACIO PARA INSERTAR IMAGEN: ELEMENTO DIFERENCIAL SOMETIDO A FUERZA CORTANTE -->
+<script type="text/tikz">
+\begin{tikzpicture}[>=stealth, font=\itshape\large, scale=1.2]
+
+  \fill[blue!20] (0,2.4) -- (0,0.5) -- (1.9,-0.5) -- (1.9,1.33) -- cycle;
+  \draw[thick] (0,2.4) -- (0,0.5) -- (1.9,-0.5) -- (1.9,1.33) -- cycle;
+
+  \draw[dashed, thick, gray!70!black] (0,2.4) -- (1.9,2.4);
+  \draw[dashed, thick, gray!70!black] (0,0.5) -- (1.9,0.5);
+  \draw[dashed, thick, gray!70!black] (1.9,1.33) -- (1.9,2.4);
+  \draw[dashed, thick, gray!70!black] (1.9,-0.5) -- (1.9,-1.0);
+  \draw[dashed, thick, gray!70!black] (0,0.5) -- (0,-1.0);
+
+  \draw[<->, thick] (0,-0.85) -- (1.9,-0.85);
+  \node at (0.95,-0.62) {$dx$};
+
+  \draw[<->, thick] (2.17,2.4) -- (2.17,1.33);
+  \node at (2.51,1.88) {$dv$};
+
+  \draw[thick, gray!70!black] (0.55,2.4) arc (0:-45:0.35);
+  \node at (0.73,2.17) {$\gamma$};
+
+  \draw[red, ->, very thick] (-0.33,0.33) -- (-0.33,1.63);
+  \node at (-0.64,0.95) {$V$};
+
+  \draw[red, ->, very thick] (2.17,1) -- (2.17,-0.6);
+  \node at (2.47,0.29) {$V$};
+
+\end{tikzpicture}
+</script>
 
 Las fuerzas cortantes provocan una deformación transversal adicional a las provocadas por la flexión, por lo que generan un trabajo adicional.
 
@@ -3084,7 +3415,43 @@ $$
 
 En el caso de una viga simplemente apoyada sometida a carga distribuida transversal w, con coeficiente elástico E, G, momento de inercia de la sección transversal I y área de la sección transversal A, la expresión para la energía de deformación total de la viga será:
 
-<!-- ESPACIO PARA INSERTAR IMAGEN: VIGA SIMPLEMENTE APOYADA SOMETIDA A CARGA DISTRIBUIDA -->
+<script type="text/tikz">
+\begin{tikzpicture}[>=stealth, font=\itshape\large, scale=0.95]
+
+  \draw[red, thick] (0,2.0) -- (12.6,2.0);
+  \foreach \x in {0,1.05,2.1,3.15,4.2,5.25,6.3,7.35,8.4,9.45,10.5,11.55,12.6}{
+    \draw[red, ->, thick] (\x,2.0) -- (\x,0.25);
+  }
+  \node at (-0.43,1.76) {$w$};
+
+  \fill[blue!15] (0,-0.2) rectangle (12.6,0.2);
+  \draw[thick] (0,-0.2) rectangle (12.6,0.2);
+
+  \draw[thick, gray!70!black, densely dashed] (-1.0,0) -- (13.6,0);
+
+  \node at (6.3,-0.7) {$E, I, G$};
+
+  \draw[thick, fill=white] (0,-0.2) -- (-0.6,-1.3) -- (0.6,-1.3) -- cycle;
+  \draw[thick] (-0.9,-1.3) -- (0.9,-1.3);
+  \fill[yellow!30] (-0.9,-1.3) rectangle (0.9,-1.5);
+  \foreach \x in {-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8}{
+    \draw[yellow!60!orange, thin] (\x,-1.3) -- ++(-0.1,-0.2);
+  }
+
+  \draw[thick, fill=white] (12.6,-0.2) -- (12.0,-0.95) -- (13.2,-0.95) -- cycle;
+  \foreach \dx in {-0.6,0,0.6}{
+    \draw[thick, fill=white] (12.6+\dx,-1.2) circle (0.25);
+  }
+  \draw[thick] (11.7,-1.45) -- (13.5,-1.45);
+  \fill[yellow!30] (11.7,-1.45) rectangle (13.5,-1.65);
+
+  \draw[dashed, gray!70!black] (0,-1.3) -- (0,-2.3);
+  \draw[dashed, gray!70!black] (12.6,-1.65) -- (12.6,-2.3);
+  \draw[<->, thick] (0,-2.1) -- (12.6,-2.1);
+  \node at (6.3,-1.8) {$L$};
+
+\end{tikzpicture}
+</script>
 
 $$
 U=U_f+U_s
@@ -3202,7 +3569,7 @@ $$
 
 **Tabla 1: Relación de energía de deformación por flexión y cortante contra la razón de esbeltez de una viga.**
 
-| L/h | Uf/Us | Uf | Us |
+| $L/h$ | $U_f/U_s$ | $U_f$ | $U_s$ |
 |---:|---:|---:|---:|
 | 0.01 | 0.0 | 0.0% | 100.0% |
 | 1.00 | 2.4 | 70.6% | 29.4% |
@@ -3233,9 +3600,6 @@ $$
 <!-- ESPACIO PARA INSERTAR GRÁFICO DE BARRAS DE ENERGÍA DE DEFORMACIÓN -->
 
 *Figura 20: Diagrama de barras de la energía de deformación por flexión y cortante en una viga con carga transversal.*
-
-
-
 
 
 
@@ -3372,7 +3736,27 @@ $$
 
 Dado un cuerpo deformable arbitrario sujeto a una distribución de fuerzas cualquiera actuante sobre el mismo, tal como se muestra en la siguiente figura.
 
-<!-- ESPACIO PARA INSERTAR FIGURA: CUERPO DEFORMABLE SOMETIDO A FUERZAS EXTERNAS -->
+<script type="text/tikz">
+\begin{tikzpicture}[>=stealth, font=\itshape\large, scale=1.0]
+
+  \fill[orange!20] plot[smooth cycle] coordinates {(0.5,2.6)(1.2,3.3)(2.6,3.9)(4.2,4.1)(5.8,4.3)(7.2,4.2)(8.2,3.9)(8.6,3.0)(8.4,2.0)(7.6,1.2)(6.4,0.7)(4.8,0.9)(3.2,1.0)(1.6,0.9)(0.7,1.3)(0.4,2.0)};
+  \draw[blue!20!black, line width=1.6pt] plot[smooth cycle] coordinates {(0.5,2.6)(1.2,3.3)(2.6,3.9)(4.2,4.1)(5.8,4.3)(7.2,4.2)(8.2,3.9)(8.6,3.0)(8.4,2.0)(7.6,1.2)(6.4,0.7)(4.8,0.9)(3.2,1.0)(1.6,0.9)(0.7,1.3)(0.4,2.0)};
+
+  \draw[green!60!black, ->, line width=2pt] (0.65,4.55) -- (1.35,3.65);
+  \node at (0.5,4) {$F_1$};
+
+  \draw[green!60!black, ->, line width=2pt] (3.28,0) -- (3.48,1);
+  \node at (3.7,0.4) {$F_2$};
+
+  \draw[green!60!black, ->, line width=2pt] (8.7,4.3) -- (7.7,3.9);
+  \node at (8.83,3.82) {$F_3$};
+
+  \draw[red, ->, line width=2pt] (5.1,3.9) -- (5.9,3.0);
+  \node at (5.84,3.73) {$\mathcal{P}$};
+  \draw[fill=white, line width=1.4pt, blue!20!black] (6.0,2.8) circle (0.12);
+
+\end{tikzpicture}
+</script>
 
 En estas condiciones, la energía de deformación del cuerpo será igual al trabajo externo realizado por las fuerzas externas. De esta forma, la energía de deformación puede ser considerada una función de n variables
 
@@ -3406,7 +3790,29 @@ $$
 U_f=dP\Delta+U
 $$
 
-<!-- ESPACIO PARA INSERTAR FIGURA: CUERPO DEFORMABLE CON INCREMENTO DE CARGA dP Y DESPLAZAMIENTO dΔ -->
+<script type="text/tikz">
+\begin{tikzpicture}[>=stealth, font=\itshape\large, scale=1.0]
+
+  \fill[orange!20] plot[smooth cycle] coordinates {(0.5,2.6)(1.2,3.3)(2.6,3.9)(4.2,4.1)(5.8,4.3)(7.2,4.2)(8.2,3.9)(8.6,3.0)(8.4,2.0)(7.6,1.2)(6.4,0.7)(4.8,0.9)(3.2,1.0)(1.6,0.9)(0.7,1.3)(0.4,2.0)};
+  \draw[blue!20!black, line width=1.6pt] plot[smooth cycle] coordinates {(0.5,2.6)(1.2,3.3)(2.6,3.9)(4.2,4.1)(5.8,4.3)(7.2,4.2)(8.2,3.9)(8.6,3.0)(8.4,2.0)(7.6,1.2)(6.4,0.7)(4.8,0.9)(3.2,1.0)(1.6,0.9)(0.7,1.3)(0.4,2.0)};
+
+  \draw[green!60!black, ->, line width=2pt] (0.65,4.55) -- (1.35,3.65);
+  \node at (0.5,4) {$F_1$};
+
+  \draw[green!60!black, ->, line width=2pt] (3.28,0) -- (3.48,1);
+  \node at (3.7,0.4) {$F_2$};
+
+  \draw[green!60!black, ->, line width=2pt] (8.7,4.3) -- (7.7,3.9);
+  \node at (8.83,3.82) {$F_3$};
+
+  \draw[blue!50!black, line width=1pt] (6.0,2.8) -- (7.24,1.5);
+
+  \draw[red, ->, line width=2pt] (5.1,3.82) -- (5.9,2.92);
+  \node at (5.77,3.65) {$dP$};
+  \draw[fill=white, line width=1.4pt, blue!20!black] (6.0,2.8) circle (0.12);
+
+\end{tikzpicture}
+</script>
 
 Comparando ambas expresiones para la energía de deformación, se concluye que el desplazamiento buscado debe ser igual a la derivada parcial de la energía de deformación con respecto de la carga actuando en la dirección del desplazamiento buscado.
 
