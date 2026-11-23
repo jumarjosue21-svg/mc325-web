@@ -21,10 +21,15 @@
   const serial = valor => JSON.stringify(valor, null, 2) + '\n';
   const conflicto = (etiqueta) => new Error('Hay cambios incompatibles en '+etiqueta+'. Actualiza el repositorio y concilia los borradores antes de generar el ZIP. No se alteró ningún borrador.');
 
+  // Los borradores que ya aparecen en el repositorio se confirman y
+  // dejan de contarse automáticamente. Los demás se mantienen intactos.
+  let ultimaExportacionEjercicios=null;
+
   async function leerEstado() {
     if (!D || !E || !R || !C) throw new Error('No se cargaron los módulos de Ejercicios, Exámenes, Recursos o Contacto.');
     const [ejPublicados, exPublicados] = await Promise.all([D.obtenerPublicados(), E.publicados()]);
-    const ejLocales = D.obtenerLocales();
+    const reconciliacion=await D.reconciliarPublicados(ejPublicados);
+    const ejLocales = reconciliacion.local;
     const exLocales = E.local();
     await Promise.all([R.ready, C.ready]);
     const recursos = R.getState();
@@ -36,7 +41,9 @@
       contacto: Number(Boolean(C.isPending()))
     };
     const errores = [];
-    if (cantidades.ejercicios && ejLocales.base && ejLocales.base !== JSON.stringify(ejPublicados)) errores.push('Ejercicios Resueltos');
+    const revisionEjercicios = {conflictos:reconciliacion.conflictos,cambiosAjenos:false,confirmados:reconciliacion.confirmados};
+    if (cantidades.ejercicios && revisionEjercicios.conflictos.length)
+      errores.push('Ejercicios Resueltos: conflicto en '+revisionEjercicios.conflictos.join(', '));
     if (cantidades.examenes && E.existeConflicto(exPublicados, exLocales)) errores.push('Exámenes Pasados');
     if (recursos.error) errores.push('Recursos: ' + recursos.error);
     if (recursos.pending && recursos.conflict) errores.push('Recursos Adicionales');
@@ -46,7 +53,7 @@
       recursos:localStorage.getItem('mc325_recursos_borrador_v1'),
       contacto:localStorage.getItem('mc325_contacto_borrador_v1')
     };
-    return {ejPublicados, exPublicados, ejLocales, exLocales, recursos, contacto, cantidades, errores,borradoresCrudos};
+    return {ejPublicados, exPublicados, ejLocales, exLocales, recursos, contacto, cantidades, errores,borradoresCrudos, revisionEjercicios};
   }
 
   async function adjuntarEjercicios(zip, base, retirados) {
@@ -54,10 +61,13 @@
     if (JSON.stringify(actual) !== JSON.stringify(base.ejPublicados)) throw conflicto('Ejercicios Resueltos');
     const locales = D.obtenerLocales();
     if (JSON.stringify(locales) !== JSON.stringify(base.ejLocales)) throw new Error('Los borradores de ejercicios cambiaron mientras preparabas la publicación. Reinténtalo.');
-    if (locales.base && locales.base !== JSON.stringify(actual)) throw conflicto('Ejercicios Resueltos');
+    const comprobacion = await D.reconciliarPublicados(actual);
+    if (comprobacion.conflictos.length)
+      throw conflicto('Ejercicios Resueltos: '+comprobacion.conflictos.join(', '));
     const anteriores = new Map(actual.map(e => [String(e.id), e]));
     const final = D.combinar(actual, locales);
     const propuestos = new Set();
+    const instantanea = {cambios:{},eliminados:locales.eliminados.map(String)};
     for (const e of final) {
       const original = anteriores.get(String(e.id));
       const modificado = Object.prototype.hasOwnProperty.call(locales.cambios, String(e.id));
@@ -90,8 +100,22 @@
       if (e.enunciadoRuta && !rutaImagenEjercicio(e.enunciadoRuta)) throw new Error('Ruta de imagen no válida: '+e.enunciadoRuta);
       if (original?.ruta && original.ruta !== e.ruta && rutaEjercicio(original.ruta)) propuestos.add(original.ruta);
       if (original?.enunciadoRuta && original.enunciadoRuta !== e.enunciadoRuta && rutaImagenEjercicio(original.enunciadoRuta)) propuestos.add(original.enunciadoRuta);
-      delete e.dificultad;
+      // Instantánea de lo efectivamente incluido en el ZIP. Permite reconocer
+      // esta publicación aun cuando luego se edite otra vez el mismo ejercicio.
+      let hashContenido=null, hashArchivo=null, hashImagen=null;
+      if(modificado && typeof e.contenido==='string')hashContenido=await D.hashTexto(e.contenido);
+      if(modificado && e.archivoLocalId) {
+        const adjunto=await D.leerArchivo(e.archivoLocalId);
+        if(adjunto?.blob)hashArchivo=await D.hashBytes(await adjunto.blob.arrayBuffer());
+      }
+      if(modificado && e.enunciadoLocalId) {
+        const adjunto=await D.leerArchivo(e.enunciadoLocalId);
+        if(adjunto?.blob)hashImagen=await D.hashBytes(await adjunto.blob.arrayBuffer());
+      }
+      // No alterar campos históricos de ejercicios que pertenecen a otros aportes.
+      if(modificado)delete e.dificultad;
       delete e.contenido; delete e.archivoLocalId; delete e.enunciadoLocalId;
+      if(modificado)instantanea.cambios[String(e.id)]={registro:D.clonar(e),hashContenido,hashArchivo,hashImagen};
     }
     for (const id of locales.eliminados) {
       const viejo = anteriores.get(String(id));
@@ -101,6 +125,7 @@
     const usados = new Set(final.flatMap(e => [e.ruta,e.enunciadoRuta]).filter(Boolean));
     for (const ruta of propuestos) if (!usados.has(ruta)) retirados.add(ruta);
     zip.file('data/ejercicios.json', serial(final));
+    ultimaExportacionEjercicios=instantanea;
   }
 
   async function adjuntarExamenes(zip, base, retirados) {
@@ -127,7 +152,14 @@
     zip.file('data/examenes.json',serial(resultado));
   }
 
+  function confirmarDescarga() {
+    // Se recuerda el ZIP generado pero NO se eliminan borradores en este paso.
+    if(ultimaExportacionEjercicios)D.registrarExportacion(ultimaExportacionEjercicios);
+    ultimaExportacionEjercicios=null;
+  }
+
   async function adjuntarTodo(zip, previo, retirados) {
+    ultimaExportacionEjercicios=null;
     // Releer justo antes de empaquetar. Una pestaña paralela puede cambiar los borradores.
     const actual = await leerEstado();
     for (const tipo of ['recursos','contacto']) {
@@ -153,5 +185,5 @@
     return actual.cantidades;
   }
 
-  global.MC325PublicacionExtras = Object.freeze({leerEstado,adjuntarTodo});
+  global.MC325PublicacionExtras = Object.freeze({leerEstado,adjuntarTodo,confirmarDescarga});
 })(window);

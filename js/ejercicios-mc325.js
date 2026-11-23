@@ -449,7 +449,10 @@
       ev.preventDefault();abrirLector(ev.target.dataset.id);
     });
     ['ex-buscar','ex-filtro-unidad','ex-orden'].forEach(id=>$(id).addEventListener(id==='ex-buscar'?'input':'change',renderizar));
-    try {estado.publicados=await D.obtenerPublicados();}
+    try {estado.publicados=await D.obtenerPublicados();
+      // Eliminar del estado local únicamente lo ya confirmado en el repositorio.
+      await D.reconciliarPublicados(estado.publicados);
+    }
     catch(err){setEstado(`No se pudieron cargar los ejercicios publicados: ${err.message}. Abre la página con Live Server y verifica data/ejercicios.json.`,true);estado.publicados=[];}
     try {estado.unidades=await D.obtenerUnidades();if(!estado.unidades.length)throw new Error('No hay unidades definidas.');}
     catch(err){setEstado(`No se pudieron cargar las unidades desde data/unidades.json: ${err.message}`,true);estado.unidades=[];}

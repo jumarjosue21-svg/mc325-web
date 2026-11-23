@@ -105,7 +105,142 @@
     if (global.crypto && crypto.randomUUID) return crypto.randomUUID();
     return `ej-${Date.now()}-${Math.random().toString(36).slice(2,10)}`;
   }
+  // El navegador conserva los borradores después de descargar un ZIP.
+  // Cuando su contenido YA aparece en el repositorio, se debe reconciliar
+  // automáticamente la base, sin borrar ningún aporte aún no publicado.
+  const CLAVE_EXPORTACIONES = 'mc325_ejercicios_exportaciones_v2';
+  const camposComparables = ['id','origen','unidad','titulo','descripcion','autor','formato','fecha'];
+  const normalizar = v => {
+    if (Array.isArray(v)) return v.map(normalizar);
+    if (v && typeof v === 'object') return Object.fromEntries(Object.keys(v).sort().map(k=>[k,normalizar(v[k])]));
+    return v;
+  };
+  const iguales = (a,b) => JSON.stringify(normalizar(a)) === JSON.stringify(normalizar(b));
+  const indice = items => new Map((items || []).filter(x=>x && x.id != null).map(x=>[String(x.id),x]));
+  const rutaLocalSegura = ruta => typeof ruta === 'string' &&
+    /^ejercicios\/(articulos|pdfs|enunciados)\/[a-zA-Z0-9_.-]+\.(md|pdf|png|jpg|jpeg|webp)$/i.test(ruta);
+  function cargarExportaciones() {
+    try {
+      const dato = JSON.parse(localStorage.getItem(CLAVE_EXPORTACIONES) || '{}');
+      return dato && typeof dato === 'object' && !Array.isArray(dato) ? dato : {};
+    } catch (_) {return {};}
+  }
+  async function hashBytes(datos) {
+    const bytes = datos instanceof ArrayBuffer ? datos : await new Blob([datos]).arrayBuffer();
+    if (global.crypto?.subtle) {
+      const digest=await global.crypto.subtle.digest('SHA-256',bytes);
+      return 'sha256:'+Array.from(new Uint8Array(digest),x=>x.toString(16).padStart(2,'0')).join('');
+    }
+    // Respaldo para navegadores sin WebCrypto (el proyecto suele abrirse en localhost).
+    let n=2166136261;
+    for(const x of new Uint8Array(bytes)){n^=x;n=Math.imul(n,16777619);}
+    return 'fnv:'+String(n>>>0)+':'+bytes.byteLength;
+  }
+  async function hashTexto(texto) {return hashBytes(new TextEncoder().encode(texto));}
+  async function coincideArchivo(ruta, hashEsperado) {
+    if(!rutaLocalSegura(ruta) || !hashEsperado) return false;
+    try {
+      const r=await fetch(ruta,{cache:'no-store'});
+      return r.ok && await hashBytes(await r.arrayBuffer()) === hashEsperado;
+    } catch (_) {return false;}
+  }
+  async function coincideBorradorPublicado(borrador, publicado) {
+    if (!borrador || !publicado) return false;
+    if (!camposComparables.every(k=>String(borrador[k]??'')===String(publicado[k]??''))) return false;
+    if (!rutaLocalSegura(publicado.ruta)) return false;
+    if (borrador.formato==='web') {
+      if(typeof borrador.contenido === 'string') {
+        if(!await coincideArchivo(publicado.ruta,await hashTexto(borrador.contenido)))return false;
+      } else if(borrador.ruta!==publicado.ruta)return false;
+      if(borrador.enunciadoLocalId) {
+        try {
+          const adjunto=await leerArchivo(borrador.enunciadoLocalId);
+          if(!adjunto?.blob || !await coincideArchivo(publicado.enunciadoRuta,await hashBytes(await adjunto.blob.arrayBuffer())))return false;
+        } catch (_) {return false;}
+      } else if ((borrador.enunciadoRuta||null)!==(publicado.enunciadoRuta||null)) return false;
+    } else if(borrador.formato==='pdf') {
+      if(borrador.archivoLocalId) {
+        try {
+          const adjunto=await leerArchivo(borrador.archivoLocalId);
+          if(!adjunto?.blob || !await coincideArchivo(publicado.ruta,await hashBytes(await adjunto.blob.arrayBuffer())))return false;
+        } catch (_) {return false;}
+      } else if(borrador.ruta!==publicado.ruta) return false;
+    }
+    return true;
+  }
+  // Recordar QUÉ versión incluía el último ZIP. Solo se usará cuando el
+  // archivo correspondiente aparezca en data/ejercicios.json. Descargar
+  // el ZIP, por sí solo, no confirma publicación ni elimina borradores.
+  function registrarExportacion(instantanea) {
+    const previas=cargarExportaciones();
+    for(const [id, entrada] of Object.entries(instantanea?.cambios||{})) {
+      const lista=Array.isArray(previas[id])?previas[id]:[];
+      previas[id]=[entrada,...lista].slice(0,4);
+    }
+    for(const id of instantanea?.eliminados||[]) {
+      const lista=Array.isArray(previas[String(id)])?previas[String(id)]:[];
+      previas[String(id)]=[{eliminado:true},...lista].slice(0,4);
+    }
+    localStorage.setItem(CLAVE_EXPORTACIONES,JSON.stringify(previas));
+  }
+  async function coincideInstantanea(instantanea, publicado) {
+    if(!instantanea || instantanea.eliminado)return !publicado && !!instantanea?.eliminado;
+    if(!publicado || !iguales(instantanea.registro,publicado)) return false;
+    if(instantanea.hashContenido && !await coincideArchivo(publicado.ruta,instantanea.hashContenido))return false;
+    if(instantanea.hashArchivo && !await coincideArchivo(publicado.ruta,instantanea.hashArchivo))return false;
+    if(instantanea.hashImagen && !await coincideArchivo(publicado.enunciadoRuta,instantanea.hashImagen))return false;
+    return true;
+  }
+  async function reconciliarPublicados(publicados) {
+    const local=obtenerLocales();
+    const cambios=local.cambios||{};
+    const eliminados=local.eliminados||[];
+    const ids=[...new Set([...Object.keys(cambios),...eliminados.map(String)])];
+    if(!ids.length) {
+      // Cuando no hay borradores se puede refrescar sin perder trabajo.
+      if (local.base!==JSON.stringify(publicados)) {
+        local.base=JSON.stringify(publicados);
+        guardarLocales(local);
+      }
+      return {local,conflictos:[],confirmados:0};
+    }
+    let base=null;
+    try {const parseado=JSON.parse(local.base||'null');if(Array.isArray(parseado))base=parseado;} catch(_) { /* sin base fiable */ }
+    const viejos=indice(base), actuales=indice(publicados),historial=cargarExportaciones();
+    const conflictos=[];
+    const confirmados=[];
+    for(const id of ids) {
+      const antes=viejos.get(id), ahora=actuales.get(id), editado=Object.prototype.hasOwnProperty.call(cambios,id);
+      const nombre=cambios[id]?.titulo||ahora?.titulo||antes?.titulo||id;
+      const exportaciones=Array.isArray(historial[id])?historial[id]:[];
+      const reconocido=editado
+        ? await coincideBorradorPublicado(cambios[id],ahora)
+        : !ahora;
+      if(reconocido) {confirmados.push(id);continue;}
+      let publicadoPorMi=false;
+      for(const exp of exportaciones) {
+        if(await coincideInstantanea(exp,ahora)) {publicadoPorMi=true;break;}
+      }
+      // Si el ejercicio de referencia no cambió, se puede seguir trabajando.
+      // Si cambió, admitirlo únicamente cuando coincide con un ZIP exportado
+      // desde ESTE navegador, sin ocultar ediciones ajenas al mismo ID.
+      if(!iguales(antes,ahora) && !publicadoPorMi)
+        conflictos.push('«'+nombre+'» (modificado o incorporado desde otra versión)');
+    }
+    for(const id of confirmados) {
+      delete cambios[id];
+      local.eliminados=local.eliminados.filter(x=>String(x)!==id);
+      delete historial[id];
+    }
+    // Con las operaciones restantes reconciliadas, refrescar la base.
+    // Si existe conflicto real, mantener la base original para protección.
+    if(!conflictos.length)local.base=JSON.stringify(publicados);
+    if(confirmados.length || !conflictos.length)guardarLocales(local);
+    if(confirmados.length)localStorage.setItem(CLAVE_EXPORTACIONES,JSON.stringify(historial));
+    return {local,conflictos,confirmados:confirmados.length};
+  }
   global.MC325EjerciciosDatos = { CLAVE, RUTA_DATOS, RUTA_UNIDADES,
     clonar, obtenerLocales, guardarLocales, combinar, obtenerPublicados, obtenerUnidades,
-    guardarCambio, eliminarCambio, limpiarBorradores, ponerArchivo, leerArchivo, obtenerMarkdown, crearID };
+    guardarCambio, eliminarCambio, limpiarBorradores, ponerArchivo, leerArchivo, obtenerMarkdown, crearID,
+    reconciliarPublicados, registrarExportacion, hashTexto, hashBytes };
 })(window);

@@ -78,11 +78,11 @@
     </ol>
     <p><strong>Importante:</strong> GitHub Desktop solo detectará los cambios después de extraer el ZIP en la carpeta correcta. Si no hay borradores pendientes, el botón permanecerá desactivado y no generará un paquete vacío. Un aporte creado en otro navegador u origen no aparece automáticamente aquí. No se limpian borradores al exportar; no incluyas documentos sin autorización.</p>
   </main>
-  <script src="js/ejercicios-datos.js?v=20261122-unificado"></script>
+  <script src="js/ejercicios-datos.js?v=20261123-republicacion01"></script>
   <script src="js/examenes-datos.js?v=20261122-unificado"></script>
   <script src="js/recursos-mc325.js?v=20261122-unificado"></script>
   <script src="js/contacto-mc325.js?v=20261122-unificado"></script>
-  <script src="js/publicacion-unificada-extras.js?v=20261122-01"></script>
+  <script src="js/publicacion-unificada-extras.js?v=20261123-republicacion01"></script>
   <script>
     let datosExportar = null;
     let extrasEstado = null;
@@ -175,11 +175,16 @@
         const cambiosExtras=Object.entries(extras.cantidades).filter(([,n])=>n>0).map(([k])=>k);
         const pendientes=[...cambiosBase,...cambiosExtras];
         if(!pendientes.length) {
-          mensaje('No hay borradores pendientes en este navegador. No se generará un ZIP sin cambios: GitHub Desktop no tendría nada que confirmar.');
+          const confirmados=extras.revisionEjercicios?.confirmados||0;
+          mensaje(confirmados
+            ? `Se reconocieron automáticamente ${confirmados} ejercicio(s) ya publicado(s). Puedes agregar un ejercicio nuevo y volver a generar otro ZIP cuando quieras.`
+            : 'No hay borradores pendientes en este navegador. No se generará un ZIP sin cambios: GitHub Desktop no tendría nada que confirmar.');
           return;
         }
         if(typeof JSZip==='undefined') throw new Error('No se cargó la biblioteca JSZip.');
-        mensaje('Cambios detectados en: '+pendientes.join(', ')+'. Se incluirán únicamente esas secciones en un solo paquete, junto con sus archivos nuevos o modificados.');
+        const fusion = (extras.revisionEjercicios?.confirmados||0)>0
+          ? ` Se reconocieron ${extras.revisionEjercicios.confirmados} ejercicio(s) ya publicado(s); no se volverán a incluir como pendientes.` : '';
+        mensaje('Cambios detectados en: '+pendientes.join(', ')+'. Se incluirán únicamente esas secciones en un solo paquete, junto con sus archivos nuevos o modificados.'+fusion);
         btn.disabled=false;
       } catch(error) {
         console.error(error);
@@ -275,7 +280,7 @@
           '4. Si aparece ARCHIVOS-A-RETIRAR.txt, verifica las rutas antes de borrar archivos.\n'+
           '5. Comprueba con Live Server los artículos, PDFs, figuras, ejercicios y exámenes.\n'+
           '6. Revisa Changes en GitHub Desktop, realiza Commit y Push origin.\n'+
-          '7. Verifica GitHub Pages. Sólo después limpia los borradores si deseas.\n\n'+
+          '7. Al incorporar los archivos exportados, los aportes ya publicados se reconocerán automáticamente al abrir Live Server.\n\n'+
           'AVISO: Este ZIP NO hace commit ni push y no incorpora aportes de otros navegadores.\n'+
           'Si tus compañeros cambiaron los mismos JSON, fusiona el trabajo antes de sobrescribirlos.\n');
         const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});
@@ -284,11 +289,13 @@
         enlace.href=url;
         enlace.download='mc325-publicacion-unificada-'+new Date().toISOString().slice(0,10)+'.zip';
         document.body.append(enlace); enlace.click(); enlace.remove();
+        // Guardar referencia del ZIP solo después de que esté listo para descarga.
+        MC325PublicacionExtras.confirmarDescarga();
         setTimeout(() => URL.revokeObjectURL(url),15000);
         mensaje('ZIP unificado generado. Extráelo en la raíz del repositorio local, revisa los cambios y realiza Commit y Push desde GitHub Desktop. Tus borradores permanecen intactos.');
       } catch(error) {
         console.error(error); mensaje('No se generó el ZIP: '+error.message,true);
-      } finally { this.disabled=false; }
+      } finally { await cargar(); }
     });
     window.addEventListener('DOMContentLoaded',cargar);
   </script>
