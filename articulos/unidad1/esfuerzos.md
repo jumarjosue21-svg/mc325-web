@@ -1607,10 +1607,7 @@ $$ \begin{aligned}
 
 Elevando al cuadrado y sumando ambas ecuaciones, se obtiene la ecuación de la **circunferencia de Mohr**:
 
-$$ \begin{aligned}
-\left[\sigma_{nn} - \left(\frac{\sigma_{11} + \sigma_{22}}{2}\right)\right]^2 + \sigma_{nt}^2 &= \left(\frac{\sigma_{11} - \sigma_{22}}{2}\right)^2 + \sigma_{12}^2 \\[8pt]
-&= R^2
-\end{aligned} $$
+$$ \left[\sigma_{nn} - \left(\frac{\sigma_{11} + \sigma_{22}}{2}\right)\right]^2 + \sigma_{nt}^2 = \left(\frac{\sigma_{11} - \sigma_{22}}{2}\right)^2 + \sigma_{12}^2 = R^2 $$
 
 <script type="text/tikz">
 \begin{tikzpicture}[>=latex, scale=1.23, line cap=round, line join=round]
