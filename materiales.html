@@ -400,38 +400,42 @@
             margin: 0 auto; box-sizing: border-box;
             pointer-events: none; /* El gráfico es estático; el menú contextual corresponde al documento. */
         }
-        html[data-theme="dark"] .latex-content .tikz-figure .tikz-precompilado {
-            background: white; border-radius: 5px; padding: 8px;
-        }
+        /* El estilo en modo oscuro de .tikz-precompilado se unifica desde modo-oscuro.css. */
         .latex-content .tikz-aviso { font-size: 0.88em; text-align: center; opacity: 0.8; }
 
-        /* Subfiguras explícitas: un gráfico y su leyenda (a), (b), etc. */
+        /* Subfiguras explícitas: en fila con misma altura, mismo nivel de base y leyendas alineadas. */
         #vista-lectura-articulo .latex-content { container-type: inline-size; }
         .latex-content .multi-figure-row {
             display: grid;
             grid-template-columns: repeat(var(--subfigure-count, 2), minmax(0, 1fr));
+            grid-template-rows: auto auto;
             align-items: stretch;
-            gap: 18px;
+            column-gap: 18px;
+            row-gap: 0.6em;
             margin: 2em auto 0.65em;
             width: 100%;
             max-width: 100%;
         }
         .latex-content .multi-figure-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            display: grid;
+            grid-row: span 2;
+            grid-template-rows: subgrid;
+            justify-items: center;
+            align-items: stretch;
             min-width: 0;
         }
         .latex-content .multi-figure-item > .tikz-figure,
         .latex-content .multi-figure-item > .article-figure {
             display: flex;
-            flex: 1 1 auto;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            align-self: stretch;
             width: 100%;
+            height: 100%;
             min-width: 0;
             margin: 0;
+            box-sizing: border-box;
         }
         .latex-content .multi-figure-item > .tikz-figure svg,
         .latex-content .multi-figure-item > .article-figure img {
@@ -455,14 +459,16 @@
 
         .latex-content .multi-figure-item > .subfigure-label {
             width: 100%;
-            margin: 0.6em 0 0;
+            align-self: start;
+            margin: 0;
             text-align: center;
             font-size: 0.88em;
             line-height: 1.5;
             color: inherit;
         }
         @container (max-width: 480px) {
-            .latex-content .multi-figure-row { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+            .latex-content .multi-figure-row { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; gap: 20px; }
+            .latex-content .multi-figure-item { display: flex; flex-direction: column; grid-row: auto; gap: 0.6em; }
         }
         .latex-content pre, .latex-content code {
             font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace;
@@ -684,7 +690,7 @@
     </style>
     <!-- Modo oscuro persistente: se aplica antes de pintar la pagina. -->
     <script src="js/tema-mc325.js?v=20261115-02"></script>
-    <link rel="stylesheet" href="modo-oscuro.css?v=20261115-05">
+    <link rel="stylesheet" href="modo-oscuro.css?v=20261124-subgrid-v2">
 
     <!-- Corrección del desplazamiento al usar el menú contextual de MathJax.
          El contenido y el menú lateral siguen desplazándose de forma independiente. -->
@@ -2151,13 +2157,14 @@
 
            // 1. Extraer bloques TikZ ANTES de procesar LaTeX y Markdown,
             // eliminando comentarios (%) y forzando fuente normal (cmr10) para '.' y '/'.
-            contenidoCrudo = contenidoCrudo.replace(/<script\s+type=["']text\/tikz["'][^>]*>([\s\S]*?)<\/script>/gi, function (_, codigoTikz) {
+            contenidoCrudo = contenidoCrudo.replace(/<script\s+type=["']text\/tikz["']([^>]*)>([\s\S]*?)<\/script>/gi, function (_, attrs, codigoTikz) {
+                const claseReal = /\bdata-real\b/i.test(attrs) ? ' tikz-real' : '';
                 // Identificar los bloques pesados antes de limpiar el código,
                 // para que el hash coincida con el texto fuente del Markdown.
                 const pesado = window.MC325Tikz.esPesado(codigoTikz);
                 if (pesado) {
                     const indice = bloquesTikz.push({pesado:true, codigo:codigoTikz}) - 1;
-                    return '\n\n<div class="tikz-figure" data-tikz-block="' + indice + '"></div>\n\n';
+                    return '\n\n<div class="tikz-figure' + claseReal + '" data-tikz-block="' + indice + '"></div>\n\n';
                 }
                 const codigoLimpio = codigoTikz
                     .replace(/^[ \t]*%.*$/gm, '')
@@ -2172,7 +2179,7 @@
                     })
                     .trim();
                 const indice = bloquesTikz.push({pesado:false, codigo:codigoLimpio}) - 1;
-                return '\n\n<div class="tikz-figure" data-tikz-block="' + indice + '"></div>\n\n';
+                return '\n\n<div class="tikz-figure' + claseReal + '" data-tikz-block="' + indice + '"></div>\n\n';
             });
 
             // 2. Extraer $$ ... $$ ANTES de convertir Markdown.

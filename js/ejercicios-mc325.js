@@ -356,7 +356,8 @@
     contenedor.replaceChildren();
     if(!window.marked || !window.DOMPurify) {const pre=document.createElement('pre');pre.textContent=md;contenedor.appendChild(pre);if(typeof alPrepararDom==='function')alPrepararDom();return;}
     const bloquesTikz=[];const bloques=[];const lineas=[];
-    let preparado=String(md).replace(/<script\s+type=["']text\/tikz["'][^>]*>([\s\S]*?)<\/script>/gi,(_match,codigoTikz)=>{
+    let preparado=String(md).replace(/<script\s+type=["']text\/tikz["']([^>]*)>([\s\S]*?)<\/script>/gi,(_match,attrs,codigoTikz)=>{
+      const claseReal=/\bdata-real\b/i.test(attrs)?' tikz-real':'';
       const codigoLimpio=codigoTikz
         .replace(/^[ \t]*%.*$/gm,'')
         .replace(/([^\\])%.*$/gm,'$1')
@@ -367,7 +368,7 @@
         .replace(/\$([^$]+)\$/g,(_,formulaTikz)=>'$'+formulaTikz.replace(/(\d)\.(\d)/g,'$1\\mbox{.}$2').replace(/\//g,'\\mbox{/}')+'$')
         .trim();
       const idx=bloquesTikz.push(codigoLimpio)-1;
-      return `\n\n<div class="tikz-figure" data-ex-tikz="${idx}"></div>\n\n`;
+      return `\n\n<div class="tikz-figure${claseReal}" data-ex-tikz="${idx}"></div>\n\n`;
     });
     preparado=preparado.replace(/\$\$([\s\S]+?)\$\$/g,(_match,tex)=>{
       const i=bloques.push(tex)-1;return `\n\n<div class="ex-mathblock" data-ex-math="${i}"></div>\n\n`;

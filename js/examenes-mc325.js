@@ -275,9 +275,10 @@
     const dibujos=[],bloques=[],inline=[];
     // Los marcadores son los únicos HTML generados para las figuras.
     // El fuente TikZ real queda fuera del proceso Markdown/DOMPurify.
-    let raw=String(md).replace(/<script\s+type=["']text\/tikz["'][^>]*>([\s\S]*?)<\/script>/gi,(_,codigo)=>{
+    let raw=String(md).replace(/<script\s+type=["']text\/tikz["']([^>]*)>([\s\S]*?)<\/script>/gi,(_,attrs,codigo)=>{
+      const claseReal=/\bdata-real\b/i.test(attrs)?' tikz-real':'';
       const indice=dibujos.push(prepararCodigoTikz(codigo))-1;
-      return `\n\n<div class="tikz-figure" data-em-tikz="${indice}"></div>\n\n`;
+      return `\n\n<div class="tikz-figure${claseReal}" data-em-tikz="${indice}"></div>\n\n`;
     });
     raw=raw.replace(/\$\$([\s\S]+?)\$\$/g,(_,tex)=>`\n\n<div class="ex-mathblock" data-em-math="${bloques.push(tex)-1}"></div>\n\n`);
     raw=raw.replace(/\$((?:\\.|[^$\n])+?)\$/g,(_,tex)=>`EMINLINEFORMULA${inline.push(tex)-1}FIN`);

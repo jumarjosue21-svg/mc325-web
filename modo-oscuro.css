@@ -663,9 +663,42 @@ html[data-theme="dark"] .latex-content h6,
 html[data-theme="dark"] .latex-content strong,
 html[data-theme="dark"] .foro-page .foro-row-title,
 html[data-theme="dark"] .foro-page .foro-post-card h2 { color: var(--dm-text); }
-/* Los gráficos TikZ conservan exactamente sus colores originales sobre un papel blanco. */
-html[data-theme="dark"] .tikz-figure svg {
-  background: white; border-radius: 5px; padding: 8px;
+/* Los esquemas TikZ (diagramas técnicos) se adaptan al tema oscuro:
+   inversión de luminosidad preservando matices + fusión screen sobre --dm-surface.
+   Las figuras que representan objetos reales (.tikz-real y .tikz-precompilado)
+   conservan sus colores originales sobre fondo claro para preservar fidelidad y contraste. */
+html[data-theme="dark"] .tikz-figure:not(.tikz-real) {
+  background: var(--dm-surface);
+  border-radius: 8px;
+}
+html[data-theme="dark"] .tikz-figure:not(.tikz-real) svg:not(.tikz-precompilado) {
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 6px;
+  filter: invert(1) hue-rotate(180deg) saturate(1.5) brightness(0.90);
+  mix-blend-mode: screen;
+}
+html[data-theme="dark"] .tikz-figure.tikz-real svg,
+html[data-theme="dark"] .tikz-figure .tikz-precompilado {
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 8px;
+  filter: none;
+  mix-blend-mode: normal;
+}
+/* En subfiguras lado a lado (.multi-figure-row), el fondo claro se aplica al
+   contenedor estirado para garantizar el mismo nivel superior, base y altura. */
+html[data-theme="dark"] .multi-figure-item > .tikz-figure:has(.tikz-precompilado),
+html[data-theme="dark"] .multi-figure-item > .tikz-figure.tikz-real {
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 8px;
+}
+html[data-theme="dark"] .multi-figure-item > .tikz-figure .tikz-precompilado,
+html[data-theme="dark"] .multi-figure-item > .tikz-figure.tikz-real svg {
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
 }
 /* El control no debe desplazar el título ni el logotipo en teléfonos. */
 @media (max-width: 700px) {
