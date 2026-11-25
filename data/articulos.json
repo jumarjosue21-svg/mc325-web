@@ -51,7 +51,8 @@
     "unidad": "unidad6",
     "titulo": "Tubos de Paredes Gruesas, Casos Especiales y Deformación Radial",
     "revision": "f1a2b3c7",
-    "ruta": "articulos/unidad6/1794671307819-Tubos-de-Pared-Gruesa-Ecuaciones-de-Lame-y-Casos-Especiales.md"
+    "ruta": "articulos/unidad6/1794671307819-Tubos-de-Pared-Gruesa-Ecuaciones-de-Lame-y-Casos-Especiales.md",
+    "orden": 0
   },
   {
     "id": "1794671336968",
@@ -59,6 +60,7 @@
     "titulo": "Presión de Zunchado y Resistencia y Diseño de Cilindros de Pared Gruesa",
     "revision": "d5e6f7b2",
     "ruta": "articulos/unidad6/1794671336968-Cilindros-Compuestos-Zunchado-y-Diseno-de-Espesor-de-Pared.md",
+    "orden": 1,
     "ejercicioId": "eaf8699d-bdc4-4406-83f7-d7cd856804f9"
   },
   {
@@ -67,6 +69,7 @@
     "titulo": "Discos Rotativos",
     "revision": "b9c0d1e6",
     "ruta": "articulos/unidad6/1794671371373-Discos-Rotativos-de-Espesor-Uniforme-y-Volantes-de-Inercia.md",
+    "orden": 2,
     "ejercicioId": "1c61f3dd-8758-4874-83ff-c562b17ab839"
   },
   {
