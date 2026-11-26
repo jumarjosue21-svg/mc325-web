@@ -130,53 +130,49 @@
   {
     "id": "3e78073c-b562-4701-8f8b-fc919d58e766",
     "origen": "estudiante",
-    "unidad": "unidad3",
+    "unidad": "unidad8",
     "titulo": "Ejercicio Nº1",
-    "descripcion": "Problemas de Fatiga Estática",
+    "descripcion": "Problemas de Falla Estática",
     "autor": "IanCE",
     "formato": "web",
     "fecha": "2026-11-23T01:05:46.534Z",
     "ruta": "ejercicios/articulos/3e78073c-b562-4701-8f8b-fc919d58e766.md",
-    "enunciadoRuta": null,
-    "orden": 0
+    "enunciadoRuta": null
   },
   {
     "id": "57b51b5a-59dc-4308-92d5-b47a13301208",
     "origen": "estudiante",
-    "unidad": "unidad3",
+    "unidad": "unidad8",
     "titulo": "Ejercicio Nº2",
-    "descripcion": "Problemas de Fatiga Estática",
+    "descripcion": "Problemas de Falla Estática",
     "autor": "IanCE",
     "formato": "web",
     "fecha": "2026-11-23T01:06:08.790Z",
     "ruta": "ejercicios/articulos/57b51b5a-59dc-4308-92d5-b47a13301208.md",
-    "enunciadoRuta": "ejercicios/enunciados/57b51b5a-59dc-4308-92d5-b47a13301208.png",
-    "orden": 1
+    "enunciadoRuta": "ejercicios/enunciados/57b51b5a-59dc-4308-92d5-b47a13301208.png"
   },
   {
     "id": "6e80bfc0-4fd2-4083-98fb-3d1754a94761",
     "origen": "estudiante",
-    "unidad": "unidad3",
+    "unidad": "unidad8",
     "titulo": "Ejercicio Nº3",
-    "descripcion": "Problemas de Fatiga Estática",
+    "descripcion": "Problemas de Falla Estática",
     "autor": "IanCE",
     "formato": "web",
     "fecha": "2026-11-23T01:07:05.075Z",
     "ruta": "ejercicios/articulos/6e80bfc0-4fd2-4083-98fb-3d1754a94761.md",
-    "enunciadoRuta": "ejercicios/enunciados/6e80bfc0-4fd2-4083-98fb-3d1754a94761.png",
-    "orden": 2
+    "enunciadoRuta": "ejercicios/enunciados/6e80bfc0-4fd2-4083-98fb-3d1754a94761.png"
   },
   {
     "id": "eee8430e-0a65-4b51-befc-f24f5e9db16e",
     "origen": "estudiante",
-    "unidad": "unidad3",
+    "unidad": "unidad8",
     "titulo": "Ejercicio Nº4",
-    "descripcion": "Problemas de Fatiga Estática",
+    "descripcion": "Problemas de Falla Estática",
     "autor": "IanCE",
     "formato": "web",
     "fecha": "2026-11-23T01:08:17.042Z",
     "ruta": "ejercicios/articulos/eee8430e-0a65-4b51-befc-f24f5e9db16e.md",
-    "enunciadoRuta": "ejercicios/enunciados/eee8430e-0a65-4b51-befc-f24f5e9db16e.png",
-    "orden": 3
+    "enunciadoRuta": "ejercicios/enunciados/eee8430e-0a65-4b51-befc-f24f5e9db16e.png"
   }
 ]
