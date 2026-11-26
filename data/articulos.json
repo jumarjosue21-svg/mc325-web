@@ -88,5 +88,12 @@
     "orden": 1,
     "modoLectura": "capitulos",
     "numeroCapitulos": 7
+  },
+  {
+    "id": "1795655894627",
+    "unidad": "unidad8",
+    "titulo": "Fatiga",
+    "revision": "d235a4c2",
+    "ruta": "articulos/unidad8/1795655894627-Fatiga.md"
   }
 ]
